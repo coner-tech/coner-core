@@ -18,7 +18,7 @@ import static spark.Spark.*;
 /**
  *
  */
-public class AxRunnerCore {
+public class AxRunnerSparkCore {
 
     private static final String ATTRIBUTE_ROLE_STAFF = "staff";
 
