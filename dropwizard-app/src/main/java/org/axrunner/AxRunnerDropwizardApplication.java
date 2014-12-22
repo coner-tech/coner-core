@@ -1,5 +1,6 @@
 package org.axrunner;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -10,8 +11,6 @@ import org.axrunner.core.AxRunnerCoreService;
 import org.axrunner.hibernate.entity.Event;
 import org.axrunner.hibernate.gateway.EventGateway;
 import org.axrunner.resource.EventsResource;
-
-import java.text.DateFormat;
 
 /**
  *
@@ -36,7 +35,7 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
             Bootstrap<AxRunnerDropwizardConfiguration> bootstrap
     ) {
         bootstrap.addBundle(hibernate);
-        bootstrap.getObjectMapper().setDateFormat(DateFormat.getDateTimeInstance());
+        bootstrap.getObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     @Override
