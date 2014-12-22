@@ -1,0 +1,14 @@
+# Database settings.
+database:
+    # the name of your JDBC driver
+    driverClass: org.hsqldb.jdbc.JDBCDriver
+    # the username
+    user: sa
+    # the password
+    password:
+    # the JDBC URL
+    url: jdbc:hsqldb:mem:axrunner
+    validationQuery: SELECT * FROM INFORMATION_SCHEMA.SYSTEM_TABLES
+    properties:
+        hibernate.dialect: org.hibernate.dialect.HSQLDialect
+        hibernate.hbm2ddl.auto: create
