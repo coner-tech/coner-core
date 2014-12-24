@@ -1,6 +1,7 @@
 package org.axrunner;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Preconditions;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -21,14 +22,11 @@ import org.axrunner.resource.EventsResource;
  */
 public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizardConfiguration> {
 
-    private final HibernateBundle<AxRunnerDropwizardConfiguration> hibernate = new HibernateBundle<AxRunnerDropwizardConfiguration>(
-            Event.class
-    ) {
-        @Override
-        public DataSourceFactory getDataSourceFactory(AxRunnerDropwizardConfiguration axRunnerDropwizardConfiguration) {
-            return axRunnerDropwizardConfiguration.getDataSourceFactory();
-        }
-    };
+    private HibernateBundle<AxRunnerDropwizardConfiguration> hibernate;
+    private EventBoundary eventBoundary;
+    private EventDao eventDao;
+    private EventGateway eventGateway;
+    private AxRunnerCoreService axRunnerCoreService;
 
     public static void main(String[] args) throws Exception {
         new AxRunnerDropwizardApplication().run(args);
@@ -38,7 +36,7 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
     public void initialize(
             Bootstrap<AxRunnerDropwizardConfiguration> bootstrap
     ) {
-        bootstrap.addBundle(hibernate);
+        bootstrap.addBundle(getHibernate());
         bootstrap.getObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
@@ -49,15 +47,9 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
     ) throws Exception {
         JerseyEnvironment jersey = environment.jersey();
 
-        // init service
-        EventBoundary eventBoundary = new EventBoundary();
-        EventDao eventDao = new EventDao(hibernate.getSessionFactory());
-        EventGateway eventGateway = new EventGateway(hibernate, eventBoundary, eventDao);
-        AxRunnerCoreService axRunnerCoreService = new AxRunnerCoreService(eventGateway);
-
         // init resources
-        EventsResource eventsResource = new EventsResource(eventBoundary, axRunnerCoreService);
-        EventResource eventResource = new EventResource(eventBoundary, axRunnerCoreService);
+        EventsResource eventsResource = new EventsResource(getEventBoundary(), getAxRunnerCoreService());
+        EventResource eventResource = new EventResource(getEventBoundary(), getAxRunnerCoreService());
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
@@ -66,5 +58,68 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
         ResourceExceptionMapper resourceExceptionMapper = new ResourceExceptionMapper();
 
         jersey.register(resourceExceptionMapper);
+    }
+
+    private HibernateBundle<AxRunnerDropwizardConfiguration> getHibernate() {
+        if (hibernate == null) {
+            hibernate = new HibernateBundle<AxRunnerDropwizardConfiguration>(
+                    Event.class
+            ) {
+                @Override
+                public DataSourceFactory getDataSourceFactory(AxRunnerDropwizardConfiguration axRunnerDropwizardConfiguration) {
+                    return axRunnerDropwizardConfiguration.getDataSourceFactory();
+                }
+            };
+        }
+        return hibernate;
+    }
+
+    void setHibernate(HibernateBundle<AxRunnerDropwizardConfiguration> hibernate) {
+        this.hibernate = hibernate;
+    }
+
+    private EventBoundary getEventBoundary() {
+        if (eventBoundary == null) {
+            eventBoundary = new EventBoundary();
+        }
+        return eventBoundary;
+    }
+
+    void setEventBoundary(EventBoundary eventBoundary) {
+        this.eventBoundary = eventBoundary;
+    }
+
+    private EventDao getEventDao() {
+        if (eventDao == null) {
+            eventDao = new EventDao(getHibernate().getSessionFactory());
+        }
+        return eventDao;
+    }
+
+    void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
+    }
+
+    private EventGateway getEventGateway() {
+        if (eventGateway == null) {
+            this.eventGateway = new EventGateway(getHibernate(), getEventBoundary(), getEventDao());
+        }
+        return eventGateway;
+    }
+
+    void setEventGateway(EventGateway eventGateway) {
+        this.eventGateway = eventGateway;
+    }
+
+    private AxRunnerCoreService getAxRunnerCoreService() {
+        Preconditions.checkNotNull(eventGateway);
+        if (axRunnerCoreService == null) {
+            axRunnerCoreService = new AxRunnerCoreService(eventGateway);
+        }
+        return axRunnerCoreService;
+    }
+
+    void setAxRunnerCoreService(AxRunnerCoreService axRunnerCoreService) {
+        this.axRunnerCoreService = axRunnerCoreService;
     }
 }
