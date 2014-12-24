@@ -41,4 +41,26 @@ public class Event extends ApiEntity {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        if (date != null ? !date.equals(event.date) : event.date != null) return false;
+        if (id != null ? !id.equals(event.id) : event.id != null) return false;
+        if (name != null ? !name.equals(event.name) : event.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
+    }
 }
