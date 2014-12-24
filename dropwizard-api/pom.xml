@@ -11,6 +11,11 @@
 
     <artifactId>dropwizard-api</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>0.8.0-rc1</version>
+        </dependency>
     </dependencies>
 
 

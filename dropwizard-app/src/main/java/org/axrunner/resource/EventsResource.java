@@ -7,6 +7,7 @@ import org.axrunner.api.response.GetEventsResponse;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -37,7 +38,7 @@ public class EventsResource {
 
     @POST
     @UnitOfWork
-    public AddEventResponse addEvent(Event event) {
+    public AddEventResponse addEvent(@Valid Event event) {
         org.axrunner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         axRunnerCoreService.addEvent(domainEvent);
         AddEventResponse response = new AddEventResponse(eventBoundary.toApiEntity(domainEvent));
