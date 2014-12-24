@@ -1,6 +1,6 @@
 package org.axrunner.core.domain;
 
-import org.joda.time.DateTime;
+import java.util.Date;
 
 /**
  *
@@ -9,7 +9,7 @@ public class Event extends DomainEntity {
 
     private String eventId;
     private String name;
-    private DateTime date;
+    private Date date;
 
     public String getEventId() {
         return eventId;
@@ -27,7 +27,7 @@ public class Event extends DomainEntity {
         this.name = name;
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -35,7 +35,7 @@ public class Event extends DomainEntity {
         return date != null;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

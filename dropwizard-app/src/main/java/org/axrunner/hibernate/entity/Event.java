@@ -9,23 +9,29 @@ import java.util.Date;
  *
  */
 @Entity
-@Table(name = Event.TABLE_NAME)
+@Table(name = "events")
+@NamedQueries({
+        @NamedQuery(
+                name = Event.QUERY_FIND_ALL,
+                query = "from Event"
+        )
+})
 public class Event extends HibernateEntity {
 
-    public static final String TABLE_NAME = "events";
-
-    private long id;
+    private String id;
     private String name;
     private Date date;
 
+    public static final String QUERY_FIND_ALL = "org.axrunner.hibernate.entity.Event.findAll";
+
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
-    public long getId() {
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

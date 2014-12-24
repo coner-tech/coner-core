@@ -1,5 +1,6 @@
 package org.axrunner.resource;
 
+import io.dropwizard.hibernate.UnitOfWork;
 import org.axrunner.api.entity.Event;
 import org.axrunner.api.response.AddEventResponse;
 import org.axrunner.api.response.GetEventsResponse;
@@ -27,6 +28,7 @@ public class EventsResource {
     }
 
     @GET
+    @UnitOfWork
     public GetEventsResponse getEvents() {
         List<org.axrunner.core.domain.Event> domainEvents = axRunnerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse(eventBoundary.toApiEntities(domainEvents));
@@ -34,6 +36,7 @@ public class EventsResource {
     }
 
     @POST
+    @UnitOfWork
     public AddEventResponse addEvent(Event event) {
         org.axrunner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         axRunnerCoreService.addEvent(domainEvent);

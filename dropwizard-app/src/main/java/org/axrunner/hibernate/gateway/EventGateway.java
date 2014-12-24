@@ -4,9 +4,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import org.axrunner.AxRunnerDropwizardConfiguration;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.domain.Event;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.axrunner.hibernate.dao.EventDao;
 
 import java.util.List;
 
@@ -16,37 +14,27 @@ import java.util.List;
 public class EventGateway extends HibernateGateway {
 
     private final EventBoundary eventBoundary;
+    private final EventDao eventDao;
 
-    public EventGateway(HibernateBundle<AxRunnerDropwizardConfiguration> hibernate, EventBoundary eventBoundary) {
+    public EventGateway(HibernateBundle<AxRunnerDropwizardConfiguration> hibernate, EventBoundary eventBoundary, EventDao eventDao) {
         super(hibernate);
         this.eventBoundary = eventBoundary;
+        this.eventDao = eventDao;
     }
 
     public List<Event> getAll() {
-        Session session = getHibernate().getSessionFactory().openSession();
-        try {
-            Query query = session.createQuery("from Event");
-            List<org.axrunner.hibernate.entity.Event> events = query.list();
-            return eventBoundary.toDomainEntities(events);
-        } finally {
-            session.close();
-        }
+        List<org.axrunner.hibernate.entity.Event> events = eventDao.findAll();
+        return eventBoundary.toDomainEntities(events);
     }
 
     public Event findById(String eventId) {
-        return null;
+        org.axrunner.hibernate.entity.Event hibernateEvent = eventDao.findById(eventId);
+        return eventBoundary.toDomainEntity(hibernateEvent);
     }
 
     public void create(org.axrunner.core.domain.Event event) {
         org.axrunner.hibernate.entity.Event hibernateEvent = eventBoundary.toHibernateEntity(event);
-        Session session = getHibernate().getSessionFactory().openSession();
-        try {
-            Transaction transaction = session.beginTransaction();
-            session.save(hibernateEvent);
-            transaction.commit();
-            eventBoundary.merge(hibernateEvent, event);
-        } finally {
-            session.close();
-        }
+        eventDao.create(hibernateEvent);
+        eventBoundary.merge(hibernateEvent, event);
     }
 }

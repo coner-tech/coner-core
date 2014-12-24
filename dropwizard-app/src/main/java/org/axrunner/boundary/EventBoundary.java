@@ -1,7 +1,6 @@
 package org.axrunner.boundary;
 
 import org.axrunner.core.domain.Event;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -34,19 +33,13 @@ public class EventBoundary extends AbstractBoundary<org.axrunner.api.entity.Even
     @Override
     public void merge(org.axrunner.hibernate.entity.Event fromHibernateEntity, Event intoDomainEntity) {
         intoDomainEntity.setEventId(String.valueOf(fromHibernateEntity.getId()));
-        intoDomainEntity.setDate(fromHibernateEntity.getDate() != null
-                        ? new DateTime(fromHibernateEntity.getDate().getTime())
-                        : null
-        );
+        intoDomainEntity.setDate(fromHibernateEntity.getDate());
         intoDomainEntity.setName(fromHibernateEntity.getName());
     }
 
     @Override
     public void merge(Event fromDomainEntity, org.axrunner.hibernate.entity.Event intoHibernateEntity) {
-        intoHibernateEntity.setDate(fromDomainEntity.hasDate()
-                        ? fromDomainEntity.getDate().toDate()
-                        : null
-        );
+        intoHibernateEntity.setDate(fromDomainEntity.getDate());
         intoHibernateEntity.setName(fromDomainEntity.getName());
     }
 }

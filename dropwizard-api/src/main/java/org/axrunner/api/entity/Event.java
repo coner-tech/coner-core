@@ -1,6 +1,6 @@
 package org.axrunner.api.entity;
 
-import org.joda.time.DateTime;
+import java.util.Date;
 
 /**
  *
@@ -9,7 +9,7 @@ public class Event extends ApiEntity {
 
     private String id;
     private String name;
-    private DateTime date;
+    private Date date;
 
     public String getId() {
         return id;
@@ -27,11 +27,11 @@ public class Event extends ApiEntity {
         this.name = name;
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

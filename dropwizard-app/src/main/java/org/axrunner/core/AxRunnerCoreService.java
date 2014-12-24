@@ -23,4 +23,8 @@ public class AxRunnerCoreService {
     public void addEvent(Event event) {
         eventGateway.create(event);
     }
+
+    public Event getEvent(String id) {
+        return eventGateway.findById(id);
+    }
 }

@@ -1,7 +1,7 @@
 package org.axrunner.boundary;
 
-import org.axrunner.core.domain.DomainEntity;
 import org.axrunner.api.entity.ApiEntity;
+import org.axrunner.core.domain.DomainEntity;
 import org.axrunner.hibernate.entity.HibernateEntity;
 
 import java.lang.reflect.Constructor;
@@ -26,24 +26,36 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     public A toApiEntity(D domainEntity) {
+        if (domainEntity == null) {
+            return null;
+        }
         A apiEntity = instantiate(apiClass);
         merge(domainEntity, apiEntity);
         return apiEntity;
     }
 
     public D toDomainEntity(A apiEntity) {
+        if (apiEntity == null) {
+            return null;
+        }
         D domainEntity = instantiate(domainClass);
         merge(apiEntity, domainEntity);
         return domainEntity;
     }
 
     public D toDomainEntity(H hibernateEntity) {
+        if (hibernateEntity == null) {
+            return null;
+        }
         D domainEntity = instantiate(domainClass);
         merge(hibernateEntity, domainEntity);
         return domainEntity;
     }
 
     public H toHibernateEntity(D domainEntity) {
+        if (domainEntity == null) {
+            return null;
+        }
         H hibernateEntity = instantiate(hibernateClass);
         merge(domainEntity, hibernateEntity);
         return hibernateEntity;

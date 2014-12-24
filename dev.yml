@@ -12,3 +12,10 @@ database:
     properties:
         hibernate.dialect: org.hibernate.dialect.HSQLDialect
         hibernate.hbm2ddl.auto: create
+
+# Logging settings.
+logging:
+
+    loggers:
+
+        org.hibernate.SQL: ALL
