@@ -9,12 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <dropwizard.version>0.8.0-rc1</dropwizard.version>
+    </properties>
+
     <artifactId>dropwizard-api</artifactId>
     <dependencies>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-            <version>0.8.0-rc1</version>
+            <version>${dropwizard.version}</version>
         </dependency>
     </dependencies>
 
