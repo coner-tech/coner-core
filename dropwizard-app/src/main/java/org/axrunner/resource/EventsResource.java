@@ -32,7 +32,8 @@ public class EventsResource {
     @UnitOfWork
     public GetEventsResponse getEvents() {
         List<org.axrunner.core.domain.Event> domainEvents = axRunnerCoreService.getEvents();
-        GetEventsResponse response = new GetEventsResponse(eventBoundary.toApiEntities(domainEvents));
+        GetEventsResponse response = new GetEventsResponse();
+        response.setEvents(eventBoundary.toApiEntities(domainEvents));
         return response;
     }
 
@@ -41,7 +42,8 @@ public class EventsResource {
     public AddEventResponse addEvent(@Valid Event event) {
         org.axrunner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         axRunnerCoreService.addEvent(domainEvent);
-        AddEventResponse response = new AddEventResponse(eventBoundary.toApiEntity(domainEvent));
+        AddEventResponse response = new AddEventResponse();
+        response.setEvent(eventBoundary.toApiEntity(domainEvent));
         return response;
     }
 }

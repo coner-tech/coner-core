@@ -1,5 +1,6 @@
 package org.axrunner.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.util.Date;
 /**
  *
  */
+@JsonPropertyOrder({"id", "name", "date"})
 public class Event extends ApiEntity {
 
     @Null(message = "event.id may only be assigned by the system")
