@@ -115,6 +115,7 @@ public class EventsResourceTest {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         }
+        verify(axRunnerCoreService, never()).addEvent(any(Event.class));
     }
 
     @Test
@@ -135,6 +136,7 @@ public class EventsResourceTest {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         }
+        verify(axRunnerCoreService, never()).addEvent(any(Event.class));
     }
 
     @Test
@@ -155,5 +157,6 @@ public class EventsResourceTest {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         }
+        verify(axRunnerCoreService, never()).addEvent(any(Event.class));
     }
 }
