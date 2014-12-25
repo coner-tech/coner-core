@@ -3,6 +3,7 @@ package org.axrunner.exception;
 import com.google.common.base.Strings;
 import org.axrunner.api.response.ErrorResponse;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -10,9 +11,9 @@ import javax.ws.rs.ext.ExceptionMapper;
 /**
  *
  */
-public class ResourceExceptionMapper implements ExceptionMapper<ResourceException> {
+public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
     @Override
-    public Response toResponse(ResourceException e) {
+    public Response toResponse(WebApplicationException e) {
         Response.StatusType status = e.getResponse().getStatusInfo();
 
         ErrorResponse entity = new ErrorResponse();

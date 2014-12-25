@@ -1,14 +1,21 @@
 package org.axrunner.resource;
 
+import io.dropwizard.testing.junit.ResourceTestRule;
 import org.axrunner.api.entity.Event;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
-import org.axrunner.exception.ResourceException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
+import java.time.Instant;
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.fail;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -19,41 +26,61 @@ public class EventResourceTest {
     private final EventBoundary eventBoundary = mock(EventBoundary.class);
     private final AxRunnerCoreService axRunnerCoreService = mock(AxRunnerCoreService.class);
 
-    private EventResource eventResource;
+    @Rule
+    public final ResourceTestRule resources = ResourceTestRule.builder()
+            .addResource(new EventResource(eventBoundary, axRunnerCoreService))
+            .build();
+
 
     @Before
     public void setup() {
-        eventResource = new EventResource(eventBoundary, axRunnerCoreService);
+        reset(eventBoundary, axRunnerCoreService);
     }
 
     @Test
     public void itShouldGetEvent() {
-        Event apiEvent = mock(Event.class);
-        org.axrunner.core.domain.Event domainEvent = mock(org.axrunner.core.domain.Event.class);
-        when(eventBoundary.toApiEntity(domainEvent)).thenReturn(apiEvent);
         String id = "test";
+        String name = "test event";
+        Date date = Date.from(Instant.now());
+
+        org.axrunner.core.domain.Event domainEvent = new org.axrunner.core.domain.Event();
+        domainEvent.setEventId(id);
+        domainEvent.setName(name);
+        domainEvent.setDate(date);
+
+        Event apiEvent = new Event();
+        apiEvent.setId(id);
+        apiEvent.setName(name);
+        apiEvent.setDate(date);
+
         when(axRunnerCoreService.getEvent(id)).thenReturn(domainEvent);
+        when(eventBoundary.toApiEntity(domainEvent)).thenReturn(apiEvent);
 
-        Event result = eventResource.getEvent(id);
+        Event response = resources.client()
+                .target("/events/" + id)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get(Event.class);
 
-        verify(axRunnerCoreService).getEvent(id);
-        assertNotNull(result);
-        assertSame(apiEvent, result);
+        assertThat(response).isEqualTo(apiEvent);
     }
 
     @Test
-    public void whenGetEventIdNotFoundItShouldThrow() {
-        String id = "not-found-oh-noes";
+    public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() {
+
+        String id = "test";
         when(axRunnerCoreService.getEvent(id)).thenReturn(null);
-        when(eventBoundary.toApiEntity(any(org.axrunner.core.domain.Event.class))).thenReturn(null);
 
         try {
-            eventResource.getEvent(id);
-        } catch (Exception e) {
-            assertSame(ResourceException.class, e.getClass());
-            assertEquals(HttpStatus.NOT_FOUND_404, ((ResourceException) e).getResponse().getStatus());
-            return;
+            Event response = resources.client()
+                    .target("/events/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get(Event.class);
+
+            fail("Expected ResourceException");
+        } catch (NotFoundException nfe) {
+            assertThat(nfe.getResponse().getStatusInfo().getStatusCode())
+                    .isEqualTo(HttpStatus.NOT_FOUND_404);
         }
-        fail("Should have thrown an exception");
     }
+
 }

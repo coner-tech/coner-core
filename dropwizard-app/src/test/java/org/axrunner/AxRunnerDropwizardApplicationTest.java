@@ -9,7 +9,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
-import org.axrunner.exception.ResourceExceptionMapper;
+import org.axrunner.exception.WebApplicationExceptionMapper;
 import org.axrunner.hibernate.dao.EventDao;
 import org.axrunner.hibernate.gateway.EventGateway;
 import org.axrunner.resource.EventResource;
@@ -100,6 +100,6 @@ public class AxRunnerDropwizardApplicationTest {
 
         assertTrue(registeredClasses.contains(EventsResource.class));
         assertTrue(registeredClasses.contains(EventResource.class));
-        assertTrue(registeredClasses.contains(ResourceExceptionMapper.class));
+        assertTrue(registeredClasses.contains(WebApplicationExceptionMapper.class));
     }
 }

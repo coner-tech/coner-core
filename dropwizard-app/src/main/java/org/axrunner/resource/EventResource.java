@@ -4,11 +4,9 @@ import io.dropwizard.hibernate.UnitOfWork;
 import org.axrunner.api.entity.Event;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
-import org.axrunner.exception.ResourceException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -30,13 +28,10 @@ public class EventResource {
     @UnitOfWork
     public Event getEvent(@PathParam("eventId") String id) {
         org.axrunner.core.domain.Event domainEvent = axRunnerCoreService.getEvent(id);
-        Event event = eventBoundary.toApiEntity(domainEvent);
-        if (event == null) {
-            throw new ResourceException(
-                    "No event found with id: " + id,
-                    Response.Status.NOT_FOUND
-            );
+        if (domainEvent == null) {
+            throw new NotFoundException("No event found with id " + id);
         }
+        Event event = eventBoundary.toApiEntity(domainEvent);
         return event;
     }
 }

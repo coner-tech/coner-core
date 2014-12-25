@@ -1,7 +1,6 @@
 package org.axrunner;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.base.Preconditions;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -10,7 +9,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
-import org.axrunner.exception.ResourceExceptionMapper;
+import org.axrunner.exception.WebApplicationExceptionMapper;
 import org.axrunner.hibernate.dao.EventDao;
 import org.axrunner.hibernate.entity.Event;
 import org.axrunner.hibernate.gateway.EventGateway;
@@ -55,9 +54,9 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
         jersey.register(eventResource);
 
         // init exception mappers
-        ResourceExceptionMapper resourceExceptionMapper = new ResourceExceptionMapper();
+        WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
 
-        jersey.register(resourceExceptionMapper);
+        jersey.register(webApplicationExceptionMapper);
     }
 
     private HibernateBundle<AxRunnerDropwizardConfiguration> getHibernate() {
@@ -112,9 +111,8 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
     }
 
     private AxRunnerCoreService getAxRunnerCoreService() {
-        Preconditions.checkNotNull(eventGateway);
         if (axRunnerCoreService == null) {
-            axRunnerCoreService = new AxRunnerCoreService(eventGateway);
+            axRunnerCoreService = new AxRunnerCoreService(getEventGateway());
         }
         return axRunnerCoreService;
     }
