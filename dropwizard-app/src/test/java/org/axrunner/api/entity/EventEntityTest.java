@@ -18,7 +18,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class EventEntityTest {
 
-    private final String fixturePath = "fixtures/api/entity/event-full.json";
+    private final String fixturePath = "fixtures/api/entity/event_full.json";
 
     private ObjectMapper objectMapper;
     private Event event;
