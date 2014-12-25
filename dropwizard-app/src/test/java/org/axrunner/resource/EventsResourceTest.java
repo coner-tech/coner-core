@@ -136,4 +136,24 @@ public class EventsResourceTest {
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         }
     }
+
+    @Test
+    public void whenAddEventWithoutDateItShouldFailValidation() throws Exception {
+        org.axrunner.api.entity.Event requestEvent = objectMapper.readValue(
+                FixtureHelpers.fixture("fixtures/api/entity/event_add-request-without-date.json"),
+                org.axrunner.api.entity.Event.class
+        );
+        Entity<org.axrunner.api.entity.Event> requestEntity = Entity.json(requestEvent);
+
+        try {
+            AddEventResponse addEventResponse = resources.client()
+                    .target("/events")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(requestEntity, AddEventResponse.class);
+            fail("should have thrown");
+        } catch (ClientErrorException cee) {
+            assertThat(cee.getResponse().getStatus())
+                    .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        }
+    }
 }
