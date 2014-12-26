@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -324,6 +325,45 @@ public class AbstractBoundaryTest {
         verify(hibernateToDomainMerger, never()).merge(any(), any());
     }
 
+    @Test
+    public void whenInstantiateEntityWithPrivateNoArgConstructorItShouldThrow() {
+        try {
+            abstractBoundary.instantiate(PrivateConstructorEntity.class);
+            failBecauseExceptionWasNotThrown(RuntimeException.class);
+        } catch (Exception e) {
+            assertThat(e)
+                    .isInstanceOf(RuntimeException.class);
+            assertThat(e.getCause())
+                    .isInstanceOf(NoSuchMethodException.class);
+        }
+    }
+
+    @Test
+    public void whenInstantiateEntityConstructorThrowsItShouldThrow() {
+        try {
+            abstractBoundary.instantiate(ExceptionThrowingConstructorEntity.class);
+            failBecauseExceptionWasNotThrown(RuntimeException.class);
+        } catch (Exception e) {
+            assertThat(e)
+                    .isInstanceOf(RuntimeException.class);
+            assertThat(e.getCause())
+                    .isInstanceOf(InvocationTargetException.class);
+        }
+    }
+
+    @Test
+    public void whenInstantiateEntityAbstractItShouldThrow() {
+        try {
+            abstractBoundary.instantiate(AbstractEntity.class);
+            failBecauseExceptionWasNotThrown(RuntimeException.class);
+        } catch (Exception e) {
+            assertThat(e)
+                    .isInstanceOf(RuntimeException.class);
+            assertThat(e.getCause())
+                    .isInstanceOf(InstantiationException.class);
+        }
+    }
+
     private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
 
 
@@ -359,6 +399,20 @@ public class AbstractBoundaryTest {
     }
 
     public static class TestHibernateEntity extends HibernateEntity {
+    }
+
+    public static class PrivateConstructorEntity {
+        private PrivateConstructorEntity() {
+        }
+    }
+
+    public static class ExceptionThrowingConstructorEntity {
+        public ExceptionThrowingConstructorEntity() throws Exception {
+            throw new Exception();
+        }
+    }
+
+    public static abstract class AbstractEntity {
     }
 
 }

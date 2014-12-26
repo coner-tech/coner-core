@@ -70,14 +70,15 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
         return hibernateEntity;
     }
 
-    private <T> T instantiate(Class<T> clazz) {
+    protected <T> T instantiate(Class<T> clazz) {
+        Constructor<T> constructor = null;
         try {
-            Constructor<T> constructor = clazz.getConstructor();
+            constructor = clazz.getConstructor();
             return constructor.newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public List<A> toApiEntities(List<D> domainEntities) {
