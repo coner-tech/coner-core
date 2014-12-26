@@ -1,9 +1,9 @@
-package org.axrunner.core.domain;
+package org.axrunner.api.entity;
 
 /**
  *
  */
-public class Registration extends DomainEntity {
+public class Registration extends ApiEntity {
 
     private String id;
     private Event event;
@@ -40,5 +40,17 @@ public class Registration extends DomainEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public static class Event {
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 }

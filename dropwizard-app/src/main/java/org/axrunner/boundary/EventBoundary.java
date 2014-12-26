@@ -7,8 +7,16 @@ import org.axrunner.core.domain.Event;
  */
 public class EventBoundary extends AbstractBoundary<org.axrunner.api.entity.Event, Event, org.axrunner.hibernate.entity.Event> {
 
+    private static EventBoundary instance;
 
-    public EventBoundary() {
+    public static EventBoundary getInstance() {
+        if (instance == null) {
+            instance = new EventBoundary();
+        }
+        return instance;
+    }
+
+    EventBoundary() {
         super(
                 org.axrunner.api.entity.Event.class,
                 Event.class,
@@ -17,29 +25,37 @@ public class EventBoundary extends AbstractBoundary<org.axrunner.api.entity.Even
     }
 
     @Override
-    public void merge(org.axrunner.api.entity.Event fromApiEntity, Event intoDomainEntity) {
-        intoDomainEntity.setEventId(fromApiEntity.getId());
-        intoDomainEntity.setDate(fromApiEntity.getDate());
-        intoDomainEntity.setName(fromApiEntity.getName());
+    protected EntityMerger<org.axrunner.api.entity.Event, Event> buildApiToDomainMerger() {
+        return (fromEntity, toEntity) -> {
+            toEntity.setEventId(fromEntity.getId());
+            toEntity.setDate(fromEntity.getDate());
+            toEntity.setName(fromEntity.getName());
+        };
     }
 
     @Override
-    public void merge(Event fromDomainEntity, org.axrunner.api.entity.Event intoApiEntity) {
-        intoApiEntity.setId(fromDomainEntity.getEventId());
-        intoApiEntity.setDate(fromDomainEntity.getDate());
-        intoApiEntity.setName(fromDomainEntity.getName());
+    protected EntityMerger<Event, org.axrunner.api.entity.Event> buildDomainToApiMerger() {
+        return (fromEntity, toEntity) -> {
+            toEntity.setId(fromEntity.getEventId());
+            toEntity.setDate(fromEntity.getDate());
+            toEntity.setName(fromEntity.getName());
+        };
     }
 
     @Override
-    public void merge(org.axrunner.hibernate.entity.Event fromHibernateEntity, Event intoDomainEntity) {
-        intoDomainEntity.setEventId(String.valueOf(fromHibernateEntity.getId()));
-        intoDomainEntity.setDate(fromHibernateEntity.getDate());
-        intoDomainEntity.setName(fromHibernateEntity.getName());
+    protected EntityMerger<Event, org.axrunner.hibernate.entity.Event> buildDomainToHibernateMerger() {
+        return (fromEntity, toEntity) -> {
+            toEntity.setDate(fromEntity.getDate());
+            toEntity.setName(fromEntity.getName());
+        };
     }
 
     @Override
-    public void merge(Event fromDomainEntity, org.axrunner.hibernate.entity.Event intoHibernateEntity) {
-        intoHibernateEntity.setDate(fromDomainEntity.getDate());
-        intoHibernateEntity.setName(fromDomainEntity.getName());
+    protected EntityMerger<org.axrunner.hibernate.entity.Event, Event> buildHibernateToDomainMerger() {
+        return (fromEntity, toEntity) -> {
+            toEntity.setEventId(String.valueOf(fromEntity.getId()));
+            toEntity.setDate(fromEntity.getDate());
+            toEntity.setName(fromEntity.getName());
+        };
     }
 }

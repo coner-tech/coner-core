@@ -12,6 +12,7 @@ import org.axrunner.core.AxRunnerCoreService;
 import org.axrunner.exception.WebApplicationExceptionMapper;
 import org.axrunner.hibernate.dao.EventDao;
 import org.axrunner.hibernate.gateway.EventGateway;
+import org.axrunner.resource.EventRegistrationsResource;
 import org.axrunner.resource.EventResource;
 import org.axrunner.resource.EventsResource;
 import org.junit.Before;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -83,8 +84,9 @@ public class AxRunnerDropwizardApplicationTest {
         ArgumentCaptor<Boolean> valueArgumentCaptor = ArgumentCaptor.forClass(Boolean.class);
         verify(objectMapper).configure(serializationFeatureArgumentCaptor.capture(), valueArgumentCaptor.capture());
 
-        assertEquals(serializationFeatureArgumentCaptor.getValue(), SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        assertFalse(valueArgumentCaptor.getValue());
+        assertThat(serializationFeatureArgumentCaptor.getValue())
+                .isEqualTo(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        assertThat(valueArgumentCaptor.getValue()).isFalse();
     }
 
     @Test
@@ -92,14 +94,15 @@ public class AxRunnerDropwizardApplicationTest {
         application.run(config, environment);
 
         ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(jersey, times(3)).register(argumentCaptor.capture());
+        verify(jersey, times(4)).register(argumentCaptor.capture());
 
         List<Object> objects = argumentCaptor.getAllValues();
         List<Class> registeredClasses = new ArrayList<>(objects.size());
         registeredClasses.addAll(objects.stream().map(Object::getClass).collect(Collectors.toList()));
 
-        assertTrue(registeredClasses.contains(EventsResource.class));
-        assertTrue(registeredClasses.contains(EventResource.class));
-        assertTrue(registeredClasses.contains(WebApplicationExceptionMapper.class));
+        assertThat(registeredClasses).contains(EventsResource.class);
+        assertThat(registeredClasses).contains(EventResource.class);
+        assertThat(registeredClasses).contains(EventRegistrationsResource.class);
+        assertThat(registeredClasses).contains(WebApplicationExceptionMapper.class);
     }
 }

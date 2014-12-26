@@ -19,6 +19,8 @@ import org.junit.Test;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import java.sql.Date;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,15 +82,20 @@ public class EventsResourceTest {
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-response.json"),
                 org.axrunner.api.entity.Event.class
         );
+        Event requestEventAsDomain = new Event();
+        requestEventAsDomain.setEventId("arbitary-id-from-service");
+        requestEventAsDomain.setName("add this event");
+        requestEventAsDomain.setDate(Date.from(ZonedDateTime.parse("2014-12-25T09:15:00-05:00").toInstant()));
 
-        EventBoundary realEventBoundary = new EventBoundary();
-        when(eventBoundary.toDomainEntity(requestEvent)).thenReturn(realEventBoundary.toDomainEntity(requestEvent));
+        when(eventBoundary.toDomainEntity(requestEvent)).thenReturn(requestEventAsDomain);
         when(eventBoundary.toApiEntity(any(Event.class))).thenReturn(responseEvent);
 
         AddEventResponse addEventResponse = resources.client()
                 .target("/events")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity, AddEventResponse.class);
+
+        verify(axRunnerCoreService).addEvent(requestEventAsDomain);
 
         assertThat(addEventResponse)
                 .isNotNull();

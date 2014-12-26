@@ -1,5 +1,6 @@
 package org.axrunner.boundary;
 
+import com.google.common.base.Preconditions;
 import org.axrunner.api.entity.ApiEntity;
 import org.axrunner.core.domain.DomainEntity;
 import org.axrunner.hibernate.entity.HibernateEntity;
@@ -18,11 +19,19 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     private final Class<A> apiClass;
     private final Class<D> domainClass;
     private final Class<H> hibernateClass;
+    private final EntityMerger<A, D> apiToDomainMerger;
+    private final EntityMerger<D, A> domainToApiMerger;
+    private final EntityMerger<D, H> domainToHibernateMerger;
+    private final EntityMerger<H, D> hibernateToDomainMerger;
 
     public AbstractBoundary(Class<A> apiClass, Class<D> domainClass, Class<H> hibernateClass) {
         this.apiClass = apiClass;
         this.domainClass = domainClass;
         this.hibernateClass = hibernateClass;
+        this.apiToDomainMerger = buildApiToDomainMerger();
+        this.domainToApiMerger = buildDomainToApiMerger();
+        this.domainToHibernateMerger = buildDomainToHibernateMerger();
+        this.hibernateToDomainMerger = buildHibernateToDomainMerger();
     }
 
     public A toApiEntity(D domainEntity) {
@@ -30,7 +39,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         A apiEntity = instantiate(apiClass);
-        merge(domainEntity, apiEntity);
+        domainToApiMerger.merge(domainEntity, apiEntity);
         return apiEntity;
     }
 
@@ -39,7 +48,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         D domainEntity = instantiate(domainClass);
-        merge(apiEntity, domainEntity);
+        apiToDomainMerger.merge(apiEntity, domainEntity);
         return domainEntity;
     }
 
@@ -48,7 +57,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         D domainEntity = instantiate(domainClass);
-        merge(hibernateEntity, domainEntity);
+        hibernateToDomainMerger.merge(hibernateEntity, domainEntity);
         return domainEntity;
     }
 
@@ -57,7 +66,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         H hibernateEntity = instantiate(hibernateClass);
-        merge(domainEntity, hibernateEntity);
+        domainToHibernateMerger.merge(domainEntity, hibernateEntity);
         return hibernateEntity;
     }
 
@@ -98,11 +107,39 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
         return hibernateEntities;
     }
 
-    public abstract void merge(A fromApiEntity, D intoDomainEntity);
+    public void merge(A fromApiEntity, D intoDomainEntity) {
+        Preconditions.checkNotNull(fromApiEntity);
+        Preconditions.checkNotNull(intoDomainEntity);
+        apiToDomainMerger.merge(fromApiEntity, intoDomainEntity);
+    }
 
-    public abstract void merge(D fromDomainEntity, A intoApiEntity);
+    public void merge(D fromDomainEntity, A intoApiEntity) {
+        Preconditions.checkNotNull(fromDomainEntity);
+        Preconditions.checkNotNull(intoApiEntity);
+        domainToApiMerger.merge(fromDomainEntity, intoApiEntity);
+    }
 
-    public abstract void merge(H fromHibernateEntity, D intoDomainEntity);
+    public void merge(D fromDomainEntity, H intoHibernateEntity) {
+        Preconditions.checkNotNull(fromDomainEntity);
+        Preconditions.checkNotNull(intoHibernateEntity);
+        domainToHibernateMerger.merge(fromDomainEntity, intoHibernateEntity);
+    }
 
-    public abstract void merge(D fromDomainEntity, H intoHibernateEntity);
+    public void merge(H fromHibernateEntity, D intoDomainEntity) {
+        Preconditions.checkNotNull(fromHibernateEntity);
+        Preconditions.checkNotNull(intoDomainEntity);
+        hibernateToDomainMerger.merge(fromHibernateEntity, intoDomainEntity);
+    }
+
+    protected abstract EntityMerger<A, D> buildApiToDomainMerger();
+
+    protected abstract EntityMerger<D, A> buildDomainToApiMerger();
+
+    protected abstract EntityMerger<D, H> buildDomainToHibernateMerger();
+
+    protected abstract EntityMerger<H, D> buildHibernateToDomainMerger();
+
+    public interface EntityMerger<F, T> {
+        public void merge(F fromEntity, T toEntity);
+    }
 }

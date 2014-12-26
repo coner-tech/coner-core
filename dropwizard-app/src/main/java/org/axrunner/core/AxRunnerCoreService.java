@@ -1,7 +1,10 @@
 package org.axrunner.core;
 
+import com.google.common.base.Preconditions;
 import org.axrunner.core.domain.Event;
+import org.axrunner.core.domain.Registration;
 import org.axrunner.hibernate.gateway.EventGateway;
+import org.axrunner.hibernate.gateway.RegistrationGateway;
 
 import java.util.List;
 
@@ -11,9 +14,11 @@ import java.util.List;
 public class AxRunnerCoreService {
 
     private final EventGateway eventGateway;
+    private final RegistrationGateway registrationGateway;
 
-    public AxRunnerCoreService(EventGateway eventGateway) {
+    public AxRunnerCoreService(EventGateway eventGateway, RegistrationGateway registrationGateway) {
         this.eventGateway = eventGateway;
+        this.registrationGateway = registrationGateway;
     }
 
     public List<Event> getEvents() {
@@ -21,10 +26,16 @@ public class AxRunnerCoreService {
     }
 
     public void addEvent(Event event) {
+        Preconditions.checkNotNull(event);
         eventGateway.create(event);
     }
 
     public Event getEvent(String id) {
         return eventGateway.findById(id);
+    }
+
+    public List<Registration> getRegistrations(Event event) {
+        Preconditions.checkNotNull(event);
+        return registrationGateway.getAllWith(event);
     }
 }
