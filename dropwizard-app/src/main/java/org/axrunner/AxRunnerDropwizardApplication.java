@@ -113,7 +113,7 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
 
     private EventGateway getEventGateway() {
         if (eventGateway == null) {
-            this.eventGateway = new EventGateway(getHibernate(), getEventBoundary(), getEventDao());
+            this.eventGateway = new EventGateway(getEventBoundary(), getEventDao());
         }
         return eventGateway;
     }
@@ -146,7 +146,7 @@ public class AxRunnerDropwizardApplication extends Application<AxRunnerDropwizar
 
     private RegistrationGateway getRegistrationGateway() {
         if (registrationGateway == null) {
-            registrationGateway = new RegistrationGateway(getHibernate(), getRegistrationBoundary(), getEventBoundary(), getRegistrationDao());
+            registrationGateway = new RegistrationGateway(getRegistrationBoundary(), getEventBoundary(), getRegistrationDao());
         }
         return registrationGateway;
     }

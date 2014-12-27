@@ -1,8 +1,6 @@
 package org.axrunner.hibernate.gateway;
 
 import com.google.common.base.Preconditions;
-import io.dropwizard.hibernate.HibernateBundle;
-import org.axrunner.AxRunnerDropwizardConfiguration;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.boundary.RegistrationBoundary;
 import org.axrunner.core.domain.Event;
@@ -14,14 +12,13 @@ import java.util.List;
 /**
  *
  */
-public class RegistrationGateway extends HibernateGateway {
+public class RegistrationGateway {
 
     private final RegistrationBoundary registrationBoundary;
     private final EventBoundary eventBoundary;
     private final RegistrationDao registrationDao;
 
-    public RegistrationGateway(HibernateBundle<AxRunnerDropwizardConfiguration> hibernate, RegistrationBoundary registrationBoundary, EventBoundary eventBoundary, RegistrationDao registrationDao) {
-        super(hibernate);
+    public RegistrationGateway(RegistrationBoundary registrationBoundary, EventBoundary eventBoundary, RegistrationDao registrationDao) {
         this.registrationBoundary = registrationBoundary;
         this.eventBoundary = eventBoundary;
         this.registrationDao = registrationDao;

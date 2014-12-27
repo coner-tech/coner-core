@@ -1,7 +1,7 @@
 package org.axrunner.hibernate.gateway;
 
-import io.dropwizard.hibernate.HibernateBundle;
-import org.axrunner.AxRunnerDropwizardConfiguration;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.domain.Event;
 import org.axrunner.hibernate.dao.EventDao;
@@ -11,13 +11,12 @@ import java.util.List;
 /**
  *
  */
-public class EventGateway extends HibernateGateway {
+public class EventGateway {
 
     private final EventBoundary eventBoundary;
     private final EventDao eventDao;
 
-    public EventGateway(HibernateBundle<AxRunnerDropwizardConfiguration> hibernate, EventBoundary eventBoundary, EventDao eventDao) {
-        super(hibernate);
+    public EventGateway(EventBoundary eventBoundary, EventDao eventDao) {
         this.eventBoundary = eventBoundary;
         this.eventDao = eventDao;
     }
@@ -28,11 +27,13 @@ public class EventGateway extends HibernateGateway {
     }
 
     public Event findById(String eventId) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(eventId));
         org.axrunner.hibernate.entity.Event hibernateEvent = eventDao.findById(eventId);
         return eventBoundary.toDomainEntity(hibernateEvent);
     }
 
     public void create(org.axrunner.core.domain.Event event) {
+        Preconditions.checkNotNull(event);
         org.axrunner.hibernate.entity.Event hibernateEvent = eventBoundary.toHibernateEntity(event);
         eventDao.create(hibernateEvent);
         eventBoundary.merge(hibernateEvent, event);
