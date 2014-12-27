@@ -111,7 +111,7 @@ public class AbstractBoundaryTest {
 
     @Test
     public void whenConvertListDomainEntitiesToApiEntitiesItShouldConvert() {
-        final int size = random.nextInt(10);
+        final int size = 1 + random.nextInt(5);
         List<TestDomainEntity> testDomainEntities = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             testDomainEntities.add(new TestDomainEntity());
@@ -135,7 +135,7 @@ public class AbstractBoundaryTest {
 
     @Test
     public void whenConvertListHibernateEntitiesToDomainEntitiesItShouldConvert() {
-        final int size = random.nextInt(10);
+        final int size = 1 + random.nextInt(5);
         List<TestHibernateEntity> testHibernateEntities = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             testHibernateEntities.add(new TestHibernateEntity());
@@ -159,7 +159,7 @@ public class AbstractBoundaryTest {
 
     @Test
     public void whenConvertListDomainEntitiesToHibernateEntitiesItShouldConvert() {
-        final int size = random.nextInt(10);
+        final int size = 1 + random.nextInt(5);
         List<TestDomainEntity> testDomainEntities = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             testDomainEntities.add(new TestDomainEntity());
