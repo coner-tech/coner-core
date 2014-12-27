@@ -1,6 +1,7 @@
 package org.axrunner.core;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.axrunner.core.domain.Event;
 import org.axrunner.core.domain.Registration;
 import org.axrunner.hibernate.gateway.EventGateway;
@@ -31,6 +32,7 @@ public class AxRunnerCoreService {
     }
 
     public Event getEvent(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return eventGateway.findById(id);
     }
 
