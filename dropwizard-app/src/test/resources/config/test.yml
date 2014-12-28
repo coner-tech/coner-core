@@ -7,7 +7,7 @@ database:
     # the password
     password:
     # the JDBC URL
-    url: jdbc:hsqldb:mem:axrunner
+    url: jdbc:hsqldb:mem:coner
     validationQuery: SELECT * FROM INFORMATION_SCHEMA.SYSTEM_TABLES
     properties:
         hibernate.dialect: org.hibernate.dialect.HSQLDialect
