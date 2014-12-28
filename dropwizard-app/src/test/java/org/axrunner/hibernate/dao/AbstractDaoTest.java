@@ -2,6 +2,7 @@ package org.axrunner.hibernate.dao;
 
 import com.codahale.metrics.MetricRegistry;
 import io.dropwizard.db.DataSourceFactory;
+import org.assertj.core.api.Assertions;
 import org.axrunner.hibernate.entity.Event;
 import org.axrunner.hibernate.entity.HibernateEntity;
 import org.axrunner.hibernate.entity.Registration;
@@ -54,7 +55,7 @@ public abstract class AbstractDaoTest {
                 throw new RuntimeException("Connection closed, wtf");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Assertions.fail("SQLException", e);
         }
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .addService(ConnectionProvider.class, connectionProvider)
@@ -70,13 +71,9 @@ public abstract class AbstractDaoTest {
         dataSourceFactory.setUrl("jdbc:hsqldb:mem:axrunner-" + getClass().getSimpleName());
         dataSourceFactory.setValidationQuery("SELECT * FROM INFORMATION_SCHEMA.SYSTEM_TABLES");
         MetricRegistry metricRegistry = new MetricRegistry();
-        try {
-            connectionProvider.setDataSource(
-                    dataSourceFactory.build(metricRegistry, "axrunner-test")
-            );
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        connectionProvider.setDataSource(
+                dataSourceFactory.build(metricRegistry, "axrunner-test")
+        );
         Map<String, String> configValues = new HashMap<>();
         configValues.put(Environment.USER, "sa");
         connectionProvider.configure(configValues);
