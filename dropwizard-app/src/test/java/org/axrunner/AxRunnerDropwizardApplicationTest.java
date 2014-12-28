@@ -11,7 +11,7 @@ import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.AxRunnerCoreService;
 import org.axrunner.exception.WebApplicationExceptionMapper;
 import org.axrunner.hibernate.dao.EventDao;
-import org.axrunner.hibernate.gateway.EventGateway;
+import org.axrunner.core.gateway.EventGateway;
 import org.axrunner.resource.EventRegistrationsResource;
 import org.axrunner.resource.EventResource;
 import org.axrunner.resource.EventsResource;

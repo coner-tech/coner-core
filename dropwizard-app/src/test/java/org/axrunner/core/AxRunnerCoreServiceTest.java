@@ -2,8 +2,8 @@ package org.axrunner.core;
 
 import org.axrunner.core.domain.Event;
 import org.axrunner.core.domain.Registration;
-import org.axrunner.hibernate.gateway.EventGateway;
-import org.axrunner.hibernate.gateway.RegistrationGateway;
+import org.axrunner.core.gateway.EventGateway;
+import org.axrunner.core.gateway.RegistrationGateway;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.axrunner.core.domain.Event;
 import org.axrunner.core.domain.Registration;
-import org.axrunner.hibernate.gateway.EventGateway;
-import org.axrunner.hibernate.gateway.RegistrationGateway;
+import org.axrunner.core.gateway.EventGateway;
+import org.axrunner.core.gateway.RegistrationGateway;
 
 import java.util.List;
 

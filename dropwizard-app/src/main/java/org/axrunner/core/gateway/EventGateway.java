@@ -1,4 +1,4 @@
-package org.axrunner.hibernate.gateway;
+package org.axrunner.core.gateway;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;

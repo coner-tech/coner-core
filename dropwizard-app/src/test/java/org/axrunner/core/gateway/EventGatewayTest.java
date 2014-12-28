@@ -1,4 +1,4 @@
-package org.axrunner.hibernate.gateway;
+package org.axrunner.core.gateway;
 
 import org.axrunner.boundary.EventBoundary;
 import org.axrunner.core.domain.Event;
