@@ -6,6 +6,8 @@ Coner is an autocross event operations system.
 
 Coner is in a very early stage of development. It currently does more nothing than anything.
 
+![Travis CI Build Status](https://travis-ci.org/carltonwhitehead/coner.svg?branch=master)
+
 ## Build and Run
 
 These steps assume you've cloned this repo, and have Maven and the Java 8 runtime installed already.
