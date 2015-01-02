@@ -11,9 +11,14 @@
     <inceptionYear>2014</inceptionYear>
 
     <modules>
+        <module>build-tools</module>
         <module>dropwizard-app</module>
         <module>dropwizard-api</module>
     </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <plugins>
@@ -27,6 +32,27 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.coner</groupId>
+                        <artifactId>build-tools</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>6.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 
@@ -36,6 +62,15 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.13</version>
+                <configuration>
+                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <linkXRef>false</linkXRef>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
