@@ -38,6 +38,8 @@
                 <version>2.13</version>
                 <configuration>
                     <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
                     <linkXRef>false</linkXRef>
                 </configuration>
                 <dependencies>
