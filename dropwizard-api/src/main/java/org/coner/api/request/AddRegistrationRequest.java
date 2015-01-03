@@ -1,19 +1,13 @@
 package org.coner.api.request;
 
 /**
- *
+ * API request body used when adding a new Registration
  */
 public class AddRegistrationRequest {
 
     private String eventId;
     private String firstName;
     private String lastName;
-
-    public AddRegistrationRequest(String eventId, String firstName, String lastName) {
-        this.eventId = eventId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     public String getEventId() {
         return eventId;

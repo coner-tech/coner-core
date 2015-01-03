@@ -5,7 +5,7 @@ import org.coner.api.entity.Registration;
 import java.util.List;
 
 /**
- *
+ * API response object containing a list of Registration entities for an Event
  */
 public class GetEventRegistrationsResponse {
 
