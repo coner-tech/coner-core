@@ -25,6 +25,10 @@ public class RegistrationBoundary extends AbstractBoundary<
         return instance;
     }
 
+    public static void setInstance(RegistrationBoundary rb) {
+        instance = rb;
+    }
+
     private EventBoundary eventBoundary;
 
     /**
@@ -56,7 +60,7 @@ public class RegistrationBoundary extends AbstractBoundary<
             toEntity.setFirstName(fromEntity.getFirstName());
             toEntity.setLastName(fromEntity.getLastName());
             Event domainEvent = new Event();
-            domainEvent.setEventId(fromEntity.getEvent().getId());
+            domainEvent.setId(fromEntity.getEvent().getId());
             toEntity.setEvent(domainEvent);
         };
     }
@@ -68,7 +72,9 @@ public class RegistrationBoundary extends AbstractBoundary<
             toEntity.setFirstName(fromEntity.getFirstName());
             toEntity.setLastName(fromEntity.getLastName());
             org.coner.api.entity.Registration.Event event = new org.coner.api.entity.Registration.Event();
-            event.setId(fromEntity.getId());
+            event.setId(fromEntity.getEvent().getId());
+            toEntity.setEvent(event);
+
         };
     }
 

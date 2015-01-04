@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 public class EventGatewayTest {
 
     @Mock
-    EventBoundary eventBoundary;
+    private EventBoundary eventBoundary;
     @Mock
-    EventDao eventDao;
+    private EventDao eventDao;
 
     private EventGateway eventGateway;
 

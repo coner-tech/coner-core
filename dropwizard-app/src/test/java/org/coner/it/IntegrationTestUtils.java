@@ -12,7 +12,11 @@ import javax.ws.rs.client.Client;
 /**
  *
  */
-public class IntegrationTestUtils {
+public final class IntegrationTestUtils {
+
+    private IntegrationTestUtils() {
+
+    }
 
     public static DropwizardAppRule<ConerDropwizardConfiguration> buildAppRule() {
         return new DropwizardAppRule<>(
