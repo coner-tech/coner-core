@@ -18,7 +18,7 @@ public class ConerCoreService {
     private final RegistrationGateway registrationGateway;
 
     /**
-     * Constructor for ConerCoreService
+     * Constructor for ConerCoreService.
      *
      * @param eventGateway        the EventGateway
      * @param registrationGateway the RegistrationGateway
@@ -29,7 +29,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Get all events
+     * Get all events.
      *
      * @return a list of all events
      */
@@ -38,7 +38,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Add an event
+     * Add an event.
      *
      * @param event the Event entity to add
      */
@@ -48,7 +48,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Get an event by id
+     * Get an event by id.
      *
      * @param id the id of the event
      * @return the event with id or null if not found
@@ -59,7 +59,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Get all registrations for an event
+     * Get all registrations for an event.
      *
      * @param event the event to get registrations
      * @return a list of all registrations for the event

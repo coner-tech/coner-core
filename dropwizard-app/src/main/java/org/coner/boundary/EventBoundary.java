@@ -5,14 +5,14 @@ import org.coner.core.domain.Event;
 import java.util.Date;
 
 /**
- * Converts Event entities as they cross architectural boundaries
+ * Converts Event entities as they cross architectural boundaries.
  */
 public class EventBoundary extends AbstractBoundary<
         org.coner.api.entity.Event,
         Event,
         org.coner.hibernate.entity.Event> {
 
-    static EventBoundary instance;
+    private static EventBoundary instance;
 
     /**
      * Get the singleton instance of the EventBoundary.
@@ -26,8 +26,12 @@ public class EventBoundary extends AbstractBoundary<
         return instance;
     }
 
+    public static void setInstance(EventBoundary eventBoundary) {
+        instance = eventBoundary;
+    }
+
     /**
-     * Package-private constructor which should only ever be called by `EventBoundary.getInstance` or a test
+     * Package-private constructor which should only ever be called by `EventBoundary.getInstance` or a test.
      */
     EventBoundary() {
         super(
@@ -40,7 +44,7 @@ public class EventBoundary extends AbstractBoundary<
     @Override
     protected EntityMerger<org.coner.api.entity.Event, Event> buildApiToDomainMerger() {
         return (fromEntity, toEntity) -> {
-            toEntity.setEventId(fromEntity.getId());
+            toEntity.setId(fromEntity.getId());
             toEntity.setDate(new Date(fromEntity.getDate().getTime()));
             toEntity.setName(fromEntity.getName());
         };
@@ -49,7 +53,7 @@ public class EventBoundary extends AbstractBoundary<
     @Override
     protected EntityMerger<Event, org.coner.api.entity.Event> buildDomainToApiMerger() {
         return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getEventId());
+            toEntity.setId(fromEntity.getId());
             toEntity.setDate(new Date(fromEntity.getDate().getTime()));
             toEntity.setName(fromEntity.getName());
         };
@@ -58,7 +62,7 @@ public class EventBoundary extends AbstractBoundary<
     @Override
     protected EntityMerger<Event, org.coner.hibernate.entity.Event> buildDomainToHibernateMerger() {
         return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getEventId());
+            toEntity.setId(fromEntity.getId());
             toEntity.setDate(new Date(fromEntity.getDate().getTime()));
             toEntity.setName(fromEntity.getName());
         };
@@ -67,7 +71,7 @@ public class EventBoundary extends AbstractBoundary<
     @Override
     protected EntityMerger<org.coner.hibernate.entity.Event, Event> buildHibernateToDomainMerger() {
         return (fromEntity, toEntity) -> {
-            toEntity.setEventId(fromEntity.getId());
+            toEntity.setId(fromEntity.getId());
             toEntity.setDate(new Date(fromEntity.getDate().getTime()));
             toEntity.setName(fromEntity.getName());
         };

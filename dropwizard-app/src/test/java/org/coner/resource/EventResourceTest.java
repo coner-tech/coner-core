@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import java.time.Instant;
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -46,7 +46,7 @@ public class EventResourceTest {
         Date date = Date.from(Instant.now());
 
         org.coner.core.domain.Event domainEvent = new org.coner.core.domain.Event();
-        domainEvent.setEventId(id);
+        domainEvent.setId(id);
         domainEvent.setName(name);
         domainEvent.setDate(date);
 
@@ -78,7 +78,7 @@ public class EventResourceTest {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get(Event.class);
 
-            fail("Expected ResourceException");
+            failBecauseExceptionWasNotThrown(NotFoundException.class);
         } catch (NotFoundException nfe) {
             assertThat(nfe.getResponse().getStatusInfo().getStatusCode())
                     .isEqualTo(HttpStatus.NOT_FOUND_404);

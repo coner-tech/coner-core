@@ -1,11 +1,14 @@
 package org.coner.boundary;
 
 import org.coner.core.domain.Event;
+import org.coner.util.ApiEntityUtils;
+import org.coner.util.DomainUtils;
+import org.coner.util.HibernateEntityUtils;
+import org.coner.util.TestConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
@@ -18,19 +21,19 @@ public class EventBoundaryTest {
 
     private EventBoundary eventBoundary;
 
-    private final String id = "test-id";
-    private final String name = "test-name";
-    private final Date date = Date.from(ZonedDateTime.parse("2014-12-26T19:44:00-05:00").toInstant());
+    private final String id = TestConstants.EVENT_ID;
+    private final String name = TestConstants.EVENT_NAME;
+    private final Date date = TestConstants.EVENT_DATE;
 
     @Before
     public void setup() {
-        EventBoundary.instance = null;
+        EventBoundary.setInstance(null);
         eventBoundary = new EventBoundary();
     }
 
     @After
     public void tearDown() {
-        EventBoundary.instance = null;
+        EventBoundary.setInstance(null);
     }
 
     @Test
@@ -45,13 +48,14 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeApiIntoDomainItShouldMerge() {
-        org.coner.api.entity.Event apiEvent = fullApiEvent();
+        org.coner.api.entity.Event apiEvent = ApiEntityUtils.fullApiEvent();
         Event domainEvent = new Event();
 
         eventBoundary.merge(apiEvent, domainEvent);
 
-        assertThat(domainEvent.getEventId()).isEqualTo(id);
+        assertThat(domainEvent.getId()).isEqualTo(id);
         assertThat(domainEvent.getName()).isEqualTo(name);
+        assertThat(domainEvent.hasDate()).isTrue();
         assertThat(domainEvent.getDate())
                 .isEqualTo(date)
                 .isNotSameAs(date);
@@ -59,7 +63,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeApiWithoutDateIntoDomainItShouldNpe() {
-        org.coner.api.entity.Event apiEvent = fullApiEvent();
+        org.coner.api.entity.Event apiEvent = ApiEntityUtils.fullApiEvent();
         apiEvent.setDate(null);
         Event domainEvent = new Event();
 
@@ -73,7 +77,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainIntoApiItShouldMerge() {
-        Event domainEvent = fullDomainEvent();
+        Event domainEvent = DomainUtils.fullDomainEvent();
         org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
 
         eventBoundary.merge(domainEvent, apiEvent);
@@ -87,7 +91,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainWithoutDateIntoDomainItShouldNpe() {
-        Event domainEvent = fullDomainEvent();
+        Event domainEvent = DomainUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
 
@@ -101,7 +105,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainIntoHibernateItShouldMerge() {
-        Event domainEvent = fullDomainEvent();
+        Event domainEvent = DomainUtils.fullDomainEvent();
         org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
 
         eventBoundary.merge(domainEvent, hibernateEvent);
@@ -115,7 +119,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainWithoutDateIntoHibernateItShouldNpe() {
-        Event domainEvent = fullDomainEvent();
+        Event domainEvent = DomainUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
 
@@ -129,12 +133,12 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeHibernateIntoDomainItShouldMerge() {
-        org.coner.hibernate.entity.Event hibernateEvent = fullHibernateEvent();
+        org.coner.hibernate.entity.Event hibernateEvent = HibernateEntityUtils.fullHibernateEvent();
         Event domainEvent = new Event();
 
         eventBoundary.merge(hibernateEvent, domainEvent);
 
-        assertThat(domainEvent.getEventId()).isEqualTo(id);
+        assertThat(domainEvent.getId()).isEqualTo(id);
         assertThat(domainEvent.getName()).isEqualToIgnoringCase(name);
         assertThat(domainEvent.getDate())
                 .isEqualTo(date)
@@ -143,7 +147,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeHibernateWithoutDateIntoDomainItShouldNpe() {
-        org.coner.hibernate.entity.Event hibernateEvent = fullHibernateEvent();
+        org.coner.hibernate.entity.Event hibernateEvent = HibernateEntityUtils.fullHibernateEvent();
         hibernateEvent.setDate(null);
         Event domainEvent = new Event();
 
@@ -154,29 +158,4 @@ public class EventBoundaryTest {
             assertThat(e).isInstanceOf(NullPointerException.class);
         }
     }
-
-    private org.coner.api.entity.Event fullApiEvent() {
-        org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
-        apiEvent.setId(id);
-        apiEvent.setName(name);
-        apiEvent.setDate(date);
-        return apiEvent;
-    }
-
-    private Event fullDomainEvent() {
-        Event domainEvent = new Event();
-        domainEvent.setEventId(id);
-        domainEvent.setName(name);
-        domainEvent.setDate(date);
-        return domainEvent;
-    }
-
-    private org.coner.hibernate.entity.Event fullHibernateEvent() {
-        org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
-        hibernateEvent.setId(id);
-        hibernateEvent.setName(name);
-        hibernateEvent.setDate(date);
-        return hibernateEvent;
-    }
-
 }

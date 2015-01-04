@@ -13,33 +13,38 @@ import static org.fest.assertions.Assertions.assertThat;
 
 /**
  *
- */
-public class EventEntityTest {
-
-    private final String fixturePath = "fixtures/api/entity/event_full.json";
+ **/
+public class RegistrationEntityTest {
+    private final String fixturePath = "fixtures/api/entity/registration_full.json";
 
     private ObjectMapper objectMapper;
-    private Event event;
+    private Registration registration;
 
     @Before
     public void setup() {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        event = ApiEntityUtils.fullApiEvent();
+        registration = ApiEntityUtils.fullApiRegistration();
     }
 
     @Test
     public void deserializesFromJson() throws Exception {
-        Event actual = objectMapper.readValue(fixture(fixturePath), Event.class);
-        assertThat(actual).isEqualTo(event);
+        Registration actual = objectMapper.readValue(fixture(fixturePath), Registration.class);
+        assertThat(actual).isEqualTo(registration);
     }
 
     @Test
     public void serializesToJson() throws Exception {
-        String actual = objectMapper.writeValueAsString(event);
+        String actual = objectMapper.writeValueAsString(registration);
         String expected = fixture(fixturePath);
         JSONAssert.assertEquals(expected, actual, false);
     }
 
+    @Test
+    public void hashCodeTest() throws Exception {
+        Registration otherRegistration = ApiEntityUtils.fullApiRegistration();
+
+        assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
+    }
 }

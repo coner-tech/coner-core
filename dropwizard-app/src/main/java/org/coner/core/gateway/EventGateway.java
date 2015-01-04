@@ -9,7 +9,7 @@ import org.coner.hibernate.dao.EventDao;
 import java.util.List;
 
 /**
- * EventGateway wraps persistence layer interactions for Event domain entities
+ * EventGateway wraps persistence layer interactions for Event domain entities.
  */
 public class EventGateway {
 
@@ -17,7 +17,7 @@ public class EventGateway {
     private final EventDao eventDao;
 
     /**
-     * Constructor for EventGateway
+     * Constructor for EventGateway.
      *
      * @param eventBoundary the EventBoundary for converting Domain entities to/from Hibernate entities
      * @param eventDao      the EventDao for interacting with the persistence layer
@@ -28,7 +28,7 @@ public class EventGateway {
     }
 
     /**
-     * Get all Event entities
+     * Get all Event entities.
      *
      * @return a list of all Event entities
      */
@@ -38,7 +38,7 @@ public class EventGateway {
     }
 
     /**
-     * Get an Event entity by id
+     * Get an Event entity by id.
      *
      * @param eventId eventId of the Event
      * @return the Event entity with id or null if not found
@@ -50,7 +50,7 @@ public class EventGateway {
     }
 
     /**
-     * Persist a new Event entity
+     * Persist a new Event entity.
      *
      * @param event the Event entity to persist
      */

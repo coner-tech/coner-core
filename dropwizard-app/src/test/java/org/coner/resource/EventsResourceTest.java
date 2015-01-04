@@ -24,8 +24,8 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -77,7 +77,7 @@ public class EventsResourceTest {
     }
 
     @Test
-    public void whenAddEventValiditShouldAddEvent() throws Exception {
+    public void whenAddValidEventItShouldAddEvent() throws Exception {
         org.coner.api.entity.Event requestEvent = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-request.json"),
                 org.coner.api.entity.Event.class
@@ -88,7 +88,7 @@ public class EventsResourceTest {
                 org.coner.api.entity.Event.class
         );
         Event requestEventAsDomain = new Event();
-        requestEventAsDomain.setEventId("arbitary-id-from-service");
+        requestEventAsDomain.setId("arbitrary-id-from-service");
         requestEventAsDomain.setName("add this event");
         requestEventAsDomain.setDate(Date.from(ZonedDateTime.parse("2014-12-25T09:15:00-05:00").toInstant()));
 
@@ -122,7 +122,7 @@ public class EventsResourceTest {
                     .target("/events")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(requestEntity, AddEventResponse.class);
-            fail("Should have thrown");
+            failBecauseExceptionWasNotThrown(ClientErrorException.class);
         } catch (ClientErrorException cee) {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
@@ -143,7 +143,7 @@ public class EventsResourceTest {
                     .target("/events")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(requestEntity, AddEventResponse.class);
-            fail("should have thrown");
+            failBecauseExceptionWasNotThrown(ClientErrorException.class);
         } catch (ClientErrorException cee) {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
@@ -164,7 +164,7 @@ public class EventsResourceTest {
                     .target("/events")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(requestEntity, AddEventResponse.class);
-            fail("should have thrown");
+            failBecauseExceptionWasNotThrown(ClientErrorException.class);
         } catch (ClientErrorException cee) {
             assertThat(cee.getResponse().getStatus())
                     .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);

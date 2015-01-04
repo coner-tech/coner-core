@@ -28,13 +28,13 @@ public class AbstractBoundaryTest {
     private AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> abstractBoundary;
 
     @Mock
-    AbstractBoundary.EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
+    private AbstractBoundary.EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
     @Mock
-    AbstractBoundary.EntityMerger<TestDomainEntity, TestApiEntity> domainToApiMerger;
+    private AbstractBoundary.EntityMerger<TestDomainEntity, TestApiEntity> domainToApiMerger;
     @Mock
-    AbstractBoundary.EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
+    private AbstractBoundary.EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
     @Mock
-    AbstractBoundary.EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
+    private AbstractBoundary.EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
 
     private final Class<TestApiEntity> apiClass = TestApiEntity.class;
     private final Class<TestDomainEntity> domainClass = TestDomainEntity.class;
@@ -368,7 +368,6 @@ public class AbstractBoundaryTest {
 
     private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
 
-
         public TestBoundary(
                 Class<TestApiEntity> apiClass,
                 Class<TestDomainEntity> domainClass,
@@ -407,7 +406,7 @@ public class AbstractBoundaryTest {
     public static class TestHibernateEntity extends HibernateEntity {
     }
 
-    public static class PrivateConstructorEntity {
+    public static final class PrivateConstructorEntity {
         private PrivateConstructorEntity() {
         }
     }
@@ -418,7 +417,7 @@ public class AbstractBoundaryTest {
         }
     }
 
-    public static abstract class AbstractEntity {
+    public abstract static class AbstractEntity {
     }
 
 }
