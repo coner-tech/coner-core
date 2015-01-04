@@ -83,7 +83,9 @@ public class ConerDropwizardApplicationTest {
     public void itShouldWriteDatesAsTimestamps() {
         application.initialize(bootstrap);
 
-        ArgumentCaptor<SerializationFeature> serializationFeatureArgumentCaptor = ArgumentCaptor.forClass(SerializationFeature.class);
+        ArgumentCaptor<SerializationFeature> serializationFeatureArgumentCaptor = ArgumentCaptor.forClass(
+                SerializationFeature.class
+        );
         ArgumentCaptor<Boolean> valueArgumentCaptor = ArgumentCaptor.forClass(Boolean.class);
         verify(objectMapper).configure(serializationFeatureArgumentCaptor.capture(), valueArgumentCaptor.capture());
 

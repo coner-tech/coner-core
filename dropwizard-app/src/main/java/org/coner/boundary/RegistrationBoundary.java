@@ -6,7 +6,10 @@ import org.coner.core.domain.Registration;
 /**
  *
  */
-public class RegistrationBoundary extends AbstractBoundary<org.coner.api.entity.Registration, Registration, org.coner.hibernate.entity.Registration> {
+public class RegistrationBoundary extends AbstractBoundary<
+        org.coner.api.entity.Registration,
+        Registration,
+        org.coner.hibernate.entity.Registration> {
 
     private static RegistrationBoundary instance;
 

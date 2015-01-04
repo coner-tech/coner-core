@@ -369,7 +369,11 @@ public class AbstractBoundaryTest {
     private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
 
 
-        public TestBoundary(Class<TestApiEntity> apiClass, Class<TestDomainEntity> domainClass, Class<TestHibernateEntity> hibernateClass) {
+        public TestBoundary(
+                Class<TestApiEntity> apiClass,
+                Class<TestDomainEntity> domainClass,
+                Class<TestHibernateEntity> hibernateClass
+        ) {
             super(apiClass, domainClass, hibernateClass);
         }
 

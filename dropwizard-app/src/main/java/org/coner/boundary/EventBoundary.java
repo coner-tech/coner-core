@@ -7,7 +7,10 @@ import java.util.Date;
 /**
  *
  */
-public class EventBoundary extends AbstractBoundary<org.coner.api.entity.Event, Event, org.coner.hibernate.entity.Event> {
+public class EventBoundary extends AbstractBoundary<
+        org.coner.api.entity.Event,
+        Event,
+        org.coner.hibernate.entity.Event> {
 
     static EventBoundary instance;
 

@@ -75,7 +75,10 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
         try {
             constructor = clazz.getConstructor();
             return constructor.newInstance();
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (NoSuchMethodException
+                | InvocationTargetException
+                | InstantiationException
+                | IllegalAccessException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }

@@ -9,13 +9,13 @@ import io.dropwizard.setup.Environment;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.RegistrationGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.Event;
 import org.coner.hibernate.entity.Registration;
-import org.coner.core.gateway.EventGateway;
-import org.coner.core.gateway.RegistrationGateway;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
@@ -58,7 +58,11 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         // init resources
         EventsResource eventsResource = new EventsResource(getEventBoundary(), getConerCoreService());
         EventResource eventResource = new EventResource(getEventBoundary(), getConerCoreService());
-        EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(getEventBoundary(), getRegistrationBoundary(), getConerCoreService());
+        EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(
+                getEventBoundary(),
+                getRegistrationBoundary(),
+                getConerCoreService()
+        );
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
@@ -77,7 +81,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                     Registration.class
             ) {
                 @Override
-                public DataSourceFactory getDataSourceFactory(ConerDropwizardConfiguration conerDropwizardConfiguration) {
+                public DataSourceFactory getDataSourceFactory(
+                        ConerDropwizardConfiguration conerDropwizardConfiguration) {
                     return conerDropwizardConfiguration.getDataSourceFactory();
                 }
             };
@@ -146,7 +151,11 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
     private RegistrationGateway getRegistrationGateway() {
         if (registrationGateway == null) {
-            registrationGateway = new RegistrationGateway(getRegistrationBoundary(), getEventBoundary(), getRegistrationDao());
+            registrationGateway = new RegistrationGateway(
+                    getRegistrationBoundary(),
+                    getEventBoundary(),
+                    getRegistrationDao()
+            );
         }
         return registrationGateway;
     }
