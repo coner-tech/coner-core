@@ -1,4 +1,4 @@
 /**
- * Domain entity classes
+ * Domain entity classes.
  */
 package org.coner.core.domain;

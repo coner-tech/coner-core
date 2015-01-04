@@ -4,7 +4,7 @@ import org.coner.core.domain.Event;
 import org.coner.core.domain.Registration;
 
 /**
- * Converts Registration entities as they cross architectural boundaries
+ * Converts Registration entities as they cross architectural boundaries.
  */
 public class RegistrationBoundary extends AbstractBoundary<
         org.coner.api.entity.Registration,

@@ -1,4 +1,4 @@
 /**
- * Exception and related classes
+ * Exception and related classes.
  */
 package org.coner.exception;

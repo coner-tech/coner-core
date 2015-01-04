@@ -45,7 +45,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     private final EntityMerger<H, D> hibernateToDomainMerger;
 
     /**
-     * Default constructor for the AbstractBoundary
+     * Default constructor for the AbstractBoundary.
      *
      * @param apiClass       the API entity class
      * @param domainClass    the Domain entity class
@@ -62,7 +62,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a Domain entity into an API entity
+     * Convert a Domain entity into an API entity.
      *
      * @param domainEntity a Domain entity instance or null
      * @return an API entity or null if domainEntity is null
@@ -77,7 +77,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert an API entity into a Domain entity
+     * Convert an API entity into a Domain entity.
      *
      * @param apiEntity an API entity instance or null
      * @return a Domain entity or null if apiEntity is null
@@ -92,7 +92,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a Hibernate entity into a Domain entity
+     * Convert a Hibernate entity into a Domain entity.
      *
      * @param hibernateEntity a Hibernate entity instance or null
      * @return a Domain entity or null if hibernateEntity is null
@@ -107,7 +107,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a Domain entity into a Hibernate entity
+     * Convert a Domain entity into a Hibernate entity.
      *
      * @param domainEntity a Domain entity instance or null
      * @return a Hibernate entity or null if domainEntity is null
@@ -145,7 +145,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a list of API entities into a list of Domain entities
+     * Convert a list of API entities into a list of Domain entities.
      *
      * @param domainEntities a list of Domain entities or null. The list must not contain any null items.
      * @return a list of Domain entities or an empty list if domainEntities is null or empty
@@ -160,7 +160,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a list of Hibernate entities into a list of Domain entities
+     * Convert a list of Hibernate entities into a list of Domain entities.
      *
      * @param hibernateEntities a list of Hibernate entities or null. The list must not contain any null items.
      * @return a list of Domain entities or an empty list if hibernateEntities is null or empty
@@ -175,7 +175,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Convert a list of Domain entities into a list of Hibernate entities
+     * Convert a list of Domain entities into a list of Hibernate entities.
      *
      * @param domainEntities a list of Domain entities or null. The list must not contain any null items.
      * @return a list of Hibernate entities or an empty list if domainEntities is null or empty
@@ -190,7 +190,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Merge an API entity into a Domain entity
+     * Merge an API entity into a Domain entity.
      * <p/>
      * Neither argument may be null. If you don't have a Domain entity instance yet, use
      * `AbstractBoundary.toDomainEntity` instead.
@@ -205,7 +205,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Merge a Domain entity into an API entity
+     * Merge a Domain entity into an API entity.
      * <p/>
      * Neither argument may be null. If you don't have an API entity instance yet, use
      * `AbstractBoundary.toDomainEntity` instead.
@@ -220,7 +220,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Merge a Domain entity into a Hibernate entity
+     * Merge a Domain entity into a Hibernate entity.
      * <p/>
      * Neither argument may be null. If you don't have a Hibernate entity instance yet, use
      * `AbstractBoundary.toHibernateEntity` instead.
@@ -235,10 +235,10 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Merge a Hibernate entity into a Domain entity
+     * Merge a Hibernate entity into a Domain entity.
      * <p/>
      * Neither argument may be null. If you don't have a Domain entity instance yet, use
-     * `AbstractBoundary.toDomainEntity` instead
+     * `AbstractBoundary.toDomainEntity` instead.
      *
      * @param fromHibernateEntity the source Hibernate entity
      * @param intoDomainEntity    the destination Domain entity
@@ -285,11 +285,11 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
      */
     public interface EntityMerger<F, T> {
         /**
-         * Merge a source entity into a destination entity
+         * Merge a source entity into a destination entity.
          *
          * @param fromEntity the source entity
          * @param toEntity   the destination entity
          */
-        public void merge(F fromEntity, T toEntity);
+        void merge(F fromEntity, T toEntity);
     }
 }

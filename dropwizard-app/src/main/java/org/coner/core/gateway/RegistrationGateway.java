@@ -10,7 +10,7 @@ import org.coner.hibernate.dao.RegistrationDao;
 import java.util.List;
 
 /**
- *
+ * RegistrationGateway wraps persistence layer interactions for Registration domain entities.
  */
 public class RegistrationGateway {
 
@@ -18,6 +18,13 @@ public class RegistrationGateway {
     private final EventBoundary eventBoundary;
     private final RegistrationDao registrationDao;
 
+    /**
+     * Constructor for RegistrationGateway.
+     *
+     * @param registrationBoundary the RegistrationBoundary for converting Domain entities to/from Hibernate entities
+     * @param eventBoundary        the EventBoundary for converting Domain entities to/from Hibernate entities
+     * @param registrationDao      the RegistrationDao for interacting with the persistence layer
+     */
     public RegistrationGateway(
             RegistrationBoundary registrationBoundary,
             EventBoundary eventBoundary,
@@ -27,6 +34,12 @@ public class RegistrationGateway {
         this.registrationDao = registrationDao;
     }
 
+    /**
+     * Get list of Registrations for a given Event.
+     *
+     * @param event event to find Registrations for
+     * @return List of Registrations for Event
+     */
     public List<Registration> getAllWith(Event event) {
         Preconditions.checkNotNull(event);
         org.coner.hibernate.entity.Event hibernateEvent = eventBoundary.toHibernateEntity(event);

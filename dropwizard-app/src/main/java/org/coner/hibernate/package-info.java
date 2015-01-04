@@ -1,4 +1,4 @@
 /**
- * Holds Hibernate persistence classes
+ * Holds Hibernate persistence classes.
  */
 package org.coner.hibernate;
