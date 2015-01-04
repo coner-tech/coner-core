@@ -18,7 +18,10 @@ public class RegistrationGateway {
     private final EventBoundary eventBoundary;
     private final RegistrationDao registrationDao;
 
-    public RegistrationGateway(RegistrationBoundary registrationBoundary, EventBoundary eventBoundary, RegistrationDao registrationDao) {
+    public RegistrationGateway(
+            RegistrationBoundary registrationBoundary,
+            EventBoundary eventBoundary,
+            RegistrationDao registrationDao) {
         this.registrationBoundary = registrationBoundary;
         this.eventBoundary = eventBoundary;
         this.registrationDao = registrationDao;

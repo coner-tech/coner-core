@@ -16,7 +16,9 @@ import java.util.Random;
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  *
@@ -367,7 +369,11 @@ public class AbstractBoundaryTest {
     private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
 
 
-        public TestBoundary(Class<TestApiEntity> apiClass, Class<TestDomainEntity> domainClass, Class<TestHibernateEntity> hibernateClass) {
+        public TestBoundary(
+                Class<TestApiEntity> apiClass,
+                Class<TestDomainEntity> domainClass,
+                Class<TestHibernateEntity> hibernateClass
+        ) {
             super(apiClass, domainClass, hibernateClass);
         }
 

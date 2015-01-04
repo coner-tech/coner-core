@@ -28,7 +28,10 @@ public class EventRegistrationsResource {
     private final RegistrationBoundary registrationBoundary;
     private final ConerCoreService conerCoreService;
 
-    public EventRegistrationsResource(EventBoundary eventBoundary, RegistrationBoundary registrationBoundary, ConerCoreService conerCoreService) {
+    public EventRegistrationsResource(
+            EventBoundary eventBoundary,
+            RegistrationBoundary registrationBoundary,
+            ConerCoreService conerCoreService) {
         this.eventBoundary = eventBoundary;
         this.registrationBoundary = registrationBoundary;
         this.conerCoreService = conerCoreService;
@@ -41,7 +44,9 @@ public class EventRegistrationsResource {
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
         }
-        List<Registration> registrations = registrationBoundary.toApiEntities(conerCoreService.getRegistrations(domainEvent));
+        List<Registration> registrations = registrationBoundary.toApiEntities(
+                conerCoreService.getRegistrations(domainEvent)
+        );
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
         response.setRegistrations(registrations);
         return response;

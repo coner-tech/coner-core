@@ -1,5 +1,6 @@
 package org.coner.core.gateway;
 
+
 import org.coner.boundary.EventBoundary;
 import org.coner.core.domain.Event;
 import org.coner.hibernate.dao.EventDao;
@@ -12,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -41,7 +46,7 @@ public class EventGatewayTest {
         when(eventDao.findAll()).thenReturn(hibernateEvents);
         when(eventBoundary.toDomainEntities(hibernateEvents)).thenReturn(expected);
 
-        List<Event> actual = eventGateway.getAll();
+        List<org.coner.core.domain.Event> actual = eventGateway.getAll();
 
         verify(eventDao).findAll();
         verify(eventBoundary).toDomainEntities(hibernateEvents);
