@@ -9,9 +9,9 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.gateway.EventGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.EventDao;
-import org.coner.core.gateway.EventGateway;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
@@ -26,7 +26,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  *
