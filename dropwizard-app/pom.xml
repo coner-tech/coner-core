@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-client</artifactId>
-            <version>${dropwizard.version}</version>
+            <version>0.8.0-rc2-20150103.153801-54</version>
         </dependency>
 
         <dependency>
