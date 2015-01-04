@@ -1,7 +1,7 @@
 package org.coner.api.entity;
 
 /**
- *
+ * REST API entity representing a Registration
  */
 public class Registration extends ApiEntity {
 
@@ -42,6 +42,9 @@ public class Registration extends ApiEntity {
         this.lastName = lastName;
     }
 
+    /**
+     * REST API entity representing a minimal subset of an Event
+     */
     public static class Event {
         private String id;
 
