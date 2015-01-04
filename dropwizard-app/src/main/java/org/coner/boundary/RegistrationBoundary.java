@@ -4,7 +4,7 @@ import org.coner.core.domain.Event;
 import org.coner.core.domain.Registration;
 
 /**
- *
+ * Converts Registration entities as they cross architectural boundaries
  */
 public class RegistrationBoundary extends AbstractBoundary<
         org.coner.api.entity.Registration,
@@ -13,6 +13,11 @@ public class RegistrationBoundary extends AbstractBoundary<
 
     private static RegistrationBoundary instance;
 
+    /**
+     * Get the singleton instance of the RegistrationBoundary.
+     *
+     * @return a RegistrationBoundary
+     */
     public static RegistrationBoundary getInstance() {
         if (instance == null) {
             instance = new RegistrationBoundary();
@@ -22,10 +27,19 @@ public class RegistrationBoundary extends AbstractBoundary<
 
     private EventBoundary eventBoundary;
 
+    /**
+     * Private constructor called only by `RegistrationBoundary.getInstance`. Calls the package-private constructor
+     * using the singleton instance of EventBoundary.
+     */
     private RegistrationBoundary() {
         this(EventBoundary.getInstance());
     }
 
+    /**
+     * Package-private constructor which should only be called by the private constructor or a test.
+     *
+     * @param eventBoundary the EventBoundary to use when converting Event entities
+     */
     RegistrationBoundary(EventBoundary eventBoundary) {
         super(
                 org.coner.api.entity.Registration.class,

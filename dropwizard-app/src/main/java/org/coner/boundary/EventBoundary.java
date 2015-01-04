@@ -5,7 +5,7 @@ import org.coner.core.domain.Event;
 import java.util.Date;
 
 /**
- *
+ * Converts Event entities as they cross architectural boundaries
  */
 public class EventBoundary extends AbstractBoundary<
         org.coner.api.entity.Event,
@@ -14,6 +14,11 @@ public class EventBoundary extends AbstractBoundary<
 
     static EventBoundary instance;
 
+    /**
+     * Get the singleton instance of the EventBoundary.
+     *
+     * @return an EventBoundary
+     */
     public static EventBoundary getInstance() {
         if (instance == null) {
             instance = new EventBoundary();
@@ -21,6 +26,9 @@ public class EventBoundary extends AbstractBoundary<
         return instance;
     }
 
+    /**
+     * Package-private constructor which should only ever be called by `EventBoundary.getInstance` or a test
+     */
     EventBoundary() {
         super(
                 org.coner.api.entity.Event.class,
