@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- *
+ * The EventsResource exposes getting and adding Events on the REST API
  */
 @Path("/events")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,11 +27,22 @@ public class EventsResource {
     private final EventBoundary eventBoundary;
     private final ConerCoreService conerCoreService;
 
+    /**
+     * Constructor for the EventsResource
+     *
+     * @param eventBoundary    the EventBoundary to use for converting API and Domain Event entities
+     * @param conerCoreService the ConerCoreService
+     */
     public EventsResource(EventBoundary eventBoundary, ConerCoreService conerCoreService) {
         this.eventBoundary = eventBoundary;
         this.conerCoreService = conerCoreService;
     }
 
+    /**
+     * Get all events
+     *
+     * @return a list of all events
+     */
     @GET
     @UnitOfWork
     public GetEventsResponse getEvents() {
@@ -41,6 +52,12 @@ public class EventsResource {
         return response;
     }
 
+    /**
+     * Add an event
+     *
+     * @param event the Event to add
+     * @return a response containing the added Event
+     */
     @POST
     @UnitOfWork
     public AddEventResponse addEvent(@Valid Event event) {
