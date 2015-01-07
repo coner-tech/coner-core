@@ -32,12 +32,6 @@ $ curl http://localhost:8081/healthcheck
 {"deadlocks":{"healthy":true},"hibernate":{"healthy":true}}
 ```
 
-## Build Tools
+## Contributing
 
-### Checkstyle
-
-Prior to committing, run checkstyle to confirm your changes did not introduce additional checkstyle errors.
-
-```
-$ mvn checkstyle:checkstyle
-```
+Interested in contributing to Coner? Please take a look at our [contributing guidlines](https://github.com/carltonwhitehead/coner/blob/master/CONTRIBUTING.md)
