@@ -2,7 +2,6 @@ package org.coner.resource;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Event;
-import org.coner.api.response.AddEventResponse;
 import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
@@ -14,6 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 
 /**
@@ -60,11 +61,11 @@ public class EventsResource {
      */
     @POST
     @UnitOfWork
-    public AddEventResponse addEvent(@Valid Event event) {
+    public Response addEvent(@Valid Event event) {
         org.coner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         conerCoreService.addEvent(domainEvent);
-        AddEventResponse response = new AddEventResponse();
-        response.setEvent(eventBoundary.toApiEntity(domainEvent));
-        return response;
+        return Response.created(UriBuilder.fromResource(EventResource.class)
+                .build(domainEvent.getId()))
+                .build();
     }
 }

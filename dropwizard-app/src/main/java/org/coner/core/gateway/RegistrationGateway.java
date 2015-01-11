@@ -1,6 +1,7 @@
 package org.coner.core.gateway;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.domain.Event;
@@ -35,6 +36,18 @@ public class RegistrationGateway {
     }
 
     /**
+     * Get a Registration entity by id.
+     *
+     * @param registrationId eventId of the Registration
+     * @return the Registration entity with id or null if not found
+     */
+    public Registration findById(String registrationId) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(registrationId));
+        org.coner.hibernate.entity.Registration hibernateRegistration = registrationDao.findById(registrationId);
+        return registrationBoundary.toDomainEntity(hibernateRegistration);
+    }
+
+    /**
      * Get list of Registrations for a given Event.
      *
      * @param event event to find Registrations for
@@ -46,4 +59,18 @@ public class RegistrationGateway {
         List<org.coner.hibernate.entity.Registration> registrations = registrationDao.getAllWith(hibernateEvent);
         return registrationBoundary.toDomainEntities(registrations);
     }
+
+    /**
+     * Persist a new Registration entity.
+     *
+     * @param registration Registration to create
+     */
+    public void create(Registration registration) {
+        Preconditions.checkNotNull(registration);
+        org.coner.hibernate.entity.Registration hibernateRegistration =
+                registrationBoundary.toHibernateEntity(registration);
+        registrationDao.create(hibernateRegistration);
+        registrationBoundary.merge(hibernateRegistration, registration);
+    }
+
 }

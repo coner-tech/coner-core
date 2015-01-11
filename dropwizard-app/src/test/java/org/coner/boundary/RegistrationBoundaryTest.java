@@ -8,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -58,20 +57,6 @@ public class RegistrationBoundaryTest {
         assertThat(domainRegistration.getLastName()).isEqualTo(registrationLastName);
         assertThat(domainRegistration.getEvent().getId())
                 .isEqualTo(DomainUtils.fullDomainEvent().getId());
-    }
-
-    @Test
-    public void whenMergeApiWithoutEventIntoDomainItShouldNpe() {
-        org.coner.api.entity.Registration apiRegistration = ApiEntityUtils.fullApiRegistration();
-        apiRegistration.setEvent(null);
-        Registration domainRegistration = new Registration();
-
-        try {
-            registrationBoundary.merge(apiRegistration, domainRegistration);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
     }
 
     @Test

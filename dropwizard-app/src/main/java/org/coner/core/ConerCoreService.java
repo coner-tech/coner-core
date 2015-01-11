@@ -48,7 +48,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Get an event by id.
+     * Get an Event by id.
      *
      * @param id the id of the event
      * @return the event with id or null if not found
@@ -56,6 +56,30 @@ public class ConerCoreService {
     public Event getEvent(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return eventGateway.findById(id);
+    }
+
+    /**
+     * Get a Registration by id.
+     *
+     * @param id the id of the Registration
+     * @return the Registration with id or null if not found
+     */
+    public Registration getRegistration(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return registrationGateway.findById(id);
+    }
+
+    /**
+     * Add a registration entry.
+     *
+     * @param event the Event the Registration is being added for
+     * @param registration the Registration to add
+     */
+    public void addRegistration(Event event, Registration registration) {
+        Preconditions.checkNotNull(registration);
+        Preconditions.checkNotNull(event);
+        registration.setEvent(event);
+        registrationGateway.create(registration);
     }
 
     /**

@@ -16,6 +16,7 @@ import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.Event;
 import org.coner.hibernate.entity.Registration;
+import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
@@ -69,10 +70,16 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getRegistrationBoundary(),
                 getConerCoreService()
         );
+        EventRegistrationResource eventRegistrationResource = new EventRegistrationResource(
+                getEventBoundary(),
+                getRegistrationBoundary(),
+                getConerCoreService()
+        );
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
         jersey.register(eventRegistrationsResource);
+        jersey.register(eventRegistrationResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();

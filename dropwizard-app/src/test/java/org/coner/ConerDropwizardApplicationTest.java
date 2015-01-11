@@ -8,10 +8,14 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.coner.boundary.EventBoundary;
+import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.RegistrationGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.dao.RegistrationDao;
+import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
@@ -39,10 +43,17 @@ public class ConerDropwizardApplicationTest {
 
     // application dependencies
     private final HibernateBundle<ConerDropwizardConfiguration> hibernate = mock(HibernateBundle.class);
+    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+
+    // Event
     private final EventBoundary eventBoundary = mock(EventBoundary.class);
     private final EventDao eventDao = mock(EventDao.class);
     private final EventGateway eventGateway = mock(EventGateway.class);
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+
+    // Registration
+    private final RegistrationBoundary registrationBoundary = mock(RegistrationBoundary.class);
+    private final RegistrationDao registrationDao = mock(RegistrationDao.class);
+    private final RegistrationGateway registrationGateway = mock(RegistrationGateway.class);
 
     // initialize method parameters
     private final Bootstrap<ConerDropwizardConfiguration> bootstrap = mock(Bootstrap.class);
@@ -59,10 +70,14 @@ public class ConerDropwizardApplicationTest {
     @Before
     public void setup() {
         application.setHibernate(hibernate);
+        application.setConerCoreService(conerCoreService);
         application.setEventBoundary(eventBoundary);
         application.setEventDao(eventDao);
         application.setEventGateway(eventGateway);
-        application.setConerCoreService(conerCoreService);
+        application.setRegistrationBoundary(registrationBoundary);
+        application.setRegistrationDao(registrationDao);
+        application.setRegistrationGateway(registrationGateway);
+
 
         // initialize method
         when(bootstrap.getObjectMapper()).thenReturn(objectMapper);
@@ -99,7 +114,7 @@ public class ConerDropwizardApplicationTest {
         application.run(config, environment);
 
         ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(jersey, times(4)).register(argumentCaptor.capture());
+        verify(jersey, times(5)).register(argumentCaptor.capture());
 
         List<Object> objects = argumentCaptor.getAllValues();
         List<Class> registeredClasses = new ArrayList<>(objects.size());
@@ -108,6 +123,7 @@ public class ConerDropwizardApplicationTest {
         assertThat(registeredClasses).contains(EventsResource.class);
         assertThat(registeredClasses).contains(EventResource.class);
         assertThat(registeredClasses).contains(EventRegistrationsResource.class);
+        assertThat(registeredClasses).contains(EventRegistrationResource.class);
         assertThat(registeredClasses).contains(WebApplicationExceptionMapper.class);
     }
 }

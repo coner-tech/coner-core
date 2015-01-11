@@ -12,9 +12,9 @@ import javax.validation.constraints.Null;
 @JsonPropertyOrder({"id", "firstName", "lastName", "event"})
 public class Registration extends ApiEntity {
 
-    @Null(message = "event.id may only be assigned by the system")
+    @Null(message = "registration.id may only be assigned by the system")
     private String id;
-    @NotNull
+    @Null(message = "registration.event is assigned by uri")
     private Event event;
     @NotNull
     private String firstName;
@@ -86,7 +86,7 @@ public class Registration extends ApiEntity {
 
         Registration that = (Registration) o;
 
-        if (!event.id.equals(that.event.id)) return false;
+        if (event != null ? !event.id.equals(that.event.id): that.event != null) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
@@ -97,7 +97,7 @@ public class Registration extends ApiEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + event.hashCode();
+        result = 31 * result + (event != null ? event.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
