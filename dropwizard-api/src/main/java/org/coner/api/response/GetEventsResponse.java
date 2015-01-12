@@ -6,7 +6,7 @@ import org.coner.api.entity.Event;
 import java.util.List;
 
 /**
- * API response object containing a list of Event entities
+ * API response object containing a list of Event entities.
  */
 public class GetEventsResponse {
 

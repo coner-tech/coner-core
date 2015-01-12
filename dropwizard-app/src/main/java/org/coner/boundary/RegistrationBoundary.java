@@ -59,8 +59,11 @@ public class RegistrationBoundary extends AbstractBoundary<
             toEntity.setId(fromEntity.getId());
             toEntity.setFirstName(fromEntity.getFirstName());
             toEntity.setLastName(fromEntity.getLastName());
+            // When Api => Domain, the event could be null
             Event domainEvent = new Event();
-            domainEvent.setId(fromEntity.getEvent().getId());
+            if (fromEntity.getEvent() != null) {
+                domainEvent.setId(fromEntity.getEvent().getId());
+            }
             toEntity.setEvent(domainEvent);
         };
     }
@@ -81,6 +84,7 @@ public class RegistrationBoundary extends AbstractBoundary<
     @Override
     protected EntityMerger<Registration, org.coner.hibernate.entity.Registration> buildDomainToHibernateMerger() {
         return (fromEntity, toEntity) -> {
+            toEntity.setId(fromEntity.getId());
             toEntity.setFirstName(fromEntity.getFirstName());
             toEntity.setLastName(fromEntity.getLastName());
             toEntity.setEvent(eventBoundary.toHibernateEntity(fromEntity.getEvent()));

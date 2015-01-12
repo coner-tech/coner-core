@@ -1,4 +1,4 @@
 /**
- * Coner public API
+ * Coner public API.
  */
 package org.coner.api;

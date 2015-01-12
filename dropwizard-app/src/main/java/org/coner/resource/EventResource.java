@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The EventResource exposes getting, updating, and deleting an Event on the REST API
+ * The EventResource exposes getting, updating, and deleting an Event on the REST API.
  */
 @Path("/events/{eventId}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,7 +25,7 @@ public class EventResource {
     private final ConerCoreService conerCoreService;
 
     /**
-     * Constructor for the EventResource
+     * Constructor for the EventResource.
      *
      * @param eventBoundary    the EventBoundary to use for converting API and Domain Event entities
      * @param conerCoreService the ConerCoreService

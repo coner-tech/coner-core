@@ -1,4 +1,4 @@
 /**
- * API request objects
+ * API request objects.
  */
 package org.coner.api.request;

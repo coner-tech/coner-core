@@ -1,4 +1,4 @@
 /**
- * API response objects
+ * API response objects.
  */
 package org.coner.api.response;

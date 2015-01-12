@@ -16,13 +16,14 @@ import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.Event;
 import org.coner.hibernate.entity.Registration;
+import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
 import org.coner.util.JacksonUtil;
 
 /**
- * The Dropwizard application which exposes the Coner core REST interface
+ * The Dropwizard application which exposes the Coner core REST interface.
  */
 public class ConerDropwizardApplication extends Application<ConerDropwizardConfiguration> {
 
@@ -36,7 +37,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private ConerCoreService conerCoreService;
 
     /**
-     * The main method of the application
+     * The main method of the application.
      *
      * @param args raw String arguments
      * @throws Exception any uncaught exception
@@ -69,10 +70,16 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getRegistrationBoundary(),
                 getConerCoreService()
         );
+        EventRegistrationResource eventRegistrationResource = new EventRegistrationResource(
+                getEventBoundary(),
+                getRegistrationBoundary(),
+                getConerCoreService()
+        );
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
         jersey.register(eventRegistrationsResource);
+        jersey.register(eventRegistrationResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
@@ -81,7 +88,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the HibernateBundle
+     * Lazy initializer for the HibernateBundle.
      *
      * @return the HibernateBundle
      */
@@ -106,7 +113,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the EventBoundary
+     * Lazy initializer for the EventBoundary.
      *
      * @return the EventBoundary
      */
@@ -122,7 +129,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the EventDao
+     * Lazy initializer for the EventDao.
      *
      * @return the EventDao
      */
@@ -138,7 +145,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the EventGateway
+     * Lazy initializer for the EventGateway.
      *
      * @return the EventGateway
      */
@@ -154,7 +161,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for RegistrationBoundary
+     * Lazy initializer for RegistrationBoundary.
      *
      * @return the RegistrationBoundary
      */
@@ -170,7 +177,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the RegistrationDao
+     * Lazy initializer for the RegistrationDao.
      *
      * @return the RegistrationDao
      */
@@ -186,7 +193,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the RegistrationGateway
+     * Lazy initializer for the RegistrationGateway.
      *
      * @return the RegistrationGateway
      */
@@ -206,7 +213,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the ConerCoreService
+     * Lazy initializer for the ConerCoreService.
      *
      * @return the ConerCoreService
      */

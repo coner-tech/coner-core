@@ -1,0 +1,8 @@
+{
+  "id": "arbitrary-id-from-service",
+  "firstName": "registration-firstname",
+  "lastName": "registration-lastname",
+  "event": {
+    "id": "event-test-id"
+  }
+}

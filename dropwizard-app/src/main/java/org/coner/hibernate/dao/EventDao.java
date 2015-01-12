@@ -7,12 +7,12 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 /**
- * Event-specific Hibernate Data Access Object
+ * Event-specific Hibernate Data Access Object.
  */
 public class EventDao extends AbstractDAO<Event> {
 
     /**
-     * Constructor for EventDao
+     * Constructor for EventDao.
      *
      * @param sessionFactory the `SessionFactory`
      */
@@ -21,7 +21,7 @@ public class EventDao extends AbstractDAO<Event> {
     }
 
     /**
-     * Find an Event by id
+     * Find an Event by id.
      *
      * @param id the id of the Event to find
      * @return the Event having `id` or null if not found
@@ -31,7 +31,7 @@ public class EventDao extends AbstractDAO<Event> {
     }
 
     /**
-     * Find all Event entities persisted in storage
+     * Find all Event entities persisted in storage.
      *
      * @return a list of all Event entities
      */
@@ -40,7 +40,7 @@ public class EventDao extends AbstractDAO<Event> {
     }
 
     /**
-     * Save or update the passed Event in storage
+     * Save or update the passed Event in storage.
      *
      * @param event the Event to save or update
      */

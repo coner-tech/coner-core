@@ -5,7 +5,7 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.coner.api.response.AddEventResponse;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
@@ -16,15 +16,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.Date;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -95,18 +94,17 @@ public class EventsResourceTest {
         when(eventBoundary.toDomainEntity(requestEvent)).thenReturn(requestEventAsDomain);
         when(eventBoundary.toApiEntity(any(Event.class))).thenReturn(responseEvent);
 
-        AddEventResponse addEventResponse = resources.client()
+        Response response = resources.client()
                 .target("/events")
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(requestEntity, AddEventResponse.class);
+                .post(requestEntity);
 
         verify(conerCoreService).addEvent(requestEventAsDomain);
 
-        assertThat(addEventResponse)
+        assertThat(response)
                 .isNotNull();
-        assertThat(addEventResponse.getEvent())
-                .isNotNull()
-                .isEqualTo(responseEvent);
+        assertThat(response.getStatus())
+                .isEqualTo(HttpStatus.CREATED_201);
     }
 
     @Test
@@ -117,16 +115,16 @@ public class EventsResourceTest {
         );
         Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
 
-        try {
-            AddEventResponse errorResponse = resources.client()
-                    .target("/events")
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(requestEntity, AddEventResponse.class);
-            failBecauseExceptionWasNotThrown(ClientErrorException.class);
-        } catch (ClientErrorException cee) {
-            assertThat(cee.getResponse().getStatus())
-                    .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        }
+        Response response = resources.client()
+                .target("/events")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
+        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        assertThat(errorsResponse.getErrors())
+                .contains("id event.id may only be assigned by the system (was bad-id-in-request)");
+
         verify(conerCoreService, never()).addEvent(any(Event.class));
     }
 
@@ -138,16 +136,15 @@ public class EventsResourceTest {
         );
         Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
 
-        try {
-            AddEventResponse addEventResponse = resources.client()
-                    .target("/events")
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(requestEntity, AddEventResponse.class);
-            failBecauseExceptionWasNotThrown(ClientErrorException.class);
-        } catch (ClientErrorException cee) {
-            assertThat(cee.getResponse().getStatus())
-                    .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        }
+        Response response = resources.client()
+                .target("/events")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
+        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        assertThat(errorsResponse.getErrors()).contains("name may not be empty (was null)");
+
         verify(conerCoreService, never()).addEvent(any(Event.class));
     }
 
@@ -159,16 +156,16 @@ public class EventsResourceTest {
         );
         Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
 
-        try {
-            AddEventResponse addEventResponse = resources.client()
-                    .target("/events")
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(requestEntity, AddEventResponse.class);
-            failBecauseExceptionWasNotThrown(ClientErrorException.class);
-        } catch (ClientErrorException cee) {
-            assertThat(cee.getResponse().getStatus())
-                    .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        }
+
+        Response response = resources.client()
+                .target("/events")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
+        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        assertThat(errorsResponse.getErrors()).contains("date may not be null (was null)");
+
         verify(conerCoreService, never()).addEvent(any(Event.class));
     }
 }

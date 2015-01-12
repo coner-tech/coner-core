@@ -4,9 +4,9 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.coner.ConerDropwizardConfiguration;
 import org.coner.api.entity.Event;
 import org.coner.api.request.AddEventRequest;
-import org.coner.api.response.AddEventResponse;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventsResponse;
+import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -47,12 +47,8 @@ public class CreateEventIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(addEventRequest));
 
-        assertThat(addEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
-        AddEventResponse addEventResponse = addEventResponseContainer.readEntity(AddEventResponse.class);
-        assertThat(addEventResponse.getEvent()).isNotNull();
-        assertThat(addEventResponse.getEvent().getId()).isNotEmpty();
-        assertThat(addEventResponse.getEvent().getName()).isEqualTo(name);
-        assertThat(addEventResponse.getEvent().getDate()).hasTime(date.getTime());
+        assertThat(addEventResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        final String eventId = UnitTestUtils.getEntityIdFromResponse(addEventResponseContainer);
 
         Response getEventsResponseContainer = client.target(eventsUri)
                 .request()
@@ -63,11 +59,11 @@ public class CreateEventIntegrationTest {
         GetEventsResponse getEventsResponse = getEventsResponseContainer.readEntity(GetEventsResponse.class);
         assertThat(getEventsResponse.getEvents()).hasSize(1);
         Event event = getEventsResponse.getEvents().get(0);
-        assertThat(event.getId()).isEqualTo(addEventResponse.getEvent().getId());
+        assertThat(event.getId()).isEqualTo(eventId);
 
         URI getEventByIdUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{id}")
-                .build(addEventResponse.getEvent().getId());
+                .build(eventId);
 
         Response getEventByIdResponseContainer = client.target(getEventByIdUri)
                 .request()
@@ -76,7 +72,7 @@ public class CreateEventIntegrationTest {
 
         assertThat(getEventByIdResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         Event getEventByIdResponse = getEventByIdResponseContainer.readEntity(Event.class);
-        assertThat(getEventByIdResponse.getId()).isEqualTo(addEventResponse.getEvent().getId());
+        assertThat(getEventByIdResponse.getId()).isEqualTo(eventId);
     }
 
     @Test
