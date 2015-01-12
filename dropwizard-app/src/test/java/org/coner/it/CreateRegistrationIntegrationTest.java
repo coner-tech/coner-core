@@ -108,6 +108,7 @@ public class CreateRegistrationIntegrationTest {
         assertThat(addRegistrationResponse1.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         final String registrationId1 = UnitTestUtils.getEntityIdFromResponse(addRegistrationResponse1);
 
+        // work around Jersey client hanging when same client from above reused
         Client client2 = IntegrationTestUtils.buildClient(RULE);
 
         // Get Registrations for Event
