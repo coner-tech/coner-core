@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * The EventRegistrationResource exposes getting, updating, or deleting a Registration for an Event on the REST API.
  */
 @Path("/events/{eventId}/registrations/{registrationId}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,7 +27,7 @@ public class EventRegistrationResource {
     private final ConerCoreService conerCoreService;
 
     /**
-     * Constructor for the EventRegistrationResource
+     * Constructor for the EventRegistrationResource.
      *
      * @param eventBoundary        the EventBoundary to use for converting API and Domain Event entities
      * @param registrationBoundary the RegistrationBoundary to use for converting API and Domain Registration entities

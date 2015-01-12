@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 /**
- * REST API entity representing a Registration
+ * REST API entity representing a Registration.
  */
 @JsonPropertyOrder({"id", "firstName", "lastName", "event"})
 public class Registration extends ApiEntity {
@@ -54,7 +54,7 @@ public class Registration extends ApiEntity {
     }
 
     /**
-     * REST API entity representing a minimal subset of an Event
+     * REST API entity representing a minimal subset of an Event.
      */
     public static class Event {
         private String id;
@@ -86,7 +86,7 @@ public class Registration extends ApiEntity {
 
         Registration that = (Registration) o;
 
-        if (event != null ? !event.id.equals(that.event.id): that.event != null) return false;
+        if (event != null ? !event.id.equals(that.event.id) : that.event != null) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;

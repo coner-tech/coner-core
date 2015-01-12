@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 /**
  *
  */
-public class UnitTestUtils {
+public final class UnitTestUtils {
 
     private UnitTestUtils() {
     }

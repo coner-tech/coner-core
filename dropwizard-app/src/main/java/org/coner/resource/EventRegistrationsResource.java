@@ -21,7 +21,8 @@ import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 
 /**
- * The EventRegistrationsResource exposes getting and adding a Registration for an Event on the REST API
+ * The EventRegistrationsResource exposes getting Registrations for an Event
+ * or adding a Registration for an Event on the REST API.
  */
 @Path("/events/{eventId}/registrations")
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,7 +34,7 @@ public class EventRegistrationsResource {
     private final ConerCoreService conerCoreService;
 
     /**
-     * Constructor for the EventRegistrationResource
+     * Constructor for the EventRegistrationResource.
      *
      * @param eventBoundary        the EventBoundary to use for converting API and Domain Event entities
      * @param registrationBoundary the RegistrationBoundary to use for converting API and Domain Registration entities
@@ -49,7 +50,7 @@ public class EventRegistrationsResource {
     }
 
     /**
-     * Get all Registrations for an Event
+     * Get all Registrations for an Event.
      *
      * @param eventId the id of the Event to get Registrations
      * @return a response containing a list of all Registrations
@@ -71,7 +72,7 @@ public class EventRegistrationsResource {
     }
 
     /**
-     * Add a new Registration for an Event
+     * Add a new Registration for an Event.
      *
      * @param eventId the id of the Event to get Registrations
      * @param registration the Registration to add

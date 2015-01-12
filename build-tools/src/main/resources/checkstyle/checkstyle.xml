@@ -3,7 +3,6 @@
         "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
-<!-- James -->
 <module name="Checker">
     <!--
          This is a first pass so for the bulk of the checkstyle issues,
@@ -65,7 +64,7 @@
         <module name="JavadocType">
             <property name="severity" value="error"/>
         </module>
-        <module name="JavadocVariable"/>
+        <!--<module name="JavadocVariable"/>-->
         <module name="JavadocStyle"/>
 
 

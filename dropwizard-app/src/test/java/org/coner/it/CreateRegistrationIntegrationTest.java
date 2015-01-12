@@ -2,7 +2,6 @@ package org.coner.it;
 
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.coner.ConerDropwizardConfiguration;
-//import org.coner.api.entity.Registration;
 import org.coner.api.entity.Registration;
 import org.coner.api.request.AddEventRequest;
 import org.coner.api.request.AddRegistrationRequest;
@@ -22,7 +21,6 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
-//import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 

@@ -8,7 +8,7 @@ import javax.validation.constraints.Null;
 import java.util.Date;
 
 /**
- * REST API entity representing an Event
+ * REST API entity representing an Event.
  */
 @JsonPropertyOrder({"id", "name", "date"})
 public class Event extends ApiEntity {

@@ -18,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 
 /**
- * The EventsResource exposes getting and adding Events on the REST API
+ * The EventsResource exposes getting and adding Events on the REST API.
  */
 @Path("/events")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,7 +29,7 @@ public class EventsResource {
     private final ConerCoreService conerCoreService;
 
     /**
-     * Constructor for the EventsResource
+     * Constructor for the EventsResource.
      *
      * @param eventBoundary    the EventBoundary to use for converting API and Domain Event entities
      * @param conerCoreService the ConerCoreService
@@ -40,7 +40,7 @@ public class EventsResource {
     }
 
     /**
-     * Get all events
+     * Get all events.
      *
      * @return a list of all events
      */
@@ -54,7 +54,7 @@ public class EventsResource {
     }
 
     /**
-     * Add an event
+     * Add an event.
      *
      * @param event the Event to add
      * @return a response containing the added Event

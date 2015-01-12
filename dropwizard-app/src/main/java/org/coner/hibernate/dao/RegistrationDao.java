@@ -9,12 +9,12 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 /**
- * Registration-specific Hibernate Data Access Object
+ * Registration-specific Hibernate Data Access Object.
  */
 public class RegistrationDao extends AbstractDAO<Registration> {
 
     /**
-     * Constructor for RegistrationDao
+     * Constructor for RegistrationDao.
      *
      * @param sessionFactory the `SessionFactory`
      */
@@ -23,7 +23,7 @@ public class RegistrationDao extends AbstractDAO<Registration> {
     }
 
     /**
-     * Find a Registration by id
+     * Find a Registration by id.
      *
      * @param id the id of the Registration to find
      * @return the Registration having `id` or null if not found
@@ -33,7 +33,7 @@ public class RegistrationDao extends AbstractDAO<Registration> {
     }
 
     /**
-     * Find all Registration entities persisted in storage for the Event
+     * Find all Registration entities persisted in storage for the Event.
      *
      * @param event the Event of all Registrations to search
      * @return a list of all Registration entities
@@ -45,7 +45,7 @@ public class RegistrationDao extends AbstractDAO<Registration> {
     }
 
     /**
-     * Save or update the passed Registration in storage
+     * Save or update the passed Registration in storage.
      *
      * @param registration the Registration to save or update
      */
