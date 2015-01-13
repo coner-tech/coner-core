@@ -32,6 +32,8 @@ public class CreateRegistrationIntegrationTest {
     @ClassRule
     public static final DropwizardAppRule<ConerDropwizardConfiguration> RULE = IntegrationTestUtils.buildAppRule();
 
+    private final Client client = IntegrationTestUtils.buildClient(RULE);
+
     private String eventId;
     private final String eventName = TestConstants.EVENT_NAME;
     private final Date eventDate = TestConstants.EVENT_DATE;
@@ -39,7 +41,6 @@ public class CreateRegistrationIntegrationTest {
     @Before
     public void setup() {
         // Create Event to which a Registration will be added
-        Client client = IntegrationTestUtils.buildClient(RULE);
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events")
                 .build();
@@ -57,7 +58,6 @@ public class CreateRegistrationIntegrationTest {
 
     @Test
     public void testGetZeroRegistrationsForValidEvent() {
-        Client client = IntegrationTestUtils.buildClient(RULE);
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
@@ -77,7 +77,6 @@ public class CreateRegistrationIntegrationTest {
 
     @Test
     public void whenCreateRegistrationItShouldPersist() {
-        Client client = IntegrationTestUtils.buildClient(RULE);
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
@@ -108,10 +107,8 @@ public class CreateRegistrationIntegrationTest {
         assertThat(addRegistrationResponse1.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         final String registrationId1 = UnitTestUtils.getEntityIdFromResponse(addRegistrationResponse1);
 
-        Client client2 = IntegrationTestUtils.buildClient(RULE);
-
         // Get Registrations for Event
-        Response getRegistrationsResponseContainer = client2.target(eventRegistrationsUri)
+        Response getRegistrationsResponseContainer = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get();
@@ -136,7 +133,7 @@ public class CreateRegistrationIntegrationTest {
                 .build(eventId, registrationId0);
 
         // Get Registration
-        Response getRegistrationResponse = client2.target(eventRegistrationUri)
+        Response getRegistrationResponse = client.target(eventRegistrationUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get();
@@ -153,7 +150,6 @@ public class CreateRegistrationIntegrationTest {
 
     @Test
     public void whenCreateInvalidRegistrationItShouldReject() {
-        Client client = IntegrationTestUtils.buildClient(RULE);
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
@@ -171,7 +167,6 @@ public class CreateRegistrationIntegrationTest {
 
     @Test
     public void whenInvalidEventItShouldReject() {
-        Client client = IntegrationTestUtils.buildClient(RULE);
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build("987654321");
