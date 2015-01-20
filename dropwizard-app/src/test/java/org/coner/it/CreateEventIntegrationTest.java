@@ -1,17 +1,13 @@
 package org.coner.it;
 
-import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.coner.ConerDropwizardConfiguration;
 import org.coner.api.entity.Event;
 import org.coner.api.request.AddEventRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventsResponse;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
-import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,12 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  *
  */
-public class CreateEventIntegrationTest {
-
-    @ClassRule
-    public static final DropwizardAppRule<ConerDropwizardConfiguration> RULE = IntegrationTestUtils.buildAppRule();
-
-    private final Client client = IntegrationTestUtils.buildClient(RULE);
+public class CreateEventIntegrationTest extends AbstractIntegrationTest {
 
     private final String name = "name";
     private final Date date = Date.from(ZonedDateTime.parse("2014-12-27T18:28:00-05:00").toInstant());

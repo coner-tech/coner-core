@@ -1,7 +1,5 @@
 package org.coner.it;
 
-import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.coner.ConerDropwizardConfiguration;
 import org.coner.api.entity.Registration;
 import org.coner.api.request.AddEventRequest;
 import org.coner.api.request.AddRegistrationRequest;
@@ -11,10 +9,8 @@ import org.coner.util.TestConstants;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,12 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  *
  */
-public class CreateRegistrationIntegrationTest {
-
-    @ClassRule
-    public static final DropwizardAppRule<ConerDropwizardConfiguration> RULE = IntegrationTestUtils.buildAppRule();
-
-    private final Client client = IntegrationTestUtils.buildClient(RULE);
+public class CreateRegistrationIntegrationTest extends AbstractIntegrationTest {
 
     private String eventId;
     private final String eventName = TestConstants.EVENT_NAME;
