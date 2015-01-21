@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <dropwizard.version>0.8.0-rc2-SNAPSHOT</dropwizard.version>
+        <dropwizard.version>0.8.0-rc3-SNAPSHOT</dropwizard.version>
     </properties>
 
     <artifactId>dropwizard-api</artifactId>
