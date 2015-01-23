@@ -28,13 +28,13 @@ public class AbstractBoundaryTest {
     private AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> abstractBoundary;
 
     @Mock
-    private AbstractBoundary.EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
+    private EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
     @Mock
-    private AbstractBoundary.EntityMerger<TestDomainEntity, TestApiEntity> domainToApiMerger;
+    private EntityMerger<TestDomainEntity, TestApiEntity> domainToApiMerger;
     @Mock
-    private AbstractBoundary.EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
+    private EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
     @Mock
-    private AbstractBoundary.EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
+    private EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
 
     private final Class<TestApiEntity> apiClass = TestApiEntity.class;
     private final Class<TestDomainEntity> domainClass = TestDomainEntity.class;

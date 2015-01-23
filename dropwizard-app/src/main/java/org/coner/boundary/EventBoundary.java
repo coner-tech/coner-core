@@ -70,10 +70,6 @@ public class EventBoundary extends AbstractBoundary<
 
     @Override
     protected EntityMerger<org.coner.hibernate.entity.Event, Event> buildHibernateToDomainMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 }

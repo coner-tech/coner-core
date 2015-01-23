@@ -93,11 +93,12 @@ public class RegistrationBoundary extends AbstractBoundary<
 
     @Override
     protected EntityMerger<org.coner.hibernate.entity.Registration, Registration> buildHibernateToDomainMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setFirstName(fromEntity.getFirstName());
-            toEntity.setLastName(fromEntity.getLastName());
-            toEntity.setEvent(eventBoundary.toDomainEntity(fromEntity.getEvent()));
+        return new ReflectionEntityMerger<org.coner.hibernate.entity.Registration, Registration>() {
+            @Override
+            public void merge(org.coner.hibernate.entity.Registration sourceEntity, Registration destinationEntity) {
+                super.merge(sourceEntity, destinationEntity);
+                destinationEntity.setEvent(eventBoundary.toDomainEntity(sourceEntity.getEvent()));
+            }
         };
     }
 }

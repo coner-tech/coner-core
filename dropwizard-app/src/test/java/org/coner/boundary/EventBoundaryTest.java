@@ -141,21 +141,6 @@ public class EventBoundaryTest {
         assertThat(domainEvent.getId()).isEqualTo(id);
         assertThat(domainEvent.getName()).isEqualToIgnoringCase(name);
         assertThat(domainEvent.getDate())
-                .isEqualTo(date)
-                .isNotSameAs(date);
-    }
-
-    @Test
-    public void whenMergeHibernateWithoutDateIntoDomainItShouldNpe() {
-        org.coner.hibernate.entity.Event hibernateEvent = HibernateEntityUtils.fullHibernateEvent();
-        hibernateEvent.setDate(null);
-        Event domainEvent = new Event();
-
-        try {
-            eventBoundary.merge(hibernateEvent, domainEvent);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
+                .isEqualTo(date);
     }
 }
