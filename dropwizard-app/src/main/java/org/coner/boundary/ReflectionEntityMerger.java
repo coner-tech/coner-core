@@ -55,6 +55,7 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
             }
             if (!sourceField.getType().isAssignableFrom(sourceMethod.getReturnType())) {
                 // if some type conversion is happening under the covers, we're not using it
+                continue;
             }
             sourceGettersByFieldName.put(sourceFieldName, sourceMethod);
         }
