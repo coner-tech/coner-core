@@ -19,18 +19,23 @@ import java.util.HashMap;
  */
 public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
 
+    private final EntityMerger<F, T> additionalEntityMerger;
     private ImmutableList<SourceDestinationMethodPair> sourceDestinationMethodPairs;
-    private EntityMerger<F, T> additionalEntityMerger;
 
     /**
-     * Setter for an additional EntityMerger which could perform any additional merge operations that would otherwise
-     * be beyond the ability of the ReflectionEntityMerger to perform. The ReflectionEntityMerger will call the passed
-     * EntityMerger's merge method after all reflection-based merge operations have been performed.
-     *
-     * @param additionalEntityMerger the additional EntityMerger whose merge method will be called after all
-     *                               reflection-based merge operations have been performed.
+     * Construct a ReflectionEntityMerger with default functionality
      */
-    public void setAdditionalEntityMerger(EntityMerger<F, T> additionalEntityMerger) {
+    public ReflectionEntityMerger() {
+        this.additionalEntityMerger = null;
+    }
+
+    /**
+     * Construct a ReflectionEntityMerger with an additional EntityMerger
+     *
+     * @param additionalEntityMerger an additional EntityMerger which will be called after reflection-based merge
+     *                               operations have been performed
+     */
+    public ReflectionEntityMerger(EntityMerger<F, T> additionalEntityMerger) {
         this.additionalEntityMerger = additionalEntityMerger;
     }
 

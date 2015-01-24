@@ -55,8 +55,7 @@ public class RegistrationBoundary extends AbstractBoundary<
 
     @Override
     protected EntityMerger<org.coner.api.entity.Registration, Registration> buildApiToDomainMerger() {
-        ReflectionEntityMerger<org.coner.api.entity.Registration, Registration> merger = new ReflectionEntityMerger<>();
-        merger.setAdditionalEntityMerger((sourceEntity, destinationEntity) -> {
+        return new ReflectionEntityMerger<>((sourceEntity, destinationEntity) -> {
             // When Api => Domain, the event could be null
             Event domainEvent = new Event();
             if (sourceEntity.getEvent() != null) {
@@ -64,37 +63,28 @@ public class RegistrationBoundary extends AbstractBoundary<
             }
             destinationEntity.setEvent(domainEvent);
         });
-        return merger;
     }
 
     @Override
     protected EntityMerger<Registration, org.coner.api.entity.Registration> buildDomainToApiMerger() {
-        ReflectionEntityMerger<Registration, org.coner.api.entity.Registration> merger = new ReflectionEntityMerger<>();
-        merger.setAdditionalEntityMerger((sourceEntity, destinationEntity) -> {
+        return new ReflectionEntityMerger<>((sourceEntity, destinationEntity) -> {
             org.coner.api.entity.Registration.Event event = new org.coner.api.entity.Registration.Event();
             event.setId(sourceEntity.getEvent().getId());
             destinationEntity.setEvent(event);
         });
-        return merger;
     }
 
     @Override
     protected EntityMerger<Registration, org.coner.hibernate.entity.Registration> buildDomainToHibernateMerger() {
-        ReflectionEntityMerger<Registration, org.coner.hibernate.entity.Registration> merger =
-                new ReflectionEntityMerger<>();
-        merger.setAdditionalEntityMerger((sourceEntity, destinationEntity) -> destinationEntity.setEvent(
+        return new ReflectionEntityMerger<>((sourceEntity, destinationEntity) -> destinationEntity.setEvent(
                 eventBoundary.toHibernateEntity(sourceEntity.getEvent())
         ));
-        return merger;
     }
 
     @Override
     protected EntityMerger<org.coner.hibernate.entity.Registration, Registration> buildHibernateToDomainMerger() {
-        ReflectionEntityMerger<org.coner.hibernate.entity.Registration, Registration> merger =
-                new ReflectionEntityMerger<>();
-        merger.setAdditionalEntityMerger((sourceEntity, destinationEntity) -> destinationEntity.setEvent(
-                eventBoundary.toDomainEntity(sourceEntity.getEvent())
-        ));
-        return merger;
+        return new ReflectionEntityMerger<>((sourceEntity, destinationEntity) -> {
+            destinationEntity.setEvent(eventBoundary.toDomainEntity(sourceEntity.getEvent()));
+        });
     }
 }
