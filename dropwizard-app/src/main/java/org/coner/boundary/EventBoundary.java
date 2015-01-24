@@ -2,8 +2,6 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Event;
 
-import java.util.Date;
-
 /**
  * Converts Event entities as they cross architectural boundaries.
  */
@@ -43,29 +41,17 @@ public class EventBoundary extends AbstractBoundary<
 
     @Override
     protected EntityMerger<org.coner.api.entity.Event, Event> buildApiToDomainMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override
     protected EntityMerger<Event, org.coner.api.entity.Event> buildDomainToApiMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override
     protected EntityMerger<Event, org.coner.hibernate.entity.Event> buildDomainToHibernateMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override

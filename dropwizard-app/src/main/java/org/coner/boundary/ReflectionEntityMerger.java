@@ -8,12 +8,38 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 /**
+ * ReflectionEntityMerger uses reflection to automatically merge entities that follow the JavaBean convention.
+ * <p/>
+ * Only the destination entity's setters which correspond to the source entity's getters will be called. Only the
+ * getters/setters which correspond to like-named properties will be used. Only getters and setters which
+ * accept/return the same type as each other will be used.
  *
+ * @param <F> source entity class
+ * @param <T> destination entity class
  */
 public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
 
     private ImmutableList<SourceDestinationMethodPair> sourceDestinationMethodPairs;
+    private EntityMerger<F, T> additionalEntityMerger;
 
+    /**
+     * Setter for an additional EntityMerger which could perform any additional merge operations that would otherwise
+     * be beyond the ability of the ReflectionEntityMerger to perform. The ReflectionEntityMerger will call the passed
+     * EntityMerger's merge method after all reflection-based merge operations have been performed.
+     *
+     * @param additionalEntityMerger the additional EntityMerger whose merge method will be called after all
+     *                               reflection-based merge operations have been performed.
+     */
+    public void setAdditionalEntityMerger(EntityMerger<F, T> additionalEntityMerger) {
+        this.additionalEntityMerger = additionalEntityMerger;
+    }
+
+    /**
+     * build the sourceDestinationMethodPairs list
+     *
+     * @param sourceClass      the class of the source entity
+     * @param destinationClass the class of the destination entity
+     */
     private void buildSourceDestinationMethodPairs(Class<?> sourceClass, Class<?> destinationClass) {
         Method[] allSourceMethods = sourceClass.getMethods();
         Method[] allDestinationMethods = destinationClass.getMethods();
@@ -90,7 +116,8 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
         }
 
         // build map of source getter and destination setter pairs by source field name
-        ImmutableList.Builder<SourceDestinationMethodPair> sourceDestinationMethodPairsBuilder = ImmutableList.builder();
+        ImmutableList.Builder<SourceDestinationMethodPair> sourceDestinationMethodPairsBuilder = ImmutableList
+                .builder();
         for (String sourceFieldName : sourceGettersByFieldName.keySet()) {
             if (!destinationSettersByFieldName.containsKey(sourceFieldName)) {
                 // no destination setter to pair with the source getter
@@ -114,36 +141,40 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     @Override
-    public void merge(F sourceEntity, T destinationEntity) {
+    public final void merge(F sourceEntity, T destinationEntity) {
         if (sourceDestinationMethodPairs == null) {
             buildSourceDestinationMethodPairs(sourceEntity.getClass(), destinationEntity.getClass());
         }
 
         for (SourceDestinationMethodPair sourceDestinationMethodPair : sourceDestinationMethodPairs) {
-            Object sourceValue;
             try {
-                // call source getter
-                sourceValue = sourceDestinationMethodPair.sourceMethod.invoke(sourceEntity);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-            try {
-                // call destination setter
+                Object sourceValue = sourceDestinationMethodPair.sourceMethod.invoke(sourceEntity);
                 sourceDestinationMethodPair.destinationMethod.invoke(destinationEntity, sourceValue);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
-            } catch (IllegalArgumentException iae) {
-                iae.printStackTrace();
             }
+        }
+
+        if (additionalEntityMerger != null) {
+            additionalEntityMerger.merge(sourceEntity, destinationEntity);
         }
     }
 
+    /**
+     * A SourceDestinationMethodPair is a tuple which pairs a getter method from the source entity class and a setter
+     * method from the destination entity class. The merge implementation
+     */
     private static class SourceDestinationMethodPair {
         final Method sourceMethod;
         final Method destinationMethod;
 
+        /**
+         * Private constructor accepting and assigning both the sourceMethod and destinationMethod
+         *
+         * @param sourceMethod      the sourceMethod
+         * @param destinationMethod the destinationMethod
+         */
         private SourceDestinationMethodPair(Method sourceMethod, Method destinationMethod) {
             this.sourceMethod = sourceMethod;
             this.destinationMethod = destinationMethod;

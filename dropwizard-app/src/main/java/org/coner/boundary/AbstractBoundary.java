@@ -39,10 +39,10 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     private final Class<A> apiClass;
     private final Class<D> domainClass;
     private final Class<H> hibernateClass;
-    private final EntityMerger<A, D> apiToDomainMerger;
-    private final EntityMerger<D, A> domainToApiMerger;
-    private final EntityMerger<D, H> domainToHibernateMerger;
-    private final EntityMerger<H, D> hibernateToDomainMerger;
+    private EntityMerger<A, D> apiToDomainMerger;
+    private EntityMerger<D, A> domainToApiMerger;
+    private EntityMerger<D, H> domainToHibernateMerger;
+    private EntityMerger<H, D> hibernateToDomainMerger;
 
     /**
      * Default constructor for the AbstractBoundary.
@@ -51,14 +51,26 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
      * @param domainClass    the Domain entity class
      * @param hibernateClass the Hibernate entity class
      */
-    public AbstractBoundary(Class<A> apiClass, Class<D> domainClass, Class<H> hibernateClass) {
+    public AbstractBoundary(
+            Class<A> apiClass,
+            Class<D> domainClass,
+            Class<H> hibernateClass
+    ) {
         this.apiClass = apiClass;
         this.domainClass = domainClass;
         this.hibernateClass = hibernateClass;
-        this.apiToDomainMerger = buildApiToDomainMerger();
-        this.domainToApiMerger = buildDomainToApiMerger();
-        this.domainToHibernateMerger = buildDomainToHibernateMerger();
-        this.hibernateToDomainMerger = buildHibernateToDomainMerger();
+    }
+
+    /**
+     * Get the Domain to API merger (lazy-init)
+     *
+     * @return the Domain to API merger
+     */
+    private EntityMerger<D, A> getDomainToApiMerger() {
+        if (domainToApiMerger == null) {
+            domainToApiMerger = buildDomainToApiMerger();
+        }
+        return domainToApiMerger;
     }
 
     /**
@@ -72,8 +84,20 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         A apiEntity = instantiate(apiClass);
-        domainToApiMerger.merge(domainEntity, apiEntity);
+        getDomainToApiMerger().merge(domainEntity, apiEntity);
         return apiEntity;
+    }
+
+    /**
+     * Get the API to Domain merger (lazy-init)
+     *
+     * @return the API to Domain merger
+     */
+    private EntityMerger<A, D> getApiToDomainMerger() {
+        if (apiToDomainMerger == null) {
+            apiToDomainMerger = buildApiToDomainMerger();
+        }
+        return apiToDomainMerger;
     }
 
     /**
@@ -87,8 +111,20 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         D domainEntity = instantiate(domainClass);
-        apiToDomainMerger.merge(apiEntity, domainEntity);
+        getApiToDomainMerger().merge(apiEntity, domainEntity);
         return domainEntity;
+    }
+
+    /**
+     * Get the Hibernate to Domain merger (lazy-init)
+     *
+     * @return the Hibernate to Domain merger
+     */
+    private EntityMerger<H, D> getHibernateToDomainMerger() {
+        if (hibernateToDomainMerger == null) {
+            hibernateToDomainMerger = buildHibernateToDomainMerger();
+        }
+        return hibernateToDomainMerger;
     }
 
     /**
@@ -102,8 +138,20 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         D domainEntity = instantiate(domainClass);
-        hibernateToDomainMerger.merge(hibernateEntity, domainEntity);
+        getHibernateToDomainMerger().merge(hibernateEntity, domainEntity);
         return domainEntity;
+    }
+
+    /**
+     * Get the Domain to Hibernate merger (lazy-init)
+     *
+     * @return the Domain to Hibernate merger
+     */
+    private EntityMerger<D, H> getDomainToHibernateMerger() {
+        if (domainToHibernateMerger == null) {
+            domainToHibernateMerger = buildDomainToHibernateMerger();
+        }
+        return domainToHibernateMerger;
     }
 
     /**
@@ -117,7 +165,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
             return null;
         }
         H hibernateEntity = instantiate(hibernateClass);
-        domainToHibernateMerger.merge(domainEntity, hibernateEntity);
+        getDomainToHibernateMerger().merge(domainEntity, hibernateEntity);
         return hibernateEntity;
     }
 
@@ -201,7 +249,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     public void merge(A fromApiEntity, D intoDomainEntity) {
         Preconditions.checkNotNull(fromApiEntity);
         Preconditions.checkNotNull(intoDomainEntity);
-        apiToDomainMerger.merge(fromApiEntity, intoDomainEntity);
+        getApiToDomainMerger().merge(fromApiEntity, intoDomainEntity);
     }
 
     /**
@@ -216,7 +264,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     public void merge(D fromDomainEntity, A intoApiEntity) {
         Preconditions.checkNotNull(fromDomainEntity);
         Preconditions.checkNotNull(intoApiEntity);
-        domainToApiMerger.merge(fromDomainEntity, intoApiEntity);
+        getDomainToApiMerger().merge(fromDomainEntity, intoApiEntity);
     }
 
     /**
@@ -231,7 +279,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     public void merge(D fromDomainEntity, H intoHibernateEntity) {
         Preconditions.checkNotNull(fromDomainEntity);
         Preconditions.checkNotNull(intoHibernateEntity);
-        domainToHibernateMerger.merge(fromDomainEntity, intoHibernateEntity);
+        getDomainToHibernateMerger().merge(fromDomainEntity, intoHibernateEntity);
     }
 
     /**
@@ -246,7 +294,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     public void merge(H fromHibernateEntity, D intoDomainEntity) {
         Preconditions.checkNotNull(fromHibernateEntity);
         Preconditions.checkNotNull(intoDomainEntity);
-        hibernateToDomainMerger.merge(fromHibernateEntity, intoDomainEntity);
+        getHibernateToDomainMerger().merge(fromHibernateEntity, intoDomainEntity);
     }
 
     /**
