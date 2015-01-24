@@ -45,7 +45,7 @@ public class AbstractBoundaryTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        abstractBoundary = new TestBoundary(apiClass, domainClass, hibernateClass);
+        abstractBoundary = new TestBoundary();
     }
 
     @Test
@@ -367,14 +367,6 @@ public class AbstractBoundaryTest {
     }
 
     private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
-
-        public TestBoundary(
-                Class<TestApiEntity> apiClass,
-                Class<TestDomainEntity> domainClass,
-                Class<TestHibernateEntity> hibernateClass
-        ) {
-            super(apiClass, domainClass, hibernateClass);
-        }
 
         @Override
         protected EntityMerger<TestApiEntity, TestDomainEntity> buildApiToDomainMerger() {

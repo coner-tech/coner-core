@@ -32,11 +32,7 @@ public class EventBoundary extends AbstractBoundary<
      * Package-private constructor which should only ever be called by `EventBoundary.getInstance` or a test.
      */
     EventBoundary() {
-        super(
-                org.coner.api.entity.Event.class,
-                Event.class,
-                org.coner.hibernate.entity.Event.class
-        );
+        super();
     }
 
     @Override

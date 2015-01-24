@@ -7,6 +7,8 @@ import org.coner.hibernate.entity.HibernateEntity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,19 +48,12 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
 
     /**
      * Default constructor for the AbstractBoundary.
-     *
-     * @param apiClass       the API entity class
-     * @param domainClass    the Domain entity class
-     * @param hibernateClass the Hibernate entity class
      */
-    public AbstractBoundary(
-            Class<A> apiClass,
-            Class<D> domainClass,
-            Class<H> hibernateClass
-    ) {
-        this.apiClass = apiClass;
-        this.domainClass = domainClass;
-        this.hibernateClass = hibernateClass;
+    public AbstractBoundary() {
+        Type[] typeParameters = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
+        this.apiClass = (Class<A>) typeParameters[0];
+        this.domainClass = (Class<D>) typeParameters[1];
+        this.hibernateClass = (Class<H>) typeParameters[2];
     }
 
     /**

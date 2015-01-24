@@ -45,11 +45,7 @@ public class RegistrationBoundary extends AbstractBoundary<
      * @param eventBoundary the EventBoundary to use when converting Event entities
      */
     RegistrationBoundary(EventBoundary eventBoundary) {
-        super(
-                org.coner.api.entity.Registration.class,
-                Registration.class,
-                org.coner.hibernate.entity.Registration.class
-        );
+        super();
         this.eventBoundary = eventBoundary;
     }
 
