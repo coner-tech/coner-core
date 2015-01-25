@@ -46,8 +46,8 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
      * @param destinationClass the class of the destination entity
      */
     private void buildSourceDestinationMethodPairs(Class<?> sourceClass, Class<?> destinationClass) {
-        Method[] allSourceMethods = sourceClass.getMethods();
-        Method[] allDestinationMethods = destinationClass.getMethods();
+        Method[] allSourceMethods = sourceClass.getDeclaredMethods();
+        Method[] allDestinationMethods = destinationClass.getDeclaredMethods();
 
         // build map of source getters by field name
         HashMap<String, Method> sourceGettersByFieldName = new HashMap<>();
@@ -81,7 +81,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
                 sourceField = sourceClass.getDeclaredField(sourceFieldName);
             } catch (NoSuchFieldException e) {
                 // if it doesn't have a field matching the same name, we're not using it
-                e.printStackTrace();
                 continue;
             }
             if (!sourceField.getType().isAssignableFrom(sourceMethod.getReturnType())) {
@@ -110,7 +109,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
                 destinationField = destinationClass.getDeclaredField(destinationFieldName);
             } catch (NoSuchFieldException e) {
                 // if it doesn't have a field matching the same name, we're not using it
-                e.printStackTrace();
                 continue;
             }
             if (!destinationField.getType().isAssignableFrom(destinationMethod.getParameters()[0].getType())) {
