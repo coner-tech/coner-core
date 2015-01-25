@@ -1,5 +1,6 @@
 package org.coner.boundary;
 
+import org.assertj.core.api.Assertions;
 import org.coner.core.domain.Event;
 import org.coner.util.ApiEntityUtils;
 import org.coner.util.DomainUtils;
@@ -11,7 +12,6 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -57,22 +57,18 @@ public class EventBoundaryTest {
         assertThat(domainEvent.getName()).isEqualTo(name);
         assertThat(domainEvent.hasDate()).isTrue();
         assertThat(domainEvent.getDate())
-                .isEqualTo(date)
-                .isNotSameAs(date);
+                .isEqualTo(date);
     }
 
     @Test
-    public void whenMergeApiWithoutDateIntoDomainItShouldNpe() {
+    public void whenMergeApiWithoutDateIntoDomainItShouldBeWithoutDate() {
         org.coner.api.entity.Event apiEvent = ApiEntityUtils.fullApiEvent();
         apiEvent.setDate(null);
         Event domainEvent = new Event();
 
-        try {
-            eventBoundary.merge(apiEvent, domainEvent);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
+        eventBoundary.merge(apiEvent, domainEvent);
+
+        assertThat(domainEvent.getDate()).isNull();
     }
 
     @Test
@@ -85,22 +81,18 @@ public class EventBoundaryTest {
         assertThat(apiEvent.getId()).isEqualTo(id);
         assertThat(apiEvent.getName()).isEqualTo(name);
         assertThat(apiEvent.getDate())
-                .isEqualTo(date)
-                .isNotSameAs(date);
+                .isEqualTo(date);
     }
 
     @Test
-    public void whenMergeDomainWithoutDateIntoDomainItShouldNpe() {
+    public void whenMergeDomainWithoutDateIntoDomainItShouldBeWithoutDate() {
         Event domainEvent = DomainUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
 
-        try {
-            eventBoundary.merge(domainEvent, apiEvent);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
+        eventBoundary.merge(domainEvent, apiEvent);
+
+        Assertions.assertThat(apiEvent.getDate()).isNull();
     }
 
     @Test
@@ -113,22 +105,19 @@ public class EventBoundaryTest {
         assertThat(hibernateEvent.getId()).isEqualTo(id);
         assertThat(hibernateEvent.getName()).isEqualTo(name);
         assertThat(hibernateEvent.getDate())
-                .isEqualTo(date)
-                .isNotSameAs(date);
+                .isEqualTo(date);
     }
 
     @Test
-    public void whenMergeDomainWithoutDateIntoHibernateItShouldNpe() {
+    public void whenMergeDomainWithoutDateIntoHibernateItShouldBeWithoutDate() {
         Event domainEvent = DomainUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
 
-        try {
-            eventBoundary.merge(domainEvent, hibernateEvent);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
+        eventBoundary.merge(domainEvent, hibernateEvent);
+
+        Assertions.assertThat(hibernateEvent.getDate())
+                .isNull();
     }
 
     @Test
@@ -141,21 +130,6 @@ public class EventBoundaryTest {
         assertThat(domainEvent.getId()).isEqualTo(id);
         assertThat(domainEvent.getName()).isEqualToIgnoringCase(name);
         assertThat(domainEvent.getDate())
-                .isEqualTo(date)
-                .isNotSameAs(date);
-    }
-
-    @Test
-    public void whenMergeHibernateWithoutDateIntoDomainItShouldNpe() {
-        org.coner.hibernate.entity.Event hibernateEvent = HibernateEntityUtils.fullHibernateEvent();
-        hibernateEvent.setDate(null);
-        Event domainEvent = new Event();
-
-        try {
-            eventBoundary.merge(hibernateEvent, domainEvent);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (Exception e) {
-            assertThat(e).isInstanceOf(NullPointerException.class);
-        }
+                .isEqualTo(date);
     }
 }

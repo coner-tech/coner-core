@@ -2,8 +2,6 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Event;
 
-import java.util.Date;
-
 /**
  * Converts Event entities as they cross architectural boundaries.
  */
@@ -34,46 +32,26 @@ public class EventBoundary extends AbstractBoundary<
      * Package-private constructor which should only ever be called by `EventBoundary.getInstance` or a test.
      */
     EventBoundary() {
-        super(
-                org.coner.api.entity.Event.class,
-                Event.class,
-                org.coner.hibernate.entity.Event.class
-        );
+        super();
     }
 
     @Override
     protected EntityMerger<org.coner.api.entity.Event, Event> buildApiToDomainMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override
     protected EntityMerger<Event, org.coner.api.entity.Event> buildDomainToApiMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override
     protected EntityMerger<Event, org.coner.hibernate.entity.Event> buildDomainToHibernateMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 
     @Override
     protected EntityMerger<org.coner.hibernate.entity.Event, Event> buildHibernateToDomainMerger() {
-        return (fromEntity, toEntity) -> {
-            toEntity.setId(fromEntity.getId());
-            toEntity.setDate(new Date(fromEntity.getDate().getTime()));
-            toEntity.setName(fromEntity.getName());
-        };
+        return new ReflectionEntityMerger<>();
     }
 }
