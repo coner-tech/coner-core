@@ -1,5 +1,6 @@
 package org.coner.boundary;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import java.lang.reflect.Field;
@@ -11,8 +12,8 @@ import java.util.HashMap;
  * ReflectionEntityMerger uses reflection to automatically merge entities that follow the JavaBean convention.
  * <p/>
  * Only the destination entity's setters which correspond to the source entity's getters will be called. Only the
- * getters/setters which correspond to like-named properties will be used. Only getters and setters which
- * accept/return the same type as each other will be used.
+ * getters/setters which correspond to like-named properties will be used. Strings corresponding to Enum names will be
+ * transformed automatically.
  *
  * @param <F> source entity class
  * @param <T> destination entity class
@@ -20,7 +21,7 @@ import java.util.HashMap;
 public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
 
     private final EntityMerger<F, T> additionalEntityMerger;
-    private ImmutableList<SourceDestinationMethodPair> sourceDestinationMethodPairs;
+    private ImmutableList<MergeOperation> mergeOperations;
 
     /**
      * Construct a ReflectionEntityMerger with default functionality
@@ -83,10 +84,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
                 // if it doesn't have a field matching the same name, we're not using it
                 continue;
             }
-            if (!sourceField.getType().isAssignableFrom(sourceMethod.getReturnType())) {
-                // if some type conversion is happening under the covers, we're not using it
-                continue;
-            }
             sourceGettersByFieldName.put(sourceFieldName, sourceMethod);
         }
 
@@ -111,17 +108,14 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
                 // if it doesn't have a field matching the same name, we're not using it
                 continue;
             }
-            if (!destinationField.getType().isAssignableFrom(destinationMethod.getParameters()[0].getType())) {
-                // if some type conversion is happening under the covers, we're not using it
-                continue;
-            }
             destinationSettersByFieldName.put(destinationFieldName, destinationMethod);
         }
 
         // build map of source getter and destination setter pairs by source field name
-        ImmutableList.Builder<SourceDestinationMethodPair> sourceDestinationMethodPairsBuilder = ImmutableList
+        ImmutableList.Builder<MergeOperation> mergeOperationsBuilder = ImmutableList
                 .builder();
         for (String sourceFieldName : sourceGettersByFieldName.keySet()) {
+            ValueTransformer valueTransformer = null;
             if (!destinationSettersByFieldName.containsKey(sourceFieldName)) {
                 // no destination setter to pair with the source getter
                 continue;
@@ -131,28 +125,75 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
             Method destinationSetter = destinationSettersByFieldName.get(sourceFieldName);
 
             if (!destinationSetter.getParameters()[0].getType().isAssignableFrom(sourceGetter.getReturnType())) {
-                // source getter return type doesn't match destination setter type, skip
-                continue;
+                // source getter return type doesn't match destination setter type.
+
+                Class<?> sourceGetterReturnType = sourceGetter.getReturnType();
+                Class<?> destinationSetterParameter0Type = destinationSetter.getParameterTypes()[0];
+                if (shouldUseStringToEnumValueTransformer(sourceGetterReturnType, destinationSetterParameter0Type)) {
+                    valueTransformer = new StringToEnumValueTransformer(
+                            (Class<? extends Enum>) destinationSetter.getParameterTypes()[0]
+                    );
+                } else if (shouldUseEnumToStringValueTransformer(
+                        sourceGetterReturnType,
+                        destinationSetterParameter0Type)) {
+                    valueTransformer = new EnumToStringValueTransformer();
+                } else {
+                    // not supported, skip
+                    continue;
+                }
+
             }
 
-            sourceDestinationMethodPairsBuilder.add(new SourceDestinationMethodPair(
+            mergeOperationsBuilder.add(new MergeOperation(
                     sourceGetter,
-                    destinationSetter
+                    destinationSetter,
+                    valueTransformer
             ));
         }
-        sourceDestinationMethodPairs = sourceDestinationMethodPairsBuilder.build();
+        mergeOperations = mergeOperationsBuilder.build();
+    }
+
+    /**
+     * Check whether a MergeOperation should use a StringToEnumValueTransformer
+     *
+     * @param sourceGetterReturnType          the type returned by the source getter
+     * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
+     * @return true if should or false if shouldn't
+     */
+    private boolean shouldUseStringToEnumValueTransformer(
+            Class<?> sourceGetterReturnType,
+            Class<?> destinationSetterParameter0Type
+    ) {
+        return sourceGetterReturnType == String.class && Enum.class.isAssignableFrom(destinationSetterParameter0Type);
+    }
+
+    /**
+     * Check whether a MergeOperation should use an EnumToStringValueTransformer
+     *
+     * @param sourceGetterReturnType          the type returned by the source getter
+     * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
+     * @return true if should or false if shouldn't
+     */
+    private boolean shouldUseEnumToStringValueTransformer(
+            Class<?> sourceGetterReturnType,
+            Class<?> destinationSetterParameter0Type
+    ) {
+        return Enum.class.isAssignableFrom(sourceGetterReturnType) && destinationSetterParameter0Type == String.class;
     }
 
     @Override
     public final void merge(F sourceEntity, T destinationEntity) {
-        if (sourceDestinationMethodPairs == null) {
+        if (mergeOperations == null) {
             buildSourceDestinationMethodPairs(sourceEntity.getClass(), destinationEntity.getClass());
         }
 
-        for (SourceDestinationMethodPair sourceDestinationMethodPair : sourceDestinationMethodPairs) {
+        for (MergeOperation mergeOperation : mergeOperations) {
             try {
-                Object sourceValue = sourceDestinationMethodPair.sourceMethod.invoke(sourceEntity);
-                sourceDestinationMethodPair.destinationMethod.invoke(destinationEntity, sourceValue);
+                Object value = mergeOperation.sourceMethod.invoke(sourceEntity);
+                if (mergeOperation.valueTransformer != null) {
+                    value = mergeOperation.valueTransformer.transform(value);
+                }
+                mergeOperation.destinationMethod.invoke(destinationEntity, value);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -168,19 +209,76 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
      * A SourceDestinationMethodPair is a tuple which pairs a getter method from the source entity class and a setter
      * method from the destination entity class. The merge implementation
      */
-    private static class SourceDestinationMethodPair {
+    private static class MergeOperation {
         final Method sourceMethod;
         final Method destinationMethod;
+        final ValueTransformer valueTransformer;
 
         /**
          * Private constructor accepting and assigning both the sourceMethod and destinationMethod
          *
          * @param sourceMethod      the sourceMethod
          * @param destinationMethod the destinationMethod
+         * @param valueTransformer  the valueTransformer
          */
-        private SourceDestinationMethodPair(Method sourceMethod, Method destinationMethod) {
+        private MergeOperation(Method sourceMethod, Method destinationMethod, ValueTransformer valueTransformer) {
             this.sourceMethod = sourceMethod;
             this.destinationMethod = destinationMethod;
+            this.valueTransformer = valueTransformer;
+        }
+    }
+
+    /**
+     * A ValueTransformer accepts a value and creates a transformed representation of the value
+     */
+    private interface ValueTransformer {
+        /**
+         * Transform an input value and return the transformed value
+         *
+         * @param value the input value
+         * @return the transformed value
+         */
+        Object transform(Object value);
+    }
+
+    /**
+     * StringToEnumValueTransformer transforms a String value containing an Enum name-value to the instance of the
+     * Enum name-value.
+     */
+    private static class StringToEnumValueTransformer implements ValueTransformer {
+        private final Class<? extends Enum> destinationEnumType;
+
+        /**
+         * @param destinationEnumType the destinationEnumType
+         */
+        public StringToEnumValueTransformer(Class<? extends Enum> destinationEnumType) {
+            this.destinationEnumType = destinationEnumType;
+        }
+
+        @Override
+        public Object transform(Object value) {
+            String stringValue = (String) value;
+            if (Strings.isNullOrEmpty(stringValue)) {
+                return null;
+            }
+            try {
+                return Enum.valueOf(destinationEnumType, stringValue);
+            } catch (IllegalArgumentException e) {
+                // the destinationEnumType does not contain an Enum constant with the name contained in stringValue
+                return null;
+            }
+        }
+    }
+
+    /**
+     * EnumToStringValueTransformer transforms an Enum value to a String containing the name
+     */
+    private static class EnumToStringValueTransformer implements ValueTransformer {
+
+        @Override
+        public Object transform(Object value) {
+            Enum<?> enumValue = (Enum<?>) value;
+            return enumValue.name();
         }
     }
 }
