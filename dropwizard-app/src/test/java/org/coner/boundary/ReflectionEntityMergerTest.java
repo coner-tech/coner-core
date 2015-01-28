@@ -22,6 +22,9 @@ public class ReflectionEntityMergerTest {
     private final String VALUE_PROPERTY_WITH_GETTER_WITH_PARAMETER = "property-with-getter-with-parameter";
     private final String VALUE_PROPERTY_WITH_SETTER_WITH_MORE_THAN_ONE_PARAMETER =
             "property-with-setter-with-more-than-one-parameter";
+    private final String VALUE_PROPERTY_STRING_WITH_DESTINATION_ENUM = "EAST";
+    private final TestSourceEntity.Status VALUE_PROPERTY_ENUM_WITH_STRING_DESTINATION = TestSourceEntity.Status.PLAYING;
+
 
     private TestSourceEntity testSourceEntity;
     private TestDestinationEntity testDestinationEntity;
@@ -36,7 +39,9 @@ public class ReflectionEntityMergerTest {
                 VALUE_PROPERTY_WITH_GETTER_OF_DIFFERENT_NAME,
                 VALUE_PROPERTY_WITH_NON_STANDARD_GETTER_SETTER_METHOD_NAME,
                 VALUE_PROPERTY_WITH_GETTER_WITH_PARAMETER,
-                VALUE_PROPERTY_WITH_SETTER_WITH_MORE_THAN_ONE_PARAMETER
+                VALUE_PROPERTY_WITH_SETTER_WITH_MORE_THAN_ONE_PARAMETER,
+                VALUE_PROPERTY_STRING_WITH_DESTINATION_ENUM,
+                VALUE_PROPERTY_ENUM_WITH_STRING_DESTINATION
         );
         testDestinationEntity = new TestDestinationEntity();
     }
@@ -54,6 +59,9 @@ public class ReflectionEntityMergerTest {
         assertThat(testDestinationEntity.propertyWithNonStandardGetterSetterMethodName).isNull();
         assertThat(testDestinationEntity.propertyWithGetterWithParameter).isNull();
         assertThat(testDestinationEntity.propertyWithSetterWithMoreThanOneParameter).isNull();
+        assertThat(testDestinationEntity.propertyStringWithDestinationEnum)
+                .isEqualTo(TestDestinationEntity.Direction.EAST);
+        assertThat(testDestinationEntity.propertyEnumWithStringDestination).isEqualTo("PLAYING");
     }
 
     @Test
@@ -80,6 +88,31 @@ public class ReflectionEntityMergerTest {
         merger.merge(testSourceEntity, testDestinationEntity);
     }
 
+    @Test
+    public void itShouldTransformStringValueInvalidToEnumNull() {
+        ReflectionEntityMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionEntityMerger<>();
+
+        // null string
+        testSourceEntity.setPropertyStringWithDestinationEnum(null);
+        merger.merge(testSourceEntity, testDestinationEntity);
+        assertThat(testDestinationEntity.getPropertyStringWithDestinationEnum()).isNull();
+
+        // empty string
+        testSourceEntity.setPropertyStringWithDestinationEnum("");
+        merger.merge(testSourceEntity, testDestinationEntity);
+        assertThat(testDestinationEntity.getPropertyStringWithDestinationEnum()).isNull();
+
+        // garbage name string
+        testSourceEntity.setPropertyStringWithDestinationEnum("garbage");
+        merger.merge(testSourceEntity, testDestinationEntity);
+        assertThat(testDestinationEntity.getPropertyStringWithDestinationEnum()).isNull();
+
+        // string with illegal enum name
+        testSourceEntity.setPropertyStringWithDestinationEnum("`~!@#$%^&*()-+=?/>.,<';:");
+        merger.merge(testSourceEntity, testDestinationEntity);
+        assertThat(testDestinationEntity.getPropertyStringWithDestinationEnum()).isNull();
+    }
+
     private static class TestSourceEntity {
         private String propertyCommon;
         private boolean propertyBoolean;
@@ -89,6 +122,8 @@ public class ReflectionEntityMergerTest {
         private String propertyWithNonStandardGetterSetterMethodName;
         private String propertyWithGetterWithParameter;
         private String propertyWithSetterWithMoreThanOneParameter;
+        private String propertyStringWithDestinationEnum;
+        private Status propertyEnumWithStringDestination;
 
         public TestSourceEntity(
                 String propertyCommon,
@@ -98,8 +133,8 @@ public class ReflectionEntityMergerTest {
                 String propertyWithGetterOfDifferentName1,
                 String propertyWithNonStandardGetterSetterMethodName,
                 String propertyWithGetterWithParameter,
-                String propertyWithSetterWithMoreThanOneParameter
-        ) {
+                String propertyWithSetterWithMoreThanOneParameter,
+                String propertyStringWithDestinationEnum, Status propertyEnumWithStringDestination) {
             this.propertyCommon = propertyCommon;
             this.propertyBoolean = propertyBoolean;
             this.propertyWithDifferentType = propertyWithDifferentType;
@@ -108,6 +143,8 @@ public class ReflectionEntityMergerTest {
             this.propertyWithNonStandardGetterSetterMethodName = propertyWithNonStandardGetterSetterMethodName;
             this.propertyWithGetterWithParameter = propertyWithGetterWithParameter;
             this.propertyWithSetterWithMoreThanOneParameter = propertyWithSetterWithMoreThanOneParameter;
+            this.propertyStringWithDestinationEnum = propertyStringWithDestinationEnum;
+            this.propertyEnumWithStringDestination = propertyEnumWithStringDestination;
         }
 
         public String getPropertyCommon() {
@@ -172,6 +209,29 @@ public class ReflectionEntityMergerTest {
         ) {
             this.propertyWithSetterWithMoreThanOneParameter = propertyWithSetterWithMoreThanOneParameter;
         }
+
+        public Status getPropertyEnumWithStringDestination() {
+            return propertyEnumWithStringDestination;
+        }
+
+        public void setPropertyEnumWithStringDestination(Status propertyEnumWithStringDestination) {
+            this.propertyEnumWithStringDestination = propertyEnumWithStringDestination;
+        }
+
+        public String getPropertyStringWithDestinationEnum() {
+            return propertyStringWithDestinationEnum;
+        }
+
+        public void setPropertyStringWithDestinationEnum(String propertyStringWithDestinationEnum) {
+            this.propertyStringWithDestinationEnum = propertyStringWithDestinationEnum;
+        }
+
+        private static enum Status {
+            BUFFERING,
+            PLAYING,
+            PAUSED,
+            STOPPED
+        }
     }
 
     private static class TestDestinationEntity {
@@ -182,6 +242,8 @@ public class ReflectionEntityMergerTest {
         private String propertyWithNonStandardGetterSetterMethodName;
         private String propertyWithGetterWithParameter;
         private String propertyWithSetterWithMoreThanOneParameter;
+        private Direction propertyStringWithDestinationEnum;
+        private String propertyEnumWithStringDestination;
 
         public void setPropertyCommon(String propertyCommon) {
             this.propertyCommon = propertyCommon;
@@ -240,6 +302,29 @@ public class ReflectionEntityMergerTest {
                 Object parameter2
         ) {
             this.propertyWithSetterWithMoreThanOneParameter = propertyWithSetterWithMoreThanOneParameter;
+        }
+
+        public Direction getPropertyStringWithDestinationEnum() {
+            return propertyStringWithDestinationEnum;
+        }
+
+        public void setPropertyStringWithDestinationEnum(Direction propertyStringWithDestinationEnum) {
+            this.propertyStringWithDestinationEnum = propertyStringWithDestinationEnum;
+        }
+
+        public String getPropertyEnumWithStringDestination() {
+            return propertyEnumWithStringDestination;
+        }
+
+        public void setPropertyEnumWithStringDestination(String propertyEnumWithStringDestination) {
+            this.propertyEnumWithStringDestination = propertyEnumWithStringDestination;
+        }
+
+        private static enum Direction {
+            NORTH,
+            SOUTH,
+            EAST,
+            WEST
         }
     }
 }
