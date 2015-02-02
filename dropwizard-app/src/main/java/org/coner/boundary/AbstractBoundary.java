@@ -57,7 +57,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Get the Domain to API merger (lazy-init)
+     * Get the Domain to API merger (lazy-init).
      *
      * @return the Domain to API merger
      */
@@ -84,7 +84,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Get the API to Domain merger (lazy-init)
+     * Get the API to Domain merger (lazy-init).
      *
      * @return the API to Domain merger
      */
@@ -111,7 +111,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Get the Hibernate to Domain merger (lazy-init)
+     * Get the Hibernate to Domain merger (lazy-init).
      *
      * @return the Hibernate to Domain merger
      */
@@ -138,7 +138,7 @@ public abstract class AbstractBoundary<A extends ApiEntity, D extends DomainEnti
     }
 
     /**
-     * Get the Domain to Hibernate merger (lazy-init)
+     * Get the Domain to Hibernate merger (lazy-init).
      *
      * @return the Domain to Hibernate merger
      */

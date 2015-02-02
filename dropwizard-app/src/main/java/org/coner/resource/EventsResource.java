@@ -57,7 +57,7 @@ public class EventsResource {
      * Add an event.
      *
      * @param event the Event to add
-     * @return a response containing the added Event
+     * @return a response containing the response code and url of the added event
      */
     @POST
     @UnitOfWork

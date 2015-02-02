@@ -12,18 +12,19 @@ import static org.mockito.Mockito.verify;
  */
 public class ReflectionEntityMergerTest {
 
-    private final String VALUE_PROPERTY_COMMON = "property-common";
-    private final boolean VALUE_PROPERTY_BOOLEAN = true;
-    private final String VALUE_PROPERTY_WITH_DIFFERENT_TYPE = "property-with-different-type";
-    private final String VALUE_PROPERTY_WITH_NO_COUNTERPART = "property-with-no-counterpart";
-    private final String VALUE_PROPERTY_WITH_GETTER_OF_DIFFERENT_NAME = "property-with-getter-of-different-name";
-    private final String VALUE_PROPERTY_WITH_NON_STANDARD_GETTER_SETTER_METHOD_NAME =
+    private static final String VALUE_PROPERTY_COMMON = "property-common";
+    private static final boolean VALUE_PROPERTY_BOOLEAN = true;
+    private static final String VALUE_PROPERTY_WITH_DIFFERENT_TYPE = "property-with-different-type";
+    private static final String VALUE_PROPERTY_WITH_NO_COUNTERPART = "property-with-no-counterpart";
+    private static final String VALUE_PROPERTY_WITH_GETTER_OF_DIFFERENT_NAME = "property-with-getter-of-different-name";
+    private static final String VALUE_PROPERTY_WITH_NON_STANDARD_GETTER_SETTER_METHOD_NAME =
             "property-with-non-standard-getter-setter-method-name";
-    private final String VALUE_PROPERTY_WITH_GETTER_WITH_PARAMETER = "property-with-getter-with-parameter";
-    private final String VALUE_PROPERTY_WITH_SETTER_WITH_MORE_THAN_ONE_PARAMETER =
+    private static final String VALUE_PROPERTY_WITH_GETTER_WITH_PARAMETER = "property-with-getter-with-parameter";
+    private static final String VALUE_PROPERTY_WITH_SETTER_WITH_MORE_THAN_ONE_PARAMETER =
             "property-with-setter-with-more-than-one-parameter";
-    private final String VALUE_PROPERTY_STRING_WITH_DESTINATION_ENUM = "EAST";
-    private final TestSourceEntity.Status VALUE_PROPERTY_ENUM_WITH_STRING_DESTINATION = TestSourceEntity.Status.PLAYING;
+    private static final String VALUE_PROPERTY_STRING_WITH_DESTINATION_ENUM = "EAST";
+    private static final TestSourceEntity.Status VALUE_PROPERTY_ENUM_WITH_STRING_DESTINATION =
+            TestSourceEntity.Status.PLAYING;
 
 
     private TestSourceEntity testSourceEntity;
@@ -179,11 +180,11 @@ public class ReflectionEntityMergerTest {
             this.propertyWithNoCounterpart = propertyWithNoCounterpart;
         }
 
-        public String getPropertyWithGetterOfDifferentName() {
+        public String getPropertyWithGetterOfDifferentName1() {
             return propertyWithGetterOfDifferentName1;
         }
 
-        public void setPropertyWithGetterOfDifferentName(String propertyWithGetterOfDifferentName1) {
+        public void setPropertyWithGetterOfDifferentName1(String propertyWithGetterOfDifferentName1) {
             this.propertyWithGetterOfDifferentName1 = propertyWithGetterOfDifferentName1;
         }
 

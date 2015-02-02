@@ -23,7 +23,6 @@ import javax.persistence.Table;
                 query = "FROM Registration r WHERE r.event.id = :" + Registration.PARAMETER_EVENT_ID
         )
 })
-
 public class Registration extends HibernateEntity {
 
     public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.hibernate.entity.Registration.findAllWithEvent";
