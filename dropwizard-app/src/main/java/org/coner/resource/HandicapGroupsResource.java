@@ -48,7 +48,7 @@ public class HandicapGroupsResource {
      */
     @POST
     @UnitOfWork
-    public Response addEvent(@Valid HandicapGroup handicapGroup) {
+    public Response addHandicapGroup(@Valid HandicapGroup handicapGroup) {
         org.coner.core.domain.HandicapGroup domainHandicapGroup = handicapGroupBoundary.toDomainEntity(handicapGroup);
         conerCoreService.addHandicapGroup(domainHandicapGroup);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)

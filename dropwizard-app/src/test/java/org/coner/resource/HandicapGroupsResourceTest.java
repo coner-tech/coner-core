@@ -10,6 +10,7 @@ import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.util.JacksonUtil;
+import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -60,18 +61,12 @@ public class HandicapGroupsResourceTest {
 
         Entity<org.coner.api.entity.HandicapGroup> requestEntity = Entity.json(requestHandicapGroup);
 
-        org.coner.api.entity.HandicapGroup responseHandicapGroup = objectMapper.readValue(
-                FixtureHelpers.fixture("fixtures/api/entity/handicap_group_add-response.json"),
-                org.coner.api.entity.HandicapGroup.class
-        );
         org.coner.core.domain.HandicapGroup requestHandicapGroupAsDomain = new org.coner.core.domain.HandicapGroup();
         requestHandicapGroupAsDomain.setId("arbitrary-id-from-service");
         requestHandicapGroupAsDomain.setName("C Street");
         requestHandicapGroupAsDomain.setHandicapFactor(BigDecimal.valueOf(0.75));
 
         when(handicapGroupBoundary.toDomainEntity(requestHandicapGroup)).thenReturn(requestHandicapGroupAsDomain);
-        when(handicapGroupBoundary.toApiEntity(any(org.coner.core.domain.HandicapGroup.class)))
-                .thenReturn(responseHandicapGroup);
 
         Response response = resources.client()
                 .target("/handicapGroups")
@@ -84,6 +79,8 @@ public class HandicapGroupsResourceTest {
                 .isNotNull();
         assertThat(response.getStatus())
                 .isEqualTo(HttpStatus.CREATED_201);
+        assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
+        assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo("arbitrary-id-from-service");
     }
 
     @Test

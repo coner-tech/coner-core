@@ -3,7 +3,7 @@ package org.coner.boundary;
 import org.coner.core.domain.HandicapGroup;
 
 /**
- *
+ * Converts HandicapGroup entities as they cross architectural boundaries.
  */
 public class HandicapGroupBoundary extends AbstractBoundary<
         org.coner.api.entity.HandicapGroup,

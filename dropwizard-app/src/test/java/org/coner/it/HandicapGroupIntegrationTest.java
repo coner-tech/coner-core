@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
     @Test
-    public void whenCreateEventItShouldPersist() {
+    public void whenCreateHandicapGroupItShouldPersist() {
         URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/handicapGroups")
                 .build();

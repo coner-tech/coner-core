@@ -82,17 +82,13 @@ public class EventsResourceTest {
                 org.coner.api.entity.Event.class
         );
         Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
-        org.coner.api.entity.Event responseEvent = objectMapper.readValue(
-                FixtureHelpers.fixture("fixtures/api/entity/event_add-response.json"),
-                org.coner.api.entity.Event.class
-        );
+
         Event requestEventAsDomain = new Event();
         requestEventAsDomain.setId("arbitrary-id-from-service");
         requestEventAsDomain.setName("add this event");
         requestEventAsDomain.setDate(Date.from(ZonedDateTime.parse("2014-12-25T09:15:00-05:00").toInstant()));
 
         when(eventBoundary.toDomainEntity(requestEvent)).thenReturn(requestEventAsDomain);
-        when(eventBoundary.toApiEntity(any(Event.class))).thenReturn(responseEvent);
 
         Response response = resources.client()
                 .target("/events")

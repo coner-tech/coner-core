@@ -101,7 +101,7 @@ public class ConerCoreService {
     }
 
     /**
-     * Add an HandicapGroup.
+     * Add a HandicapGroup.
      *
      * @param handicapGroup the HandicapGroup entity to add
      */
