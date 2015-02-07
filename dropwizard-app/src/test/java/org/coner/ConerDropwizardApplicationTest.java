@@ -8,17 +8,21 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.coner.boundary.EventBoundary;
+import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.dao.HandicapGroupDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
+import org.coner.resource.HandicapGroupsResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +45,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ConerDropwizardApplicationTest {
 
+    // Test constants
+    private static final int NUMBER_OF_RESOURCES = 6;
+
     // application dependencies
     private final HibernateBundle<ConerDropwizardConfiguration> hibernate = mock(HibernateBundle.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
@@ -54,6 +61,11 @@ public class ConerDropwizardApplicationTest {
     private final RegistrationBoundary registrationBoundary = mock(RegistrationBoundary.class);
     private final RegistrationDao registrationDao = mock(RegistrationDao.class);
     private final RegistrationGateway registrationGateway = mock(RegistrationGateway.class);
+
+    // HandicapGroup
+    private final HandicapGroupBoundary handicapGroupBoundary = mock(HandicapGroupBoundary.class);
+    private final HandicapGroupDao handicapGroupDao = mock(HandicapGroupDao.class);
+    private final HandicapGroupGateway handicapGroupGateway = mock(HandicapGroupGateway.class);
 
     // initialize method parameters
     private final Bootstrap<ConerDropwizardConfiguration> bootstrap = mock(Bootstrap.class);
@@ -77,6 +89,9 @@ public class ConerDropwizardApplicationTest {
         application.setRegistrationBoundary(registrationBoundary);
         application.setRegistrationDao(registrationDao);
         application.setRegistrationGateway(registrationGateway);
+        application.setHandicapGroupBoundary(handicapGroupBoundary);
+        application.setHandicapGroupDao(handicapGroupDao);
+        application.setHandicapGroupGateway(handicapGroupGateway);
 
 
         // initialize method
@@ -114,7 +129,7 @@ public class ConerDropwizardApplicationTest {
         application.run(config, environment);
 
         ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
-        verify(jersey, times(5)).register(argumentCaptor.capture());
+        verify(jersey, times(NUMBER_OF_RESOURCES)).register(argumentCaptor.capture());
 
         List<Object> objects = argumentCaptor.getAllValues();
         List<Class> registeredClasses = new ArrayList<>(objects.size());
@@ -124,6 +139,7 @@ public class ConerDropwizardApplicationTest {
         assertThat(registeredClasses).contains(EventResource.class);
         assertThat(registeredClasses).contains(EventRegistrationsResource.class);
         assertThat(registeredClasses).contains(EventRegistrationResource.class);
+        assertThat(registeredClasses).contains(HandicapGroupsResource.class);
         assertThat(registeredClasses).contains(WebApplicationExceptionMapper.class);
     }
 }

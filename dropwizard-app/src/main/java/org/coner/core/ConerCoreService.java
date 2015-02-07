@@ -3,8 +3,10 @@ package org.coner.core;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.coner.core.domain.Event;
+import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
 import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 
 import java.util.List;
@@ -16,16 +18,21 @@ public class ConerCoreService {
 
     private final EventGateway eventGateway;
     private final RegistrationGateway registrationGateway;
+    private final HandicapGroupGateway handicapGroupGateway;
 
     /**
      * Constructor for ConerCoreService.
      *
      * @param eventGateway        the EventGateway
      * @param registrationGateway the RegistrationGateway
+     * @param handicapGroupGateway the HandicapGroupGateway
      */
-    public ConerCoreService(EventGateway eventGateway, RegistrationGateway registrationGateway) {
+    public ConerCoreService(EventGateway eventGateway,
+                            RegistrationGateway registrationGateway,
+                            HandicapGroupGateway handicapGroupGateway) {
         this.eventGateway = eventGateway;
         this.registrationGateway = registrationGateway;
+        this.handicapGroupGateway = handicapGroupGateway;
     }
 
     /**
@@ -91,5 +98,15 @@ public class ConerCoreService {
     public List<Registration> getRegistrations(Event event) {
         Preconditions.checkNotNull(event);
         return registrationGateway.getAllWith(event);
+    }
+
+    /**
+     * Add a HandicapGroup.
+     *
+     * @param handicapGroup the HandicapGroup entity to add
+     */
+    public void addHandicapGroup(HandicapGroup handicapGroup) {
+        Preconditions.checkNotNull(handicapGroup);
+        handicapGroupGateway.create(handicapGroup);
     }
 }

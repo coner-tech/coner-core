@@ -76,7 +76,7 @@ public class EventRegistrationsResource {
      *
      * @param eventId the id of the Event to get Registrations
      * @param registration the Registration to add
-     * @return a response containing the Registration that was added
+     * @return a response containing response code and url of the added registration
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @POST

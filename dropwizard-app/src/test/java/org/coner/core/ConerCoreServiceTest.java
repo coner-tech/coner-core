@@ -1,8 +1,10 @@
 package org.coner.core;
 
 import org.coner.core.domain.Event;
+import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
 import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +31,8 @@ public class ConerCoreServiceTest {
     private EventGateway eventGateway;
     @Mock
     private RegistrationGateway registrationGateway;
+    @Mock
+    private HandicapGroupGateway handicapGroupGateway;
 
     private ConerCoreService conerCoreService;
 
@@ -38,7 +42,8 @@ public class ConerCoreServiceTest {
 
         conerCoreService = new ConerCoreService(
                 eventGateway,
-                registrationGateway
+                registrationGateway,
+                handicapGroupGateway
         );
     }
 
@@ -127,6 +132,28 @@ public class ConerCoreServiceTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
             verifyZeroInteractions(registrationGateway);
+        }
+    }
+
+    @Test
+    public void whenAddHandicapGroupInstanceItShouldCreate() {
+        HandicapGroup handicapGroup = mock(HandicapGroup.class);
+
+        conerCoreService.addHandicapGroup(handicapGroup);
+
+        verify(handicapGroupGateway).create(handicapGroup);
+    }
+
+    @Test
+    public void whenAddHandicapGroupsAndNullItShouldNpe() {
+        HandicapGroup handicapGroup = null;
+
+        try {
+            conerCoreService.addHandicapGroup(handicapGroup);
+            failBecauseExceptionWasNotThrown(NullPointerException.class);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(NullPointerException.class);
+            verifyZeroInteractions(handicapGroupGateway);
         }
     }
 

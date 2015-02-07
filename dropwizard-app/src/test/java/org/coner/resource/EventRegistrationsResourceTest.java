@@ -26,7 +26,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -109,11 +108,6 @@ public class EventRegistrationsResourceTest {
         );
         Entity<org.coner.api.entity.Registration> requestEntity = Entity.json(requestRegistration);
 
-        org.coner.api.entity.Registration responseRegistration = objectMapper.readValue(
-                FixtureHelpers.fixture("fixtures/api/entity/registration_add-response.json"),
-                org.coner.api.entity.Registration.class
-        );
-
         org.coner.core.domain.Registration requestRegistrationAsDomain = new org.coner.core.domain.Registration();
         requestRegistrationAsDomain.setId("arbitrary-id-from-service");
         requestRegistrationAsDomain.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
@@ -122,8 +116,6 @@ public class EventRegistrationsResourceTest {
         org.coner.core.domain.Event domainEvent = DomainUtils.fullDomainEvent();
 
         when(registrationBoundary.toDomainEntity(requestRegistration)).thenReturn(requestRegistrationAsDomain);
-        when(registrationBoundary.toApiEntity(any(org.coner.core.domain.Registration.class)))
-                .thenReturn(responseRegistration);
         when(conerCoreService.getEvent(eventId)).thenReturn(domainEvent);
 
         Response response = resources.client()

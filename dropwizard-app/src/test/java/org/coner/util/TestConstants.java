@@ -1,5 +1,6 @@
 package org.coner.util;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -20,4 +21,8 @@ public final class TestConstants {
     public static final String REGISTRATION_FIRSTNAME = "registration-firstname";
     public static final String REGISTRATION_LASTNAME = "registration-lastname";
 
+    //HandicapGroup
+    public static final String HANDICAP_GROUP_ID = "handicap-group-test-id";
+    public static final String HANDICAP_GROUP_NAME = "handicap-group-name";
+    public static final BigDecimal HANDICAP_GROUP_FACTOR = BigDecimal.valueOf(0.75);
 }

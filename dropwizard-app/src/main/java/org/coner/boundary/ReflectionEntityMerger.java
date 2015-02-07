@@ -24,14 +24,14 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     private ImmutableList<MergeOperation> mergeOperations;
 
     /**
-     * Construct a ReflectionEntityMerger with default functionality
+     * Construct a ReflectionEntityMerger with default functionality.
      */
     public ReflectionEntityMerger() {
         this.additionalEntityMerger = null;
     }
 
     /**
-     * Construct a ReflectionEntityMerger with an additional EntityMerger
+     * Construct a ReflectionEntityMerger with an additional EntityMerger.
      *
      * @param additionalEntityMerger an additional EntityMerger which will be called after reflection-based merge
      *                               operations have been performed
@@ -41,7 +41,7 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     /**
-     * build the sourceDestinationMethodPairs list
+     * Build the sourceDestinationMethodPairs list.
      *
      * @param sourceClass      the class of the source entity
      * @param destinationClass the class of the destination entity
@@ -154,7 +154,7 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     /**
-     * Check whether a MergeOperation should use a StringToEnumValueTransformer
+     * Check whether a MergeOperation should use a StringToEnumValueTransformer.
      *
      * @param sourceGetterReturnType          the type returned by the source getter
      * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
@@ -168,7 +168,7 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     /**
-     * Check whether a MergeOperation should use an EnumToStringValueTransformer
+     * Check whether a MergeOperation should use an EnumToStringValueTransformer.
      *
      * @param sourceGetterReturnType          the type returned by the source getter
      * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
@@ -207,15 +207,16 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
 
     /**
      * A SourceDestinationMethodPair is a tuple which pairs a getter method from the source entity class and a setter
-     * method from the destination entity class. The merge implementation
+     * method from the destination entity class. The merge implementation.
      */
-    private static class MergeOperation {
-        final Method sourceMethod;
-        final Method destinationMethod;
-        final ValueTransformer valueTransformer;
+    private static final class MergeOperation {
+        private final Method sourceMethod;
+        private final Method destinationMethod;
+        private final ValueTransformer valueTransformer;
 
         /**
-         * Private constructor accepting and assigning both the sourceMethod and destinationMethod
+         * Private constructor accepting and assigning both the sourceMethod and destinationMethod as well as the
+         * valueTransformer.
          *
          * @param sourceMethod      the sourceMethod
          * @param destinationMethod the destinationMethod
@@ -229,11 +230,11 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     /**
-     * A ValueTransformer accepts a value and creates a transformed representation of the value
+     * A ValueTransformer accepts a value and creates a transformed representation of the value.
      */
     private interface ValueTransformer {
         /**
-         * Transform an input value and return the transformed value
+         * Transform an input value and return the transformed value.
          *
          * @param value the input value
          * @return the transformed value
@@ -271,7 +272,7 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     /**
-     * EnumToStringValueTransformer transforms an Enum value to a String containing the name
+     * EnumToStringValueTransformer transforms an Enum value to a String containing the name.
      */
     private static class EnumToStringValueTransformer implements ValueTransformer {
 

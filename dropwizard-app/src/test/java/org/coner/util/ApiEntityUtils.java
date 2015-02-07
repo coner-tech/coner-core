@@ -1,8 +1,10 @@
 package org.coner.util;
 
 import org.coner.api.entity.Event;
+import org.coner.api.entity.HandicapGroup;
 import org.coner.api.entity.Registration;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -48,4 +50,20 @@ public final class ApiEntityUtils {
         return apiRegistration;
     }
 
+    // HandicapGroup
+    public static HandicapGroup fullHandicapGroupRegistration() {
+        return fullHandicapGroupRegistration(TestConstants.HANDICAP_GROUP_ID,
+                TestConstants.HANDICAP_GROUP_NAME,
+                TestConstants.HANDICAP_GROUP_FACTOR);
+    }
+
+    public static HandicapGroup fullHandicapGroupRegistration(String handicapGroupId,
+                                                              String handicapGroupName,
+                                                              BigDecimal handicapGroupFactor) {
+        HandicapGroup apiHandicapGroup = new HandicapGroup();
+        apiHandicapGroup.setId(handicapGroupId);
+        apiHandicapGroup.setName(handicapGroupName);
+        apiHandicapGroup.setHandicapFactor(handicapGroupFactor);
+        return apiHandicapGroup;
+    }
 }

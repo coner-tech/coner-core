@@ -7,19 +7,24 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.coner.boundary.EventBoundary;
+import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.dao.HandicapGroupDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.Event;
+import org.coner.hibernate.entity.HandicapGroup;
 import org.coner.hibernate.entity.Registration;
 import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
+import org.coner.resource.HandicapGroupsResource;
 import org.coner.util.JacksonUtil;
 
 /**
@@ -34,6 +39,9 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private RegistrationBoundary registrationBoundary;
     private RegistrationDao registrationDao;
     private RegistrationGateway registrationGateway;
+    private HandicapGroupBoundary handicapGroupBoundary;
+    private HandicapGroupDao handicapGroupDao;
+    private HandicapGroupGateway handicapGroupGateway;
     private ConerCoreService conerCoreService;
 
     /**
@@ -75,11 +83,14 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getRegistrationBoundary(),
                 getConerCoreService()
         );
+        HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(getHandicapGroupBoundary(),
+                getConerCoreService());
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
         jersey.register(eventRegistrationsResource);
         jersey.register(eventRegistrationResource);
+        jersey.register(handicapGroupsResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
@@ -96,7 +107,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         if (hibernate == null) {
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
                     Event.class,
-                    Registration.class
+                    Registration.class,
+                    HandicapGroup.class
             ) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(
@@ -151,7 +163,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private EventGateway getEventGateway() {
         if (eventGateway == null) {
-            this.eventGateway = new EventGateway(getEventBoundary(), getEventDao());
+            eventGateway = new EventGateway(getEventBoundary(), getEventDao());
         }
         return eventGateway;
     }
@@ -213,13 +225,64 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
+     * Lazy initializer for the HandicapGroupBoundary.
+     *
+     * @return the HandicapGroupBoundary
+     */
+    private HandicapGroupBoundary getHandicapGroupBoundary() {
+        if (handicapGroupBoundary == null) {
+            handicapGroupBoundary = HandicapGroupBoundary.getInstance();
+        }
+        return handicapGroupBoundary;
+    }
+
+    void setHandicapGroupBoundary(HandicapGroupBoundary handicapGroupBoundary) {
+        this.handicapGroupBoundary = handicapGroupBoundary;
+    }
+
+    /**
+     * Lazy initializer for the HandicapGroupDao.
+     *
+     * @return the HandicapGroupDao
+     */
+    private HandicapGroupDao getHandicapGroupDao() {
+        if (handicapGroupDao == null) {
+            handicapGroupDao = new HandicapGroupDao(getHibernate().getSessionFactory());
+        }
+        return handicapGroupDao;
+    }
+
+    void setHandicapGroupDao(HandicapGroupDao handicapGroupDao) {
+        this.handicapGroupDao = handicapGroupDao;
+    }
+
+    /**
+     * Lazy initializer for the HandicapGroupGateway.
+     *
+     * @return the EventGateway
+     */
+    private HandicapGroupGateway getHandicapGroupGateway() {
+        if (handicapGroupGateway == null) {
+            handicapGroupGateway = new HandicapGroupGateway(getHandicapGroupBoundary(), getHandicapGroupDao());
+        }
+        return handicapGroupGateway;
+    }
+
+    void setHandicapGroupGateway(HandicapGroupGateway handicapGroupGateway) {
+        this.handicapGroupGateway = handicapGroupGateway;
+    }
+
+
+    /**
      * Lazy initializer for the ConerCoreService.
      *
      * @return the ConerCoreService
      */
     private ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
-            conerCoreService = new ConerCoreService(getEventGateway(), getRegistrationGateway());
+            conerCoreService = new ConerCoreService(getEventGateway(),
+                                                    getRegistrationGateway(),
+                                                    getHandicapGroupGateway());
         }
         return conerCoreService;
     }

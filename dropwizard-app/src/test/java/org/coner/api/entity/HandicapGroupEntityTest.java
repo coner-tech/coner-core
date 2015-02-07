@@ -1,0 +1,50 @@
+package org.coner.api.entity;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.jackson.Jackson;
+import org.coner.util.ApiEntityUtils;
+import org.coner.util.JacksonUtil;
+import org.junit.Before;
+import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+
+import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.fest.assertions.Assertions.assertThat;
+
+/**
+ *
+ */
+public class HandicapGroupEntityTest {
+    private final String fixturePath = "fixtures/api/entity/handicap_group_full.json";
+
+    private ObjectMapper objectMapper;
+    private HandicapGroup handicapGroup;
+
+    @Before
+    public void setup() {
+        objectMapper = Jackson.newObjectMapper();
+        JacksonUtil.configureObjectMapper(objectMapper);
+
+        handicapGroup = ApiEntityUtils.fullHandicapGroupRegistration();
+    }
+
+    @Test
+    public void deserializesFromJson() throws Exception {
+        HandicapGroup actual = objectMapper.readValue(fixture(fixturePath), HandicapGroup.class);
+        assertThat(actual).isEqualTo(handicapGroup);
+    }
+
+    @Test
+    public void serializesToJson() throws Exception {
+        String actual = objectMapper.writeValueAsString(handicapGroup);
+        String expected = fixture(fixturePath);
+        JSONAssert.assertEquals(expected, actual, false);
+    }
+
+    @Test
+    public void hashCodeTest() throws Exception {
+        HandicapGroup otherHandicapGroup = ApiEntityUtils.fullHandicapGroupRegistration();
+
+        assertThat(handicapGroup.hashCode()).isEqualTo(otherHandicapGroup.hashCode());
+    }
+}
