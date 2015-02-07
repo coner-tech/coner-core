@@ -3,6 +3,9 @@ package org.coner.api.entity;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
@@ -16,8 +19,12 @@ public class CompetitionGroup extends ApiEntity {
     private String id;
     @NotBlank
     private String name;
+    @NotNull
+    @DecimalMin("0.000")
+    @DecimalMax("1.000")
     private BigDecimal handicapFactor;
-    private boolean grouping;
+    @NotNull
+    private Boolean grouping;
     @NotBlank
     private String resultTimeType;
 
@@ -45,11 +52,11 @@ public class CompetitionGroup extends ApiEntity {
         this.handicapFactor = handicapFactor;
     }
 
-    public boolean isGrouping() {
+    public Boolean isGrouping() {
         return grouping;
     }
 
-    public void setGrouping(boolean grouping) {
+    public void setGrouping(Boolean grouping) {
         this.grouping = grouping;
     }
 
@@ -59,5 +66,33 @@ public class CompetitionGroup extends ApiEntity {
 
     public void setResultTimeType(String resultTimeType) {
         this.resultTimeType = resultTimeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompetitionGroup that = (CompetitionGroup) o;
+
+        if (grouping != null ? !grouping.equals(that.grouping) : that.grouping != null) return false;
+        if (handicapFactor != null ? !handicapFactor.equals(that.handicapFactor) : that.handicapFactor != null)
+            return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (resultTimeType != null ? !resultTimeType.equals(that.resultTimeType) : that.resultTimeType != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (handicapFactor != null ? handicapFactor.hashCode() : 0);
+        result = 31 * result + (grouping != null ? grouping.hashCode() : 0);
+        result = 31 * result + (resultTimeType != null ? resultTimeType.hashCode() : 0);
+        return result;
     }
 }

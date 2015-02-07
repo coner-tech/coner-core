@@ -13,6 +13,12 @@ public class CompetitionGroupGateway {
     private final CompetitionGroupBoundary boundary;
     private final CompetitionGroupDao dao;
 
+    /**
+     * Constructor for CompetitionGroupGateway
+     *
+     * @param boundary the CompetitionGroupBoundary for converting Domain entities to/from Hibernate entities
+     * @param dao      the CompetitionGroupDao for interacting with the persistence layer
+     */
     public CompetitionGroupGateway(CompetitionGroupBoundary boundary, CompetitionGroupDao dao) {
         this.boundary = boundary;
         this.dao = dao;

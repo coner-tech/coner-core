@@ -25,7 +25,17 @@ public class CompetitionGroupsResource {
     private final CompetitionGroupBoundary competitionGroupBoundary;
     private final ConerCoreService conerCoreService;
 
-    public CompetitionGroupsResource(CompetitionGroupBoundary competitionGroupBoundary, ConerCoreService conerCoreService) {
+    /**
+     * Constructor for the CompetitionGroupsResource.
+     *
+     * @param competitionGroupBoundary the HandicapGroupBoundary to use for converting API and Domain Handicap Group
+     *                                 entities
+     * @param conerCoreService         the ConerCoreService
+     */
+    public CompetitionGroupsResource(
+            CompetitionGroupBoundary competitionGroupBoundary,
+            ConerCoreService conerCoreService
+    ) {
         this.competitionGroupBoundary = competitionGroupBoundary;
         this.conerCoreService = conerCoreService;
     }

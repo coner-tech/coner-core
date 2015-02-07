@@ -21,12 +21,14 @@ public class CompetitionGroupBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<CompetitionGroup, org.coner.hibernate.entity.CompetitionGroup> buildDomainToHibernateMerger() {
+    protected EntityMerger<CompetitionGroup, org.coner.hibernate.entity.CompetitionGroup> buildDomainToHibernateMerger
+            () {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.CompetitionGroup, CompetitionGroup> buildHibernateToDomainMerger() {
+    protected EntityMerger<org.coner.hibernate.entity.CompetitionGroup, CompetitionGroup> buildHibernateToDomainMerger
+            () {
         return new ReflectionEntityMerger<>();
     }
 }

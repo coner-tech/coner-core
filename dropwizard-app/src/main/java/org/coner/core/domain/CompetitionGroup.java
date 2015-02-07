@@ -53,6 +53,9 @@ public class CompetitionGroup extends DomainEntity {
         this.resultTimeType = resultTimeType;
     }
 
+    /**
+     * Indicates which result time type will be used to rank results pertaining to a competition group
+     */
     public static enum ResultTimeType {
         HANDICAP,
         RAW

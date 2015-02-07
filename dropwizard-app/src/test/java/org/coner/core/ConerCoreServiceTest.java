@@ -1,5 +1,6 @@
 package org.coner.core;
 
+import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
@@ -158,6 +159,27 @@ public class ConerCoreServiceTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
             verifyZeroInteractions(handicapGroupGateway);
+        }
+    }
+
+    @Test
+    public void whenAddCompetitionGroupInstanceItShouldCreate() {
+        CompetitionGroup competitionGroup = mock(CompetitionGroup.class);
+
+        conerCoreService.addCompetitionGroup(competitionGroup);
+
+        verify(competitionGroupGateway).create(competitionGroup);
+    }
+
+    @Test
+    public void whenAddCompetitionGroupsAndNullItShouldNpe() {
+        CompetitionGroup competitionGroup = null;
+
+        try {
+            conerCoreService.addCompetitionGroup(competitionGroup);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(NullPointerException.class);
+            verifyZeroInteractions(competitionGroupGateway);
         }
     }
 

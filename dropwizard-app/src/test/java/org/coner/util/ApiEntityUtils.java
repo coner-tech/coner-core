@@ -1,5 +1,6 @@
 package org.coner.util;
 
+import org.coner.api.entity.CompetitionGroup;
 import org.coner.api.entity.Event;
 import org.coner.api.entity.HandicapGroup;
 import org.coner.api.entity.Registration;
@@ -65,5 +66,32 @@ public final class ApiEntityUtils {
         apiHandicapGroup.setName(handicapGroupName);
         apiHandicapGroup.setHandicapFactor(handicapGroupFactor);
         return apiHandicapGroup;
+    }
+
+    // CompetitionGroup
+    public static CompetitionGroup fullCompetitionGroup() {
+        return fullCompetitionGroup(
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.COMPETITION_GROUP_NAME,
+                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE,
+                TestConstants.COMPETITION_GROUP_GROUPING
+        );
+    }
+
+    public static CompetitionGroup fullCompetitionGroup(
+            String competitionGroupId,
+            String competitionGroupName,
+            BigDecimal competitionGroupHandicapFactor,
+            String competitionGroupResultTimeType,
+            boolean competitionGroupGrouping
+    ) {
+        CompetitionGroup apiCompetitionGroup = new CompetitionGroup();
+        apiCompetitionGroup.setId(competitionGroupId);
+        apiCompetitionGroup.setName(competitionGroupName);
+        apiCompetitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
+        apiCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
+        apiCompetitionGroup.setGrouping(competitionGroupGrouping);
+        return apiCompetitionGroup;
     }
 }

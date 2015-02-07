@@ -1,0 +1,7 @@
+{
+  "id": "bad-id-in-request",
+  "name": "Novice",
+  "handicapFactor": 1.000,
+  "grouping": true,
+  "resultTimeType": "HANDICAP"
+}
