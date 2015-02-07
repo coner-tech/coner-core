@@ -3,6 +3,7 @@ package org.coner.core;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
+import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
@@ -16,11 +17,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -28,9 +29,11 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 public class ConerCoreServiceTest {
 
     @Mock
-    private EventGateway eventGateway;
+    EventGateway eventGateway;
     @Mock
-    private RegistrationGateway registrationGateway;
+    RegistrationGateway registrationGateway;
+    @Mock
+    CompetitionGroupGateway competitionGroupGateway;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
 
@@ -43,7 +46,8 @@ public class ConerCoreServiceTest {
         conerCoreService = new ConerCoreService(
                 eventGateway,
                 registrationGateway,
-                handicapGroupGateway
+                handicapGroupGateway,
+                competitionGroupGateway
         );
     }
 
