@@ -44,7 +44,7 @@ public class Registration extends HibernateEntity {
         this.id = id;
     }
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -53,7 +53,7 @@ public class Registration extends HibernateEntity {
         this.firstName = firstName;
     }
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
