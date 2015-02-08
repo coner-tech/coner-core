@@ -10,8 +10,9 @@ import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +28,15 @@ import static org.mockito.Mockito.when;
 /**
  *
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ConerCoreServiceTest {
 
     @Mock
-    EventGateway eventGateway;
+    private EventGateway eventGateway;
     @Mock
-    RegistrationGateway registrationGateway;
+    private RegistrationGateway registrationGateway;
     @Mock
-    CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupGateway competitionGroupGateway;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
 
@@ -42,8 +44,6 @@ public class ConerCoreServiceTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-
         conerCoreService = new ConerCoreService(
                 eventGateway,
                 registrationGateway,

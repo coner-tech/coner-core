@@ -6,7 +6,6 @@ import org.coner.util.ApiEntityUtils;
 import org.coner.util.DomainUtils;
 import org.coner.util.HibernateEntityUtils;
 import org.coner.util.TestConstants;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,23 +26,7 @@ public class EventBoundaryTest {
 
     @Before
     public void setup() {
-        EventBoundary.setInstance(null);
         eventBoundary = new EventBoundary();
-    }
-
-    @After
-    public void tearDown() {
-        EventBoundary.setInstance(null);
-    }
-
-    @Test
-    public void whenGetInstanceItShouldInstantiateAndReturnSingleton() {
-        EventBoundary one = EventBoundary.getInstance();
-        EventBoundary two = EventBoundary.getInstance();
-
-        assertThat(one)
-                .isNotNull()
-                .isSameAs(two);
     }
 
     @Test

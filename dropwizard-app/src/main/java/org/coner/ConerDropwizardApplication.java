@@ -146,7 +146,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private EventBoundary getEventBoundary() {
         if (eventBoundary == null) {
-            eventBoundary = EventBoundary.getInstance();
+            eventBoundary = new EventBoundary();
         }
         return eventBoundary;
     }
@@ -194,7 +194,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private RegistrationBoundary getRegistrationBoundary() {
         if (registrationBoundary == null) {
-            registrationBoundary = RegistrationBoundary.getInstance();
+            registrationBoundary = new RegistrationBoundary(getEventBoundary());
         }
         return registrationBoundary;
     }
@@ -246,7 +246,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private HandicapGroupBoundary getHandicapGroupBoundary() {
         if (handicapGroupBoundary == null) {
-            handicapGroupBoundary = HandicapGroupBoundary.getInstance();
+            handicapGroupBoundary = new HandicapGroupBoundary();
         }
         return handicapGroupBoundary;
     }

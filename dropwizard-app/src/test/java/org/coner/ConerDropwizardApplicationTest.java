@@ -32,7 +32,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -60,56 +59,57 @@ public class ConerDropwizardApplicationTest {
 
     // Event
     @Mock
-    EventBoundary eventBoundary;
+    private EventBoundary eventBoundary;
     @Mock
-    EventDao eventDao;
+    private EventDao eventDao;
     @Mock
-    EventGateway eventGateway;
+    private EventGateway eventGateway;
 
     // Registration
     @Mock
-    RegistrationBoundary registrationBoundary;
+    private RegistrationBoundary registrationBoundary;
     @Mock
-    RegistrationDao registrationDao;
+    private RegistrationDao registrationDao;
     @Mock
-    RegistrationGateway registrationGateway;
+    private RegistrationGateway registrationGateway;
 
     // HandicapGroup
-    private final HandicapGroupBoundary handicapGroupBoundary = mock(HandicapGroupBoundary.class);
-    private final HandicapGroupDao handicapGroupDao = mock(HandicapGroupDao.class);
-    private final HandicapGroupGateway handicapGroupGateway = mock(HandicapGroupGateway.class);
+    @Mock
+    private HandicapGroupBoundary handicapGroupBoundary;
+    @Mock
+    private HandicapGroupDao handicapGroupDao;
+    @Mock
+    private HandicapGroupGateway handicapGroupGateway;
 
     // Competition Group
     @Mock
-    CompetitionGroupBoundary competitionGroupBoundary;
+    private CompetitionGroupBoundary competitionGroupBoundary;
     @Mock
-    CompetitionGroupDao competitionGroupDao;
+    private CompetitionGroupDao competitionGroupDao;
     @Mock
-    CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupGateway competitionGroupGateway;
 
 
     // initialize method parameters
     @Mock
-    Bootstrap<ConerDropwizardConfiguration> bootstrap;
+    private Bootstrap<ConerDropwizardConfiguration> bootstrap;
     @Mock
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     // run method parameters
     @Mock
-    ConerDropwizardConfiguration config;
+    private ConerDropwizardConfiguration config;
     @Mock
-    DataSourceFactory dataSourceFactory;
+    private DataSourceFactory dataSourceFactory;
     @Mock
-    Environment environment;
+    private Environment environment;
     @Mock
-    JerseyEnvironment jersey;
+    private JerseyEnvironment jersey;
 
     private final ConerDropwizardApplication application = new ConerDropwizardApplication();
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-
         application.setHibernate(hibernate);
         application.setConerCoreService(conerCoreService);
         application.setEventBoundary(eventBoundary);

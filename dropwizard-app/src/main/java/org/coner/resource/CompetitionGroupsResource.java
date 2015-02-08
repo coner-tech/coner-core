@@ -48,7 +48,7 @@ public class CompetitionGroupsResource {
      */
     @POST
     @UnitOfWork
-    public Response addEvent(@Valid CompetitionGroup competitionGroup) {
+    public Response addCompetitionGroup(@Valid CompetitionGroup competitionGroup) {
         org.coner.core.domain.CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(
                 competitionGroup
         );
