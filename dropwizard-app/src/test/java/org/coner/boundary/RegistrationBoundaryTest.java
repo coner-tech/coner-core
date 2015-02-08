@@ -4,7 +4,6 @@ import org.coner.core.domain.Registration;
 import org.coner.util.ApiEntityUtils;
 import org.coner.util.DomainUtils;
 import org.coner.util.TestConstants;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,23 +25,7 @@ public class RegistrationBoundaryTest {
 
     @Before
     public void setup() {
-        RegistrationBoundary.setInstance(null);
         registrationBoundary = new RegistrationBoundary(eventBoundary);
-    }
-
-    @After
-    public void tearDown() {
-        EventBoundary.setInstance(null);
-    }
-
-    @Test
-    public void whenGetInstanceItShouldInstantiateAndReturnSingleton() {
-        RegistrationBoundary one = RegistrationBoundary.getInstance();
-        RegistrationBoundary two = RegistrationBoundary.getInstance();
-
-        assertThat(one)
-                .isNotNull()
-                .isSameAs(two);
     }
 
     @Test

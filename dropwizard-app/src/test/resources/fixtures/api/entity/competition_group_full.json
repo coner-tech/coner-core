@@ -1,0 +1,7 @@
+{
+  "id": "competition-group-test-id",
+  "name": "competition-group-name",
+  "handicapFactor": 1,
+  "resultTimeType": "RAW",
+  "grouping": true
+}

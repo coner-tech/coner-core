@@ -11,40 +11,14 @@ public class RegistrationBoundary extends AbstractBoundary<
         Registration,
         org.coner.hibernate.entity.Registration> {
 
-    private static RegistrationBoundary instance;
+    private final EventBoundary eventBoundary;
 
     /**
-     * Get the singleton instance of the RegistrationBoundary.
-     *
-     * @return a RegistrationBoundary
-     */
-    public static RegistrationBoundary getInstance() {
-        if (instance == null) {
-            instance = new RegistrationBoundary();
-        }
-        return instance;
-    }
-
-    public static void setInstance(RegistrationBoundary rb) {
-        instance = rb;
-    }
-
-    private EventBoundary eventBoundary;
-
-    /**
-     * Private constructor called only by `RegistrationBoundary.getInstance`. Calls the package-private constructor
-     * using the singleton instance of EventBoundary.
-     */
-    private RegistrationBoundary() {
-        this(EventBoundary.getInstance());
-    }
-
-    /**
-     * Package-private constructor which should only be called by the private constructor or a test.
+     * Public constructor for the RegistrationBoundary
      *
      * @param eventBoundary the EventBoundary to use when converting Event entities
      */
-    RegistrationBoundary(EventBoundary eventBoundary) {
+    public RegistrationBoundary(EventBoundary eventBoundary) {
         super();
         this.eventBoundary = eventBoundary;
     }

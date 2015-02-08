@@ -10,31 +10,6 @@ public class HandicapGroupBoundary extends AbstractBoundary<
         HandicapGroup,
         org.coner.hibernate.entity.HandicapGroup> {
 
-    private static HandicapGroupBoundary instance;
-
-    /**
-     * Get the singleton instance of the HandicapGroupBoundary.
-     *
-     * @return an HandicapGroupBoundary
-     */
-    public static HandicapGroupBoundary getInstance() {
-        if (instance == null) {
-            instance = new HandicapGroupBoundary();
-        }
-        return instance;
-    }
-
-    public static void setInstance(HandicapGroupBoundary handicapGroupBoundary) {
-        instance = handicapGroupBoundary;
-    }
-
-    /**
-     * Package-private constructor which should only ever be called by `HandicapGroupBoundary.getInstance` or a test.
-     */
-    HandicapGroupBoundary() {
-        super();
-    }
-
     @Override
     protected EntityMerger<org.coner.api.entity.HandicapGroup, HandicapGroup> buildApiToDomainMerger() {
         return new ReflectionEntityMerger<>();

@@ -1,0 +1,6 @@
+{
+  "name": "Novice",
+  "handicapFactor": 1.0001,
+  "grouping": true,
+  "resultTimeType": "HANDICAP"
+}

@@ -2,9 +2,11 @@ package org.coner.core;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
+import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
@@ -19,20 +21,24 @@ public class ConerCoreService {
     private final EventGateway eventGateway;
     private final RegistrationGateway registrationGateway;
     private final HandicapGroupGateway handicapGroupGateway;
+    private final CompetitionGroupGateway competitionGroupGateway;
 
     /**
      * Constructor for ConerCoreService.
      *
-     * @param eventGateway        the EventGateway
-     * @param registrationGateway the RegistrationGateway
-     * @param handicapGroupGateway the HandicapGroupGateway
+     * @param eventGateway            the EventGateway
+     * @param registrationGateway     the RegistrationGateway
+     * @param handicapGroupGateway    the HandicapGroupGateway
+     * @param competitionGroupGateway the CompetitionGroupGateway
      */
     public ConerCoreService(EventGateway eventGateway,
                             RegistrationGateway registrationGateway,
-                            HandicapGroupGateway handicapGroupGateway) {
+                            HandicapGroupGateway handicapGroupGateway,
+                            CompetitionGroupGateway competitionGroupGateway) {
         this.eventGateway = eventGateway;
         this.registrationGateway = registrationGateway;
         this.handicapGroupGateway = handicapGroupGateway;
+        this.competitionGroupGateway = competitionGroupGateway;
     }
 
     /**
@@ -79,7 +85,7 @@ public class ConerCoreService {
     /**
      * Add a registration entry.
      *
-     * @param event the Event the Registration is being added for
+     * @param event        the Event the Registration is being added for
      * @param registration the Registration to add
      */
     public void addRegistration(Event event, Registration registration) {
@@ -108,5 +114,15 @@ public class ConerCoreService {
     public void addHandicapGroup(HandicapGroup handicapGroup) {
         Preconditions.checkNotNull(handicapGroup);
         handicapGroupGateway.create(handicapGroup);
+    }
+
+    /**
+     * Add a competition group.
+     *
+     * @param competitionGroup the Event entity to add
+     */
+    public void addCompetitionGroup(CompetitionGroup competitionGroup) {
+        Preconditions.checkNotNull(competitionGroup);
+        competitionGroupGateway.create(competitionGroup);
     }
 }

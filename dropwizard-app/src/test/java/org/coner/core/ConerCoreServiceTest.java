@@ -1,30 +1,34 @@
 package org.coner.core;
 
+import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
+import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  *
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ConerCoreServiceTest {
 
     @Mock
@@ -32,18 +36,19 @@ public class ConerCoreServiceTest {
     @Mock
     private RegistrationGateway registrationGateway;
     @Mock
+    private CompetitionGroupGateway competitionGroupGateway;
+    @Mock
     private HandicapGroupGateway handicapGroupGateway;
 
     private ConerCoreService conerCoreService;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-
         conerCoreService = new ConerCoreService(
                 eventGateway,
                 registrationGateway,
-                handicapGroupGateway
+                handicapGroupGateway,
+                competitionGroupGateway
         );
     }
 
@@ -154,6 +159,27 @@ public class ConerCoreServiceTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
             verifyZeroInteractions(handicapGroupGateway);
+        }
+    }
+
+    @Test
+    public void whenAddCompetitionGroupInstanceItShouldCreate() {
+        CompetitionGroup competitionGroup = mock(CompetitionGroup.class);
+
+        conerCoreService.addCompetitionGroup(competitionGroup);
+
+        verify(competitionGroupGateway).create(competitionGroup);
+    }
+
+    @Test
+    public void whenAddCompetitionGroupsAndNullItShouldNpe() {
+        CompetitionGroup competitionGroup = null;
+
+        try {
+            conerCoreService.addCompetitionGroup(competitionGroup);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(NullPointerException.class);
+            verifyZeroInteractions(competitionGroupGateway);
         }
     }
 

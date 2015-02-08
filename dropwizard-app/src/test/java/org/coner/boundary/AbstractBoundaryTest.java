@@ -5,8 +5,9 @@ import org.coner.core.domain.DomainEntity;
 import org.coner.hibernate.entity.HibernateEntity;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.verify;
 /**
  *
  */
+@RunWith(MockitoJUnitRunner.class)
 public class AbstractBoundaryTest {
 
     private AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> abstractBoundary;
@@ -43,8 +45,6 @@ public class AbstractBoundaryTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-
         abstractBoundary = new TestBoundary();
     }
 

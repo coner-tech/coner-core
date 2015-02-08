@@ -6,20 +6,25 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.coner.exception.WebApplicationExceptionMapper;
+import org.coner.hibernate.dao.CompetitionGroupDao;
 import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.dao.HandicapGroupDao;
 import org.coner.hibernate.dao.RegistrationDao;
+import org.coner.hibernate.entity.CompetitionGroup;
 import org.coner.hibernate.entity.Event;
 import org.coner.hibernate.entity.HandicapGroup;
 import org.coner.hibernate.entity.Registration;
+import org.coner.resource.CompetitionGroupsResource;
 import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
@@ -39,6 +44,9 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private RegistrationBoundary registrationBoundary;
     private RegistrationDao registrationDao;
     private RegistrationGateway registrationGateway;
+    private CompetitionGroupBoundary competitionGroupBoundary;
+    private CompetitionGroupDao competitionGroupDao;
+    private CompetitionGroupGateway competitionGroupGateway;
     private HandicapGroupBoundary handicapGroupBoundary;
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
@@ -86,11 +94,17 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(getHandicapGroupBoundary(),
                 getConerCoreService());
 
+        CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
+                getCompetitionGroupBoundary(),
+                getConerCoreService()
+        );
+
         jersey.register(eventsResource);
         jersey.register(eventResource);
         jersey.register(eventRegistrationsResource);
         jersey.register(eventRegistrationResource);
         jersey.register(handicapGroupsResource);
+        jersey.register(competitionGroupsResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
@@ -108,7 +122,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
                     Event.class,
                     Registration.class,
-                    HandicapGroup.class
+                    HandicapGroup.class,
+                    CompetitionGroup.class
             ) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(
@@ -131,7 +146,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private EventBoundary getEventBoundary() {
         if (eventBoundary == null) {
-            eventBoundary = EventBoundary.getInstance();
+            eventBoundary = new EventBoundary();
         }
         return eventBoundary;
     }
@@ -179,7 +194,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private RegistrationBoundary getRegistrationBoundary() {
         if (registrationBoundary == null) {
-            registrationBoundary = RegistrationBoundary.getInstance();
+            registrationBoundary = new RegistrationBoundary(getEventBoundary());
         }
         return registrationBoundary;
     }
@@ -231,7 +246,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private HandicapGroupBoundary getHandicapGroupBoundary() {
         if (handicapGroupBoundary == null) {
-            handicapGroupBoundary = HandicapGroupBoundary.getInstance();
+            handicapGroupBoundary = new HandicapGroupBoundary();
         }
         return handicapGroupBoundary;
     }
@@ -272,6 +287,57 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupGateway = handicapGroupGateway;
     }
 
+    /**
+     * Lazy initializer for the CompetitionGroupBoundary
+     *
+     * @return the CompetitionGroupBoundary
+     */
+    private CompetitionGroupBoundary getCompetitionGroupBoundary() {
+        if (competitionGroupBoundary == null) {
+            competitionGroupBoundary = new CompetitionGroupBoundary();
+        }
+        return competitionGroupBoundary;
+    }
+
+    void setCompetitionGroupBoundary(CompetitionGroupBoundary competitionGroupBoundary) {
+        this.competitionGroupBoundary = competitionGroupBoundary;
+    }
+
+    /**
+     * Lazy initializer for the CompetitionGroupDao
+     *
+     * @return the CompetitionGroupDao
+     */
+    private CompetitionGroupDao getCompetitionGroupDao() {
+        if (competitionGroupDao == null) {
+            competitionGroupDao = new CompetitionGroupDao(getHibernate().getSessionFactory());
+        }
+        return competitionGroupDao;
+    }
+
+    void setCompetitionGroupDao(CompetitionGroupDao competitionGroupDao) {
+        this.competitionGroupDao = competitionGroupDao;
+    }
+
+    /**
+     * Lazy initializer for the CompetitionGroupGateway
+     *
+     * @return the CompetitionGroupGateway
+     */
+    private CompetitionGroupGateway getCompetitionGroupGateway() {
+        if (competitionGroupGateway == null) {
+            this.competitionGroupGateway = new CompetitionGroupGateway(
+                    getCompetitionGroupBoundary(),
+                    getCompetitionGroupDao()
+            );
+        }
+        return competitionGroupGateway;
+    }
+
+    void setCompetitionGroupGateway(CompetitionGroupGateway competitionGroupGateway) {
+        this.competitionGroupGateway = competitionGroupGateway;
+    }
+
 
     /**
      * Lazy initializer for the ConerCoreService.
@@ -280,9 +346,12 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
      */
     private ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
-            conerCoreService = new ConerCoreService(getEventGateway(),
-                                                    getRegistrationGateway(),
-                                                    getHandicapGroupGateway());
+            conerCoreService = new ConerCoreService(
+                    getEventGateway(),
+                    getRegistrationGateway(),
+                    getHandicapGroupGateway(),
+                    getCompetitionGroupGateway()
+            );
         }
         return conerCoreService;
     }
