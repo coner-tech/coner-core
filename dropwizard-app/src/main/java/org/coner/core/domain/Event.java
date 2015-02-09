@@ -3,7 +3,7 @@ package org.coner.core.domain;
 import java.util.Date;
 
 /**
- *
+ * Domain entity for the representation of Events.
  */
 public class Event extends DomainEntity {
 

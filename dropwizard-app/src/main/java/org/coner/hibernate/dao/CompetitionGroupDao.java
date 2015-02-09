@@ -5,7 +5,7 @@ import org.coner.hibernate.entity.CompetitionGroup;
 import org.hibernate.SessionFactory;
 
 /**
- * CompetitionGroup-specific Hibernate Data Access Object
+ * CompetitionGroup-specific Hibernate Data Access Object.
  */
 public class CompetitionGroupDao extends AbstractDAO<CompetitionGroup> {
 
@@ -19,7 +19,7 @@ public class CompetitionGroupDao extends AbstractDAO<CompetitionGroup> {
     }
 
     /**
-     * Save the passed CompetitionGroup in storage
+     * Save the passed CompetitionGroup in storage.
      *
      * @param competitionGroup the CompetitionGroup to save or update
      */

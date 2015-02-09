@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 
 /**
- *
+ * Hibernate entity for the persistence of Registrations.
  */
 @Entity
 @Table(name = "registrations")

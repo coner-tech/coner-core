@@ -15,7 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The EventRegistrationResource exposes getting, updating, or deleting a Registration for an Event on the REST API.
+ * The EventRegistrationResource exposes getting, updating, or deleting a
+ * Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations/{registrationId}")
 @Produces(MediaType.APPLICATION_JSON)

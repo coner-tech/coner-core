@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- *
+ * Hibernate entity for the persistence of CompetitionGroups.
  */
 @Entity
 @Table(name = "competition_groups")

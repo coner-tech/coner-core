@@ -15,7 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 /**
- * The CompetitionGroupsResource exposes getting and adding competition groups
+ * The CompetitionGroupsResource exposes getting and adding CompetitionGroups
+ * via the REST API.
  */
 @Path("/competitionGroups")
 @Produces(MediaType.APPLICATION_JSON)

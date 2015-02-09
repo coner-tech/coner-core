@@ -1,7 +1,7 @@
 package org.coner.core.domain;
 
 /**
- *
+ * Domain entity for the representation of Registrations.
  */
 public class Registration extends DomainEntity {
 

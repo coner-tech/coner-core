@@ -13,7 +13,7 @@ public class RegistrationBoundary extends AbstractBoundary<
     private final EventBoundary eventBoundary;
 
     /**
-     * Public constructor for the RegistrationBoundary
+     * Public constructor for the RegistrationBoundary.
      *
      * @param eventBoundary the EventBoundary to use when converting Event entities
      */

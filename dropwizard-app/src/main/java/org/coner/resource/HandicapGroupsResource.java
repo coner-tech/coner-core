@@ -18,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 //import java.util.List;
 
 /**
- * The HandicapGroupsResource exposes getting and adding Handicap Groups on the REST API.
+ * The HandicapGroupsResource exposes getting and adding Handicap Groups via the REST API.
  */
 @Path("/handicapGroups")
 @Produces(MediaType.APPLICATION_JSON)
