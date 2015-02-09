@@ -1,8 +1,5 @@
 {
   "id": "registration-test-id",
   "firstName": "registration-firstname",
-  "lastName": "registration-lastname",
-  "event": {
-    "id": "event-test-id"
-  }
+  "lastName": "registration-lastname"
 }

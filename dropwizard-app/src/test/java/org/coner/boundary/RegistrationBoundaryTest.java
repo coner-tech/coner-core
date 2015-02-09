@@ -38,23 +38,17 @@ public class RegistrationBoundaryTest {
         assertThat(domainRegistration.getId()).isEqualTo(registrationID);
         assertThat(domainRegistration.getFirstName()).isEqualTo(registrationFirstName);
         assertThat(domainRegistration.getLastName()).isEqualTo(registrationLastName);
-        assertThat(domainRegistration.getEvent().getId())
-                .isEqualTo(DomainUtils.fullDomainEvent().getId());
     }
 
     @Test
     public void whenMergeDomainIntoApiItShouldMerge() {
         Registration domainRegistration = DomainUtils.fullDomainRegistration();
         org.coner.api.entity.Registration apiRegistration = new org.coner.api.entity.Registration();
-        org.coner.api.entity.Registration.Event apiEvent = ApiEntityUtils.partialApiEvent();
 
         registrationBoundary.merge(domainRegistration, apiRegistration);
 
         assertThat(apiRegistration.getId()).isEqualTo(registrationID);
         assertThat(apiRegistration.getFirstName()).isEqualTo(registrationFirstName);
         assertThat(apiRegistration.getLastName()).isEqualTo(registrationLastName);
-        assertThat(apiRegistration.getEvent())
-                .isEqualTo(apiEvent)
-                .isNotSameAs(apiEvent);
     }
 }

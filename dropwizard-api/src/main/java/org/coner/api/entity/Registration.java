@@ -14,8 +14,6 @@ public class Registration extends ApiEntity {
 
     @Null(message = "registration.id may only be assigned by the system")
     private String id;
-    @Null(message = "registration.event is assigned by uri")
-    private Event event;
     @NotNull
     private String firstName;
     @NotBlank
@@ -27,14 +25,6 @@ public class Registration extends ApiEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 
     public String getFirstName() {
@@ -53,32 +43,6 @@ public class Registration extends ApiEntity {
         this.lastName = lastName;
     }
 
-    /**
-     * REST API entity representing a minimal subset of an Event.
-     */
-    public static class Event {
-        private String id;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            Event event = (Event) obj;
-            return this.id.equals(event.id);
-        }
-
-        @Override
-        public int hashCode() {
-            return id.hashCode();
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,7 +50,6 @@ public class Registration extends ApiEntity {
 
         Registration that = (Registration) o;
 
-        if (event != null ? !event.id.equals(that.event.id) : that.event != null) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
@@ -97,7 +60,6 @@ public class Registration extends ApiEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (event != null ? event.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;

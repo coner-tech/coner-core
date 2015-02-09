@@ -63,8 +63,6 @@ public class EventRegistrationsResourceTest {
 
         org.coner.core.domain.Event domainEvent = DomainUtils.fullDomainEvent();
 
-        org.coner.api.entity.Registration.Event apiEvent = ApiEntityUtils.partialApiEvent();
-
         // Registrations
         final String registrationID = TestConstants.REGISTRATION_ID;
 
@@ -94,7 +92,6 @@ public class EventRegistrationsResourceTest {
                 .isNotNull()
                 .isNotEmpty();
         assertThat(response.getRegistrations().get(0).getId()).isEqualTo(registrationID);
-        assertThat(response.getRegistrations().get(0).getEvent()).isEqualTo(apiEvent);
     }
 
     @Test
