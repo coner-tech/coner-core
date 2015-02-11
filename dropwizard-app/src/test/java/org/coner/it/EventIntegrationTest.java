@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  *
  */
-public class CreateEventIntegrationTest extends AbstractIntegrationTest {
+public class EventIntegrationTest extends AbstractIntegrationTest {
 
     private final String name = "name";
     private final Date date = Date.from(ZonedDateTime.parse("2014-12-27T18:28:00-05:00").toInstant());

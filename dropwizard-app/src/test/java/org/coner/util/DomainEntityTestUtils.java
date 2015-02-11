@@ -1,16 +1,18 @@
 package org.coner.util;
 
+import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.Registration;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  *
  */
-public final class DomainUtils {
+public final class DomainEntityTestUtils {
 
-    private DomainUtils() {
+    private DomainEntityTestUtils() {
     }
 
     // Event
@@ -38,7 +40,27 @@ public final class DomainUtils {
         domainRegistration.setId(registrationId);
         domainRegistration.setFirstName(registrationFirstName);
         domainRegistration.setLastName(registrationLastName);
-        domainRegistration.setEvent(DomainUtils.fullDomainEvent());
+        domainRegistration.setEvent(DomainEntityTestUtils.fullDomainEvent());
         return domainRegistration;
     }
+
+    // HandicapGroup
+    public static HandicapGroup fullHandicapGroup() {
+        return fullHandicapGroup(
+                TestConstants.HANDICAP_GROUP_ID,
+                TestConstants.HANDICAP_GROUP_NAME,
+                TestConstants.HANDICAP_GROUP_FACTOR);
+    }
+
+    public static HandicapGroup fullHandicapGroup(
+            String handicapGroupId,
+            String handicapGroupName,
+            BigDecimal handicapGroupFactor) {
+        HandicapGroup domainHandicapGroup = new HandicapGroup();
+        domainHandicapGroup.setId(handicapGroupId);
+        domainHandicapGroup.setName(handicapGroupName);
+        domainHandicapGroup.setHandicapFactor(handicapGroupFactor);
+        return domainHandicapGroup;
+    }
+
 }

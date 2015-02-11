@@ -4,6 +4,8 @@ import io.dropwizard.hibernate.AbstractDAO;
 import org.coner.hibernate.entity.HandicapGroup;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 /**
  *
  */
@@ -25,5 +27,14 @@ public class HandicapGroupDao extends AbstractDAO<HandicapGroup> {
      */
     public void create(HandicapGroup handicapGroup) {
         persist(handicapGroup);
+    }
+
+    /**
+     * Find all HandicapGroup entities persisted in storage.
+     *
+     * @return a list of all HandicapGroup entities
+     */
+    public List<HandicapGroup> findAll() {
+        return list(namedQuery(HandicapGroup.QUERY_FIND_ALL));
     }
 }

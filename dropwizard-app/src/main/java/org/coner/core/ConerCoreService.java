@@ -125,4 +125,13 @@ public class ConerCoreService {
         Preconditions.checkNotNull(competitionGroup);
         competitionGroupGateway.create(competitionGroup);
     }
+
+    /**
+     * Get all HandicapGroups.
+     *
+     * @return a List of HandicapGroup.
+     */
+    public List<HandicapGroup> getHandicapGroups() {
+        return handicapGroupGateway.getAll();
+    }
 }

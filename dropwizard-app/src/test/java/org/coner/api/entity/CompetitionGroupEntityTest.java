@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.FixtureHelpers;
 import org.assertj.core.api.Assertions;
-import org.coner.util.ApiEntityUtils;
+import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class CompetitionGroupEntityTest {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        competitionGroup = ApiEntityUtils.fullCompetitionGroup();
+        competitionGroup = ApiEntityTestUtils.fullCompetitionGroup();
     }
 
     @Test
@@ -42,7 +42,7 @@ public class CompetitionGroupEntityTest {
 
     @Test
     public void hashCodeTest() throws Exception {
-        CompetitionGroup otherCompetitionGroup = ApiEntityUtils.fullCompetitionGroup();
+        CompetitionGroup otherCompetitionGroup = ApiEntityTestUtils.fullCompetitionGroup();
 
         Assertions.assertThat(competitionGroup.hashCode()).isEqualTo(otherCompetitionGroup.hashCode());
     }
