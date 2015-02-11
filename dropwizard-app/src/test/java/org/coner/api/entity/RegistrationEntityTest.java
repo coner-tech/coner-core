@@ -2,7 +2,7 @@ package org.coner.api.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import org.coner.util.ApiEntityUtils;
+import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class RegistrationEntityTest {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        registration = ApiEntityUtils.fullApiRegistration();
+        registration = ApiEntityTestUtils.fullApiRegistration();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class RegistrationEntityTest {
 
     @Test
     public void hashCodeTest() throws Exception {
-        Registration otherRegistration = ApiEntityUtils.fullApiRegistration();
+        Registration otherRegistration = ApiEntityTestUtils.fullApiRegistration();
 
         assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
     }

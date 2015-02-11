@@ -19,7 +19,7 @@ public class AbstractIntegrationTest {
 
     @BeforeClass
     public static void setupClass() {
-        client = IntegrationTestUtils.buildClient(RULE, CreateEventIntegrationTest.class.getSimpleName());
+        client = IntegrationTestUtils.buildClient(RULE);
     }
 
     @AfterClass

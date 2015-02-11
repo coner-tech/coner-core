@@ -2,8 +2,8 @@ package org.coner.boundary;
 
 import org.assertj.core.api.Assertions;
 import org.coner.core.domain.Event;
-import org.coner.util.ApiEntityUtils;
-import org.coner.util.DomainUtils;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.HibernateEntityUtils;
 import org.coner.util.TestConstants;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeApiIntoDomainItShouldMerge() {
-        org.coner.api.entity.Event apiEvent = ApiEntityUtils.fullApiEvent();
+        org.coner.api.entity.Event apiEvent = ApiEntityTestUtils.fullApiEvent();
         Event domainEvent = new Event();
 
         eventBoundary.merge(apiEvent, domainEvent);
@@ -45,7 +45,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeApiWithoutDateIntoDomainItShouldBeWithoutDate() {
-        org.coner.api.entity.Event apiEvent = ApiEntityUtils.fullApiEvent();
+        org.coner.api.entity.Event apiEvent = ApiEntityTestUtils.fullApiEvent();
         apiEvent.setDate(null);
         Event domainEvent = new Event();
 
@@ -56,7 +56,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainIntoApiItShouldMerge() {
-        Event domainEvent = DomainUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
 
         eventBoundary.merge(domainEvent, apiEvent);
@@ -69,7 +69,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainWithoutDateIntoDomainItShouldBeWithoutDate() {
-        Event domainEvent = DomainUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.api.entity.Event apiEvent = new org.coner.api.entity.Event();
 
@@ -80,7 +80,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainIntoHibernateItShouldMerge() {
-        Event domainEvent = DomainUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
 
         eventBoundary.merge(domainEvent, hibernateEvent);
@@ -93,7 +93,7 @@ public class EventBoundaryTest {
 
     @Test
     public void whenMergeDomainWithoutDateIntoHibernateItShouldBeWithoutDate() {
-        Event domainEvent = DomainUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         domainEvent.setDate(null);
         org.coner.hibernate.entity.Event hibernateEvent = new org.coner.hibernate.entity.Event();
 

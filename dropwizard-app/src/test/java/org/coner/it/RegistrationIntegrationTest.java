@@ -23,7 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  *
  */
-public class CreateRegistrationIntegrationTest extends AbstractIntegrationTest {
+public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
     private String eventId;
     private final String eventName = TestConstants.EVENT_NAME;

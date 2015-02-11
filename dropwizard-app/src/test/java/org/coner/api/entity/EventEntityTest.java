@@ -2,7 +2,7 @@ package org.coner.api.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import org.coner.util.ApiEntityUtils;
+import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class EventEntityTest {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        event = ApiEntityUtils.fullApiEvent();
+        event = ApiEntityTestUtils.fullApiEvent();
     }
 
     @Test
