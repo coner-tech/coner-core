@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The EventResource exposes getting, updating, and deleting an Event on the REST API.
+ * The EventResource exposes getting, updating, and deleting an Event via the REST API.
  */
 @Path("/events/{eventId}")
 @Produces(MediaType.APPLICATION_JSON)

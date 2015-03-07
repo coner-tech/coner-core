@@ -3,7 +3,7 @@ package org.coner.core.domain;
 import java.math.BigDecimal;
 
 /**
- *
+ * Domain entity for the representation of CompetitionGroups.
  */
 public class CompetitionGroup extends DomainEntity {
 
@@ -54,7 +54,7 @@ public class CompetitionGroup extends DomainEntity {
     }
 
     /**
-     * Indicates which result time type will be used to rank results pertaining to a competition group
+     * Indicates which result time type will be used to rank results pertaining to a competition group.
      */
     public static enum ResultTimeType {
         HANDICAP,

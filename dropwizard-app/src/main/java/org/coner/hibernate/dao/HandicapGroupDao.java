@@ -5,7 +5,7 @@ import org.coner.hibernate.entity.HandicapGroup;
 import org.hibernate.SessionFactory;
 
 /**
- *
+ * HandicapGroup-specific Hibernate Data Access Object.
  */
 public class HandicapGroupDao extends AbstractDAO<HandicapGroup> {
 

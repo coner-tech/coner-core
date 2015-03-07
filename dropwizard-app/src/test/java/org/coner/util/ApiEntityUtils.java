@@ -29,12 +29,6 @@ public final class ApiEntityUtils {
         return apiEvent;
     }
 
-    public static org.coner.api.entity.Registration.Event partialApiEvent() {
-        org.coner.api.entity.Registration.Event event = new org.coner.api.entity.Registration.Event();
-        event.setId(TestConstants.EVENT_ID);
-        return event;
-    }
-
     // Registration
     public static Registration fullApiRegistration() {
         return fullApiRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
@@ -47,7 +41,6 @@ public final class ApiEntityUtils {
         apiRegistration.setId(registrationId);
         apiRegistration.setFirstName(registrationFirstName);
         apiRegistration.setLastName(registrationLastName);
-        apiRegistration.setEvent(partialApiEvent());
         return apiRegistration;
     }
 

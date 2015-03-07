@@ -14,7 +14,7 @@ public class CompetitionGroupGateway {
     private final CompetitionGroupDao dao;
 
     /**
-     * Constructor for CompetitionGroupGateway
+     * Constructor for CompetitionGroupGateway.
      *
      * @param boundary the CompetitionGroupBoundary for converting Domain entities to/from Hibernate entities
      * @param dao      the CompetitionGroupDao for interacting with the persistence layer
@@ -25,7 +25,7 @@ public class CompetitionGroupGateway {
     }
 
     /**
-     * Create a new CompetitionGroup entity
+     * Create a new CompetitionGroup entity.
      *
      * @param competitionGroup the CompetitionGroup to create
      */

@@ -116,8 +116,6 @@ public class CreateRegistrationIntegrationTest extends AbstractIntegrationTest {
                 .isEqualTo(registrationId0);
         assertThat(registrationList.get(1).getId())
                 .isEqualTo(registrationId1);
-        assertThat(registrationList.get(0).getEvent().getId())
-                .isEqualTo(registrationList.get(1).getEvent().getId());
 
         URI eventRegistrationUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations/{registrationId}")
@@ -134,7 +132,6 @@ public class CreateRegistrationIntegrationTest extends AbstractIntegrationTest {
         Registration registration = getRegistrationResponse
                 .readEntity(Registration.class);
         assertThat(registration).isNotNull();
-        assertThat(registration.getEvent().getId()).isEqualTo(eventId);
         assertThat(registration.getId()).isEqualTo(registrationId0);
 
     }

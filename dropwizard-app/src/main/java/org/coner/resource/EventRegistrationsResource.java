@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * The EventRegistrationsResource exposes getting Registrations for an Event
- * or adding a Registration for an Event on the REST API.
+ * or adding a Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations")
 @Produces(MediaType.APPLICATION_JSON)

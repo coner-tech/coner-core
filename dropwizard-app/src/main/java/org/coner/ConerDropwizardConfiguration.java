@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * Coner configuration for Dropwizard Application.
  */
 public class ConerDropwizardConfiguration extends Configuration {
 

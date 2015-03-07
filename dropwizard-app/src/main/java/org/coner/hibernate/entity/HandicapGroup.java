@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- *
+ * Hibernate entity for the persistence of HandicapGroups.
  */
 @Entity
 @Table(name = "handicap_groups")

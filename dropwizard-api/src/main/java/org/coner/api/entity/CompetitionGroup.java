@@ -10,7 +10,7 @@ import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
 /**
- * REST API entity representing a Competition Group
+ * REST API entity representing a Competition Group.
  */
 @JsonPropertyOrder({"id", "name", "handicapFactor", "grouping", "resultTimeType"})
 public class CompetitionGroup extends ApiEntity {

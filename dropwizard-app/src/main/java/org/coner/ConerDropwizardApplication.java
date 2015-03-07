@@ -288,7 +288,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the CompetitionGroupBoundary
+     * Lazy initializer for the CompetitionGroupBoundary.
      *
      * @return the CompetitionGroupBoundary
      */
@@ -304,7 +304,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the CompetitionGroupDao
+     * Lazy initializer for the CompetitionGroupDao.
      *
      * @return the CompetitionGroupDao
      */
@@ -320,7 +320,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
     /**
-     * Lazy initializer for the CompetitionGroupGateway
+     * Lazy initializer for the CompetitionGroupGateway.
      *
      * @return the CompetitionGroupGateway
      */

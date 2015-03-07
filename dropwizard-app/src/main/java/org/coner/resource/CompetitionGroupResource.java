@@ -6,7 +6,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * The CompetitionGroupResource exposes getting, updating, and deleting a competition group
+ * The CompetitionGroupResource exposes getting, updating, and deleting a
+ * CompetitionGroup via the REST API.
  */
 @Path("/competitionGroups/{competitionGroupId}")
 @Produces(MediaType.APPLICATION_JSON)

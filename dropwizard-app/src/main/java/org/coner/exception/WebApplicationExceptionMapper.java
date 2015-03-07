@@ -10,7 +10,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import java.util.Arrays;
 
 /**
- *
+ * Class for mapping Web Application Exceptions and create appropriate responses.
  */
 public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
     @Override

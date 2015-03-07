@@ -18,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 
 /**
- * The EventsResource exposes getting and adding Events on the REST API.
+ * The EventsResource exposes getting and adding Events via the REST API.
  */
 @Path("/events")
 @Produces(MediaType.APPLICATION_JSON)

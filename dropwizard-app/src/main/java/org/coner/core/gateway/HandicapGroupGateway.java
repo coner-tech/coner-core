@@ -6,7 +6,7 @@ import org.coner.core.domain.HandicapGroup;
 import org.coner.hibernate.dao.HandicapGroupDao;
 
 /**
- *
+ * HandicapGroupGateway wraps persistence layer interactions for HandicapGroup domain entities.
  */
 public class HandicapGroupGateway {
 

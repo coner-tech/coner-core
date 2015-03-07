@@ -3,7 +3,7 @@ package org.coner.boundary;
 import org.coner.core.domain.CompetitionGroup;
 
 /**
- *
+ * Converts CompetitionGroup entities as they cross architectural boundaries.
  */
 public class CompetitionGroupBoundary extends AbstractBoundary<
         org.coner.api.entity.CompetitionGroup,
@@ -21,14 +21,14 @@ public class CompetitionGroupBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<CompetitionGroup, org.coner.hibernate.entity.CompetitionGroup> buildDomainToHibernateMerger
-            () {
+    protected EntityMerger<CompetitionGroup,
+            org.coner.hibernate.entity.CompetitionGroup> buildDomainToHibernateMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.CompetitionGroup, CompetitionGroup> buildHibernateToDomainMerger
-            () {
+    protected EntityMerger<org.coner.hibernate.entity.CompetitionGroup,
+            CompetitionGroup> buildHibernateToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 }
