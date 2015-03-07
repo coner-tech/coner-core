@@ -2,7 +2,7 @@ package org.coner.api.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import org.coner.util.ApiEntityUtils;
+import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class HandicapGroupEntityTest {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        handicapGroup = ApiEntityUtils.fullHandicapGroupRegistration();
+        handicapGroup = ApiEntityTestUtils.fullHandicapGroup();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class HandicapGroupEntityTest {
 
     @Test
     public void hashCodeTest() throws Exception {
-        HandicapGroup otherHandicapGroup = ApiEntityUtils.fullHandicapGroupRegistration();
+        HandicapGroup otherHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
 
         assertThat(handicapGroup.hashCode()).isEqualTo(otherHandicapGroup.hashCode());
     }

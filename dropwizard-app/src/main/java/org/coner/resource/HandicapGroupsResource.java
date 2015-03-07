@@ -2,20 +2,20 @@ package org.coner.resource;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.HandicapGroup;
-//import org.coner.api.response.GetHandicapGroupsResponse;
+import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-//import javax.ws.rs.GET;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-//import java.util.List;
+import java.util.List;
 
 /**
  * The HandicapGroupsResource exposes getting and adding Handicap Groups via the REST API.
@@ -61,12 +61,12 @@ public class HandicapGroupsResource {
      *
      * @return a list of all handicap groups
      */
-//    @GET
-//    @UnitOfWork
-//    public GetHandicapGroupsResponse getHandicapGroups() {
-//        List<org.coner.core.domain.HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
-//        GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
-//        response.setHandicapGroups(handicapGroupBoundary.toApiEntities(domainHandicapGroups));
-//        return response;
-//    }
+    @GET
+    @UnitOfWork
+    public GetHandicapGroupsResponse getHandicapGroups() {
+        List<org.coner.core.domain.HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
+        GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
+        response.setHandicapGroups(handicapGroupBoundary.toApiEntities(domainHandicapGroups));
+        return response;
+    }
 }

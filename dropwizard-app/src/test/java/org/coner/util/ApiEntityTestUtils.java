@@ -11,9 +11,9 @@ import java.util.Date;
 /**
  *
  */
-public final class ApiEntityUtils {
+public final class ApiEntityTestUtils {
 
-    private ApiEntityUtils() {
+    private ApiEntityTestUtils() {
     }
 
     // Event
@@ -45,15 +45,17 @@ public final class ApiEntityUtils {
     }
 
     // HandicapGroup
-    public static HandicapGroup fullHandicapGroupRegistration() {
-        return fullHandicapGroupRegistration(TestConstants.HANDICAP_GROUP_ID,
+    public static HandicapGroup fullHandicapGroup() {
+        return fullHandicapGroup(
+                TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.HANDICAP_GROUP_NAME,
                 TestConstants.HANDICAP_GROUP_FACTOR);
     }
 
-    public static HandicapGroup fullHandicapGroupRegistration(String handicapGroupId,
-                                                              String handicapGroupName,
-                                                              BigDecimal handicapGroupFactor) {
+    public static HandicapGroup fullHandicapGroup(
+            String handicapGroupId,
+            String handicapGroupName,
+            BigDecimal handicapGroupFactor) {
         HandicapGroup apiHandicapGroup = new HandicapGroup();
         apiHandicapGroup.setId(handicapGroupId);
         apiHandicapGroup.setName(handicapGroupName);

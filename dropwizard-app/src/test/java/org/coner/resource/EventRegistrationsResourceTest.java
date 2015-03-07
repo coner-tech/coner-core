@@ -8,8 +8,8 @@ import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.util.ApiEntityUtils;
-import org.coner.util.DomainUtils;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.coner.util.TestConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -61,16 +61,16 @@ public class EventRegistrationsResourceTest {
         // Event
         final String eventId = TestConstants.EVENT_ID;
 
-        org.coner.core.domain.Event domainEvent = DomainUtils.fullDomainEvent();
+        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
 
         // Registrations
         final String registrationID = TestConstants.REGISTRATION_ID;
 
         List<org.coner.core.domain.Registration> domainRegistrations = new ArrayList<>();
-        org.coner.core.domain.Registration domainRegistration1 = DomainUtils.fullDomainRegistration();
+        org.coner.core.domain.Registration domainRegistration1 = DomainEntityTestUtils.fullDomainRegistration();
 
         List<org.coner.api.entity.Registration> apiRegistrations = new ArrayList<>();
-        org.coner.api.entity.Registration apiRegistration1 = ApiEntityUtils.fullApiRegistration();
+        org.coner.api.entity.Registration apiRegistration1 = ApiEntityTestUtils.fullApiRegistration();
 
         domainRegistrations.add(domainRegistration1);
         apiRegistrations.add(apiRegistration1);
@@ -110,7 +110,7 @@ public class EventRegistrationsResourceTest {
         requestRegistrationAsDomain.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
         requestRegistrationAsDomain.setLastName(TestConstants.REGISTRATION_LASTNAME);
 
-        org.coner.core.domain.Event domainEvent = DomainUtils.fullDomainEvent();
+        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
 
         when(registrationBoundary.toDomainEntity(requestRegistration)).thenReturn(requestRegistrationAsDomain);
         when(conerCoreService.getEvent(eventId)).thenReturn(domainEvent);

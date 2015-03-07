@@ -1,8 +1,8 @@
 package org.coner.boundary;
 
 import org.coner.core.domain.Registration;
-import org.coner.util.ApiEntityUtils;
-import org.coner.util.DomainUtils;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.TestConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class RegistrationBoundaryTest {
 
     @Test
     public void whenMergeApiIntoDomainItShouldMerge() {
-        org.coner.api.entity.Registration apiRegistration = ApiEntityUtils.fullApiRegistration();
+        org.coner.api.entity.Registration apiRegistration = ApiEntityTestUtils.fullApiRegistration();
         Registration domainRegistration = new Registration();
 
         registrationBoundary.merge(apiRegistration, domainRegistration);
@@ -42,7 +42,7 @@ public class RegistrationBoundaryTest {
 
     @Test
     public void whenMergeDomainIntoApiItShouldMerge() {
-        Registration domainRegistration = DomainUtils.fullDomainRegistration();
+        Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
         org.coner.api.entity.Registration apiRegistration = new org.coner.api.entity.Registration();
 
         registrationBoundary.merge(domainRegistration, apiRegistration);

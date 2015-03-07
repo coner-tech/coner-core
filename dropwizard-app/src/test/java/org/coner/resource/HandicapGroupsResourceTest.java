@@ -6,10 +6,14 @@ import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.HandicapGroup;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.JacksonUtil;
+import org.coner.util.TestConstants;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -19,7 +23,8 @@ import org.junit.Test;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -54,33 +59,14 @@ public class HandicapGroupsResourceTest {
 
     @Test
     public void whenAddValidHandicapGroupItShouldAddHandicapGroup() throws Exception {
-        org.coner.api.entity.HandicapGroup requestHandicapGroup = objectMapper.readValue(
-                FixtureHelpers.fixture("fixtures/api/entity/handicap_group_add-request.json"),
-                org.coner.api.entity.HandicapGroup.class
-        );
-
-        Entity<org.coner.api.entity.HandicapGroup> requestEntity = Entity.json(requestHandicapGroup);
-
-        org.coner.core.domain.HandicapGroup requestHandicapGroupAsDomain = new org.coner.core.domain.HandicapGroup();
-        requestHandicapGroupAsDomain.setId("arbitrary-id-from-service");
-        requestHandicapGroupAsDomain.setName("C Street");
-        requestHandicapGroupAsDomain.setHandicapFactor(BigDecimal.valueOf(0.75));
-
-        when(handicapGroupBoundary.toDomainEntity(requestHandicapGroup)).thenReturn(requestHandicapGroupAsDomain);
-
-        Response response = resources.client()
-                .target("/handicapGroups")
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(requestEntity);
-
-        verify(conerCoreService).addHandicapGroup(requestHandicapGroupAsDomain);
+        Response response = postHandicapGroup();
 
         assertThat(response)
                 .isNotNull();
         assertThat(response.getStatus())
                 .isEqualTo(HttpStatus.CREATED_201);
         assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
-        assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo("arbitrary-id-from-service");
+        assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(TestConstants.HANDICAP_GROUP_ID);
     }
 
     @Test
@@ -124,6 +110,78 @@ public class HandicapGroupsResourceTest {
                 .contains("handicapFactor must be less than or equal to 1.0000 (was 5.00)");
 
         verify(conerCoreService, never()).addHandicapGroup(any(HandicapGroup.class));
+    }
+
+    @Test
+    public void itShouldGetHandicapGroups() throws Exception {
+        List<HandicapGroup> domainHandicapGroups = new ArrayList<>();
+        when(conerCoreService.getHandicapGroups()).thenReturn(domainHandicapGroups);
+
+        GetHandicapGroupsResponse response = resources.client()
+                .target("/handicapGroups")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get(GetHandicapGroupsResponse.class);
+
+        assertThat(response)
+                .isNotNull();
+        assertThat(response.getHandicapGroups())
+                .isNotNull()
+                .isEmpty();
+
+        verify(handicapGroupBoundary).toApiEntities(domainHandicapGroups);
+        verify(conerCoreService).getHandicapGroups();
+    }
+
+    @Test
+    public void itShouldGetPostedHandicapGroup() throws Exception {
+        postHandicapGroup();
+
+        List<HandicapGroup> domainHandicapGroups = new ArrayList<>();
+        domainHandicapGroups.add(DomainEntityTestUtils.fullHandicapGroup());
+        List<org.coner.api.entity.HandicapGroup> apiHandicapGroups = new ArrayList<>();
+        apiHandicapGroups.add(ApiEntityTestUtils.fullHandicapGroup());
+
+        when(conerCoreService.getHandicapGroups())
+                .thenReturn(domainHandicapGroups);
+        when(handicapGroupBoundary.toApiEntities(domainHandicapGroups))
+                .thenReturn(apiHandicapGroups);
+
+        GetHandicapGroupsResponse response = resources.client()
+                .target("/handicapGroups")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get(GetHandicapGroupsResponse.class);
+
+        assertThat(response)
+                .isNotNull();
+        assertThat(response.getHandicapGroups())
+                .isNotNull()
+                .hasSize(1);
+
+        verify(handicapGroupBoundary).toApiEntities(domainHandicapGroups);
+        verify(conerCoreService).getHandicapGroups();
+    }
+
+
+    private Response postHandicapGroup() throws Exception {
+        org.coner.api.entity.HandicapGroup requestHandicapGroup = objectMapper.readValue(
+                FixtureHelpers.fixture("fixtures/api/entity/handicap_group_add-request.json"),
+                org.coner.api.entity.HandicapGroup.class
+        );
+
+        Entity<org.coner.api.entity.HandicapGroup> requestEntity = Entity.json(requestHandicapGroup);
+
+        org.coner.core.domain.HandicapGroup requestHandicapGroupAsDomain = DomainEntityTestUtils.fullHandicapGroup();
+
+        when(handicapGroupBoundary.toDomainEntity(requestHandicapGroup)).thenReturn(requestHandicapGroupAsDomain);
+
+        Response response = resources.client()
+                .target("/handicapGroups")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+
+        verify(conerCoreService).addHandicapGroup(requestHandicapGroupAsDomain);
+
+        return response;
     }
 
 }

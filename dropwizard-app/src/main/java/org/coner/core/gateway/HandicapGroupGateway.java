@@ -5,6 +5,8 @@ import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.hibernate.dao.HandicapGroupDao;
 
+import java.util.List;
+
 /**
  * HandicapGroupGateway wraps persistence layer interactions for HandicapGroup domain entities.
  */
@@ -35,5 +37,15 @@ public class HandicapGroupGateway {
                 handicapGroupBoundary.toHibernateEntity(handicapGroup);
         handicapGroupDao.create(hibernateHandicapGroup);
         handicapGroupBoundary.merge(hibernateHandicapGroup, handicapGroup);
+    }
+
+    /**
+     * Get all HandicapGroup entities.
+     *
+     * @return list of HandicapGroup entities
+     */
+    public List<HandicapGroup> getAll() {
+        List<org.coner.hibernate.entity.HandicapGroup> handicapGroups = handicapGroupDao.findAll();
+        return handicapGroupBoundary.toDomainEntities(handicapGroups);
     }
 }
