@@ -37,6 +37,13 @@ public class HandicapGroupResource {
         this.conerCoreService = conerCoreService;
     }
 
+    /**
+     * Get a HandicapGroup by its id.
+     *
+     * @param id the id of the HandicapGroup to get
+     * @return the HandicapGroup with the id
+     * @throws javax.ws.rs.NotFoundException if no HandicapGroup is found having the id
+     */
     @GET
     @UnitOfWork
     public HandicapGroup getHandicapGroup(@PathParam("handicapGroupId") String id) {

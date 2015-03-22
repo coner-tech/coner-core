@@ -50,6 +50,12 @@ public class HandicapGroupGateway {
         return handicapGroupBoundary.toDomainEntities(handicapGroups);
     }
 
+    /**
+     * Get a HandicapGroup entity by id.
+     *
+     * @param handicapGroupId id of the Event
+     * @return the HandicapGroup entity with id or null if not found
+     */
     public HandicapGroup findById(String handicapGroupId) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(handicapGroupId));
         org.coner.hibernate.entity.HandicapGroup hibernateHandicapGroup = handicapGroupDao.findById(handicapGroupId);
