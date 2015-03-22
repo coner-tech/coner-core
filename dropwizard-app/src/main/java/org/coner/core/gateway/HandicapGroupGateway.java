@@ -53,7 +53,7 @@ public class HandicapGroupGateway {
     /**
      * Get a HandicapGroup entity by id.
      *
-     * @param handicapGroupId id of the Event
+     * @param handicapGroupId id of the HandicapGroup
      * @return the HandicapGroup entity with id or null if not found
      */
     public HandicapGroup findById(String handicapGroupId) {

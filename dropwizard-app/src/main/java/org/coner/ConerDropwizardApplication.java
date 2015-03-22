@@ -24,6 +24,7 @@ import org.coner.hibernate.entity.CompetitionGroup;
 import org.coner.hibernate.entity.Event;
 import org.coner.hibernate.entity.HandicapGroup;
 import org.coner.hibernate.entity.Registration;
+import org.coner.resource.CompetitionGroupResource;
 import org.coner.resource.CompetitionGroupsResource;
 import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
@@ -105,6 +106,10 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getCompetitionGroupBoundary(),
                 getConerCoreService()
         );
+        CompetitionGroupResource competitionGroupResource = new CompetitionGroupResource(
+                getCompetitionGroupBoundary(),
+                getConerCoreService()
+        );
 
         jersey.register(eventsResource);
         jersey.register(eventResource);
@@ -113,6 +118,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         jersey.register(handicapGroupsResource);
         jersey.register(handicapGroupResource);
         jersey.register(competitionGroupsResource);
+        jersey.register(competitionGroupResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();

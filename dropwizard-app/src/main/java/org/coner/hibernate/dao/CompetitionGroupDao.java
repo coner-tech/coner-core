@@ -38,5 +38,13 @@ public class CompetitionGroupDao extends AbstractDAO<CompetitionGroup> {
         return list(namedQuery(CompetitionGroup.QUERY_FIND_ALL));
     }
 
-
+    /**
+     * Find a CompetitionGroup by id.
+     *
+     * @param id the id of the CompetitionGroup to find
+     * @return the CompetitionGroup having the id or null if not found
+     */
+    public CompetitionGroup findById(String id) {
+        return get(id);
+    }
 }

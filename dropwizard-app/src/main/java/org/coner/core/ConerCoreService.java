@@ -154,4 +154,15 @@ public class ConerCoreService {
     public List<CompetitionGroup> getCompetitionGroups() {
         return competitionGroupGateway.getAll();
     }
+
+    /**
+     * Get a CompetitionGroup by id.
+     *
+     * @param id the id of the CompetitionGroup
+     * @return the CompetitionGroup with id or null if not found
+     */
+    public CompetitionGroup getCompetitionGroup(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return competitionGroupGateway.findById(id);
+    }
 }

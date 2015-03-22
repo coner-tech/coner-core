@@ -31,6 +31,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
         addHandicapGroupRequest.setName(TestConstants.HANDICAP_GROUP_NAME);
         addHandicapGroupRequest.setHandicapFactor(TestConstants.HANDICAP_GROUP_FACTOR);
+
         Response addHandicapGroupResponseContainer = client.target(handicapGroupsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -38,7 +39,6 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(addHandicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         final String handicapGroupId = UnitTestUtils.getEntityIdFromResponse(addHandicapGroupResponseContainer);
-
         assertThat(handicapGroupId).isNotNull();
 
         URI handicapGroupUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
