@@ -3,7 +3,6 @@ package org.coner.it;
 import org.coner.api.entity.HandicapGroup;
 import org.coner.api.request.AddHandicapGroupRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.util.TestConstants;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -21,12 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
-    private static final String HANDICAP_GROUP_PATH = "/handicapGroups";
+    private static final String HANDICAP_GROUPS_PATH = "/handicapGroups";
+    private static final String HANDICAP_GROUP_PATH = "/handicapGroups/{handicapGroupId}";
 
     @Test
     public void whenCreateHandicapGroupItShouldPersist() {
         URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
-                .path(HANDICAP_GROUP_PATH)
+                .path(HANDICAP_GROUPS_PATH)
                 .build();
         AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
         addHandicapGroupRequest.setName(TestConstants.HANDICAP_GROUP_NAME);
@@ -41,25 +41,25 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(handicapGroupId).isNotNull();
 
-        Response getHandicapGroupsResponseContainer = client.target(handicapGroupsUri)
+        URI handicapGroupUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUP_PATH)
+                .build(handicapGroupId);
+
+        Response getHandicapGroupResponseContainer = client.target(handicapGroupUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        assertThat(getHandicapGroupsResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
-        GetHandicapGroupsResponse getHandicapGroupsResponse = getHandicapGroupsResponseContainer
-                .readEntity(GetHandicapGroupsResponse.class);
-        assertThat(getHandicapGroupsResponse.getHandicapGroups()).hasSize(1);
-        HandicapGroup handicapGroup = getHandicapGroupsResponse.getHandicapGroups().get(0);
-        assertThat(handicapGroup.getId()).isEqualTo(handicapGroupId);
-
-
+        assertThat(getHandicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        HandicapGroup getHandicapGroupResponse = getHandicapGroupResponseContainer
+                .readEntity(HandicapGroup.class);
+        assertThat(getHandicapGroupResponse.getId()).isEqualTo(handicapGroupId);
     }
 
     @Test
     public void whenCreateInvalidHandicapGroupItShouldReject() {
         URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
-                .path(HANDICAP_GROUP_PATH)
+                .path(HANDICAP_GROUPS_PATH)
                 .build();
         AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
 

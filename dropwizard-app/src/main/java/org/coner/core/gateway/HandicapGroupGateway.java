@@ -1,6 +1,7 @@
 package org.coner.core.gateway;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.hibernate.dao.HandicapGroupDao;
@@ -47,5 +48,11 @@ public class HandicapGroupGateway {
     public List<HandicapGroup> getAll() {
         List<org.coner.hibernate.entity.HandicapGroup> handicapGroups = handicapGroupDao.findAll();
         return handicapGroupBoundary.toDomainEntities(handicapGroups);
+    }
+
+    public HandicapGroup findById(String handicapGroupId) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(handicapGroupId));
+        org.coner.hibernate.entity.HandicapGroup hibernateHandicapGroup = handicapGroupDao.findById(handicapGroupId);
+        return handicapGroupBoundary.toDomainEntity(hibernateHandicapGroup);
     }
 }
