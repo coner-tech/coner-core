@@ -29,6 +29,7 @@ import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
 import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
+import org.coner.resource.HandicapGroupResource;
 import org.coner.resource.HandicapGroupsResource;
 import org.coner.util.JacksonUtil;
 
@@ -91,8 +92,14 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getRegistrationBoundary(),
                 getConerCoreService()
         );
-        HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(getHandicapGroupBoundary(),
-                getConerCoreService());
+        HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(
+                getHandicapGroupBoundary(),
+                getConerCoreService()
+        );
+        HandicapGroupResource handicapGroupResource = new HandicapGroupResource(
+                getHandicapGroupBoundary(),
+                getConerCoreService()
+        );
 
         CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
                 getCompetitionGroupBoundary(),
@@ -104,6 +111,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         jersey.register(eventRegistrationsResource);
         jersey.register(eventRegistrationResource);
         jersey.register(handicapGroupsResource);
+        jersey.register(handicapGroupResource);
         jersey.register(competitionGroupsResource);
 
         // init exception mappers

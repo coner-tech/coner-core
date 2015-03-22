@@ -136,6 +136,17 @@ public class ConerCoreService {
     }
 
     /**
+     * Get a HandicapGroup by id.
+     *
+     * @param id the id of the HandicapGroup
+     * @return the HandicapGroup with id or null if not found
+     */
+    public HandicapGroup getHandicapGroup(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return handicapGroupGateway.findById(id);
+    }
+
+    /**
      * Get all CompetitionGroups.
      *
      * @return a List of CompetitionGroup entities.

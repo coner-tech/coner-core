@@ -37,4 +37,14 @@ public class HandicapGroupDao extends AbstractDAO<HandicapGroup> {
     public List<HandicapGroup> findAll() {
         return list(namedQuery(HandicapGroup.QUERY_FIND_ALL));
     }
+
+    /**
+     * Find a HandicapGroup by id.
+     *
+     * @param id the id of the HandicapGroup to find
+     * @return the HandicapGroup having the id or null if not found
+     */
+    public HandicapGroup findById(String id) {
+        return get(id);
+    }
 }
