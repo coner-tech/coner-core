@@ -32,6 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -151,14 +152,16 @@ public class HandicapGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetHandicapGroupsResponse.class);
 
+        verify(handicapGroupBoundary).toApiEntities(domainHandicapGroups);
+        verify(conerCoreService).getHandicapGroups();
+        verifyNoMoreInteractions(conerCoreService, handicapGroupBoundary);
+
         assertThat(response)
                 .isNotNull();
         assertThat(response.getHandicapGroups())
                 .isNotNull()
                 .hasSize(1);
 
-        verify(handicapGroupBoundary).toApiEntities(domainHandicapGroups);
-        verify(conerCoreService).getHandicapGroups();
     }
 
 
@@ -179,7 +182,9 @@ public class HandicapGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
+        verify(handicapGroupBoundary).toDomainEntity(requestHandicapGroup);
         verify(conerCoreService).addHandicapGroup(requestHandicapGroupAsDomain);
+        verifyNoMoreInteractions(conerCoreService, handicapGroupBoundary);
 
         return response;
     }

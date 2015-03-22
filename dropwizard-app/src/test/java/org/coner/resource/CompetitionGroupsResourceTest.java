@@ -5,9 +5,12 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetCompetitionGroupsResponse;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -18,6 +21,8 @@ import org.junit.Test;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,27 +60,7 @@ public class CompetitionGroupsResourceTest {
 
     @Test
     public void whenAddValidCompetitionGroupItShouldAddCompetitionGroup() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
-                fixture("fixtures/api/entity/competition_group_add-request.json"),
-                org.coner.api.entity.CompetitionGroup.class
-        );
-
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
-
-        org.coner.core.domain.CompetitionGroup requestCompetitionGroupAsDomain =
-                new org.coner.core.domain.CompetitionGroup();
-        requestCompetitionGroupAsDomain.setId("arbitrary-id-from-service");
-
-        when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroup))
-                .thenReturn(requestCompetitionGroupAsDomain);
-
-        Response response = resources.client()
-                .target("/competitionGroups")
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(requestEntity);
-
-        verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupAsDomain);
-        verifyNoMoreInteractions(conerCoreService);
+        Response response = postCompetitionGroup();
 
         assertThat(response)
                 .isNotNull();
@@ -175,5 +160,62 @@ public class CompetitionGroupsResourceTest {
                 .contains("grouping may not be null (was null)");
 
         verify(conerCoreService, never()).addCompetitionGroup(any(CompetitionGroup.class));
+    }
+
+    @Test
+    public void itShouldGetPostedCompetitionGroup() throws Exception {
+        postCompetitionGroup();
+
+        List<CompetitionGroup> domainCompetitionGroups = new ArrayList<>();
+        domainCompetitionGroups.add(DomainEntityTestUtils.fullCompetitionGroup());
+        List<org.coner.api.entity.CompetitionGroup> apiCompetitionGroups = new ArrayList<>();
+        apiCompetitionGroups.add(ApiEntityTestUtils.fullCompetitionGroup());
+
+        when(conerCoreService.getCompetitionGroups())
+                .thenReturn(domainCompetitionGroups);
+        when(competitionGroupBoundary.toApiEntities(domainCompetitionGroups))
+                .thenReturn(apiCompetitionGroups);
+
+        GetCompetitionGroupsResponse response = resources.client()
+                .target("/competitionGroups")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get(GetCompetitionGroupsResponse.class);
+
+        verify(conerCoreService).getCompetitionGroups();
+        verify(competitionGroupBoundary).toApiEntities(domainCompetitionGroups);
+        verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
+
+        assertThat(response)
+                .isNotNull();
+        assertThat(response.getCompetitionGroups())
+                .isNotNull()
+                .hasSize(1);
+    }
+
+    private Response postCompetitionGroup() throws Exception {
+        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+                fixture("fixtures/api/entity/competition_group_add-request.json"),
+                org.coner.api.entity.CompetitionGroup.class
+        );
+
+        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+
+        org.coner.core.domain.CompetitionGroup requestCompetitionGroupAsDomain =
+                new org.coner.core.domain.CompetitionGroup();
+        requestCompetitionGroupAsDomain.setId("arbitrary-id-from-service");
+
+        when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroup))
+                .thenReturn(requestCompetitionGroupAsDomain);
+
+        Response response = resources.client()
+                .target("/competitionGroups")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+
+        verify(competitionGroupBoundary).toDomainEntity(requestCompetitionGroup);
+        verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupAsDomain);
+        verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
+
+        return response;
     }
 }
