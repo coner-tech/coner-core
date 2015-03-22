@@ -134,4 +134,13 @@ public class ConerCoreService {
     public List<HandicapGroup> getHandicapGroups() {
         return handicapGroupGateway.getAll();
     }
+
+    /**
+     * Get all CompetitionGroups.
+     *
+     * @return a List of CompetitionGroup entities.
+     */
+    public List<CompetitionGroup> getCompetitionGroups() {
+        return competitionGroupGateway.getAll();
+    }
 }

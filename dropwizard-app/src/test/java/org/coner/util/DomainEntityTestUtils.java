@@ -1,7 +1,8 @@
 package org.coner.util;
 
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.Event;
+import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
 
 import java.math.BigDecimal;
@@ -61,6 +62,32 @@ public final class DomainEntityTestUtils {
         domainHandicapGroup.setName(handicapGroupName);
         domainHandicapGroup.setHandicapFactor(handicapGroupFactor);
         return domainHandicapGroup;
+    }
+
+    public static CompetitionGroup fullCompetitionGroup() {
+        return fullCompetitionGroup(
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.COMPETITION_GROUP_NAME,
+                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_GROUPING,
+                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE
+        );
+    }
+
+    public static CompetitionGroup fullCompetitionGroup(
+            String competitionGroupId,
+            String competitionGroupName,
+            BigDecimal competitionGroupHandicapFactor,
+            boolean competitionGroupGrouping,
+            CompetitionGroup.ResultTimeType competitionGroupResultTimeType
+    ) {
+        CompetitionGroup domainCompetitionGroup = new CompetitionGroup();
+        domainCompetitionGroup.setId(competitionGroupId);
+        domainCompetitionGroup.setName(competitionGroupName);
+        domainCompetitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
+        domainCompetitionGroup.setGrouping(competitionGroupGrouping);
+        domainCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
+        return domainCompetitionGroup;
     }
 
 }

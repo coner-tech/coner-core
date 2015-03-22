@@ -28,7 +28,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
         addCompetitionGroupRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
         addCompetitionGroupRequest.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
-        addCompetitionGroupRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE);
+        addCompetitionGroupRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
         addCompetitionGroupRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
 
         Response addCompetitionGroupResponseContainer = client.target(competitionGroupsUri)

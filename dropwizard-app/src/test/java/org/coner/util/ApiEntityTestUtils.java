@@ -69,7 +69,7 @@ public final class ApiEntityTestUtils {
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
                 TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
-                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE,
+                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name(),
                 TestConstants.COMPETITION_GROUP_GROUPING
         );
     }
