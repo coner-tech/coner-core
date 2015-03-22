@@ -1,6 +1,7 @@
 package org.coner.it;
 
 import org.coner.api.request.AddCompetitionGroupRequest;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.util.TestConstants;
 import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -18,10 +19,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
 
+    private static final String COMPETITION_GROUP_PATH = "/competitionGroups";
+
     @Test
     public void whenCreateCompetitionGroupItShouldPersist() {
         URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
-                .path("/competitionGroups")
+                .path(COMPETITION_GROUP_PATH)
                 .build();
 
 
@@ -40,6 +43,23 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .isEqualTo(HttpStatus.CREATED_201);
         String competitionGroupId = UnitTestUtils.getEntityIdFromResponse(addCompetitionGroupResponseContainer);
         assertThat(competitionGroupId).isNotNull();
+    }
+
+    @Test
+    public void whenCreateInvalidHandicapGroupItShouldReject() {
+        URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_PATH)
+                .build();
+        AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
+
+        Response addCompetitionGroupResponseContainer = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addCompetitionGroupRequest));
+
+        assertThat(addCompetitionGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ErrorsResponse errorsResponse = addCompetitionGroupResponseContainer.readEntity(ErrorsResponse.class);
+        assertThat(errorsResponse.getErrors()).isNotEmpty();
     }
 
 }
