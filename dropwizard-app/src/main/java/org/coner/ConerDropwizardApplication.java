@@ -6,7 +6,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.federecio.dropwizard.swagger.*;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.HandicapGroupBoundary;
@@ -53,7 +53,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
     private ConerCoreService conerCoreService;
-    //private SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard();
 
     /**
      * The main method of the application.
