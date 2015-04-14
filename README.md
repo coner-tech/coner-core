@@ -32,6 +32,8 @@ $ curl http://localhost:8081/healthcheck
 {"deadlocks":{"healthy":true},"hibernate":{"healthy":true}}
 ```
 
+Accessing API (non-functional, currently): http://localhost:8080/swagger
+
 ## Contributing
 
 Interested in contributing to Coner? Please take a look at our [contributing guidlines](https://github.com/carltonwhitehead/coner/blob/master/CONTRIBUTING.md)
