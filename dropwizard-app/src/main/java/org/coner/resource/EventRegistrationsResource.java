@@ -7,6 +7,8 @@ import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 
+import com.wordnik.swagger.annotations.*;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,6 +27,7 @@ import java.util.List;
  * or adding a Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations")
+@Api(value = "/events/{eventId}/registrations", description = "Getting or adding registrations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventRegistrationsResource {
@@ -57,8 +60,9 @@ public class EventRegistrationsResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @GET
+    @ApiOperation(value = "Lists all registrations", notes = "Requires specific Event ID", response = GetEventRegistrationsResponse.class, responseContainer = "List")
     @UnitOfWork
-    public GetEventRegistrationsResponse getEventRegistrations(@PathParam("eventId") String eventId) {
+    public GetEventRegistrationsResponse getEventRegistrations(@ApiParam(value = "Event ID", required = true) @PathParam("eventId") String eventId) {
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
@@ -80,9 +84,11 @@ public class EventRegistrationsResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @POST
+    @ApiOperation(value = "Add a new registration", response = Response.class, responseContainer = "List")
     @UnitOfWork
-    public Response addRegistration(@PathParam("eventId") String eventId,
-                                    @Valid Registration registration) {
+    public Response addRegistration(@ApiParam(value = "Event ID", required = true) @PathParam("eventId") String eventId,
+                                    @ApiParam(value = "Registration") @Valid Registration registration) {
+
         org.coner.core.domain.Registration domainRegistration = registrationBoundary.toDomainEntity(registration);
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
