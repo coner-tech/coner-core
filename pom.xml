@@ -13,7 +13,6 @@
     <modules>
         <module>build-tools</module>
         <module>dropwizard-app</module>
-        <module>dropwizard-swagger</module>
         <module>dropwizard-api</module>
     </modules>
 

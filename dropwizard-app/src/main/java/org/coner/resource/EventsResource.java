@@ -6,6 +6,10 @@ import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,6 +25,7 @@ import java.util.List;
  * The EventsResource exposes getting and adding Events via the REST API.
  */
 @Path("/events")
+@Api (value = "/events", description = "Get and Add Events")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventsResource {
@@ -46,6 +51,7 @@ public class EventsResource {
      */
     @GET
     @UnitOfWork
+    @ApiOperation("Get a list of all events")
     public GetEventsResponse getEvents() {
         List<org.coner.core.domain.Event> domainEvents = conerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse();
@@ -61,6 +67,7 @@ public class EventsResource {
      */
     @POST
     @UnitOfWork
+    @ApiOperation(value = "Add an event", response = Response.class)
     public Response addEvent(@Valid Event event) {
         org.coner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         conerCoreService.addEvent(domainEvent);

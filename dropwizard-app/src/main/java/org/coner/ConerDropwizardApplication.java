@@ -32,6 +32,7 @@ import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
 import org.coner.resource.HandicapGroupsResource;
 import org.coner.util.JacksonUtil;
+import java.io.IOException;
 
 /**
  * The Dropwizard application which exposes the Coner core REST interface.
@@ -52,6 +53,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
     private ConerCoreService conerCoreService;
+    //private SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard();
 
     /**
      * The main method of the application.
@@ -112,6 +114,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
 
         jersey.register(webApplicationExceptionMapper);
+
     }
 
     /**
