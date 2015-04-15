@@ -32,7 +32,6 @@ import org.coner.resource.EventResource;
 import org.coner.resource.EventsResource;
 import org.coner.resource.HandicapGroupsResource;
 import org.coner.util.JacksonUtil;
-import java.io.IOException;
 
 /**
  * The Dropwizard application which exposes the Coner core REST interface.

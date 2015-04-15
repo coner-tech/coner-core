@@ -5,7 +5,9 @@ import org.coner.api.entity.Event;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
 
-import com.wordnik.swagger.annotations.*;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -46,9 +48,12 @@ public class EventResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @GET
-    @ApiOperation(value = "Get a specific event", notes = "Requires an Event ID", response = Event.class)
+    @ApiOperation(value = "Get a specific event",
+                  notes = "Requires an Event ID",
+                  response = Event.class)
     @UnitOfWork
-    public Event getEvent(@ApiParam(value = "Event ID", required = true) @PathParam("eventId") String id) {
+    public Event getEvent(@ApiParam(value = "Event ID", required = true)
+                          @PathParam("eventId") String id) {
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(id);
         if (domainEvent == null) {
             throw new NotFoundException("No event found with id " + id);

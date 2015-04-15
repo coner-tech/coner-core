@@ -6,7 +6,9 @@ import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
 
-import com.wordnik.swagger.annotations.*;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -49,7 +51,9 @@ public class EventsResource {
      */
     @GET
     @UnitOfWork
-    @ApiOperation(value = "Get a list of all events", response = GetEventsResponse.class, responseContainer = "List")
+    @ApiOperation(value = "Get a list of all events",
+                  response = GetEventsResponse.class,
+                  responseContainer = "List")
     public GetEventsResponse getEvents() {
         List<org.coner.core.domain.Event> domainEvents = conerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse();
@@ -66,7 +70,8 @@ public class EventsResource {
     @POST
     @UnitOfWork
     @ApiOperation(value = "Add an event", response = Response.class)
-    public Response addEvent(@ApiParam(value = "Event", required = true) @Valid Event event) {
+    public Response addEvent(@ApiParam(value = "Event", required = true)
+                             @Valid Event event) {
         org.coner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         conerCoreService.addEvent(domainEvent);
         return Response.created(UriBuilder.fromResource(EventResource.class)
