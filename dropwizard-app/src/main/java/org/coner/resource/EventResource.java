@@ -5,6 +5,10 @@ import org.coner.api.entity.Event;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -17,6 +21,7 @@ import javax.ws.rs.core.MediaType;
  * The EventResource exposes getting, updating, and deleting an Event via the REST API.
  */
 @Path("/events/{eventId}")
+@Api(value = "/events", description = "Getting, updating, or deleting an event")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventResource {
@@ -43,8 +48,12 @@ public class EventResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @GET
+    @ApiOperation(value = "Get a specific event",
+                  notes = "Requires an Event ID",
+                  response = Event.class)
     @UnitOfWork
-    public Event getEvent(@PathParam("eventId") String id) {
+    public Event getEvent(@ApiParam(value = "Event ID", required = true)
+                          @PathParam("eventId") String id) {
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(id);
         if (domainEvent == null) {
             throw new NotFoundException("No event found with id " + id);

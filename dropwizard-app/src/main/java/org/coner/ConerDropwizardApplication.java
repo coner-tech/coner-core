@@ -6,6 +6,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.HandicapGroupBoundary;
@@ -69,6 +70,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
             Bootstrap<ConerDropwizardConfiguration> bootstrap
     ) {
         bootstrap.addBundle(getHibernate());
+        bootstrap.addBundle(new SwaggerBundle<ConerDropwizardConfiguration>());
 
         JacksonUtil.configureObjectMapper(bootstrap.getObjectMapper());
     }
@@ -124,6 +126,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
 
         jersey.register(webApplicationExceptionMapper);
+
     }
 
     /**

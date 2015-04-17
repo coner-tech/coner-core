@@ -8,6 +8,10 @@ import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.exception.EventRegistrationMismatchException;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -23,6 +27,7 @@ import java.util.Arrays;
  * Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations/{registrationId}")
+@Api(value = "/events/{eventId}/registrations", description = "Getting, updating, or deleting registrations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventRegistrationResource {
@@ -57,8 +62,13 @@ public class EventRegistrationResource {
      *                                       registrationId
      */
     @GET
+    @ApiOperation(value = "Get a specific registration",
+                  notes = "Requires eventId and registrationId",
+                  response = Registration.class)
     @UnitOfWork
-    public Response getRegistration(@PathParam("eventId") String eventId,
+    public Response getRegistration(@ApiParam(value = "Event ID", required = true)
+                                    @PathParam("eventId") String eventId,
+                                    @ApiParam(value = "Registration ID", required = true)                                    
                                     @PathParam("registrationId") String registrationId) {
         org.coner.core.domain.Registration domainRegistration;
         try {
