@@ -1,5 +1,8 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Registration;
 import org.coner.api.response.ErrorsResponse;
@@ -7,10 +10,6 @@ import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.exception.EventRegistrationMismatchException;
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiOperation;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -63,12 +62,12 @@ public class EventRegistrationResource {
      */
     @GET
     @ApiOperation(value = "Get a specific registration",
-                  notes = "Requires eventId and registrationId",
-                  response = Registration.class)
+            notes = "Requires eventId and registrationId",
+            response = Registration.class)
     @UnitOfWork
     public Response getRegistration(@ApiParam(value = "Event ID", required = true)
                                     @PathParam("eventId") String eventId,
-                                    @ApiParam(value = "Registration ID", required = true)                                    
+                                    @ApiParam(value = "Registration ID", required = true)
                                     @PathParam("registrationId") String registrationId) {
         org.coner.core.domain.Registration domainRegistration;
         try {
