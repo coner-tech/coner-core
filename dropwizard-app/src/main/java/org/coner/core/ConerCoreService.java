@@ -6,6 +6,7 @@ import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
+import org.coner.core.exception.EventRegistrationMismatchException;
 import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
@@ -74,12 +75,28 @@ public class ConerCoreService {
     /**
      * Get a Registration by id.
      *
-     * @param id the id of the Registration
+     * @param eventId        the id of the Event the Registration belongs to
+     * @param registrationId the id of the Registration
      * @return the Registration with id or null if not found
+     * @throws org.coner.core.exception.EventRegistrationMismatchException if the Registration's Event id doesn't match
+     *                                                                     eventId
      */
-    public Registration getRegistration(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return registrationGateway.findById(id);
+    public Registration getRegistration(String eventId, String registrationId)
+            throws EventRegistrationMismatchException {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(eventId));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(registrationId));
+        Event event = eventGateway.findById(eventId);
+        if (event == null) {
+            return null;
+        }
+        Registration registration = registrationGateway.findById(registrationId);
+        if (registration == null) {
+            return null;
+        }
+        if (!registration.getEvent().getId().equals(eventId)) {
+            throw new EventRegistrationMismatchException();
+        }
+        return registration;
     }
 
     /**
@@ -133,5 +150,36 @@ public class ConerCoreService {
      */
     public List<HandicapGroup> getHandicapGroups() {
         return handicapGroupGateway.getAll();
+    }
+
+    /**
+     * Get a HandicapGroup by id.
+     *
+     * @param id the id of the HandicapGroup
+     * @return the HandicapGroup with id or null if not found
+     */
+    public HandicapGroup getHandicapGroup(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return handicapGroupGateway.findById(id);
+    }
+
+    /**
+     * Get all CompetitionGroups.
+     *
+     * @return a List of CompetitionGroup entities.
+     */
+    public List<CompetitionGroup> getCompetitionGroups() {
+        return competitionGroupGateway.getAll();
+    }
+
+    /**
+     * Get a CompetitionGroup by id.
+     *
+     * @param id the id of the CompetitionGroup
+     * @return the CompetitionGroup with id or null if not found
+     */
+    public CompetitionGroup getCompetitionGroup(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return competitionGroupGateway.findById(id);
     }
 }

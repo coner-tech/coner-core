@@ -4,20 +4,23 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import org.coner.api.entity.Event;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
+import org.coner.util.TestConstants;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
-import java.time.Instant;
-import java.util.Date;
+import javax.ws.rs.core.Response;
 
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -41,48 +44,49 @@ public class EventResourceTest {
 
     @Test
     public void itShouldGetEvent() {
-        String id = "test";
-        String name = "test event";
-        Date date = Date.from(Instant.now());
+        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        Event apiEvent = ApiEntityTestUtils.fullApiEvent();
 
-        org.coner.core.domain.Event domainEvent = new org.coner.core.domain.Event();
-        domainEvent.setId(id);
-        domainEvent.setName(name);
-        domainEvent.setDate(date);
+        // sanity check test
+        assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
+        assertThat(apiEvent.getId()).isSameAs(TestConstants.EVENT_ID);
 
-        Event apiEvent = new Event();
-        apiEvent.setId(id);
-        apiEvent.setName(name);
-        apiEvent.setDate(date);
-
-        when(conerCoreService.getEvent(id)).thenReturn(domainEvent);
+        when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(domainEvent);
         when(eventBoundary.toApiEntity(domainEvent)).thenReturn(apiEvent);
 
-        Event response = resources.client()
-                .target("/events/" + id)
+        Response getEventResponseContainer = resources.client()
+                .target("/events/" + TestConstants.EVENT_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .get(Event.class);
+                .get();
 
-        assertThat(response).isEqualTo(apiEvent);
+        verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
+        verify(eventBoundary).toApiEntity(domainEvent);
+        verifyNoMoreInteractions(conerCoreService, eventBoundary);
+
+        assertThat(getEventResponseContainer).isNotNull();
+        assertThat(getEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+
+        Event getEventResponse = getEventResponseContainer.readEntity(Event.class);
+        assertThat(getEventResponse)
+                .isNotNull()
+                .isEqualTo(apiEvent);
     }
 
     @Test
     public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() {
+        when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(null);
 
-        String id = "test";
-        when(conerCoreService.getEvent(id)).thenReturn(null);
+        Response response = resources.client()
+                .target("/events/" + TestConstants.EVENT_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
 
-        try {
-            Event response = resources.client()
-                    .target("/events/" + id)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get(Event.class);
+        verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
+        verifyNoMoreInteractions(conerCoreService);
+        verifyZeroInteractions(eventBoundary);
 
-            failBecauseExceptionWasNotThrown(NotFoundException.class);
-        } catch (NotFoundException nfe) {
-            assertThat(nfe.getResponse().getStatusInfo().getStatusCode())
-                    .isEqualTo(HttpStatus.NOT_FOUND_404);
-        }
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 
 }

@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -14,7 +16,15 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "competition_groups")
+@NamedQueries({
+        @NamedQuery(
+                name = CompetitionGroup.QUERY_FIND_ALL,
+                query = "from CompetitionGroup"
+        )
+})
 public class CompetitionGroup extends HibernateEntity {
+
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroup.findAll";
 
     private String id;
     private String name;

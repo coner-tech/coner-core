@@ -2,6 +2,7 @@ package org.coner.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.coner.api.response.GetEventRegistrationsResponse;
@@ -17,18 +18,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -45,6 +45,7 @@ public class EventRegistrationsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventRegistrationsResource(eventBoundary, registrationBoundary, conerCoreService))
+            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
 
@@ -128,19 +129,18 @@ public class EventRegistrationsResourceTest {
     }
 
     @Test
-    public void itShouldThrowNotFoundExceptionIfEventDoesNotExist() throws Exception {
-        final String eventId = TestConstants.EVENT_ID;
-        try {
-            when(conerCoreService.getEvent(eventId)).thenReturn(null);
+    public void whenEventDoesNotExistItShouldReturnNotFound() {
+        when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(null);
 
-            GetEventRegistrationsResponse response = resources.client()
-                    .target("/events/" + eventId + "/registrations")
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get(GetEventRegistrationsResponse.class);
-            failBecauseExceptionWasNotThrown(NotFoundException.class);
-        } catch (NotFoundException nfe) {
-            assertThat(nfe.getResponse().getStatus())
-                    .isEqualTo(HttpStatus.NOT_FOUND_404);
-        }
+        Response eventRegistrationResponseContainer = resources.client()
+                .target("/events/" + TestConstants.EVENT_ID + "/registrations")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
+        verifyNoMoreInteractions(conerCoreService);
+
+        assertThat(eventRegistrationResponseContainer).isNotNull();
+        assertThat(eventRegistrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 }
