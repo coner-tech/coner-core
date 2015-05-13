@@ -1,9 +1,16 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.HandicapGroup;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/handicapGroups/{handicapGroupId}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Handicap Groups")
 public class HandicapGroupResource {
 
     private final HandicapGroupBoundary handicapGroupBoundary;
@@ -46,7 +54,14 @@ public class HandicapGroupResource {
      */
     @GET
     @UnitOfWork
-    public HandicapGroup getHandicapGroup(@PathParam("handicapGroupId") String id) {
+    @ApiOperation(value = "Get a Handicap Group", response = HandicapGroup.class)
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = HandicapGroup.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found")
+    })
+    public HandicapGroup getHandicapGroup(
+            @PathParam("handicapGroupId") @ApiParam(value = "Handicap Group ID", required = true) String id
+    ) {
         org.coner.core.domain.HandicapGroup domainHandicapGroup = conerCoreService.getHandicapGroup(id);
         if (domainHandicapGroup == null) {
             throw new NotFoundException("No handicap group with id " + id);
