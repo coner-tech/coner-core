@@ -1,10 +1,16 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.CompetitionGroup;
 import org.coner.api.response.GetCompetitionGroupsResponse;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -24,6 +30,7 @@ import java.util.List;
 @Path("/competitionGroups")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Competition Groups")
 public class CompetitionGroupsResource {
 
     private final CompetitionGroupBoundary competitionGroupBoundary;
@@ -52,7 +59,14 @@ public class CompetitionGroupsResource {
      */
     @POST
     @UnitOfWork
-    public Response addCompetitionGroup(@Valid CompetitionGroup competitionGroup) {
+    @ApiOperation(value = "Add a new Competition Group")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.CREATED_201, message = "Created at URI in Location header"),
+            @ApiResponse(code = HttpStatus.UNPROCESSABLE_ENTITY_422, message = "Failed validation")
+    })
+    public Response addCompetitionGroup(
+            @Valid @ApiParam(value = "Competition Group") CompetitionGroup competitionGroup
+    ) {
         org.coner.core.domain.CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(
                 competitionGroup
         );
@@ -69,6 +83,7 @@ public class CompetitionGroupsResource {
      */
     @GET
     @UnitOfWork
+    @ApiOperation(value = "Get all Competition Groups", response = GetCompetitionGroupsResponse.class)
     public GetCompetitionGroupsResponse getCompetitionGroups() {
         List<org.coner.core.domain.CompetitionGroup> domainCompetitionGroups = conerCoreService.getCompetitionGroups();
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
