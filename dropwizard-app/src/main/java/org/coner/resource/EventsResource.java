@@ -1,14 +1,17 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Event;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiOperation;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -25,9 +28,9 @@ import java.util.List;
  * The EventsResource exposes getting and adding Events via the REST API.
  */
 @Path("/events")
-@Api(value = "/events", description = "Getting or adding an event")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Events")
 public class EventsResource {
 
     private final EventBoundary eventBoundary;
@@ -51,9 +54,7 @@ public class EventsResource {
      */
     @GET
     @UnitOfWork
-    @ApiOperation(value = "Get a list of all events",
-                  response = GetEventsResponse.class,
-                  responseContainer = "List")
+    @ApiOperation(value = "Get a list of all events", response = GetEventsResponse.class)
     public GetEventsResponse getEvents() {
         List<org.coner.core.domain.Event> domainEvents = conerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse();
@@ -69,9 +70,21 @@ public class EventsResource {
      */
     @POST
     @UnitOfWork
-    @ApiOperation(value = "Add an event", response = Response.class)
-    public Response addEvent(@ApiParam(value = "Event", required = true)
-                             @Valid Event event) {
+    @ApiOperation(value = "Add an Event", response = Response.class)
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    response = Void.class,
+                    message = "Created at URI in Location header"),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    response = ErrorsResponse.class,
+                    message = "Failed validation"
+            )
+    })
+    public Response addEvent(
+            @Valid @ApiParam(value = "Event", required = true) Event event
+    ) {
         org.coner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
         conerCoreService.addEvent(domainEvent);
         return Response.created(UriBuilder.fromResource(EventResource.class)
