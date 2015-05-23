@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,11 +24,18 @@ public class ConerDropwizardConfiguration extends Configuration {
     @JsonProperty
     private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
 
+    @JsonProperty("swagger")
+    private SwaggerBundleConfiguration swaggerBundleConfiguration;
+
     public DataSourceFactory getDataSourceFactory() {
         return database;
     }
 
     public JerseyClientConfiguration getJerseyClientConfiguration() {
         return httpClient;
+    }
+
+    public SwaggerBundleConfiguration getSwaggerBundleConfiguration() {
+        return swaggerBundleConfiguration;
     }
 }
