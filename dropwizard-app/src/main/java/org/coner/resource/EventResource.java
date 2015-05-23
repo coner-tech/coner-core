@@ -1,13 +1,16 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Event;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiOperation;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,9 +24,9 @@ import javax.ws.rs.core.MediaType;
  * The EventResource exposes getting, updating, and deleting an Event via the REST API.
  */
 @Path("/events/{eventId}")
-@Api(value = "/events", description = "Getting, updating, or deleting an event")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Events")
 public class EventResource {
 
     private final EventBoundary eventBoundary;
@@ -48,12 +51,15 @@ public class EventResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @GET
-    @ApiOperation(value = "Get a specific event",
-                  notes = "Requires an Event ID",
-                  response = Event.class)
     @UnitOfWork
-    public Event getEvent(@ApiParam(value = "Event ID", required = true)
-                          @PathParam("eventId") String id) {
+    @ApiOperation(value = "Get an Event")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = Event.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found")
+    })
+    public Event getEvent(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String id
+    ) {
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(id);
         if (domainEvent == null) {
             throw new NotFoundException("No event found with id " + id);

@@ -3,6 +3,8 @@ package org.coner.resource;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Registration;
 import org.coner.api.response.ErrorsResponse;
@@ -10,6 +12,7 @@ import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.exception.EventRegistrationMismatchException;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,9 +29,9 @@ import java.util.Arrays;
  * Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations/{registrationId}")
-@Api(value = "/events/{eventId}/registrations", description = "Getting, updating, or deleting registrations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Event Registrations")
 public class EventRegistrationResource {
 
     private final EventBoundary eventBoundary;
@@ -61,14 +64,21 @@ public class EventRegistrationResource {
      *                                       registrationId
      */
     @GET
-    @ApiOperation(value = "Get a specific registration",
-            notes = "Requires eventId and registrationId",
-            response = Registration.class)
     @UnitOfWork
-    public Response getRegistration(@ApiParam(value = "Event ID", required = true)
-                                    @PathParam("eventId") String eventId,
-                                    @ApiParam(value = "Registration ID", required = true)
-                                    @PathParam("registrationId") String registrationId) {
+    @ApiOperation(value = "Get a specific registration")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = Registration.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found"),
+            @ApiResponse(
+                    code = HttpStatus.CONFLICT_409,
+                    response = ErrorsResponse.class,
+                    message = "Event ID and Registration ID are mismatched"
+            )
+    })
+    public Response getRegistration(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @PathParam("registrationId") @ApiParam(value = "Registration ID", required = true) String registrationId
+    ) {
         org.coner.core.domain.Registration domainRegistration;
         try {
             domainRegistration = conerCoreService.getRegistration(

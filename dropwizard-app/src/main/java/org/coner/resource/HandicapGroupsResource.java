@@ -1,10 +1,17 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.HandicapGroup;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -23,6 +30,7 @@ import java.util.List;
 @Path("/handicapGroups")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Handicap Groups")
 public class HandicapGroupsResource {
 
     private final HandicapGroupBoundary handicapGroupBoundary;
@@ -33,7 +41,7 @@ public class HandicapGroupsResource {
      *
      * @param handicapGroupBoundary the HandicapGroupBoundary to use for converting API and
      *                              Domain Handicap Group entities
-     * @param conerCoreService the ConerCoreService
+     * @param conerCoreService      the ConerCoreService
      */
     public HandicapGroupsResource(HandicapGroupBoundary handicapGroupBoundary, ConerCoreService conerCoreService) {
         this.handicapGroupBoundary = handicapGroupBoundary;
@@ -48,7 +56,21 @@ public class HandicapGroupsResource {
      */
     @POST
     @UnitOfWork
-    public Response addHandicapGroup(@Valid HandicapGroup handicapGroup) {
+    @ApiOperation(value = "Add a Handicap Group")
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    message = "Created at URI in Location header"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    message = "Failed validation",
+                    response = ErrorsResponse.class
+            )
+    })
+    public Response addHandicapGroup(
+            @Valid @ApiParam(value = "Handicap Group") HandicapGroup handicapGroup
+    ) {
         org.coner.core.domain.HandicapGroup domainHandicapGroup = handicapGroupBoundary.toDomainEntity(handicapGroup);
         conerCoreService.addHandicapGroup(domainHandicapGroup);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)
@@ -63,6 +85,7 @@ public class HandicapGroupsResource {
      */
     @GET
     @UnitOfWork
+    @ApiOperation(value = "Get all Handicap Groups", response = GetHandicapGroupsResponse.class)
     public GetHandicapGroupsResponse getHandicapGroups() {
         List<org.coner.core.domain.HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();

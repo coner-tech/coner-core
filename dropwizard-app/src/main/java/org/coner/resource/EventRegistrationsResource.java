@@ -1,15 +1,18 @@
 package org.coner.resource;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Registration;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.EventBoundary;
 import org.coner.boundary.RegistrationBoundary;
 import org.coner.core.ConerCoreService;
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiOperation;
+import org.eclipse.jetty.http.HttpStatus;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -29,9 +32,9 @@ import java.util.List;
  * or adding a Registration for an Event via the REST API.
  */
 @Path("/events/{eventId}/registrations")
-@Api(value = "/events/{eventId}/registrations", description = "Getting or adding registrations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
     private final EventBoundary eventBoundary;
@@ -62,13 +65,26 @@ public class EventRegistrationsResource {
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @GET
-    @ApiOperation(value = "Lists all registrations",
-                  notes = "Requires specific Event ID",
-                  response = GetEventRegistrationsResponse.class,
-                  responseContainer = "List")
     @UnitOfWork
-    public GetEventRegistrationsResponse getEventRegistrations(@ApiParam(value = "Event ID", required = true)
-                                                               @PathParam("eventId") String eventId) {
+    @ApiOperation(
+            value = "Get a list of all registrations at an event",
+            response = GetEventRegistrationsResponse.class
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.OK_200,
+                    message = "Success",
+                    response = GetEventRegistrationsResponse.class
+            ),
+            @ApiResponse(
+                    code = HttpStatus.NOT_FOUND_404,
+                    message = "No event with given ID",
+                    response = ErrorsResponse.class
+            )
+    })
+    public GetEventRegistrationsResponse getEventRegistrations(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId
+    ) {
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
@@ -84,17 +100,35 @@ public class EventRegistrationsResource {
     /**
      * Add a new Registration for an Event.
      *
-     * @param eventId the id of the Event to get Registrations
+     * @param eventId      the id of the Event to get Registrations
      * @param registration the Registration to add
      * @return a response containing response code and url of the added registration
      * @throws javax.ws.rs.NotFoundException if no Event is found having the id
      */
     @POST
-    @ApiOperation(value = "Add a new registration", response = Response.class, responseContainer = "List")
     @UnitOfWork
-    public Response addRegistration(@ApiParam(value = "Event ID", required = true) @PathParam("eventId") String eventId,
-                                    @ApiParam(value = "Registration") @Valid Registration registration) {
-
+    @ApiOperation(value = "Add a new registration")
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    response = Void.class,
+                    message = "Created at URI in Location header"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.NOT_FOUND_404,
+                    response = ErrorsResponse.class,
+                    message = "No event with given ID"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    response = ErrorsResponse.class,
+                    message = "Failed validation"
+            )
+    })
+    public Response addRegistration(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @Valid @ApiParam(value = "Registration", required = true) Registration registration
+    ) {
         org.coner.core.domain.Registration domainRegistration = registrationBoundary.toDomainEntity(registration);
         org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
