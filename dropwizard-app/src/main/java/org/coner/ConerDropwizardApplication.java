@@ -73,7 +73,9 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         bootstrap.addBundle(getHibernate());
         bootstrap.addBundle(new SwaggerBundle<ConerDropwizardConfiguration>() {
             @Override
-            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(ConerDropwizardConfiguration configuration) {
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(
+                    ConerDropwizardConfiguration configuration
+            ) {
                 return configuration.getSwaggerBundleConfiguration();
             }
         });
