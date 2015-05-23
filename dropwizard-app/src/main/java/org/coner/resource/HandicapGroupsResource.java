@@ -7,6 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.HandicapGroup;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
@@ -57,8 +58,15 @@ public class HandicapGroupsResource {
     @UnitOfWork
     @ApiOperation(value = "Add a Handicap Group")
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.CREATED_201, message = "Created at URI in Location header"),
-            @ApiResponse(code = HttpStatus.UNPROCESSABLE_ENTITY_422, message = "Failed validation")
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    message = "Created at URI in Location header"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    message = "Failed validation",
+                    response = ErrorsResponse.class
+            )
     })
     public Response addHandicapGroup(
             @Valid @ApiParam(value = "Handicap Group") HandicapGroup handicapGroup

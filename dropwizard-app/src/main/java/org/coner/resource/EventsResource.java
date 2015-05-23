@@ -75,7 +75,8 @@ public class EventsResource {
             @ApiResponse(
                     code = HttpStatus.CREATED_201,
                     response = Void.class,
-                    message = "Created at URI in Location header"),
+                    message = "Created at URI in Location header"
+            ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     response = ErrorsResponse.class,

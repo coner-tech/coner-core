@@ -7,6 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetCompetitionGroupsResponse;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
@@ -61,8 +62,15 @@ public class CompetitionGroupsResource {
     @UnitOfWork
     @ApiOperation(value = "Add a new Competition Group")
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.CREATED_201, message = "Created at URI in Location header"),
-            @ApiResponse(code = HttpStatus.UNPROCESSABLE_ENTITY_422, message = "Failed validation")
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    message = "Created at URI in Location header"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    message = "Failed validation",
+                    response = ErrorsResponse.class
+            )
     })
     public Response addCompetitionGroup(
             @Valid @ApiParam(value = "Competition Group") CompetitionGroup competitionGroup
