@@ -124,16 +124,6 @@ public class ConerCoreService {
     }
 
     /**
-     * Add a HandicapGroup.
-     *
-     * @param handicapGroup the HandicapGroup entity to add
-     */
-    public void addHandicapGroup(HandicapGroup handicapGroup) {
-        Preconditions.checkNotNull(handicapGroup);
-        handicapGroupGateway.create(handicapGroup);
-    }
-
-    /**
      * Add a competition group.
      *
      * @param competitionGroup the Event entity to add
@@ -141,26 +131,6 @@ public class ConerCoreService {
     public void addCompetitionGroup(CompetitionGroup competitionGroup) {
         Preconditions.checkNotNull(competitionGroup);
         competitionGroupGateway.create(competitionGroup);
-    }
-
-    /**
-     * Get all HandicapGroups.
-     *
-     * @return a List of HandicapGroup.
-     */
-    public List<HandicapGroup> getHandicapGroups() {
-        return handicapGroupGateway.getAll();
-    }
-
-    /**
-     * Get a HandicapGroup by id.
-     *
-     * @param id the id of the HandicapGroup
-     * @return the HandicapGroup with id or null if not found
-     */
-    public HandicapGroup getHandicapGroup(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return handicapGroupGateway.findById(id);
     }
 
     /**
@@ -181,5 +151,35 @@ public class ConerCoreService {
     public CompetitionGroup getCompetitionGroup(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return competitionGroupGateway.findById(id);
+    }
+
+    /**
+     * Add a HandicapGroup.
+     *
+     * @param handicapGroup the HandicapGroup entity to add
+     */
+    public void addHandicapGroup(HandicapGroup handicapGroup) {
+        Preconditions.checkNotNull(handicapGroup);
+        handicapGroupGateway.create(handicapGroup);
+    }
+
+    /**
+     * Get all HandicapGroups.
+     *
+     * @return a List of HandicapGroup.
+     */
+    public List<HandicapGroup> getHandicapGroups() {
+        return handicapGroupGateway.getAll();
+    }
+
+    /**
+     * Get a HandicapGroup by id.
+     *
+     * @param id the id of the HandicapGroup
+     * @return the HandicapGroup with id or null if not found
+     */
+    public HandicapGroup getHandicapGroup(String id) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+        return handicapGroupGateway.findById(id);
     }
 }
