@@ -59,7 +59,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenCreateInvalidHandicapGroupItShouldReject() {
+    public void whenCreateInvalidCompetitionGroupItShouldReject() {
         URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUPS_PATH)
                 .build();
