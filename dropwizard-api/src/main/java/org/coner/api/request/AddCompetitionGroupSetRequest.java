@@ -70,7 +70,9 @@ public class AddCompetitionGroupSetRequest {
         AddCompetitionGroupSetRequest that = (AddCompetitionGroupSetRequest) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return !(competitionGroups != null ? !competitionGroups.equals(that.competitionGroups) : that.competitionGroups != null);
+        return !(competitionGroups != null
+                ? !competitionGroups.equals(that.competitionGroups)
+                : that.competitionGroups != null);
 
     }
 
