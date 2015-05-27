@@ -9,11 +9,9 @@ import com.wordnik.swagger.annotations.ResponseHeader;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.boundary.CompetitionGroupSetBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
-import org.coner.core.domain.CompetitionGroupSet;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.validation.Valid;
@@ -39,7 +37,6 @@ import java.util.Set;
 public class CompetitionGroupSetsResource {
 
     private final CompetitionGroupSetBoundary competitionGroupSetBoundary;
-    private final CompetitionGroupBoundary competitionGroupBoundary;
     private final ConerCoreService conerCoreService;
 
     /**
@@ -47,17 +44,13 @@ public class CompetitionGroupSetsResource {
      *
      * @param competitionGroupSetBoundary the CompetitionGroupSetBoundary to use for converting API and Domain
      *                                    Competition Group Set entities
-     * @param competitionGroupBoundary    the CompetitionGroupBoundary to use for converting API and Domain Competition
-     *                                    Group entities
      * @param conerCoreService            the ConerCoreService
      */
     public CompetitionGroupSetsResource(
             CompetitionGroupSetBoundary competitionGroupSetBoundary,
-            CompetitionGroupBoundary competitionGroupBoundary,
             ConerCoreService conerCoreService
     ) {
         this.competitionGroupSetBoundary = competitionGroupSetBoundary;
-        this.competitionGroupBoundary = competitionGroupBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -91,8 +84,8 @@ public class CompetitionGroupSetsResource {
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
 
     ) {
-        org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = new CompetitionGroupSet();
-        domainCompetitionGroupSet.setName(request.getName());
+        org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetBoundary
+                .toDomainEntity(request);
         Set<AddCompetitionGroupSetRequest.CompetitionGroup> rxApiCompetitionGroups = request.getCompetitionGroups();
         if (rxApiCompetitionGroups != null) {
             Set<org.coner.core.domain.CompetitionGroup> domainCompetitionGroups = new HashSet<>();

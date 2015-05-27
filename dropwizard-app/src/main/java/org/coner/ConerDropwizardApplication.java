@@ -130,7 +130,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         );
         CompetitionGroupSetsResource competitionGroupSetsResource = new CompetitionGroupSetsResource(
                 getCompetitionGroupSetBoundary(),
-                getCompetitionGroupBoundary(),
                 getConerCoreService()
         );
 

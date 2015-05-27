@@ -1,12 +1,15 @@
 package org.coner.util;
 
+import com.google.common.collect.Sets;
 import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupSet;
 import org.coner.api.entity.Event;
 import org.coner.api.entity.HandicapGroup;
 import org.coner.api.entity.Registration;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -88,5 +91,25 @@ public final class ApiEntityTestUtils {
         apiCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
         apiCompetitionGroup.setGrouping(competitionGroupGrouping);
         return apiCompetitionGroup;
+    }
+
+    public static CompetitionGroupSet fullCompetitionGroupSet(
+            String competitionGroupSetId,
+            String competitionGroupSetName,
+            Set<CompetitionGroup> competitionGroups
+    ) {
+        CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
+        competitionGroupSet.setId(competitionGroupSetId);
+        competitionGroupSet.setName(competitionGroupSetName);
+        competitionGroupSet.setCompetitionGroups(competitionGroups);
+        return competitionGroupSet;
+    }
+
+    public static CompetitionGroupSet fullCompetitionGroupSet() {
+        return fullCompetitionGroupSet(
+                TestConstants.COMPETITION_GROUP_SET_ID,
+                TestConstants.COMPETITION_GROUP_SET_NAME,
+                Sets.newHashSet(fullCompetitionGroup())
+        );
     }
 }

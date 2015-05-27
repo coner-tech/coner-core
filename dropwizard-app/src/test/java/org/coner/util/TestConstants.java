@@ -36,4 +36,8 @@ public final class TestConstants {
     public static final CompetitionGroup.ResultTimeType COMPETITION_GROUP_RESULT_TIME_TYPE =
             CompetitionGroup.ResultTimeType.RAW;
     public static final boolean COMPETITION_GROUP_GROUPING = true;
+
+    // CompetitionGroupSet
+    public static final String COMPETITION_GROUP_SET_ID = "competition-group-set-test-id";
+    public static final String COMPETITION_GROUP_SET_NAME = "competition-group-set-test-name";
 }
