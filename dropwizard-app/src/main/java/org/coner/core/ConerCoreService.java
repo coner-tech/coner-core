@@ -3,11 +3,13 @@ package org.coner.core;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.coner.core.domain.CompetitionGroup;
+import org.coner.core.domain.CompetitionGroupSet;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.core.domain.Registration;
 import org.coner.core.exception.EventRegistrationMismatchException;
 import org.coner.core.gateway.CompetitionGroupGateway;
+import org.coner.core.gateway.CompetitionGroupSetGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
 import org.coner.core.gateway.RegistrationGateway;
@@ -21,23 +23,28 @@ public class ConerCoreService {
 
     private final EventGateway eventGateway;
     private final RegistrationGateway registrationGateway;
-    private final HandicapGroupGateway handicapGroupGateway;
     private final CompetitionGroupGateway competitionGroupGateway;
+    private final CompetitionGroupSetGateway competitionGroupSetGateway;
+    private final HandicapGroupGateway handicapGroupGateway;
 
     /**
      * Constructor for ConerCoreService.
      *
-     * @param eventGateway            the EventGateway
-     * @param registrationGateway     the RegistrationGateway
-     * @param handicapGroupGateway    the HandicapGroupGateway
-     * @param competitionGroupGateway the CompetitionGroupGateway
+     * @param eventGateway               the EventGateway
+     * @param registrationGateway        the RegistrationGateway
+     * @param competitionGroupGateway    the CompetitionGroupGateway
+     * @param competitionGroupSetGateway the CompetitionGroupSetGateway
+     * @param handicapGroupGateway       the HandicapGroupGateway
      */
     public ConerCoreService(EventGateway eventGateway,
                             RegistrationGateway registrationGateway,
-                            HandicapGroupGateway handicapGroupGateway,
-                            CompetitionGroupGateway competitionGroupGateway) {
+                            CompetitionGroupGateway competitionGroupGateway,
+                            CompetitionGroupSetGateway competitionGroupSetGateway,
+                            HandicapGroupGateway handicapGroupGateway
+    ) {
         this.eventGateway = eventGateway;
         this.registrationGateway = registrationGateway;
+        this.competitionGroupSetGateway = competitionGroupSetGateway;
         this.handicapGroupGateway = handicapGroupGateway;
         this.competitionGroupGateway = competitionGroupGateway;
     }
@@ -151,6 +158,16 @@ public class ConerCoreService {
     public CompetitionGroup getCompetitionGroup(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return competitionGroupGateway.findById(id);
+    }
+
+    /**
+     * Add a CompetitionGroupSet
+     *
+     * @param competitionGroupSet the CompetitionGroupSet entity to add
+     */
+    public void addCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
+        Preconditions.checkNotNull(competitionGroupSet);
+        competitionGroupSetGateway.create(competitionGroupSet);
     }
 
     /**

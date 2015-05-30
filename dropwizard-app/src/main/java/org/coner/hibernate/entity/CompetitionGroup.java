@@ -2,14 +2,20 @@ package org.coner.hibernate.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * Hibernate entity for the persistence of CompetitionGroups.
@@ -31,8 +37,10 @@ public class CompetitionGroup extends HibernateEntity {
     private BigDecimal handicapFactor;
     private boolean grouping;
     private String resultTimeType;
+    private Set<CompetitionGroupSet> competitionGroupSets;
 
     @Id
+    @Column(name = "competitionGroupId", unique = true, nullable = false)
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     public String getId() {
@@ -77,5 +85,23 @@ public class CompetitionGroup extends HibernateEntity {
 
     public void setResultTimeType(String resultTimeType) {
         this.resultTimeType = resultTimeType;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "competition_group_competition_group_sets",
+            joinColumns = {
+                    @JoinColumn(name = "competitionGroupId", nullable = false, updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "competitionGroupSetId", nullable = false, updatable = false)
+            }
+    )
+    public Set<CompetitionGroupSet> getCompetitionGroupSets() {
+        return this.competitionGroupSets;
+    }
+
+    public void setCompetitionGroupSets(Set<CompetitionGroupSet> competitionGroupSets) {
+        this.competitionGroupSets = competitionGroupSets;
     }
 }

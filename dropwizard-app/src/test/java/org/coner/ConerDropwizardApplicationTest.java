@@ -22,6 +22,7 @@ import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.dao.HandicapGroupDao;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.resource.CompetitionGroupResource;
+import org.coner.resource.CompetitionGroupSetsResource;
 import org.coner.resource.CompetitionGroupsResource;
 import org.coner.resource.EventRegistrationResource;
 import org.coner.resource.EventRegistrationsResource;
@@ -53,7 +54,7 @@ import static org.mockito.Mockito.when;
 public class ConerDropwizardApplicationTest {
 
     // Test constants
-    private static final int NUMBER_OF_RESOURCES = 9;
+    private static final int NUMBER_OF_RESOURCES = 10;
 
     // application dependencies
     private final HibernateBundle<ConerDropwizardConfiguration> hibernate = mock(HibernateBundle.class);
@@ -176,6 +177,7 @@ public class ConerDropwizardApplicationTest {
         assertThat(registeredClasses).contains(HandicapGroupResource.class);
         assertThat(registeredClasses).contains(CompetitionGroupsResource.class);
         assertThat(registeredClasses).contains(CompetitionGroupResource.class);
+        assertThat(registeredClasses).contains(CompetitionGroupSetsResource.class);
         assertThat(registeredClasses).contains(WebApplicationExceptionMapper.class);
     }
 }

@@ -1,0 +1,11 @@
+{
+  "name": "2015 Competition Group Set",
+  "competitionGroups": [
+    {
+      "id": "test-competition-group-id-1"
+    },
+    {
+      "id": "test-competition-group-id-2"
+    }
+  ]
+}
