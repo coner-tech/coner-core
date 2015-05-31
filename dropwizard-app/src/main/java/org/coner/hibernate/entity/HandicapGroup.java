@@ -2,14 +2,20 @@ package org.coner.hibernate.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * Hibernate entity for the persistence of HandicapGroups.
@@ -28,6 +34,7 @@ public class HandicapGroup extends HibernateEntity {
     private String id;
     private String name;
     private BigDecimal handicapFactor;
+    private Set<HandicapGroupSet> handicapGroupSets;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -56,5 +63,23 @@ public class HandicapGroup extends HibernateEntity {
 
     public void setHandicapFactor(BigDecimal handicapFactor) {
         this.handicapFactor = handicapFactor;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "handicap_group_handicap_group_sets",
+            joinColumns = {
+                    @JoinColumn(name = "handicapGroupId", nullable = false, updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "handicapGroupSetId", nullable = false, updatable = false)
+            }
+    )
+    public Set<HandicapGroupSet> getHandicapGroupSets() {
+        return handicapGroupSets;
+    }
+
+    public void setHandicapGroupSets(Set<HandicapGroupSet> handicapGroupSets) {
+        this.handicapGroupSets = handicapGroupSets;
     }
 }
