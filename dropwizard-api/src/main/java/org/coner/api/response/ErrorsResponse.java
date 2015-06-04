@@ -1,12 +1,8 @@
 package org.coner.api.response;
 
 import com.google.common.collect.ImmutableList;
-
 import java.util.List;
 
-/**
- * API response object when one or more errors occurred.
- */
 public class ErrorsResponse {
 
     private ImmutableList<String> errors;

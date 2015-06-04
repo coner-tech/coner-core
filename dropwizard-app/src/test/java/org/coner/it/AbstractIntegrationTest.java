@@ -1,16 +1,11 @@
 package org.coner.it;
 
-import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.coner.ConerDropwizardConfiguration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
 
+import io.dropwizard.testing.junit.DropwizardAppRule;
 import javax.ws.rs.client.Client;
+import org.junit.*;
 
-/**
- *
- */
 public class AbstractIntegrationTest {
     @ClassRule
     public static final DropwizardAppRule<ConerDropwizardConfiguration> RULE = IntegrationTestUtils.buildAppRule();

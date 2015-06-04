@@ -1,13 +1,8 @@
 package org.coner.api.request;
 
-
+import java.util.Set;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.Set;
-
-/**
- * API request body used when adding a new CompetitionGroupSet
- */
 public class AddCompetitionGroupSetRequest {
 
     @NotBlank

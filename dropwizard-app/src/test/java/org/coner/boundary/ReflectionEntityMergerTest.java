@@ -1,15 +1,11 @@
 package org.coner.boundary;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-/**
- *
- */
 public class ReflectionEntityMergerTest {
 
     private static final String VALUE_PROPERTY_COMMON = "property-common";
@@ -25,7 +21,6 @@ public class ReflectionEntityMergerTest {
     private static final String VALUE_PROPERTY_STRING_WITH_DESTINATION_ENUM = "EAST";
     private static final TestSourceEntity.Status VALUE_PROPERTY_ENUM_WITH_STRING_DESTINATION =
             TestSourceEntity.Status.PLAYING;
-
 
     private TestSourceEntity testSourceEntity;
     private TestDestinationEntity testDestinationEntity;
@@ -135,7 +130,8 @@ public class ReflectionEntityMergerTest {
                 String propertyWithNonStandardGetterSetterMethodName,
                 String propertyWithGetterWithParameter,
                 String propertyWithSetterWithMoreThanOneParameter,
-                String propertyStringWithDestinationEnum, Status propertyEnumWithStringDestination) {
+                String propertyStringWithDestinationEnum,
+                Status propertyEnumWithStringDestination) {
             this.propertyCommon = propertyCommon;
             this.propertyBoolean = propertyBoolean;
             this.propertyWithDifferentType = propertyWithDifferentType;
@@ -246,24 +242,12 @@ public class ReflectionEntityMergerTest {
         private Direction propertyStringWithDestinationEnum;
         private String propertyEnumWithStringDestination;
 
-        public void setPropertyCommon(String propertyCommon) {
-            this.propertyCommon = propertyCommon;
-        }
-
         public boolean isPropertyBoolean() {
             return propertyBoolean;
         }
 
         public void setPropertyBoolean(boolean propertyBoolean) {
             this.propertyBoolean = propertyBoolean;
-        }
-
-        public void setPropertyWithDifferentType(int propertyWithDifferentType) {
-            this.propertyWithDifferentType = propertyWithDifferentType;
-        }
-
-        public void setPropertyWithSetterOfDifferentName(String propertyWithSetterOfDifferentName) {
-            this.propertyWithSetterOfDifferentName = propertyWithSetterOfDifferentName;
         }
 
         public void putPropertyWithNonStandardGetterSetterMethodName(String stuff) {
@@ -274,12 +258,24 @@ public class ReflectionEntityMergerTest {
             return propertyCommon;
         }
 
+        public void setPropertyCommon(String propertyCommon) {
+            this.propertyCommon = propertyCommon;
+        }
+
         public int getPropertyWithDifferentType() {
             return propertyWithDifferentType;
         }
 
+        public void setPropertyWithDifferentType(int propertyWithDifferentType) {
+            this.propertyWithDifferentType = propertyWithDifferentType;
+        }
+
         public String getPropertyWithSetterOfDifferentName() {
             return propertyWithSetterOfDifferentName;
+        }
+
+        public void setPropertyWithSetterOfDifferentName(String propertyWithSetterOfDifferentName) {
+            this.propertyWithSetterOfDifferentName = propertyWithSetterOfDifferentName;
         }
 
         public String getPropertyWithNonStandardGetterSetterMethodName() {

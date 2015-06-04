@@ -5,13 +5,9 @@ import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-/**
- * Coner configuration for Dropwizard Application.
- */
 public class ConerDropwizardConfiguration extends Configuration {
 
     @Valid

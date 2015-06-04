@@ -3,16 +3,13 @@ package org.coner.boundary;
 import org.coner.api.entity.ApiEntity;
 import org.coner.core.domain.DomainEntity;
 import org.coner.hibernate.entity.HibernateEntity;
-import org.junit.Before;
-import org.junit.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
@@ -21,14 +18,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractBoundaryTest {
 
+    private final Class<TestApiEntity> apiClass = TestApiEntity.class;
+    private final Class<TestDomainEntity> domainClass = TestDomainEntity.class;
+    private final Class<TestHibernateEntity> hibernateClass = TestHibernateEntity.class;
+    private final Random random = new Random();
     private AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> abstractBoundary;
-
     @Mock
     private EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
     @Mock
@@ -37,11 +34,6 @@ public class AbstractBoundaryTest {
     private EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
     @Mock
     private EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
-
-    private final Class<TestApiEntity> apiClass = TestApiEntity.class;
-    private final Class<TestDomainEntity> domainClass = TestDomainEntity.class;
-    private final Class<TestHibernateEntity> hibernateClass = TestHibernateEntity.class;
-    private final Random random = new Random();
 
     @Before
     public void setup() {
@@ -366,29 +358,6 @@ public class AbstractBoundaryTest {
         }
     }
 
-    private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
-
-        @Override
-        protected EntityMerger<TestApiEntity, TestDomainEntity> buildApiToDomainMerger() {
-            return apiToDomainMerger;
-        }
-
-        @Override
-        protected EntityMerger<TestDomainEntity, TestApiEntity> buildDomainToApiMerger() {
-            return domainToApiMerger;
-        }
-
-        @Override
-        protected EntityMerger<TestDomainEntity, TestHibernateEntity> buildDomainToHibernateMerger() {
-            return domainToHibernateMerger;
-        }
-
-        @Override
-        protected EntityMerger<TestHibernateEntity, TestDomainEntity> buildHibernateToDomainMerger() {
-            return hibernateToDomainMerger;
-        }
-    }
-
     public static class TestApiEntity extends ApiEntity {
     }
 
@@ -410,6 +379,29 @@ public class AbstractBoundaryTest {
     }
 
     public abstract static class AbstractEntity {
+    }
+
+    private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
+
+        @Override
+        protected EntityMerger<TestApiEntity, TestDomainEntity> buildApiToDomainMerger() {
+            return apiToDomainMerger;
+        }
+
+        @Override
+        protected EntityMerger<TestDomainEntity, TestApiEntity> buildDomainToApiMerger() {
+            return domainToApiMerger;
+        }
+
+        @Override
+        protected EntityMerger<TestDomainEntity, TestHibernateEntity> buildDomainToHibernateMerger() {
+            return domainToHibernateMerger;
+        }
+
+        @Override
+        protected EntityMerger<TestHibernateEntity, TestDomainEntity> buildHibernateToDomainMerger() {
+            return hibernateToDomainMerger;
+        }
     }
 
 }

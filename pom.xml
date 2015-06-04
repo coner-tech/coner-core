@@ -37,7 +37,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.13</version>
                 <configuration>
-                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>build-tools/src/main/resources/checkstyle/checkstyle.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
                     <linkXRef>false</linkXRef>
@@ -77,7 +77,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.13</version>
                 <configuration>
-                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>build-tools/src/main/resources/checkstyle/checkstyle.xml</configLocation>
                     <linkXRef>false</linkXRef>
                 </configuration>
             </plugin>

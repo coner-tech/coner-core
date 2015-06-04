@@ -1,26 +1,21 @@
 package org.coner.resource;
 
+import org.coner.api.request.AddCompetitionGroupSetRequest;
+import org.coner.boundary.CompetitionGroupSetBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.*;
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.coner.api.request.AddCompetitionGroupSetRequest;
-import org.coner.boundary.CompetitionGroupSetBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.CompetitionGroup;
-import org.coner.core.domain.CompetitionGroupSet;
-import org.coner.util.JacksonUtil;
-import org.coner.util.UnitTestUtils;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.*;
+import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -30,16 +25,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class CompetitionGroupSetsResourceTest {
 
     private CompetitionGroupSetBoundary competitionGroupSetBoundary = mock(CompetitionGroupSetBoundary.class);
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
-
     private ObjectMapper objectMapper;
-
+    
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupSetsResource(competitionGroupSetBoundary, conerCoreService))

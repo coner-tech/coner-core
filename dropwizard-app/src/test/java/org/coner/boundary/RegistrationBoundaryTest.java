@@ -1,18 +1,13 @@
 package org.coner.boundary;
 
 import org.coner.core.domain.Registration;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.TestConstants;
-import org.junit.Before;
-import org.junit.Test;
+import org.coner.util.*;
+
+import org.junit.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-/**
- *
- */
 public class RegistrationBoundaryTest {
 
     private final EventBoundary eventBoundary = mock(EventBoundary.class);

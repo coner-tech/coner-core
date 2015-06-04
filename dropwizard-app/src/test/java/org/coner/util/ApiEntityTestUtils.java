@@ -1,25 +1,16 @@
 package org.coner.util;
 
+import org.coner.api.entity.*;
+
 import com.google.common.collect.Sets;
-import org.coner.api.entity.CompetitionGroup;
-import org.coner.api.entity.CompetitionGroupSet;
-import org.coner.api.entity.Event;
-import org.coner.api.entity.HandicapGroup;
-import org.coner.api.entity.Registration;
-
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
-/**
- *
- */
 public final class ApiEntityTestUtils {
 
     private ApiEntityTestUtils() {
     }
 
-    // Event
     public static Event fullApiEvent() {
         return fullApiEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
@@ -32,7 +23,6 @@ public final class ApiEntityTestUtils {
         return apiEvent;
     }
 
-    // Registration
     public static Registration fullApiRegistration() {
         return fullApiRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME);
@@ -47,7 +37,6 @@ public final class ApiEntityTestUtils {
         return apiRegistration;
     }
 
-    // HandicapGroup
     public static HandicapGroup fullHandicapGroup() {
         return fullHandicapGroup(
                 TestConstants.HANDICAP_GROUP_ID,
@@ -66,7 +55,6 @@ public final class ApiEntityTestUtils {
         return apiHandicapGroup;
     }
 
-    // CompetitionGroup
     public static CompetitionGroup fullCompetitionGroup() {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,

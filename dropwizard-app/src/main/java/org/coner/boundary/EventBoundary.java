@@ -2,9 +2,6 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Event;
 
-/**
- * Converts Event entities as they cross architectural boundaries.
- */
 public class EventBoundary extends AbstractBoundary<
         org.coner.api.entity.Event,
         Event,

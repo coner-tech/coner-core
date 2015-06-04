@@ -4,10 +4,6 @@ import org.coner.api.entity.CompetitionGroup;
 
 import java.util.List;
 
-/**
- * API response object containing a list of CompeititionGroup entities.
- */
-
 public class GetCompetitionGroupsResponse {
     private List<CompetitionGroup> competitionGroups;
 

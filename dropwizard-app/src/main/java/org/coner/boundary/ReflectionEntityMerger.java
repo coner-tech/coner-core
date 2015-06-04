@@ -2,15 +2,12 @@ package org.coner.boundary;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.HashMap;
 
 /**
  * ReflectionEntityMerger uses reflection to automatically merge entities that follow the JavaBean convention.
- * <p/>
+ * <p>
  * Only the destination entity's setters which correspond to the source entity's getters will be called. Only the
  * getters/setters which correspond to like-named properties will be used. Strings corresponding to Enum names will be
  * transformed automatically.

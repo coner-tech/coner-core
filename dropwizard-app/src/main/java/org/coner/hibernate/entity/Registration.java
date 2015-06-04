@@ -1,20 +1,8 @@
 package org.coner.hibernate.entity;
 
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
-
-/**
- * Hibernate entity for the persistence of Registrations.
- */
 @Entity
 @Table(name = "registrations")
 @NamedQueries({

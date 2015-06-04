@@ -1,19 +1,9 @@
 package org.coner.hibernate.entity;
 
+import java.math.BigDecimal;
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import java.math.BigDecimal;
-
-/**
- * Hibernate entity for the persistence of HandicapGroups.
- */
 @Entity
 @Table(name = "handicap_groups")
 @NamedQueries({

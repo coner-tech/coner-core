@@ -3,21 +3,16 @@ package org.coner.it;
 import org.coner.api.entity.HandicapGroup;
 import org.coner.api.request.AddHandicapGroupRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.util.TestConstants;
-import org.coner.util.UnitTestUtils;
+import org.coner.util.*;
+
+import java.net.URI;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- *
- */
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
     private static final String HANDICAP_GROUPS_PATH = "/handicapGroups";

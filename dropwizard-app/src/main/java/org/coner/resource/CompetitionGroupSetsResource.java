@@ -1,35 +1,19 @@
 package org.coner.resource;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-import com.wordnik.swagger.annotations.ResponseHeader;
-import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupSetBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
+
+import com.wordnik.swagger.annotations.*;
+import io.dropwizard.hibernate.UnitOfWork;
+import java.util.*;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.HashSet;
-import java.util.Set;
-
-/**
- * The CompetitionGroupSetsResource exposes getting and adding CompetitionGroup Sets
- * via the REST API.
- */
 @Path("/competitionGroups/sets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,13 +23,6 @@ public class CompetitionGroupSetsResource {
     private final CompetitionGroupSetBoundary competitionGroupSetBoundary;
     private final ConerCoreService conerCoreService;
 
-    /**
-     * Constructor for the CompetitionGroupsSetsResource.
-     *
-     * @param competitionGroupSetBoundary the CompetitionGroupSetBoundary to use for converting API and Domain
-     *                                    Competition Group Set entities
-     * @param conerCoreService            the ConerCoreService
-     */
     public CompetitionGroupSetsResource(
             CompetitionGroupSetBoundary competitionGroupSetBoundary,
             ConerCoreService conerCoreService
@@ -54,12 +31,6 @@ public class CompetitionGroupSetsResource {
         this.conerCoreService = conerCoreService;
     }
 
-    /**
-     * Add a competition group set.
-     *
-     * @param request the CompetitionGroupSet to add
-     * @return the response
-     */
     @POST
     @UnitOfWork
     @ApiOperation(

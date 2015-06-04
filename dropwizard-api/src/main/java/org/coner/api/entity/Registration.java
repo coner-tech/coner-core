@@ -1,14 +1,9 @@
 package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
-/**
- * REST API entity representing a Registration.
- */
 @JsonPropertyOrder({"id", "firstName", "lastName", "event"})
 public class Registration extends ApiEntity {
 

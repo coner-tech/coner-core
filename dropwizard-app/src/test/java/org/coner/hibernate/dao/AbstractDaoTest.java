@@ -1,29 +1,19 @@
 package org.coner.hibernate.dao;
 
+import org.coner.hibernate.entity.*;
+
 import com.codahale.metrics.MetricRegistry;
 import io.dropwizard.db.DataSourceFactory;
+import java.sql.*;
+import java.util.*;
 import org.assertj.core.api.Assertions;
-import org.coner.hibernate.entity.Event;
-import org.coner.hibernate.entity.HibernateEntity;
-import org.coner.hibernate.entity.Registration;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.*;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- *
- */
 public abstract class AbstractDaoTest {
 
     private final Class<? extends HibernateEntity>[] hibernateEntityClasses = new Class[]{

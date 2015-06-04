@@ -1,28 +1,20 @@
 package org.coner.boundary;
 
-import org.assertj.core.api.Assertions;
 import org.coner.core.domain.Event;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.HibernateEntityUtils;
-import org.coner.util.TestConstants;
-import org.junit.Before;
-import org.junit.Test;
+import org.coner.util.*;
 
 import java.util.Date;
+import org.assertj.core.api.Assertions;
+import org.junit.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- *
- */
 public class EventBoundaryTest {
-
-    private EventBoundary eventBoundary;
 
     private final String id = TestConstants.EVENT_ID;
     private final String name = TestConstants.EVENT_NAME;
     private final Date date = TestConstants.EVENT_DATE;
+    private EventBoundary eventBoundary;
 
     @Before
     public void setup() {

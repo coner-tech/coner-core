@@ -2,25 +2,20 @@ package org.coner.it;
 
 import org.coner.api.entity.Event;
 import org.coner.api.request.AddEventRequest;
-import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetEventsResponse;
+import org.coner.api.response.*;
 import org.coner.util.UnitTestUtils;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-/**
- *
- */
 public class EventIntegrationTest extends AbstractIntegrationTest {
 
     private final String name = "name";
