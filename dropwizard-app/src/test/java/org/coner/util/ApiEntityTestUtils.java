@@ -56,19 +56,19 @@ public final class ApiEntityTestUtils {
         return handicapGroup;
     }
 
-    public static HandicapGroupSet fullHandicapGroupSet(
+    public static HandicapGroupSetApiEntity fullHandicapGroupSet(
             String handicapGroupSetId,
             String handicapGroupSetName,
             Set<HandicapGroupApiEntity> handicapGroups
     ) {
-        HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
+        HandicapGroupSetApiEntity handicapGroupSet = new HandicapGroupSetApiEntity();
         handicapGroupSet.setId(handicapGroupSetId);
         handicapGroupSet.setName(handicapGroupSetName);
         handicapGroupSet.setHandicapGroups(handicapGroups);
         return handicapGroupSet;
     }
 
-    public static HandicapGroupSet fullHandicapGroupSet() {
+    public static HandicapGroupSetApiEntity fullHandicapGroupSet() {
         return fullHandicapGroupSet(
                 TestConstants.HANDICAP_GROUP_SET_ID,
                 TestConstants.HANDICAP_GROUP_SET_NAME,

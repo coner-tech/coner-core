@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "handicap_group_sets")
-public class HandicapGroupSet extends HibernateEntity {
+public class HandicapGroupSetHibernateEntity extends HibernateEntity {
 
     private String handicapGroupSetId;
     private String name;

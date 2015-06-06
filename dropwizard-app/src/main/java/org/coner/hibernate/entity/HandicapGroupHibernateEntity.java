@@ -19,7 +19,7 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
     private String id;
     private String name;
     private BigDecimal handicapFactor;
-    private Set<HandicapGroupSet> handicapGroupSets;
+    private Set<HandicapGroupSetHibernateEntity> handicapGroupSets;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -60,11 +60,11 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
                     @JoinColumn(name = "handicapGroupSetId", nullable = false, updatable = false)
             }
     )
-    public Set<HandicapGroupSet> getHandicapGroupSets() {
+    public Set<HandicapGroupSetHibernateEntity> getHandicapGroupSets() {
         return handicapGroupSets;
     }
 
-    public void setHandicapGroupSets(Set<HandicapGroupSet> handicapGroupSets) {
+    public void setHandicapGroupSets(Set<HandicapGroupSetHibernateEntity> handicapGroupSets) {
         this.handicapGroupSets = handicapGroupSets;
     }
 }

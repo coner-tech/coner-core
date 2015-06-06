@@ -1,14 +1,10 @@
 package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import java.util.Set;
 
-/**
- * REST API entity representing a Handicap Group Set
- */
 @JsonPropertyOrder({"id", "name", "handicapGroups"})
-public class HandicapGroupSet extends ApiEntity {
+public class HandicapGroupSetApiEntity extends ApiEntity {
 
     private String id;
     private String name;

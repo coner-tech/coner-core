@@ -3,6 +3,7 @@ package org.coner.core.gateway;
 import org.coner.boundary.HandicapGroupSetBoundary;
 import org.coner.core.domain.HandicapGroupSet;
 import org.coner.hibernate.dao.HandicapGroupSetDao;
+import org.coner.hibernate.entity.HandicapGroupSetHibernateEntity;
 
 import com.google.common.base.Preconditions;
 
@@ -21,9 +22,9 @@ public class HandicapGroupSetGateway {
 
     public void create(HandicapGroupSet handicapGroupSet) {
         Preconditions.checkNotNull(handicapGroupSet);
-        org.coner.hibernate.entity.HandicapGroupSet hHandicapGroupSet = handicapGroupSetBoundary
+        HandicapGroupSetHibernateEntity handicapGroupSetHibernateEntity = handicapGroupSetBoundary
                 .toHibernateEntity(handicapGroupSet);
-        handicapGroupSetDao.createOrUpdate(hHandicapGroupSet);
-        handicapGroupSetBoundary.merge(hHandicapGroupSet, handicapGroupSet);
+        handicapGroupSetDao.createOrUpdate(handicapGroupSetHibernateEntity);
+        handicapGroupSetBoundary.merge(handicapGroupSetHibernateEntity, handicapGroupSet);
     }
 }

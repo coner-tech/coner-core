@@ -4,7 +4,7 @@ import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupSetBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.*;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -55,8 +55,7 @@ public class HandicapGroupSetsResource {
     public Response add(
             @Valid @NotNull @ApiParam(value = "Handicap Group Set") AddHandicapGroupSetRequest request
     ) {
-        org.coner.core.domain.HandicapGroupSet domainHandicapGroupSet = handicapGroupSetBoundary
-                .toDomainEntity(request);
+        HandicapGroupSet domainHandicapGroupSet = handicapGroupSetBoundary.toDomainEntity(request);
         Set<AddHandicapGroupSetRequest.HandicapGroup> apiHandicapGroups = request.getHandicapGroups();
         if (apiHandicapGroups != null) {
             Set<HandicapGroup> domainHandicapGroups = new HashSet<>();
