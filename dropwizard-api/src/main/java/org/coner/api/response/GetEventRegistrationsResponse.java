@@ -1,18 +1,18 @@
 package org.coner.api.response;
 
-import org.coner.api.entity.Registration;
+import org.coner.api.entity.RegistrationApiEntity;
 
 import java.util.List;
 
 public class GetEventRegistrationsResponse {
 
-    private List<Registration> registrations;
+    private List<RegistrationApiEntity> registrations;
 
-    public List<Registration> getRegistrations() {
+    public List<RegistrationApiEntity> getRegistrations() {
         return registrations;
     }
 
-    public void setRegistrations(List<Registration> registrations) {
+    public void setRegistrations(List<RegistrationApiEntity> registrations) {
         this.registrations = registrations;
     }
 }

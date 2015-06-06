@@ -24,18 +24,18 @@ public final class ApiEntityTestUtils {
         return apiEvent;
     }
 
-    public static Registration fullApiRegistration() {
+    public static RegistrationApiEntity fullApiRegistration() {
         return fullApiRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME);
     }
 
-    public static Registration fullApiRegistration(String registrationId, String registrationFirstName,
+    public static RegistrationApiEntity fullApiRegistration(String registrationId, String registrationFirstName,
                                                    String registrationLastName) {
-        Registration apiRegistration = new Registration();
-        apiRegistration.setId(registrationId);
-        apiRegistration.setFirstName(registrationFirstName);
-        apiRegistration.setLastName(registrationLastName);
-        return apiRegistration;
+        RegistrationApiEntity registration = new RegistrationApiEntity();
+        registration.setId(registrationId);
+        registration.setFirstName(registrationFirstName);
+        registration.setLastName(registrationLastName);
+        return registration;
     }
 
     public static HandicapGroupApiEntity fullHandicapGroup() {

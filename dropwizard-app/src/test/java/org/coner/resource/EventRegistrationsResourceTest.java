@@ -1,8 +1,10 @@
 package org.coner.resource;
 
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.Registration;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,11 +57,11 @@ public class EventRegistrationsResourceTest {
         // Registrations
         final String registrationID = TestConstants.REGISTRATION_ID;
 
-        List<org.coner.core.domain.Registration> domainRegistrations = new ArrayList<>();
-        org.coner.core.domain.Registration domainRegistration1 = DomainEntityTestUtils.fullDomainRegistration();
+        List<Registration> domainRegistrations = new ArrayList<>();
+        Registration domainRegistration1 = DomainEntityTestUtils.fullDomainRegistration();
 
-        List<org.coner.api.entity.Registration> apiRegistrations = new ArrayList<>();
-        org.coner.api.entity.Registration apiRegistration1 = ApiEntityTestUtils.fullApiRegistration();
+        List<RegistrationApiEntity> apiRegistrations = new ArrayList<>();
+        RegistrationApiEntity apiRegistration1 = ApiEntityTestUtils.fullApiRegistration();
 
         domainRegistrations.add(domainRegistration1);
         apiRegistrations.add(apiRegistration1);
@@ -88,13 +90,13 @@ public class EventRegistrationsResourceTest {
 
         final String eventId = TestConstants.EVENT_ID;
 
-        org.coner.api.entity.Registration requestRegistration = objectMapper.readValue(
+        RegistrationApiEntity requestRegistration = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/registration_add-request.json"),
-                org.coner.api.entity.Registration.class
+                RegistrationApiEntity.class
         );
-        Entity<org.coner.api.entity.Registration> requestEntity = Entity.json(requestRegistration);
+        Entity<RegistrationApiEntity> requestEntity = Entity.json(requestRegistration);
 
-        org.coner.core.domain.Registration requestRegistrationAsDomain = new org.coner.core.domain.Registration();
+        Registration requestRegistrationAsDomain = new Registration();
         requestRegistrationAsDomain.setId("arbitrary-id-from-service");
         requestRegistrationAsDomain.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
         requestRegistrationAsDomain.setLastName(TestConstants.REGISTRATION_LASTNAME);

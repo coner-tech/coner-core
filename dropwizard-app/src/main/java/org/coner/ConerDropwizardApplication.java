@@ -135,7 +135,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         if (hibernate == null) {
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
                     Event.class,
-                    Registration.class,
+                    RegistrationHibernateEntity.class,
                     HandicapGroupHibernateEntity.class,
                     HandicapGroupSetHibernateEntity.class,
                     CompetitionGroupHibernateEntity.class,

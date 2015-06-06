@@ -7,13 +7,15 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "registrations")
 @NamedQueries({
         @NamedQuery(
-                name = Registration.QUERY_FIND_ALL_WITH_EVENT,
-                query = "FROM Registration r WHERE r.event.id = :" + Registration.PARAMETER_EVENT_ID
+                name = RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT,
+                query = "FROM RegistrationHibernateEntity r "
+                        + "WHERE r.event.id = :" + RegistrationHibernateEntity.PARAMETER_EVENT_ID
         )
 })
-public class Registration extends HibernateEntity {
+public class RegistrationHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.hibernate.entity.Registration.findAllWithEvent";
+    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.hibernate.entity.RegistrationHibernateEntity"
+            + ".findAllWithEvent";
     public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;

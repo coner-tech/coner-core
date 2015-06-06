@@ -18,7 +18,7 @@ public abstract class AbstractDaoTest {
 
     private final Class<? extends HibernateEntity>[] hibernateEntityClasses = new Class[]{
             Event.class,
-            Registration.class,
+            RegistrationHibernateEntity.class,
     };
 
     private SessionFactory sessionFactory;

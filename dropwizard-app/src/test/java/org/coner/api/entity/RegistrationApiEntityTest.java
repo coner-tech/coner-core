@@ -10,11 +10,11 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class RegistrationEntityTest {
+public class RegistrationApiEntityTest {
     private final String fixturePath = "fixtures/api/entity/registration_full.json";
 
     private ObjectMapper objectMapper;
-    private Registration registration;
+    private RegistrationApiEntity registration;
 
     @Before
     public void setup() {
@@ -26,7 +26,7 @@ public class RegistrationEntityTest {
 
     @Test
     public void deserializesFromJson() throws Exception {
-        Registration actual = objectMapper.readValue(fixture(fixturePath), Registration.class);
+        RegistrationApiEntity actual = objectMapper.readValue(fixture(fixturePath), RegistrationApiEntity.class);
         assertThat(actual).isEqualTo(registration);
     }
 
@@ -39,7 +39,7 @@ public class RegistrationEntityTest {
 
     @Test
     public void hashCodeTest() throws Exception {
-        Registration otherRegistration = ApiEntityTestUtils.fullApiRegistration();
+        RegistrationApiEntity otherRegistration = ApiEntityTestUtils.fullApiRegistration();
 
         assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
     }
