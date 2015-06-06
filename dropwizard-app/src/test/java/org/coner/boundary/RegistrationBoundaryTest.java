@@ -1,5 +1,6 @@
 package org.coner.boundary;
 
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.core.domain.Registration;
 import org.coner.util.*;
 
@@ -25,7 +26,7 @@ public class RegistrationBoundaryTest {
 
     @Test
     public void whenMergeApiIntoDomainItShouldMerge() {
-        org.coner.api.entity.Registration apiRegistration = ApiEntityTestUtils.fullApiRegistration();
+        RegistrationApiEntity apiRegistration = ApiEntityTestUtils.fullApiRegistration();
         Registration domainRegistration = new Registration();
 
         registrationBoundary.merge(apiRegistration, domainRegistration);
@@ -38,7 +39,7 @@ public class RegistrationBoundaryTest {
     @Test
     public void whenMergeDomainIntoApiItShouldMerge() {
         Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
-        org.coner.api.entity.Registration apiRegistration = new org.coner.api.entity.Registration();
+        RegistrationApiEntity apiRegistration = new RegistrationApiEntity();
 
         registrationBoundary.merge(domainRegistration, apiRegistration);
 

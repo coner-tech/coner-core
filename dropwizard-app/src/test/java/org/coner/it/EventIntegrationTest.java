@@ -1,6 +1,6 @@
 package org.coner.it;
 
-import org.coner.api.entity.Event;
+import org.coner.api.entity.EventApiEntity;
 import org.coner.api.request.AddEventRequest;
 import org.coner.api.response.*;
 import org.coner.util.UnitTestUtils;
@@ -45,7 +45,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
         assertThat(getEventsResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         GetEventsResponse getEventsResponse = getEventsResponseContainer.readEntity(GetEventsResponse.class);
         assertThat(getEventsResponse.getEvents()).hasSize(1);
-        Event event = getEventsResponse.getEvents().get(0);
+        EventApiEntity event = getEventsResponse.getEvents().get(0);
         assertThat(event.getId()).isEqualTo(eventId);
 
         URI getEventByIdUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
@@ -58,7 +58,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
                 .get();
 
         assertThat(getEventByIdResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
-        Event getEventByIdResponse = getEventByIdResponseContainer.readEntity(Event.class);
+        EventApiEntity getEventByIdResponse = getEventByIdResponseContainer.readEntity(EventApiEntity.class);
         assertThat(getEventByIdResponse.getId()).isEqualTo(eventId);
     }
 

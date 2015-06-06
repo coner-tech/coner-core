@@ -1,6 +1,6 @@
 package org.coner.hibernate.dao;
 
-import org.coner.hibernate.entity.Event;
+import org.coner.hibernate.entity.EventHibernateEntity;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -21,7 +21,7 @@ public class EventDaoTest extends AbstractDaoTest {
 
         getSession().beginTransaction();
 
-        Query delete = getSession().createQuery("delete from Event");
+        Query delete = getSession().createQuery("delete from EventHibernateEntity");
         delete.executeUpdate();
 
         getSession().getTransaction().commit();
@@ -35,7 +35,7 @@ public class EventDaoTest extends AbstractDaoTest {
     public void whenFindAllItShouldReturnEmpty() {
         getSession().beginTransaction();
 
-        List<Event> actual = eventDao.findAll();
+        List<EventHibernateEntity> actual = eventDao.findAll();
         assertThat(actual)
                 .isNotNull()
                 .isEmpty();
@@ -45,7 +45,7 @@ public class EventDaoTest extends AbstractDaoTest {
 
     @Test
     public void whenCreateItShouldCreateEvent() {
-        Event newEvent = buildNewEvent();
+        EventHibernateEntity newEvent = buildNewEvent();
 
         getSession().beginTransaction();
 
@@ -59,14 +59,14 @@ public class EventDaoTest extends AbstractDaoTest {
 
     @Test
     public void whenCreatedItShouldFindById() {
-        Event newEvent = buildNewEvent();
+        EventHibernateEntity newEvent = buildNewEvent();
         getSession().beginTransaction();
         eventDao.create(newEvent);
         getSession().getTransaction().commit();
 
         getSession().beginTransaction();
 
-        Event actual = eventDao.findById(newEvent.getId());
+        EventHibernateEntity actual = eventDao.findById(newEvent.getId());
 
         getSession().getTransaction().commit();
 
@@ -77,14 +77,14 @@ public class EventDaoTest extends AbstractDaoTest {
 
     @Test
     public void whenCreateItShouldBeInFindAll() {
-        Event newEvent = buildNewEvent();
+        EventHibernateEntity newEvent = buildNewEvent();
         getSession().beginTransaction();
         eventDao.create(newEvent);
         getSession().getTransaction().commit();
 
         getSession().beginTransaction();
 
-        List<Event> events = eventDao.findAll();
+        List<EventHibernateEntity> events = eventDao.findAll();
 
         getSession().getTransaction().commit();
 
@@ -94,8 +94,8 @@ public class EventDaoTest extends AbstractDaoTest {
                 .containsOnly(newEvent);
     }
 
-    private Event buildNewEvent() {
-        Event event = new Event();
+    private EventHibernateEntity buildNewEvent() {
+        EventHibernateEntity event = new EventHibernateEntity();
         event.setName(name);
         event.setDate(date);
         assertThat(event.getId()).isNull();

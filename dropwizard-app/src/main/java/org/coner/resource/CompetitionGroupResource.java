@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.CompetitionGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -30,19 +31,18 @@ public class CompetitionGroupResource {
 
     @GET
     @UnitOfWork
-    @ApiOperation(value = "Get a Competition Group", response = CompetitionGroup.class)
+    @ApiOperation(value = "Get a Competition Group", response = CompetitionGroupApiEntity.class)
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroup.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroupApiEntity.class, message = "OK"),
             @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found")
     })
-    public CompetitionGroup getCompetitionGroup(
+    public CompetitionGroupApiEntity getCompetitionGroup(
             @PathParam("competitionGroupId") @ApiParam(value = "Competition Group ID", required = true) String id
     ) {
-        org.coner.core.domain.CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(id);
+        CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(id);
         if (domainCompetitionGroup == null) {
             throw new NotFoundException("No competition group with id " + id);
         }
-        CompetitionGroup competitionGroup = competitionGroupBoundary.toApiEntity(domainCompetitionGroup);
-        return competitionGroup;
+        return competitionGroupBoundary.toApiEntity(domainCompetitionGroup);
     }
 }

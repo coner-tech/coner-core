@@ -1,6 +1,6 @@
 package org.coner.it;
 
-import org.coner.api.entity.Registration;
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.request.*;
 import org.coner.api.response.*;
 import org.coner.util.*;
@@ -100,7 +100,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         GetEventRegistrationsResponse getEventRegistrationsResponse = getRegistrationsResponseContainer
                 .readEntity(GetEventRegistrationsResponse.class);
         assertThat(getEventRegistrationsResponse).isNotNull();
-        List<Registration> registrationList = getEventRegistrationsResponse.getRegistrations();
+        List<RegistrationApiEntity> registrationList = getEventRegistrationsResponse.getRegistrations();
         assertThat(registrationList.size()).isEqualTo(2);
         assertThat(registrationList.get(0).getId())
                 .isNotEqualTo(registrationList.get(1).getId())
@@ -120,8 +120,8 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(getRegistrationResponse.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        Registration registration = getRegistrationResponse
-                .readEntity(Registration.class);
+        RegistrationApiEntity registration = getRegistrationResponse
+                .readEntity(RegistrationApiEntity.class);
         assertThat(registration).isNotNull();
         assertThat(registration.getId()).isEqualTo(registrationId0);
 

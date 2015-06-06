@@ -1,8 +1,9 @@
 package org.coner.resource;
 
-import org.coner.api.entity.Registration;
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.*;
 import org.coner.core.exception.EventRegistrationMismatchException;
 import org.coner.util.*;
 
@@ -39,9 +40,9 @@ public class EventRegistrationResourceTest {
 
     @Test
     public void itShouldGetRegistration() throws EventRegistrationMismatchException {
-        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
-        org.coner.core.domain.Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
-        org.coner.api.entity.Registration apiRegistration = ApiEntityTestUtils.fullApiRegistration();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
+        RegistrationApiEntity apiRegistration = ApiEntityTestUtils.fullApiRegistration();
 
         // sanity check test
         assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
@@ -52,7 +53,7 @@ public class EventRegistrationResourceTest {
                 .thenReturn(domainRegistration);
         when(registrationBoundary.toApiEntity(domainRegistration)).thenReturn(apiRegistration);
 
-        Response registrationResponseContainer = resources.client()
+        Response responseContainer = resources.client()
                 .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
@@ -62,11 +63,11 @@ public class EventRegistrationResourceTest {
         verifyNoMoreInteractions(conerCoreService, registrationBoundary);
         verifyZeroInteractions(eventBoundary);
 
-        assertThat(registrationResponseContainer).isNotNull();
-        assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        assertThat(responseContainer).isNotNull();
+        assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        Registration registrationResponse = registrationResponseContainer.readEntity(Registration.class);
-        assertThat(registrationResponse)
+        RegistrationApiEntity responseEntity = responseContainer.readEntity(RegistrationApiEntity.class);
+        assertThat(responseEntity)
                 .isNotNull()
                 .isEqualToComparingFieldByField(apiRegistration);
     }

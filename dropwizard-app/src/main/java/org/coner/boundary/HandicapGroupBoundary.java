@@ -1,29 +1,31 @@
 package org.coner.boundary;
 
+import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.core.domain.HandicapGroup;
+import org.coner.hibernate.entity.HandicapGroupHibernateEntity;
 
 public class HandicapGroupBoundary extends AbstractBoundary<
-        org.coner.api.entity.HandicapGroup,
+        HandicapGroupApiEntity,
         HandicapGroup,
-        org.coner.hibernate.entity.HandicapGroup> {
+        HandicapGroupHibernateEntity> {
 
     @Override
-    protected EntityMerger<org.coner.api.entity.HandicapGroup, HandicapGroup> buildApiToDomainMerger() {
+    protected EntityMerger<HandicapGroupApiEntity, HandicapGroup> buildApiToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<HandicapGroup, org.coner.api.entity.HandicapGroup> buildDomainToApiMerger() {
+    protected EntityMerger<HandicapGroup, HandicapGroupApiEntity> buildDomainToApiMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<HandicapGroup, org.coner.hibernate.entity.HandicapGroup> buildDomainToHibernateMerger() {
+    protected EntityMerger<HandicapGroup, HandicapGroupHibernateEntity> buildDomainToHibernateMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.HandicapGroup, HandicapGroup> buildHibernateToDomainMerger() {
+    protected EntityMerger<HandicapGroupHibernateEntity, HandicapGroup> buildHibernateToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 }

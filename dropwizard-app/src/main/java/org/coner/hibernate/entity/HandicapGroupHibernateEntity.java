@@ -9,17 +9,17 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "handicap_groups")
 @NamedQueries({
         @NamedQuery(
-                name = HandicapGroup.QUERY_FIND_ALL,
-                query = "from HandicapGroup"
+                name = HandicapGroupHibernateEntity.QUERY_FIND_ALL,
+                query = "from HandicapGroupHibernateEntity"
         )
 })
-public class HandicapGroup extends HibernateEntity {
-    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.HandicapGroup.findAll";
+public class HandicapGroupHibernateEntity extends HibernateEntity {
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.HandicapGroupHibernateEntity.findAll";
 
     private String id;
     private String name;
     private BigDecimal handicapFactor;
-    private Set<HandicapGroupSet> handicapGroupSets;
+    private Set<HandicapGroupSetHibernateEntity> handicapGroupSets;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -60,11 +60,11 @@ public class HandicapGroup extends HibernateEntity {
                     @JoinColumn(name = "handicapGroupSetId", nullable = false, updatable = false)
             }
     )
-    public Set<HandicapGroupSet> getHandicapGroupSets() {
+    public Set<HandicapGroupSetHibernateEntity> getHandicapGroupSets() {
         return handicapGroupSets;
     }
 
-    public void setHandicapGroupSets(Set<HandicapGroupSet> handicapGroupSets) {
+    public void setHandicapGroupSets(Set<HandicapGroupSetHibernateEntity> handicapGroupSets) {
         this.handicapGroupSets = handicapGroupSets;
     }
 }

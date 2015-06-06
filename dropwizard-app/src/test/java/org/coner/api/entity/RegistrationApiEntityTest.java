@@ -10,37 +10,37 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class HandicapGroupEntityTest {
-    private final String fixturePath = "fixtures/api/entity/handicap_group_full.json";
+public class RegistrationApiEntityTest {
+    private final String fixturePath = "fixtures/api/entity/registration_full.json";
 
     private ObjectMapper objectMapper;
-    private HandicapGroup handicapGroup;
+    private RegistrationApiEntity registration;
 
     @Before
     public void setup() {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        handicapGroup = ApiEntityTestUtils.fullHandicapGroup();
+        registration = ApiEntityTestUtils.fullApiRegistration();
     }
 
     @Test
     public void deserializesFromJson() throws Exception {
-        HandicapGroup actual = objectMapper.readValue(fixture(fixturePath), HandicapGroup.class);
-        assertThat(actual).isEqualTo(handicapGroup);
+        RegistrationApiEntity actual = objectMapper.readValue(fixture(fixturePath), RegistrationApiEntity.class);
+        assertThat(actual).isEqualTo(registration);
     }
 
     @Test
     public void serializesToJson() throws Exception {
-        String actual = objectMapper.writeValueAsString(handicapGroup);
+        String actual = objectMapper.writeValueAsString(registration);
         String expected = fixture(fixturePath);
         JSONAssert.assertEquals(expected, actual, false);
     }
 
     @Test
     public void hashCodeTest() throws Exception {
-        HandicapGroup otherHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
+        RegistrationApiEntity otherRegistration = ApiEntityTestUtils.fullApiRegistration();
 
-        assertThat(handicapGroup.hashCode()).isEqualTo(otherHandicapGroup.hashCode());
+        assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
     }
 }

@@ -7,19 +7,21 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "registrations")
 @NamedQueries({
         @NamedQuery(
-                name = Registration.QUERY_FIND_ALL_WITH_EVENT,
-                query = "FROM Registration r WHERE r.event.id = :" + Registration.PARAMETER_EVENT_ID
+                name = RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT,
+                query = "FROM RegistrationHibernateEntity r "
+                        + "WHERE r.event.id = :" + RegistrationHibernateEntity.PARAMETER_EVENT_ID
         )
 })
-public class Registration extends HibernateEntity {
+public class RegistrationHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.hibernate.entity.Registration.findAllWithEvent";
+    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.hibernate.entity.RegistrationHibernateEntity"
+            + ".findAllWithEvent";
     public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;
     private String firstName;
     private String lastName;
-    private Event event;
+    private EventHibernateEntity event;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -51,11 +53,11 @@ public class Registration extends HibernateEntity {
     }
 
     @ManyToOne
-    public Event getEvent() {
+    public EventHibernateEntity getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
+    public void setEvent(EventHibernateEntity event) {
         this.event = event;
     }
 }

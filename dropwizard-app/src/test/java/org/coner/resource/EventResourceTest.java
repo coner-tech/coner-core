@@ -1,8 +1,9 @@
 package org.coner.resource;
 
-import org.coner.api.entity.Event;
+import org.coner.api.entity.EventApiEntity;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.Event;
 import org.coner.util.*;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -36,8 +37,8 @@ public class EventResourceTest {
 
     @Test
     public void itShouldGetEvent() {
-        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
-        Event apiEvent = ApiEntityTestUtils.fullApiEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        EventApiEntity apiEvent = ApiEntityTestUtils.fullApiEvent();
 
         // sanity check test
         assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
@@ -58,7 +59,7 @@ public class EventResourceTest {
         assertThat(getEventResponseContainer).isNotNull();
         assertThat(getEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        Event getEventResponse = getEventResponseContainer.readEntity(Event.class);
+        EventApiEntity getEventResponse = getEventResponseContainer.readEntity(EventApiEntity.class);
         assertThat(getEventResponse)
                 .isNotNull()
                 .isEqualTo(apiEvent);

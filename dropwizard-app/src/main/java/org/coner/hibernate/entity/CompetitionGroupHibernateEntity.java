@@ -9,20 +9,20 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "competition_groups")
 @NamedQueries({
         @NamedQuery(
-                name = CompetitionGroup.QUERY_FIND_ALL,
-                query = "from CompetitionGroup"
+                name = CompetitionGroupHibernateEntity.QUERY_FIND_ALL,
+                query = "from CompetitionGroupHibernateEntity"
         )
 })
-public class CompetitionGroup extends HibernateEntity {
+public class CompetitionGroupHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroup.findAll";
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroupHibernateEntity.findAll";
 
     private String id;
     private String name;
     private BigDecimal handicapFactor;
     private boolean grouping;
     private String resultTimeType;
-    private Set<CompetitionGroupSet> competitionGroupSets;
+    private Set<CompetitionGroupSetHibernateEntity> competitionGroupSets;
 
     @Id
     @Column(name = "competitionGroupId", unique = true, nullable = false)
@@ -82,11 +82,11 @@ public class CompetitionGroup extends HibernateEntity {
                     @JoinColumn(name = "competitionGroupSetId", nullable = false, updatable = false)
             }
     )
-    public Set<CompetitionGroupSet> getCompetitionGroupSets() {
+    public Set<CompetitionGroupSetHibernateEntity> getCompetitionGroupSets() {
         return this.competitionGroupSets;
     }
 
-    public void setCompetitionGroupSets(Set<CompetitionGroupSet> competitionGroupSets) {
+    public void setCompetitionGroupSets(Set<CompetitionGroupSetHibernateEntity> competitionGroupSets) {
         this.competitionGroupSets = competitionGroupSets;
     }
 }

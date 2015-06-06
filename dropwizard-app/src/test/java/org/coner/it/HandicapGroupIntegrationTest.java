@@ -1,6 +1,6 @@
 package org.coner.it;
 
-import org.coner.api.entity.HandicapGroup;
+import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.request.AddHandicapGroupRequest;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
@@ -48,8 +48,8 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .get();
 
         assertThat(getHandicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
-        HandicapGroup getHandicapGroupResponse = getHandicapGroupResponseContainer
-                .readEntity(HandicapGroup.class);
+        HandicapGroupApiEntity getHandicapGroupResponse = getHandicapGroupResponseContainer
+                .readEntity(HandicapGroupApiEntity.class);
         assertThat(getHandicapGroupResponse.getId()).isEqualTo(handicapGroupId);
     }
 

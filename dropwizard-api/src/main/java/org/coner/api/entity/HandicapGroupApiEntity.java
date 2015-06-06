@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import javax.validation.constraints.*;
 
 @JsonPropertyOrder({"id", "name", "handicapFactor"})
-public class HandicapGroup extends ApiEntity {
+public class HandicapGroupApiEntity extends ApiEntity {
 
     @Null(message = "handicapGroup.id may only be assigned by the system")
     private String id;
@@ -45,7 +45,7 @@ public class HandicapGroup extends ApiEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HandicapGroup that = (HandicapGroup) o;
+        HandicapGroupApiEntity that = (HandicapGroupApiEntity) o;
 
         if (handicapFactor != null ? !handicapFactor.equals(that.handicapFactor) : that.handicapFactor != null)
             return false;

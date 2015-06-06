@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.Event;
+import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.Event;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -31,7 +32,7 @@ public class EventsResource {
     @UnitOfWork
     @ApiOperation(value = "Get a list of all events", response = GetEventsResponse.class)
     public GetEventsResponse getEvents() {
-        List<org.coner.core.domain.Event> domainEvents = conerCoreService.getEvents();
+        List<Event> domainEvents = conerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse();
         response.setEvents(eventBoundary.toApiEntities(domainEvents));
         return response;
@@ -53,9 +54,9 @@ public class EventsResource {
             )
     })
     public Response addEvent(
-            @Valid @ApiParam(value = "Event", required = true) Event event
+            @Valid @ApiParam(value = "Event", required = true) EventApiEntity event
     ) {
-        org.coner.core.domain.Event domainEvent = eventBoundary.toDomainEntity(event);
+        Event domainEvent = eventBoundary.toDomainEntity(event);
         conerCoreService.addEvent(domainEvent);
         return Response.created(UriBuilder.fromResource(EventResource.class)
                 .build(domainEvent.getId()))

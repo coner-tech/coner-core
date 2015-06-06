@@ -6,23 +6,23 @@ import io.dropwizard.hibernate.AbstractDAO;
 import java.util.List;
 import org.hibernate.*;
 
-public class RegistrationDao extends AbstractDAO<Registration> {
+public class RegistrationDao extends AbstractDAO<RegistrationHibernateEntity> {
 
     public RegistrationDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
-    public Registration findById(String id) {
+    public RegistrationHibernateEntity findById(String id) {
         return get(id);
     }
 
-    public List<Registration> getAllWith(Event event) {
-        Query query = namedQuery(Registration.QUERY_FIND_ALL_WITH_EVENT);
-        query.setParameter(Registration.PARAMETER_EVENT_ID, event.getId());
+    public List<RegistrationHibernateEntity> getAllWith(EventHibernateEntity event) {
+        Query query = namedQuery(RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
+        query.setParameter(RegistrationHibernateEntity.PARAMETER_EVENT_ID, event.getId());
         return list(query);
     }
 
-    public void create(Registration registration) {
+    public void create(RegistrationHibernateEntity registration) {
         persist(registration);
     }
 }

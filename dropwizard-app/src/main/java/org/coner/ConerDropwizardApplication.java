@@ -134,12 +134,12 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private HibernateBundle<ConerDropwizardConfiguration> getHibernate() {
         if (hibernate == null) {
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
-                    Event.class,
-                    Registration.class,
-                    HandicapGroup.class,
-                    HandicapGroupSet.class,
-                    CompetitionGroup.class,
-                    CompetitionGroupSet.class
+                    EventHibernateEntity.class,
+                    RegistrationHibernateEntity.class,
+                    HandicapGroupHibernateEntity.class,
+                    HandicapGroupSetHibernateEntity.class,
+                    CompetitionGroupHibernateEntity.class,
+                    CompetitionGroupSetHibernateEntity.class
             ) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(

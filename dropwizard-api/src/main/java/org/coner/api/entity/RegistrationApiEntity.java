@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 @JsonPropertyOrder({"id", "firstName", "lastName", "event"})
-public class Registration extends ApiEntity {
+public class RegistrationApiEntity extends ApiEntity {
 
     @Null(message = "registration.id may only be assigned by the system")
     private String id;
@@ -43,7 +43,7 @@ public class Registration extends ApiEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Registration that = (Registration) o;
+        RegistrationApiEntity that = (RegistrationApiEntity) o;
 
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;

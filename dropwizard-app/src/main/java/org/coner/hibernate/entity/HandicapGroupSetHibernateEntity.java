@@ -6,11 +6,11 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "handicap_group_sets")
-public class HandicapGroupSet extends HibernateEntity {
+public class HandicapGroupSetHibernateEntity extends HibernateEntity {
 
     private String handicapGroupSetId;
     private String name;
-    private Set<HandicapGroup> handicapGroups;
+    private Set<HandicapGroupHibernateEntity> handicapGroups;
 
     @Id
     @Column(name = "handicapGroupSetId")
@@ -34,11 +34,11 @@ public class HandicapGroupSet extends HibernateEntity {
     }
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "handicapGroupSets")
-    public Set<HandicapGroup> getHandicapGroups() {
+    public Set<HandicapGroupHibernateEntity> getHandicapGroups() {
         return handicapGroups;
     }
 
-    public void setHandicapGroups(Set<HandicapGroup> handicapGroups) {
+    public void setHandicapGroups(Set<HandicapGroupHibernateEntity> handicapGroups) {
         this.handicapGroups = handicapGroups;
     }
 }

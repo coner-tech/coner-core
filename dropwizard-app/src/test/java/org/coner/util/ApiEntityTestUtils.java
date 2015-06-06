@@ -12,63 +12,63 @@ public final class ApiEntityTestUtils {
     private ApiEntityTestUtils() {
     }
 
-    public static Event fullApiEvent() {
+    public static EventApiEntity fullApiEvent() {
         return fullApiEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
 
-    public static Event fullApiEvent(String eventId, String eventName, Date eventDate) {
-        Event apiEvent = new Event();
-        apiEvent.setId(eventId);
-        apiEvent.setName(eventName);
-        apiEvent.setDate(eventDate);
-        return apiEvent;
+    public static EventApiEntity fullApiEvent(String eventId, String eventName, Date eventDate) {
+        EventApiEntity event = new EventApiEntity();
+        event.setId(eventId);
+        event.setName(eventName);
+        event.setDate(eventDate);
+        return event;
     }
 
-    public static Registration fullApiRegistration() {
+    public static RegistrationApiEntity fullApiRegistration() {
         return fullApiRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME);
     }
 
-    public static Registration fullApiRegistration(String registrationId, String registrationFirstName,
+    public static RegistrationApiEntity fullApiRegistration(String registrationId, String registrationFirstName,
                                                    String registrationLastName) {
-        Registration apiRegistration = new Registration();
-        apiRegistration.setId(registrationId);
-        apiRegistration.setFirstName(registrationFirstName);
-        apiRegistration.setLastName(registrationLastName);
-        return apiRegistration;
+        RegistrationApiEntity registration = new RegistrationApiEntity();
+        registration.setId(registrationId);
+        registration.setFirstName(registrationFirstName);
+        registration.setLastName(registrationLastName);
+        return registration;
     }
 
-    public static HandicapGroup fullHandicapGroup() {
+    public static HandicapGroupApiEntity fullHandicapGroup() {
         return fullHandicapGroup(
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.HANDICAP_GROUP_NAME,
                 TestConstants.HANDICAP_GROUP_FACTOR);
     }
 
-    public static HandicapGroup fullHandicapGroup(
+    public static HandicapGroupApiEntity fullHandicapGroup(
             String handicapGroupId,
             String handicapGroupName,
             BigDecimal handicapGroupFactor) {
-        HandicapGroup apiHandicapGroup = new HandicapGroup();
-        apiHandicapGroup.setId(handicapGroupId);
-        apiHandicapGroup.setName(handicapGroupName);
-        apiHandicapGroup.setHandicapFactor(handicapGroupFactor);
-        return apiHandicapGroup;
+        HandicapGroupApiEntity handicapGroup = new HandicapGroupApiEntity();
+        handicapGroup.setId(handicapGroupId);
+        handicapGroup.setName(handicapGroupName);
+        handicapGroup.setHandicapFactor(handicapGroupFactor);
+        return handicapGroup;
     }
 
-    public static HandicapGroupSet fullHandicapGroupSet(
+    public static HandicapGroupSetApiEntity fullHandicapGroupSet(
             String handicapGroupSetId,
             String handicapGroupSetName,
-            Set<HandicapGroup> handicapGroups
+            Set<HandicapGroupApiEntity> handicapGroups
     ) {
-        HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
+        HandicapGroupSetApiEntity handicapGroupSet = new HandicapGroupSetApiEntity();
         handicapGroupSet.setId(handicapGroupSetId);
         handicapGroupSet.setName(handicapGroupSetName);
         handicapGroupSet.setHandicapGroups(handicapGroups);
         return handicapGroupSet;
     }
 
-    public static HandicapGroupSet fullHandicapGroupSet() {
+    public static HandicapGroupSetApiEntity fullHandicapGroupSet() {
         return fullHandicapGroupSet(
                 TestConstants.HANDICAP_GROUP_SET_ID,
                 TestConstants.HANDICAP_GROUP_SET_NAME,
@@ -107,7 +107,7 @@ public final class ApiEntityTestUtils {
         );
     }
 
-    public static CompetitionGroup fullCompetitionGroup() {
+    public static CompetitionGroupApiEntity fullCompetitionGroup() {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
@@ -117,35 +117,35 @@ public final class ApiEntityTestUtils {
         );
     }
 
-    public static CompetitionGroup fullCompetitionGroup(
+    public static CompetitionGroupApiEntity fullCompetitionGroup(
             String competitionGroupId,
             String competitionGroupName,
             BigDecimal competitionGroupHandicapFactor,
             String competitionGroupResultTimeType,
             boolean competitionGroupGrouping
     ) {
-        CompetitionGroup apiCompetitionGroup = new CompetitionGroup();
-        apiCompetitionGroup.setId(competitionGroupId);
-        apiCompetitionGroup.setName(competitionGroupName);
-        apiCompetitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
-        apiCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
-        apiCompetitionGroup.setGrouping(competitionGroupGrouping);
-        return apiCompetitionGroup;
+        CompetitionGroupApiEntity competitionGroup = new CompetitionGroupApiEntity();
+        competitionGroup.setId(competitionGroupId);
+        competitionGroup.setName(competitionGroupName);
+        competitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
+        competitionGroup.setResultTimeType(competitionGroupResultTimeType);
+        competitionGroup.setGrouping(competitionGroupGrouping);
+        return competitionGroup;
     }
 
-    public static CompetitionGroupSet fullCompetitionGroupSet(
+    public static CompetitionGroupSetApiEntity fullCompetitionGroupSet(
             String competitionGroupSetId,
             String competitionGroupSetName,
-            Set<CompetitionGroup> competitionGroups
+            Set<CompetitionGroupApiEntity> competitionGroupApiEntities
     ) {
-        CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
+        CompetitionGroupSetApiEntity competitionGroupSet = new CompetitionGroupSetApiEntity();
         competitionGroupSet.setId(competitionGroupSetId);
         competitionGroupSet.setName(competitionGroupSetName);
-        competitionGroupSet.setCompetitionGroups(competitionGroups);
+        competitionGroupSet.setCompetitionGroups(competitionGroupApiEntities);
         return competitionGroupSet;
     }
 
-    public static CompetitionGroupSet fullCompetitionGroupSet() {
+    public static CompetitionGroupSetApiEntity fullCompetitionGroupSet() {
         return fullCompetitionGroupSet(
                 TestConstants.COMPETITION_GROUP_SET_ID,
                 TestConstants.COMPETITION_GROUP_SET_NAME,

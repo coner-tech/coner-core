@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.Registration;
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.Registration;
 import org.coner.core.exception.EventRegistrationMismatchException;
 
 import com.wordnik.swagger.annotations.*;
@@ -36,7 +37,7 @@ public class EventRegistrationResource {
     @UnitOfWork
     @ApiOperation(value = "Get a specific registration")
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.OK_200, response = Registration.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.OK_200, response = RegistrationApiEntity.class, message = "OK"),
             @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found"),
             @ApiResponse(
                     code = HttpStatus.CONFLICT_409,
@@ -48,12 +49,9 @@ public class EventRegistrationResource {
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @PathParam("registrationId") @ApiParam(value = "Registration ID", required = true) String registrationId
     ) {
-        org.coner.core.domain.Registration domainRegistration;
+        Registration domainRegistration;
         try {
-            domainRegistration = conerCoreService.getRegistration(
-                    eventId,
-                    registrationId
-            );
+            domainRegistration = conerCoreService.getRegistration(eventId, registrationId);
         } catch (EventRegistrationMismatchException e) {
             ErrorsResponse errorsResponse = new ErrorsResponse();
             errorsResponse.setErrors(Arrays.asList(
@@ -69,7 +67,7 @@ public class EventRegistrationResource {
             throw new NotFoundException("No registration with id " + registrationId);
         }
 
-        Registration registration = registrationBoundary.toApiEntity(domainRegistration);
+        RegistrationApiEntity registration = registrationBoundary.toApiEntity(domainRegistration);
 
         return Response.ok(registration, MediaType.APPLICATION_JSON_TYPE)
                 .build();

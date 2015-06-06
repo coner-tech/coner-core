@@ -1,19 +1,19 @@
 package org.coner.api.response;
 
 
-import org.coner.api.entity.Event;
+import org.coner.api.entity.EventApiEntity;
 
 import java.util.List;
 
 public class GetEventsResponse {
 
-    private List<Event> events;
+    private List<EventApiEntity> events;
 
-    public List<Event> getEvents() {
+    public List<EventApiEntity> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
+    public void setEvents(List<EventApiEntity> events) {
         this.events = events;
     }
 }

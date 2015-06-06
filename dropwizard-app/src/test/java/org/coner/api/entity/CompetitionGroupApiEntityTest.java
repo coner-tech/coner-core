@@ -9,37 +9,41 @@ import org.assertj.core.api.Assertions;
 import org.junit.*;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class CompetitionGroupEntityTest {
+public class CompetitionGroupApiEntityTest {
     private final String fixturePath = "fixtures/api/entity/competition_group_full.json";
 
     private ObjectMapper objectMapper;
-    private CompetitionGroup competitionGroup;
+    private CompetitionGroupApiEntity competitionGroupApiEntity;
 
     @Before
     public void setup() {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        competitionGroup = ApiEntityTestUtils.fullCompetitionGroup();
+        competitionGroupApiEntity = ApiEntityTestUtils.fullCompetitionGroup();
     }
 
     @Test
     public void deserializesFromJson() throws Exception {
-        CompetitionGroup actual = objectMapper.readValue(FixtureHelpers.fixture(fixturePath), CompetitionGroup.class);
-        Assertions.assertThat(actual).isEqualTo(competitionGroup);
+        CompetitionGroupApiEntity actual = objectMapper.readValue(
+                FixtureHelpers.fixture(fixturePath),
+                CompetitionGroupApiEntity.class
+        );
+        Assertions.assertThat(actual).isEqualTo(competitionGroupApiEntity);
     }
 
     @Test
     public void serializesToJson() throws Exception {
-        String actual = objectMapper.writeValueAsString(competitionGroup);
+        String actual = objectMapper.writeValueAsString(competitionGroupApiEntity);
         String expected = FixtureHelpers.fixture(fixturePath);
         JSONAssert.assertEquals(expected, actual, false);
     }
 
     @Test
     public void hashCodeTest() throws Exception {
-        CompetitionGroup otherCompetitionGroup = ApiEntityTestUtils.fullCompetitionGroup();
+        CompetitionGroupApiEntity otherCompetitionGroupApiEntity = ApiEntityTestUtils.fullCompetitionGroup();
 
-        Assertions.assertThat(competitionGroup.hashCode()).isEqualTo(otherCompetitionGroup.hashCode());
+        Assertions.assertThat(competitionGroupApiEntity.hashCode())
+                .isEqualTo(otherCompetitionGroupApiEntity.hashCode());
     }
 }

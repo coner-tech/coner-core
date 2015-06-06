@@ -3,12 +3,12 @@ package org.coner.api.entity;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Set;
 
-@JsonPropertyOrder({"id", "name", "competitionGroups"})
-public class CompetitionGroupSet extends ApiEntity {
+@JsonPropertyOrder({"id", "name", "handicapGroups"})
+public class HandicapGroupSetApiEntity extends ApiEntity {
 
     private String id;
     private String name;
-    private Set<CompetitionGroup> competitionGroups;
+    private Set<HandicapGroupApiEntity> handicapGroups;
 
     public String getId() {
         return id;
@@ -26,11 +26,11 @@ public class CompetitionGroupSet extends ApiEntity {
         this.name = name;
     }
 
-    public Set<CompetitionGroup> getCompetitionGroups() {
-        return competitionGroups;
+    public Set<HandicapGroupApiEntity> getHandicapGroups() {
+        return handicapGroups;
     }
 
-    public void setCompetitionGroups(Set<CompetitionGroup> competitionGroups) {
-        this.competitionGroups = competitionGroups;
+    public void setHandicapGroups(Set<HandicapGroupApiEntity> handicapGroups) {
+        this.handicapGroups = handicapGroups;
     }
 }

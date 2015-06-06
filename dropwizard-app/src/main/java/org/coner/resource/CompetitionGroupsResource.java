@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.CompetitionGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -45,11 +46,9 @@ public class CompetitionGroupsResource {
             )
     })
     public Response addCompetitionGroup(
-            @Valid @ApiParam(value = "Competition Group") CompetitionGroup competitionGroup
+            @Valid @ApiParam(value = "Competition Group") CompetitionGroupApiEntity competitionGroupApiEntity
     ) {
-        org.coner.core.domain.CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(
-                competitionGroup
-        );
+        CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(competitionGroupApiEntity);
         conerCoreService.addCompetitionGroup(domainCompetitionGroup);
         return Response.created(UriBuilder.fromResource(CompetitionGroupResource.class)
                 .build(domainCompetitionGroup.getId()))
@@ -60,7 +59,7 @@ public class CompetitionGroupsResource {
     @UnitOfWork
     @ApiOperation(value = "Get all Competition Groups", response = GetCompetitionGroupsResponse.class)
     public GetCompetitionGroupsResponse getCompetitionGroups() {
-        List<org.coner.core.domain.CompetitionGroup> domainCompetitionGroups = conerCoreService.getCompetitionGroups();
+        List<CompetitionGroup> domainCompetitionGroups = conerCoreService.getCompetitionGroups();
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
         response.setCompetitionGroups(competitionGroupBoundary.toApiEntities(domainCompetitionGroups));
         return response;

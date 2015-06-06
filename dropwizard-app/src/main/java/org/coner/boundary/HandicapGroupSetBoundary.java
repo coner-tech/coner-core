@@ -1,30 +1,23 @@
 package org.coner.boundary;
 
+import org.coner.api.entity.HandicapGroupSetApiEntity;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.domain.HandicapGroupSet;
+import org.coner.hibernate.entity.HandicapGroupSetHibernateEntity;
 
-/**
- * Converts HandicapGroupSet entities as they cross architectural boundaries
- */
 public class HandicapGroupSetBoundary extends AbstractBoundary<
-        org.coner.api.entity.HandicapGroupSet,
+        HandicapGroupSetApiEntity,
         HandicapGroupSet,
-        org.coner.hibernate.entity.HandicapGroupSet> {
+        HandicapGroupSetHibernateEntity> {
 
-    private EntityMerger<org.coner.api.request.AddHandicapGroupSetRequest, HandicapGroupSet>
+    private EntityMerger<AddHandicapGroupSetRequest, HandicapGroupSet>
             apiAddHandicapGroupSetRequestToDomainHandicapGroupSetEntityMerger;
 
     @Override
-    protected EntityMerger<org.coner.api.entity.HandicapGroupSet, HandicapGroupSet> buildApiToDomainMerger() {
+    protected EntityMerger<HandicapGroupSetApiEntity, HandicapGroupSet> buildApiToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 
-    /**
-     * Convert an API AddHandicapGroupSetRequest to a domain HandicapGroupSet
-     *
-     * @param addHandicapGroupSetRequest API request to convert
-     * @return a HandicapGroupSet entity
-     */
     public HandicapGroupSet toDomainEntity(AddHandicapGroupSetRequest addHandicapGroupSetRequest) {
         if (apiAddHandicapGroupSetRequestToDomainHandicapGroupSetEntityMerger == null) {
             apiAddHandicapGroupSetRequestToDomainHandicapGroupSetEntityMerger = new ReflectionEntityMerger<>();
@@ -38,12 +31,12 @@ public class HandicapGroupSetBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<HandicapGroupSet, org.coner.api.entity.HandicapGroupSet> buildDomainToApiMerger() {
+    protected EntityMerger<HandicapGroupSet, HandicapGroupSetApiEntity> buildDomainToApiMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<HandicapGroupSet, org.coner.hibernate.entity.HandicapGroupSet>
+    protected EntityMerger<HandicapGroupSet, HandicapGroupSetHibernateEntity>
     buildDomainToHibernateMerger() {
         return new ReflectionEntityMerger<>((source, destination) -> {
             destination.setHandicapGroupSetId(source.getId());
@@ -51,7 +44,7 @@ public class HandicapGroupSetBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.HandicapGroupSet, HandicapGroupSet>
+    protected EntityMerger<HandicapGroupSetHibernateEntity, HandicapGroupSet>
     buildHibernateToDomainMerger() {
         return new ReflectionEntityMerger<>((source, destination) -> {
             destination.setId(source.getHandicapGroupSetId());

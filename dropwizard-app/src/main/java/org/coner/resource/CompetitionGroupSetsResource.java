@@ -57,15 +57,15 @@ public class CompetitionGroupSetsResource {
     ) {
         org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetBoundary
                 .toDomainEntity(request);
-        Set<AddCompetitionGroupSetRequest.CompetitionGroup> rxApiCompetitionGroups = request.getCompetitionGroups();
-        if (rxApiCompetitionGroups != null) {
-            Set<org.coner.core.domain.CompetitionGroup> domainCompetitionGroups = new HashSet<>();
-            for (AddCompetitionGroupSetRequest.CompetitionGroup rxCompetitionGroup : rxApiCompetitionGroups) {
+        Set<AddCompetitionGroupSetRequest.CompetitionGroup> requestCompetitionGroups = request.getCompetitionGroups();
+        if (requestCompetitionGroups != null) {
+            Set<CompetitionGroup> domainCompetitionGroups = new HashSet<>();
+            for (AddCompetitionGroupSetRequest.CompetitionGroup requestCompetitionGroup : requestCompetitionGroups) {
                 CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(
-                        rxCompetitionGroup.getId()
+                        requestCompetitionGroup.getId()
                 );
                 if (domainCompetitionGroup == null) {
-                    throw new NotFoundException("No competition group with id " + rxCompetitionGroup.getId());
+                    throw new NotFoundException("No competition group with id " + requestCompetitionGroup.getId());
                 }
                 domainCompetitionGroups.add(domainCompetitionGroup);
             }

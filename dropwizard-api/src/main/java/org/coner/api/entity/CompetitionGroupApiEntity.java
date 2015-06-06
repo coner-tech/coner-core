@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 @JsonPropertyOrder({"id", "name", "handicapFactor", "grouping", "resultTimeType"})
-public class CompetitionGroup extends ApiEntity {
+public class CompetitionGroupApiEntity extends ApiEntity {
 
     @Null(message = "competitionGroup.id may only be assigned by the system")
     private String id;
@@ -66,7 +66,7 @@ public class CompetitionGroup extends ApiEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CompetitionGroup that = (CompetitionGroup) o;
+        CompetitionGroupApiEntity that = (CompetitionGroupApiEntity) o;
 
         if (grouping != null ? !grouping.equals(that.grouping) : that.grouping != null) return false;
         if (handicapFactor != null ? !handicapFactor.equals(that.handicapFactor) : that.handicapFactor != null)

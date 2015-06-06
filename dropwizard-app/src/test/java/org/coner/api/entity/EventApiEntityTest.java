@@ -10,12 +10,12 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class EventEntityTest {
+public class EventApiEntityTest {
 
     private final String fixturePath = "fixtures/api/entity/event_full.json";
 
     private ObjectMapper objectMapper;
-    private Event event;
+    private EventApiEntity event;
 
     @Before
     public void setup() {
@@ -27,7 +27,7 @@ public class EventEntityTest {
 
     @Test
     public void deserializesFromJson() throws Exception {
-        Event actual = objectMapper.readValue(fixture(fixturePath), Event.class);
+        EventApiEntity actual = objectMapper.readValue(fixture(fixturePath), EventApiEntity.class);
         assertThat(actual).isEqualTo(event);
     }
 
