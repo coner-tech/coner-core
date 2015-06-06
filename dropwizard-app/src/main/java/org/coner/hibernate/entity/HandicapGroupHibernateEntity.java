@@ -9,12 +9,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "handicap_groups")
 @NamedQueries({
         @NamedQuery(
-                name = HandicapGroup.QUERY_FIND_ALL,
-                query = "from HandicapGroup"
+                name = HandicapGroupHibernateEntity.QUERY_FIND_ALL,
+                query = "from HandicapGroupHibernateEntity"
         )
 })
-public class HandicapGroup extends HibernateEntity {
-    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.HandicapGroup.findAll";
+public class HandicapGroupHibernateEntity extends HibernateEntity {
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.HandicapGroupHibernateEntity.findAll";
 
     private String id;
     private String name;

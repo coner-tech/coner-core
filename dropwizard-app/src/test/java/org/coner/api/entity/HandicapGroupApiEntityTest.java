@@ -10,11 +10,11 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class HandicapGroupEntityTest {
+public class HandicapGroupApiEntityTest {
     private final String fixturePath = "fixtures/api/entity/handicap_group_full.json";
 
     private ObjectMapper objectMapper;
-    private HandicapGroup handicapGroup;
+    private HandicapGroupApiEntity handicapGroup;
 
     @Before
     public void setup() {
@@ -26,7 +26,7 @@ public class HandicapGroupEntityTest {
 
     @Test
     public void deserializesFromJson() throws Exception {
-        HandicapGroup actual = objectMapper.readValue(fixture(fixturePath), HandicapGroup.class);
+        HandicapGroupApiEntity actual = objectMapper.readValue(fixture(fixturePath), HandicapGroupApiEntity.class);
         assertThat(actual).isEqualTo(handicapGroup);
     }
 
@@ -39,7 +39,7 @@ public class HandicapGroupEntityTest {
 
     @Test
     public void hashCodeTest() throws Exception {
-        HandicapGroup otherHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
+        HandicapGroupApiEntity otherHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
 
         assertThat(handicapGroup.hashCode()).isEqualTo(otherHandicapGroup.hashCode());
     }

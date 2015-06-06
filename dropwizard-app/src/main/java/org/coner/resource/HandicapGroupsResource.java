@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.HandicapGroup;
+import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.HandicapGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -42,9 +43,9 @@ public class HandicapGroupsResource {
             )
     })
     public Response addHandicapGroup(
-            @Valid @ApiParam(value = "Handicap Group") HandicapGroup handicapGroup
+            @Valid @ApiParam(value = "Handicap Group") HandicapGroupApiEntity handicapGroup
     ) {
-        org.coner.core.domain.HandicapGroup domainHandicapGroup = handicapGroupBoundary.toDomainEntity(handicapGroup);
+        HandicapGroup domainHandicapGroup = handicapGroupBoundary.toDomainEntity(handicapGroup);
         conerCoreService.addHandicapGroup(domainHandicapGroup);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)
                 .build(domainHandicapGroup.getId()))
@@ -55,7 +56,7 @@ public class HandicapGroupsResource {
     @UnitOfWork
     @ApiOperation(value = "Get all Handicap Groups", response = GetHandicapGroupsResponse.class)
     public GetHandicapGroupsResponse getHandicapGroups() {
-        List<org.coner.core.domain.HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
+        List<HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
         response.setHandicapGroups(handicapGroupBoundary.toApiEntities(domainHandicapGroups));
         return response;

@@ -1,17 +1,17 @@
 package org.coner.api.response;
 
-import org.coner.api.entity.HandicapGroup;
+import org.coner.api.entity.HandicapGroupApiEntity;
 
 import java.util.List;
 
 public class GetHandicapGroupsResponse {
-    private List<HandicapGroup> handicapGroups;
+    private List<HandicapGroupApiEntity> handicapGroups;
 
-    public List<HandicapGroup> getHandicapGroups() {
+    public List<HandicapGroupApiEntity> getHandicapGroups() {
         return handicapGroups;
     }
 
-    public void setHandicapGroups(List<HandicapGroup> handicapGroups) {
+    public void setHandicapGroups(List<HandicapGroupApiEntity> handicapGroups) {
         this.handicapGroups = handicapGroups;
     }
 }

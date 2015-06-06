@@ -38,28 +38,28 @@ public final class ApiEntityTestUtils {
         return apiRegistration;
     }
 
-    public static HandicapGroup fullHandicapGroup() {
+    public static HandicapGroupApiEntity fullHandicapGroup() {
         return fullHandicapGroup(
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.HANDICAP_GROUP_NAME,
                 TestConstants.HANDICAP_GROUP_FACTOR);
     }
 
-    public static HandicapGroup fullHandicapGroup(
+    public static HandicapGroupApiEntity fullHandicapGroup(
             String handicapGroupId,
             String handicapGroupName,
             BigDecimal handicapGroupFactor) {
-        HandicapGroup apiHandicapGroup = new HandicapGroup();
-        apiHandicapGroup.setId(handicapGroupId);
-        apiHandicapGroup.setName(handicapGroupName);
-        apiHandicapGroup.setHandicapFactor(handicapGroupFactor);
-        return apiHandicapGroup;
+        HandicapGroupApiEntity handicapGroup = new HandicapGroupApiEntity();
+        handicapGroup.setId(handicapGroupId);
+        handicapGroup.setName(handicapGroupName);
+        handicapGroup.setHandicapFactor(handicapGroupFactor);
+        return handicapGroup;
     }
 
     public static HandicapGroupSet fullHandicapGroupSet(
             String handicapGroupSetId,
             String handicapGroupSetName,
-            Set<HandicapGroup> handicapGroups
+            Set<HandicapGroupApiEntity> handicapGroups
     ) {
         HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
         handicapGroupSet.setId(handicapGroupSetId);

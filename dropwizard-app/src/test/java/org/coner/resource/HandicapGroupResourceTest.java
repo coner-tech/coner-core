@@ -1,8 +1,9 @@
 package org.coner.resource;
 
-import org.coner.api.entity.HandicapGroup;
+import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.HandicapGroup;
 import org.coner.util.*;
 
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
@@ -37,17 +38,17 @@ public class HandicapGroupResourceTest {
 
     @Test
     public void itShouldGetHandicapGroup() {
-        org.coner.core.domain.HandicapGroup domainHandicapGroup = DomainEntityTestUtils.fullHandicapGroup();
-        org.coner.api.entity.HandicapGroup apiHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
+        HandicapGroup domainHandicapGroup = DomainEntityTestUtils.fullHandicapGroup();
+        HandicapGroupApiEntity handicapGroupApiEntity = ApiEntityTestUtils.fullHandicapGroup();
 
         // sanity check test
         assertThat(domainHandicapGroup.getId()).isSameAs(TestConstants.HANDICAP_GROUP_ID);
-        assertThat(apiHandicapGroup.getId()).isSameAs(TestConstants.HANDICAP_GROUP_ID);
+        assertThat(handicapGroupApiEntity.getId()).isSameAs(TestConstants.HANDICAP_GROUP_ID);
 
         when(conerCoreService.getHandicapGroup(TestConstants.HANDICAP_GROUP_ID)).thenReturn(domainHandicapGroup);
-        when(handicapGroupBoundary.toApiEntity(domainHandicapGroup)).thenReturn(apiHandicapGroup);
+        when(handicapGroupBoundary.toApiEntity(domainHandicapGroup)).thenReturn(handicapGroupApiEntity);
 
-        Response handicapGroupResponseContainer = resources.client()
+        Response responseContainer = resources.client()
                 .target("/handicapGroups/" + TestConstants.HANDICAP_GROUP_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
@@ -56,13 +57,13 @@ public class HandicapGroupResourceTest {
         verify(handicapGroupBoundary).toApiEntity(domainHandicapGroup);
         verifyNoMoreInteractions(conerCoreService, handicapGroupBoundary);
 
-        assertThat(handicapGroupResponseContainer).isNotNull();
-        assertThat(handicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        assertThat(responseContainer).isNotNull();
+        assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        HandicapGroup getHandicapGroupResponse = handicapGroupResponseContainer.readEntity(HandicapGroup.class);
+        HandicapGroupApiEntity getHandicapGroupResponse = responseContainer.readEntity(HandicapGroupApiEntity.class);
         assertThat(getHandicapGroupResponse)
                 .isNotNull()
-                .isEqualTo(apiHandicapGroup);
+                .isEqualTo(handicapGroupApiEntity);
     }
 
     @Test

@@ -1,9 +1,10 @@
 package org.coner.resource;
 
-import org.coner.api.entity.HandicapGroup;
+import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.HandicapGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -27,19 +28,19 @@ public class HandicapGroupResource {
 
     @GET
     @UnitOfWork
-    @ApiOperation(value = "Get a Handicap Group", response = HandicapGroup.class)
+    @ApiOperation(value = "Get a Handicap Group", response = HandicapGroupApiEntity.class)
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.OK_200, response = HandicapGroup.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.OK_200, response = HandicapGroupApiEntity.class, message = "OK"),
             @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found")
     })
-    public HandicapGroup getHandicapGroup(
+    public HandicapGroupApiEntity getHandicapGroup(
             @PathParam("handicapGroupId") @ApiParam(value = "Handicap Group ID", required = true) String id
     ) {
-        org.coner.core.domain.HandicapGroup domainHandicapGroup = conerCoreService.getHandicapGroup(id);
+        HandicapGroup domainHandicapGroup = conerCoreService.getHandicapGroup(id);
         if (domainHandicapGroup == null) {
             throw new NotFoundException("No handicap group with id " + id);
         }
-        org.coner.api.entity.HandicapGroup handicapGroup = handicapGroupBoundary.toApiEntity(domainHandicapGroup);
+        HandicapGroupApiEntity handicapGroup = handicapGroupBoundary.toApiEntity(domainHandicapGroup);
         return handicapGroup;
     }
 }

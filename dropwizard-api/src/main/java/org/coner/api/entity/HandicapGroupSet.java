@@ -12,7 +12,7 @@ public class HandicapGroupSet extends ApiEntity {
 
     private String id;
     private String name;
-    private Set<HandicapGroup> handicapGroups;
+    private Set<HandicapGroupApiEntity> handicapGroups;
 
     public String getId() {
         return id;
@@ -30,11 +30,11 @@ public class HandicapGroupSet extends ApiEntity {
         this.name = name;
     }
 
-    public Set<HandicapGroup> getHandicapGroups() {
+    public Set<HandicapGroupApiEntity> getHandicapGroups() {
         return handicapGroups;
     }
 
-    public void setHandicapGroups(Set<HandicapGroup> handicapGroups) {
+    public void setHandicapGroups(Set<HandicapGroupApiEntity> handicapGroups) {
         this.handicapGroups = handicapGroups;
     }
 }
