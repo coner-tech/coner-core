@@ -1,18 +1,14 @@
 package org.coner.api.entity;
 
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.FixtureHelpers;
 import org.assertj.core.api.Assertions;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.JacksonUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-/**
- *
- */
 public class CompetitionGroupEntityTest {
     private final String fixturePath = "fixtures/api/entity/competition_group_full.json";
 

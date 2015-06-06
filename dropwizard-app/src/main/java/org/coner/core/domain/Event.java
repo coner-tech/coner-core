@@ -2,9 +2,6 @@ package org.coner.core.domain;
 
 import java.util.Date;
 
-/**
- * Domain entity for the representation of Events.
- */
 public class Event extends DomainEntity {
 
     private String id;
@@ -35,10 +32,6 @@ public class Event extends DomainEntity {
         this.date = date;
     }
 
-    /**
-     * Does Event have a date?
-     * @return true if this Event has a date
-     */
     public boolean hasDate() {
         return date != null;
     }

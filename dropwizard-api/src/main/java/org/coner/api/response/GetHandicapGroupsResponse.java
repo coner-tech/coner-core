@@ -4,9 +4,6 @@ import org.coner.api.entity.HandicapGroup;
 
 import java.util.List;
 
-/**
- * API response object containing a list of HandicapGroup entities.
- */
 public class GetHandicapGroupsResponse {
     private List<HandicapGroup> handicapGroups;
 

@@ -1,46 +1,23 @@
 package org.coner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import org.coner.boundary.*;
+import org.coner.core.ConerCoreService;
+import org.coner.core.gateway.*;
+import org.coner.exception.WebApplicationExceptionMapper;
+import org.coner.hibernate.dao.*;
+import org.coner.resource.*;
+
+import com.fasterxml.jackson.databind.*;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import org.coner.boundary.CompetitionGroupBoundary;
-import org.coner.boundary.EventBoundary;
-import org.coner.boundary.HandicapGroupBoundary;
-import org.coner.boundary.RegistrationBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.gateway.CompetitionGroupGateway;
-import org.coner.core.gateway.EventGateway;
-import org.coner.core.gateway.HandicapGroupGateway;
-import org.coner.core.gateway.RegistrationGateway;
-import org.coner.exception.WebApplicationExceptionMapper;
-import org.coner.hibernate.dao.CompetitionGroupDao;
-import org.coner.hibernate.dao.EventDao;
-import org.coner.hibernate.dao.HandicapGroupDao;
-import org.coner.hibernate.dao.RegistrationDao;
-import org.coner.resource.CompetitionGroupResource;
-import org.coner.resource.CompetitionGroupSetsResource;
-import org.coner.resource.CompetitionGroupsResource;
-import org.coner.resource.EventRegistrationResource;
-import org.coner.resource.EventRegistrationsResource;
-import org.coner.resource.EventResource;
-import org.coner.resource.EventsResource;
-import org.coner.resource.HandicapGroupResource;
-import org.coner.resource.HandicapGroupSetsResource;
-import org.coner.resource.HandicapGroupsResource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.dropwizard.setup.*;
+import java.util.*;
 import java.util.stream.Collectors;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -48,9 +25,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ConerDropwizardApplicationTest {
 

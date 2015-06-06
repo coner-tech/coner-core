@@ -1,19 +1,14 @@
 package org.coner.resource;
 
-import io.dropwizard.testing.junit.ResourceTestRule;
 import org.coner.api.entity.Event;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.TestConstants;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.coner.util.*;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import io.dropwizard.testing.junit.ResourceTestRule;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -23,9 +18,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class EventResourceTest {
 
     private final EventBoundary eventBoundary = mock(EventBoundary.class);

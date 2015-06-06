@@ -1,34 +1,19 @@
 package org.coner.resource;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-import com.wordnik.swagger.annotations.ResponseHeader;
-import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupSetBoundary;
 import org.coner.core.ConerCoreService;
-import org.eclipse.jetty.http.HttpStatus;
 
+import com.wordnik.swagger.annotations.*;
+import io.dropwizard.hibernate.UnitOfWork;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
 
-/**
- * The HandicapGroupSetsResource exposes getting and adding HandicapGroupSets via the REST API.
- */
 @Path("/handicapGroups/sets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -38,12 +23,6 @@ public class HandicapGroupSetsResource {
     private final HandicapGroupSetBoundary handicapGroupSetBoundary;
     private final ConerCoreService conerCoreService;
 
-    /**
-     * Constructor for the HandicapGroupSetsResource
-     *
-     * @param handicapGroupSetBoundary the HandicapGroupSetBoundary to use for converting API to Domain entities
-     * @param conerCoreService         the ConerCoreService
-     */
     public HandicapGroupSetsResource(
             HandicapGroupSetBoundary handicapGroupSetBoundary,
             ConerCoreService conerCoreService
@@ -52,12 +31,6 @@ public class HandicapGroupSetsResource {
         this.conerCoreService = conerCoreService;
     }
 
-    /**
-     * Add a handicap group set.
-     *
-     * @param request the HandicapGroupSet to add
-     * @return the response
-     */
     @POST
     @UnitOfWork
     @ApiOperation(

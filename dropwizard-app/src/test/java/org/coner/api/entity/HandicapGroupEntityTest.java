@@ -1,19 +1,15 @@
 package org.coner.api.entity;
 
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.JacksonUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- *
- */
 public class HandicapGroupEntityTest {
     private final String fixturePath = "fixtures/api/entity/handicap_group_full.json";
 

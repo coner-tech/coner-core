@@ -1,17 +1,13 @@
 package org.coner.exception;
 
-import com.google.common.base.Strings;
 import org.coner.api.response.ErrorsResponse;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
+import com.google.common.base.Strings;
 import java.util.Arrays;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.*;
+import javax.ws.rs.ext.ExceptionMapper;
 
-/**
- * Class for mapping Web Application Exceptions and create appropriate responses.
- */
 public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
     @Override
     public Response toResponse(WebApplicationException e) {

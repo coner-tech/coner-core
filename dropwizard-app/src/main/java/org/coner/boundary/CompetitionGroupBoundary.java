@@ -2,9 +2,6 @@ package org.coner.boundary;
 
 import org.coner.core.domain.CompetitionGroup;
 
-/**
- * Converts CompetitionGroup entities as they cross architectural boundaries.
- */
 public class CompetitionGroupBoundary extends AbstractBoundary<
         org.coner.api.entity.CompetitionGroup,
         CompetitionGroup,

@@ -1,22 +1,9 @@
 package org.coner.hibernate.entity;
 
+import java.util.Date;
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.NamedQueries;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import java.util.Date;
-
-/**
- * Hibernate entity for the persistence of Events.
- */
 @Entity
 @Table(name = "events")
 @NamedQueries({
@@ -27,11 +14,10 @@ import java.util.Date;
 })
 public class Event extends HibernateEntity {
 
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.Event.findAll";
     private String id;
     private String name;
     private Date date;
-
-    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.Event.findAll";
 
     @Id
     @GeneratedValue(generator = "uuid")

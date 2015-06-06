@@ -55,16 +55,6 @@
         <!-- see http://checkstyle.sourceforge.net/config_annotation.html#SuppressWarningsHolder -->
         <module name="SuppressWarningsHolder"/>
 
-        <!-- Checks for Javadoc comments.                     -->
-        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod">
-            <property name="severity" value="error"/>
-            <property name="allowMissingPropertyJavadoc" value="true"/>
-        </module>
-        <module name="JavadocType">
-            <property name="severity" value="error"/>
-        </module>
-        <!--<module name="JavadocVariable"/>-->
         <module name="JavadocStyle"/>
 
 
@@ -81,19 +71,21 @@
         <module name="TypeName"/>
 
         <!-- Checks for imports                              -->
-        <!-- See http://checkstyle.sf.net/config_import.html -->
-        <module name="AvoidStarImport">
-            <property name="severity" value="error"/>
-        </module>
+        <!-- See http://checkstyle.sf.net/config_imports.html -->
         <module name="IllegalImport"> <!-- defaults to sun.* packages -->
             <property name="severity" value="error"/>
-            <!--<property name="illegalPkgs" value="java.io, java.sql"/>-->
         </module>
         <module name="RedundantImport">
             <property name="severity" value="error"/>
         </module>
         <module name="UnusedImports">
             <property name="severity" value="error"/>
+        </module>
+        <module name="ImportOrder">
+            <property name="severity" value="error"/>
+            <property name="groups" value="org.coner"/>
+            <property name="option" value="bottom"/>
+            <property name="separated" value="true"/>
         </module>
 
 
@@ -168,7 +160,6 @@
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
-        <!--<module name="DesignForExtension"/>-->
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>

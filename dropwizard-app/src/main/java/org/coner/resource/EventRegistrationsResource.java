@@ -1,36 +1,18 @@
 package org.coner.resource;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.Registration;
-import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetEventRegistrationsResponse;
-import org.coner.boundary.EventBoundary;
-import org.coner.boundary.RegistrationBoundary;
+import org.coner.api.response.*;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+
+import com.wordnik.swagger.annotations.*;
+import io.dropwizard.hibernate.UnitOfWork;
+import java.util.List;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.List;
-
-/**
- * The EventRegistrationsResource exposes getting Registrations for an Event
- * or adding a Registration for an Event via the REST API.
- */
 @Path("/events/{eventId}/registrations")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -41,13 +23,6 @@ public class EventRegistrationsResource {
     private final RegistrationBoundary registrationBoundary;
     private final ConerCoreService conerCoreService;
 
-    /**
-     * Constructor for the EventRegistrationResource.
-     *
-     * @param eventBoundary        the EventBoundary to use for converting API and Domain Event entities
-     * @param registrationBoundary the RegistrationBoundary to use for converting API and Domain Registration entities
-     * @param conerCoreService     the conerCoreService
-     */
     public EventRegistrationsResource(
             EventBoundary eventBoundary,
             RegistrationBoundary registrationBoundary,
@@ -57,13 +32,6 @@ public class EventRegistrationsResource {
         this.conerCoreService = conerCoreService;
     }
 
-    /**
-     * Get all Registrations for an Event.
-     *
-     * @param eventId the id of the Event to get Registrations
-     * @return a response containing a list of all Registrations
-     * @throws javax.ws.rs.NotFoundException if no Event is found having the id
-     */
     @GET
     @UnitOfWork
     @ApiOperation(
@@ -97,14 +65,6 @@ public class EventRegistrationsResource {
         return response;
     }
 
-    /**
-     * Add a new Registration for an Event.
-     *
-     * @param eventId      the id of the Event to get Registrations
-     * @param registration the Registration to add
-     * @return a response containing response code and url of the added registration
-     * @throws javax.ws.rs.NotFoundException if no Event is found having the id
-     */
     @POST
     @UnitOfWork
     @ApiOperation(value = "Add a new registration")

@@ -2,9 +2,6 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Registration;
 
-/**
- * Converts Registration entities as they cross architectural boundaries.
- */
 public class RegistrationBoundary extends AbstractBoundary<
         org.coner.api.entity.Registration,
         Registration,
@@ -12,11 +9,6 @@ public class RegistrationBoundary extends AbstractBoundary<
 
     private final EventBoundary eventBoundary;
 
-    /**
-     * Public constructor for the RegistrationBoundary.
-     *
-     * @param eventBoundary the EventBoundary to use when converting Event entities
-     */
     public RegistrationBoundary(EventBoundary eventBoundary) {
         super();
         this.eventBoundary = eventBoundary;

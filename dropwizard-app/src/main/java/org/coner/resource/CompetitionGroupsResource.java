@@ -1,33 +1,18 @@
 package org.coner.resource;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-import io.dropwizard.hibernate.UnitOfWork;
 import org.coner.api.entity.CompetitionGroup;
-import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetCompetitionGroupsResponse;
+import org.coner.api.response.*;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+
+import com.wordnik.swagger.annotations.*;
+import io.dropwizard.hibernate.UnitOfWork;
+import java.util.List;
+import javax.validation.Valid;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import java.util.List;
-
-/**
- * The CompetitionGroupsResource exposes getting and adding CompetitionGroups
- * via the REST API.
- */
 @Path("/competitionGroups")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -37,13 +22,6 @@ public class CompetitionGroupsResource {
     private final CompetitionGroupBoundary competitionGroupBoundary;
     private final ConerCoreService conerCoreService;
 
-    /**
-     * Constructor for the CompetitionGroupsResource.
-     *
-     * @param competitionGroupBoundary the HandicapGroupBoundary to use for converting API and Domain Handicap Group
-     *                                 entities
-     * @param conerCoreService         the ConerCoreService
-     */
     public CompetitionGroupsResource(
             CompetitionGroupBoundary competitionGroupBoundary,
             ConerCoreService conerCoreService
@@ -52,12 +30,6 @@ public class CompetitionGroupsResource {
         this.conerCoreService = conerCoreService;
     }
 
-    /**
-     * Add a competition group.
-     *
-     * @param competitionGroup the competitionGroup to add
-     * @return a response containing the added Event
-     */
     @POST
     @UnitOfWork
     @ApiOperation(value = "Add a new Competition Group")
@@ -84,11 +56,6 @@ public class CompetitionGroupsResource {
                 .build();
     }
 
-    /**
-     * Get all competition groups.
-     *
-     * @return a list of all competition groups
-     */
     @GET
     @UnitOfWork
     @ApiOperation(value = "Get all Competition Groups", response = GetCompetitionGroupsResponse.class)

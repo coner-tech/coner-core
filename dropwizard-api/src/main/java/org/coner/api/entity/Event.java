@@ -1,15 +1,10 @@
 package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.Date;
+import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import java.util.Date;
-
-/**
- * REST API entity representing an Event.
- */
 @JsonPropertyOrder({"id", "name", "date"})
 public class Event extends ApiEntity {
 

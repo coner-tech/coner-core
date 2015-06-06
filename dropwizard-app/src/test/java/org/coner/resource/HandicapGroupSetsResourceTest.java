@@ -1,27 +1,21 @@
 package org.coner.resource;
 
+import org.coner.api.request.AddHandicapGroupSetRequest;
+import org.coner.boundary.HandicapGroupSetBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.*;
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.coner.api.request.AddHandicapGroupSetRequest;
-import org.coner.boundary.HandicapGroupSetBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
-import org.coner.core.domain.HandicapGroupSet;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.JacksonUtil;
-import org.coner.util.UnitTestUtils;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.*;
+import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -31,9 +25,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class HandicapGroupSetsResourceTest {
 
     private HandicapGroupSetBoundary handicapGroupSetBoundary = mock(HandicapGroupSetBoundary.class);

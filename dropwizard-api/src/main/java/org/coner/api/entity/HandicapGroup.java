@@ -1,16 +1,9 @@
 package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
+import javax.validation.constraints.*;
 
-/**
- * REST API entity representing a HandicapGroup.
- */
 @JsonPropertyOrder({"id", "name", "handicapFactor"})
 public class HandicapGroup extends ApiEntity {
 

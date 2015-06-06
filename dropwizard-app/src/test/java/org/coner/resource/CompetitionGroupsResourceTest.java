@@ -1,28 +1,20 @@
 package org.coner.resource;
 
+import org.coner.api.response.*;
+import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.CompetitionGroup;
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetCompetitionGroupsResponse;
-import org.coner.boundary.CompetitionGroupBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.CompetitionGroup;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.JacksonUtil;
-import org.coner.util.UnitTestUtils;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
+import java.util.*;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.*;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,14 +33,12 @@ public class CompetitionGroupsResourceTest {
 
     private CompetitionGroupBoundary competitionGroupBoundary = mock(CompetitionGroupBoundary.class);
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
-
-    private ObjectMapper objectMapper;
-
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupsResource(competitionGroupBoundary, conerCoreService))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
+    private ObjectMapper objectMapper;
 
     @Before
     public void setup() {

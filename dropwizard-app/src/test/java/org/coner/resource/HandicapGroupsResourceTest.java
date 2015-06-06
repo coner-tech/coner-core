@@ -1,30 +1,21 @@
 package org.coner.resource;
 
+import org.coner.api.response.*;
+import org.coner.boundary.HandicapGroupBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.HandicapGroup;
+import org.coner.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.coner.api.response.ErrorsResponse;
-import org.coner.api.response.GetHandicapGroupsResponse;
-import org.coner.boundary.HandicapGroupBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
-import org.coner.util.ApiEntityTestUtils;
-import org.coner.util.DomainEntityTestUtils;
-import org.coner.util.JacksonUtil;
-import org.coner.util.TestConstants;
-import org.coner.util.UnitTestUtils;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
+import java.util.*;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ws.rs.core.*;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -35,20 +26,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class HandicapGroupsResourceTest {
     private final HandicapGroupBoundary handicapGroupBoundary = mock(HandicapGroupBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
-
-    private ObjectMapper objectMapper;
-
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupsResource(handicapGroupBoundary, conerCoreService))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
+    private ObjectMapper objectMapper;
 
     @Before
     public void setup() {

@@ -1,25 +1,10 @@
 package org.coner.hibernate.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Set;
+import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
-/**
- * Hibernate entity for the persistence of CompetitionGroups.
- */
 @Entity
 @Table(name = "competition_groups")
 @NamedQueries({

@@ -1,54 +1,21 @@
 package org.coner;
 
+import org.coner.boundary.*;
+import org.coner.core.ConerCoreService;
+import org.coner.core.gateway.*;
+import org.coner.exception.WebApplicationExceptionMapper;
+import org.coner.hibernate.dao.*;
+import org.coner.hibernate.entity.*;
+import org.coner.resource.*;
+import org.coner.util.JacksonUtil;
+
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import io.federecio.dropwizard.swagger.SwaggerBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.coner.boundary.CompetitionGroupBoundary;
-import org.coner.boundary.CompetitionGroupSetBoundary;
-import org.coner.boundary.EventBoundary;
-import org.coner.boundary.HandicapGroupBoundary;
-import org.coner.boundary.HandicapGroupSetBoundary;
-import org.coner.boundary.RegistrationBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.gateway.CompetitionGroupGateway;
-import org.coner.core.gateway.CompetitionGroupSetGateway;
-import org.coner.core.gateway.EventGateway;
-import org.coner.core.gateway.HandicapGroupGateway;
-import org.coner.core.gateway.HandicapGroupSetGateway;
-import org.coner.core.gateway.RegistrationGateway;
-import org.coner.exception.WebApplicationExceptionMapper;
-import org.coner.hibernate.dao.CompetitionGroupDao;
-import org.coner.hibernate.dao.CompetitionGroupSetDao;
-import org.coner.hibernate.dao.EventDao;
-import org.coner.hibernate.dao.HandicapGroupDao;
-import org.coner.hibernate.dao.HandicapGroupSetDao;
-import org.coner.hibernate.dao.RegistrationDao;
-import org.coner.hibernate.entity.CompetitionGroup;
-import org.coner.hibernate.entity.CompetitionGroupSet;
-import org.coner.hibernate.entity.Event;
-import org.coner.hibernate.entity.HandicapGroup;
-import org.coner.hibernate.entity.HandicapGroupSet;
-import org.coner.hibernate.entity.Registration;
-import org.coner.resource.CompetitionGroupResource;
-import org.coner.resource.CompetitionGroupSetsResource;
-import org.coner.resource.CompetitionGroupsResource;
-import org.coner.resource.EventRegistrationResource;
-import org.coner.resource.EventRegistrationsResource;
-import org.coner.resource.EventResource;
-import org.coner.resource.EventsResource;
-import org.coner.resource.HandicapGroupResource;
-import org.coner.resource.HandicapGroupSetsResource;
-import org.coner.resource.HandicapGroupsResource;
-import org.coner.util.JacksonUtil;
+import io.dropwizard.setup.*;
+import io.federecio.dropwizard.swagger.*;
 
-/**
- * The Dropwizard application which exposes the Coner core REST interface.
- */
 public class ConerDropwizardApplication extends Application<ConerDropwizardConfiguration> {
 
     private HibernateBundle<ConerDropwizardConfiguration> hibernate;
@@ -164,11 +131,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
     }
 
-    /**
-     * Lazy initializer for the HibernateBundle.
-     *
-     * @return the HibernateBundle
-     */
     private HibernateBundle<ConerDropwizardConfiguration> getHibernate() {
         if (hibernate == null) {
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
@@ -193,11 +155,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.hibernate = hibernate;
     }
 
-    /**
-     * Lazy initializer for the EventBoundary.
-     *
-     * @return the EventBoundary
-     */
     private EventBoundary getEventBoundary() {
         if (eventBoundary == null) {
             eventBoundary = new EventBoundary();
@@ -209,11 +166,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.eventBoundary = eventBoundary;
     }
 
-    /**
-     * Lazy initializer for the EventDao.
-     *
-     * @return the EventDao
-     */
     private EventDao getEventDao() {
         if (eventDao == null) {
             eventDao = new EventDao(getHibernate().getSessionFactory());
@@ -225,11 +177,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.eventDao = eventDao;
     }
 
-    /**
-     * Lazy initializer for the EventGateway.
-     *
-     * @return the EventGateway
-     */
     private EventGateway getEventGateway() {
         if (eventGateway == null) {
             eventGateway = new EventGateway(getEventBoundary(), getEventDao());
@@ -241,11 +188,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.eventGateway = eventGateway;
     }
 
-    /**
-     * Lazy initializer for RegistrationBoundary.
-     *
-     * @return the RegistrationBoundary
-     */
     private RegistrationBoundary getRegistrationBoundary() {
         if (registrationBoundary == null) {
             registrationBoundary = new RegistrationBoundary(getEventBoundary());
@@ -257,11 +199,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.registrationBoundary = registrationBoundary;
     }
 
-    /**
-     * Lazy initializer for the RegistrationDao.
-     *
-     * @return the RegistrationDao
-     */
     private RegistrationDao getRegistrationDao() {
         if (registrationDao == null) {
             registrationDao = new RegistrationDao(getHibernate().getSessionFactory());
@@ -273,11 +210,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.registrationDao = registrationDao;
     }
 
-    /**
-     * Lazy initializer for the RegistrationGateway.
-     *
-     * @return the RegistrationGateway
-     */
     private RegistrationGateway getRegistrationGateway() {
         if (registrationGateway == null) {
             registrationGateway = new RegistrationGateway(
@@ -293,11 +225,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.registrationGateway = registrationGateway;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupBoundary.
-     *
-     * @return the HandicapGroupBoundary
-     */
     private HandicapGroupBoundary getHandicapGroupBoundary() {
         if (handicapGroupBoundary == null) {
             handicapGroupBoundary = new HandicapGroupBoundary();
@@ -309,11 +236,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupBoundary = handicapGroupBoundary;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupDao.
-     *
-     * @return the HandicapGroupDao
-     */
     private HandicapGroupDao getHandicapGroupDao() {
         if (handicapGroupDao == null) {
             handicapGroupDao = new HandicapGroupDao(getHibernate().getSessionFactory());
@@ -325,11 +247,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupDao = handicapGroupDao;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupGateway.
-     *
-     * @return the EventGateway
-     */
     private HandicapGroupGateway getHandicapGroupGateway() {
         if (handicapGroupGateway == null) {
             handicapGroupGateway = new HandicapGroupGateway(getHandicapGroupBoundary(), getHandicapGroupDao());
@@ -341,11 +258,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupGateway = handicapGroupGateway;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupSetGateway
-     *
-     * @return the HandicapGroupSetGateway
-     */
     private HandicapGroupSetGateway getHandicapGroupSetGateway() {
         if (handicapGroupSetGateway == null) {
             handicapGroupSetGateway = new HandicapGroupSetGateway(
@@ -360,11 +272,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupSetGateway = handicapGroupSetGateway;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupSetBoundary
-     *
-     * @return the HandicapGroupSetBoundary
-     */
     private HandicapGroupSetBoundary getHandicapGroupSetBoundary() {
         if (handicapGroupSetBoundary == null) {
             handicapGroupSetBoundary = new HandicapGroupSetBoundary();
@@ -376,11 +283,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupSetBoundary = handicapGroupSetBoundary;
     }
 
-    /**
-     * Lazy initializer for the HandicapGroupSetDao
-     *
-     * @return the HandicapGroupSetDao
-     */
     private HandicapGroupSetDao getHandicapGroupSetDao() {
         if (handicapGroupSetDao == null) {
             handicapGroupSetDao = new HandicapGroupSetDao(getHibernate().getSessionFactory());
@@ -392,11 +294,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupSetDao = handicapGroupSetDao;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupBoundary.
-     *
-     * @return the CompetitionGroupBoundary
-     */
     private CompetitionGroupBoundary getCompetitionGroupBoundary() {
         if (competitionGroupBoundary == null) {
             competitionGroupBoundary = new CompetitionGroupBoundary();
@@ -408,11 +305,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupBoundary = competitionGroupBoundary;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupDao.
-     *
-     * @return the CompetitionGroupDao
-     */
     private CompetitionGroupDao getCompetitionGroupDao() {
         if (competitionGroupDao == null) {
             competitionGroupDao = new CompetitionGroupDao(getHibernate().getSessionFactory());
@@ -424,11 +316,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupDao = competitionGroupDao;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupGateway.
-     *
-     * @return the CompetitionGroupGateway
-     */
     private CompetitionGroupGateway getCompetitionGroupGateway() {
         if (competitionGroupGateway == null) {
             this.competitionGroupGateway = new CompetitionGroupGateway(
@@ -443,11 +330,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupGateway = competitionGroupGateway;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupSetGateway
-     *
-     * @return the CompetitionGroupSetGateway
-     */
     private CompetitionGroupSetGateway getCompetitionGroupSetGateway() {
         if (competitionGroupSetGateway == null) {
             competitionGroupSetGateway = new CompetitionGroupSetGateway(
@@ -462,11 +344,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupSetGateway = competitionGroupSetGateway;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupSetBoundary
-     *
-     * @return the CompetitionGroupSetBoundary
-     */
     private CompetitionGroupSetBoundary getCompetitionGroupSetBoundary() {
         if (competitionGroupSetBoundary == null) {
             competitionGroupSetBoundary = new CompetitionGroupSetBoundary();
@@ -478,11 +355,6 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupSetBoundary = competitionGroupSetBoundary;
     }
 
-    /**
-     * Lazy initializer for the CompetitionGroupSetDao
-     *
-     * @return the CompetitionGroupSetDao
-     */
     private CompetitionGroupSetDao getCompetitionGroupSetDao() {
         if (competitionGroupSetDao == null) {
             competitionGroupSetDao = new CompetitionGroupSetDao(getHibernate().getSessionFactory());
@@ -494,12 +366,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupSetDao = competitionGroupSetDao;
     }
 
-    /**
-     * Lazy initializer for the ConerCoreService.
-     *
-     * @return the ConerCoreService
-     */
-    private ConerCoreService getConerCoreService() {
+
+   private ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
             conerCoreService = new ConerCoreService(
                     getEventGateway(),

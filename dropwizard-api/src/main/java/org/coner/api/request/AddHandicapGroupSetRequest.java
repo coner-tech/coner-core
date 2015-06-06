@@ -1,13 +1,8 @@
 package org.coner.api.request;
 
-
+import java.util.Set;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.Set;
-
-/**
- * API request body used when adding a new HandicapGroupSet
- */
 public class AddHandicapGroupSetRequest {
 
     @NotBlank
@@ -30,9 +25,6 @@ public class AddHandicapGroupSetRequest {
         this.handicapGroups = handicapGroups;
     }
 
-    /**
-     * Request handicap groups to be added by Handicap Group ID
-     */
     public static class HandicapGroup {
         @NotBlank
         private String id;

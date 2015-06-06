@@ -1,19 +1,9 @@
 package org.coner.hibernate.entity;
 
+import java.util.Set;
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import java.util.Set;
-
-/**
- * Hibernate entity for the persistence of HandicapGroupSets
- */
 @Entity
 @Table(name = "handicap_group_sets")
 public class HandicapGroupSet extends HibernateEntity {
