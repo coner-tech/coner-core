@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "competition_group_sets")
-public class CompetitionGroupSet extends HibernateEntity {
+public class CompetitionGroupSetHibernateEntity extends HibernateEntity {
 
     private String competitionGroupSetId;
     private String name;

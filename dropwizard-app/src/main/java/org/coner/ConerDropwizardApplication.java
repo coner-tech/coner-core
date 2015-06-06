@@ -139,7 +139,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                     HandicapGroup.class,
                     HandicapGroupSet.class,
                     CompetitionGroupHibernateEntity.class,
-                    CompetitionGroupSet.class
+                    CompetitionGroupSetHibernateEntity.class
             ) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(

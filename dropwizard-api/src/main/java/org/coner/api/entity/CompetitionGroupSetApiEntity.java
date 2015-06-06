@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Set;
 
 @JsonPropertyOrder({"id", "name", "competitionGroups"})
-public class CompetitionGroupSet extends ApiEntity {
+public class CompetitionGroupSetApiEntity extends ApiEntity {
 
     private String id;
     private String name;

@@ -1,19 +1,21 @@
 package org.coner.boundary;
 
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.CompetitionGroupSet;
+import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
 
 public class CompetitionGroupSetBoundary extends AbstractBoundary<
-        org.coner.api.entity.CompetitionGroupSet,
+        CompetitionGroupSetApiEntity,
         CompetitionGroupSet,
-        org.coner.hibernate.entity.CompetitionGroupSet
+        CompetitionGroupSetHibernateEntity
         > {
 
     private EntityMerger<org.coner.api.request.AddCompetitionGroupSetRequest, CompetitionGroupSet>
             apiAddCompetitionGroupSetRequestToDomainCompetitionGroupSetEntityMerger;
 
     @Override
-    protected EntityMerger<org.coner.api.entity.CompetitionGroupSet, CompetitionGroupSet> buildApiToDomainMerger() {
+    protected EntityMerger<CompetitionGroupSetApiEntity, CompetitionGroupSet> buildApiToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 
@@ -30,12 +32,12 @@ public class CompetitionGroupSetBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<CompetitionGroupSet, org.coner.api.entity.CompetitionGroupSet> buildDomainToApiMerger() {
+    protected EntityMerger<CompetitionGroupSet, CompetitionGroupSetApiEntity> buildDomainToApiMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<CompetitionGroupSet, org.coner.hibernate.entity.CompetitionGroupSet>
+    protected EntityMerger<CompetitionGroupSet, CompetitionGroupSetHibernateEntity>
     buildDomainToHibernateMerger() {
         return new ReflectionEntityMerger<>((source, destination) -> {
             destination.setCompetitionGroupSetId(source.getId());
@@ -43,7 +45,7 @@ public class CompetitionGroupSetBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.CompetitionGroupSet, CompetitionGroupSet>
+    protected EntityMerger<CompetitionGroupSetHibernateEntity, CompetitionGroupSet>
     buildHibernateToDomainMerger() {
         return new ReflectionEntityMerger<>((source, destination) -> {
             destination.setId(source.getCompetitionGroupSetId());

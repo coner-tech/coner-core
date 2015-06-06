@@ -3,6 +3,7 @@ package org.coner.core.gateway;
 import org.coner.boundary.CompetitionGroupSetBoundary;
 import org.coner.core.domain.CompetitionGroupSet;
 import org.coner.hibernate.dao.CompetitionGroupSetDao;
+import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
 
 import com.google.common.base.Preconditions;
 
@@ -21,9 +22,9 @@ public class CompetitionGroupSetGateway {
 
     public void create(CompetitionGroupSet competitionGroupSet) {
         Preconditions.checkNotNull(competitionGroupSet);
-        org.coner.hibernate.entity.CompetitionGroupSet hCompetitionGroupSet = competitionGroupSetBoundary
+        CompetitionGroupSetHibernateEntity competitionGroupSetHibernateEntity = competitionGroupSetBoundary
                 .toHibernateEntity(competitionGroupSet);
-        competitionGroupSetDao.createOrUpdate(hCompetitionGroupSet);
-        competitionGroupSetBoundary.merge(hCompetitionGroupSet, competitionGroupSet);
+        competitionGroupSetDao.createOrUpdate(competitionGroupSetHibernateEntity);
+        competitionGroupSetBoundary.merge(competitionGroupSetHibernateEntity, competitionGroupSet);
     }
 }

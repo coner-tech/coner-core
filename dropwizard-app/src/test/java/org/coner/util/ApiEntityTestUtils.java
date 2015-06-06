@@ -133,19 +133,19 @@ public final class ApiEntityTestUtils {
         return competitionGroup;
     }
 
-    public static CompetitionGroupSet fullCompetitionGroupSet(
+    public static CompetitionGroupSetApiEntity fullCompetitionGroupSet(
             String competitionGroupSetId,
             String competitionGroupSetName,
             Set<CompetitionGroupApiEntity> competitionGroupApiEntities
     ) {
-        CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
+        CompetitionGroupSetApiEntity competitionGroupSet = new CompetitionGroupSetApiEntity();
         competitionGroupSet.setId(competitionGroupSetId);
         competitionGroupSet.setName(competitionGroupSetName);
         competitionGroupSet.setCompetitionGroups(competitionGroupApiEntities);
         return competitionGroupSet;
     }
 
-    public static CompetitionGroupSet fullCompetitionGroupSet() {
+    public static CompetitionGroupSetApiEntity fullCompetitionGroupSet() {
         return fullCompetitionGroupSet(
                 TestConstants.COMPETITION_GROUP_SET_ID,
                 TestConstants.COMPETITION_GROUP_SET_NAME,

@@ -22,7 +22,7 @@ public class CompetitionGroupHibernateEntity extends HibernateEntity {
     private BigDecimal handicapFactor;
     private boolean grouping;
     private String resultTimeType;
-    private Set<CompetitionGroupSet> competitionGroupSets;
+    private Set<CompetitionGroupSetHibernateEntity> competitionGroupSets;
 
     @Id
     @Column(name = "competitionGroupId", unique = true, nullable = false)
@@ -82,11 +82,11 @@ public class CompetitionGroupHibernateEntity extends HibernateEntity {
                     @JoinColumn(name = "competitionGroupSetId", nullable = false, updatable = false)
             }
     )
-    public Set<CompetitionGroupSet> getCompetitionGroupSets() {
+    public Set<CompetitionGroupSetHibernateEntity> getCompetitionGroupSets() {
         return this.competitionGroupSets;
     }
 
-    public void setCompetitionGroupSets(Set<CompetitionGroupSet> competitionGroupSets) {
+    public void setCompetitionGroupSets(Set<CompetitionGroupSetHibernateEntity> competitionGroupSets) {
         this.competitionGroupSets = competitionGroupSets;
     }
 }
