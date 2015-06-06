@@ -1,7 +1,7 @@
 package org.coner.api.request;
 
-import org.coner.api.entity.Event;
+import org.coner.api.entity.EventApiEntity;
 
-public class AddEventRequest extends Event {
+public class AddEventRequest extends EventApiEntity {
 
 }

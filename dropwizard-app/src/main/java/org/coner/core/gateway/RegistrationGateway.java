@@ -3,7 +3,7 @@ package org.coner.core.gateway;
 import org.coner.boundary.*;
 import org.coner.core.domain.*;
 import org.coner.hibernate.dao.RegistrationDao;
-import org.coner.hibernate.entity.RegistrationHibernateEntity;
+import org.coner.hibernate.entity.*;
 
 import com.google.common.base.*;
 import java.util.List;
@@ -31,7 +31,7 @@ public class RegistrationGateway {
 
     public List<Registration> getAllWith(Event event) {
         Preconditions.checkNotNull(event);
-        org.coner.hibernate.entity.Event hibernateEvent = eventBoundary.toHibernateEntity(event);
+        EventHibernateEntity hibernateEvent = eventBoundary.toHibernateEntity(event);
         List<RegistrationHibernateEntity> registrations = registrationDao.getAllWith(hibernateEvent);
         return registrationBoundary.toDomainEntities(registrations);
     }

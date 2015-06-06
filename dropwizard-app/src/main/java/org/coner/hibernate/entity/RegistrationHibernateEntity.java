@@ -21,7 +21,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     private String id;
     private String firstName;
     private String lastName;
-    private Event event;
+    private EventHibernateEntity event;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -53,11 +53,11 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     }
 
     @ManyToOne
-    public Event getEvent() {
+    public EventHibernateEntity getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
+    public void setEvent(EventHibernateEntity event) {
         this.event = event;
     }
 }

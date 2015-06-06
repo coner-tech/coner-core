@@ -4,7 +4,7 @@ import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.*;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -54,7 +54,7 @@ public class EventRegistrationsResource {
     public GetEventRegistrationsResponse getEventRegistrations(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId
     ) {
-        org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
+        Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
         }
@@ -91,7 +91,7 @@ public class EventRegistrationsResource {
             @Valid @ApiParam(value = "Registration", required = true) RegistrationApiEntity registration
     ) {
         Registration domainRegistration = registrationBoundary.toDomainEntity(registration);
-        org.coner.core.domain.Event domainEvent = conerCoreService.getEvent(eventId);
+        Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
         }

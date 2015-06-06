@@ -3,6 +3,7 @@ package org.coner.core.gateway;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.domain.Event;
 import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.entity.EventHibernateEntity;
 
 import com.google.common.base.*;
 import java.util.List;
@@ -18,19 +19,19 @@ public class EventGateway {
     }
 
     public List<Event> getAll() {
-        List<org.coner.hibernate.entity.Event> events = eventDao.findAll();
+        List<EventHibernateEntity> events = eventDao.findAll();
         return eventBoundary.toDomainEntities(events);
     }
 
     public Event findById(String eventId) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(eventId));
-        org.coner.hibernate.entity.Event hibernateEvent = eventDao.findById(eventId);
+        EventHibernateEntity hibernateEvent = eventDao.findById(eventId);
         return eventBoundary.toDomainEntity(hibernateEvent);
     }
 
     public void create(Event event) {
         Preconditions.checkNotNull(event);
-        org.coner.hibernate.entity.Event hibernateEvent = eventBoundary.toHibernateEntity(event);
+        EventHibernateEntity hibernateEvent = eventBoundary.toHibernateEntity(event);
         eventDao.create(hibernateEvent);
         eventBoundary.merge(hibernateEvent, event);
     }

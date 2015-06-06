@@ -4,6 +4,7 @@ package org.coner.core.gateway;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.domain.Event;
 import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.entity.EventHibernateEntity;
 
 import java.util.*;
 import org.junit.*;
@@ -36,12 +37,12 @@ public class EventGatewayTest {
 
     @Test
     public void whenGetAllItShouldFindAllAndConvertToDomainEntities() {
-        List<org.coner.hibernate.entity.Event> hibernateEvents = new ArrayList<>();
+        List<EventHibernateEntity> hibernateEvents = new ArrayList<>();
         List<Event> expected = new ArrayList<>();
         when(eventDao.findAll()).thenReturn(hibernateEvents);
         when(eventBoundary.toDomainEntities(hibernateEvents)).thenReturn(expected);
 
-        List<org.coner.core.domain.Event> actual = eventGateway.getAll();
+        List<Event> actual = eventGateway.getAll();
 
         verify(eventDao).findAll();
         verify(eventBoundary).toDomainEntities(hibernateEvents);
@@ -53,7 +54,7 @@ public class EventGatewayTest {
     @Test
     public void whenFindByIdItShouldFindAndConvertToDomainEntity() {
         String id = "test-id";
-        org.coner.hibernate.entity.Event hibernateEvent = mock(org.coner.hibernate.entity.Event.class);
+        EventHibernateEntity hibernateEvent = mock(EventHibernateEntity.class);
         Event expected = mock(Event.class);
         when(eventDao.findById(id)).thenReturn(hibernateEvent);
         when(eventBoundary.toDomainEntity(hibernateEvent)).thenReturn(expected);
@@ -85,7 +86,7 @@ public class EventGatewayTest {
     @Test
     public void whenCreateItShouldConvertToHibernateAndCreateAndMergeHibernateIntoDomain() {
         Event event = mock(Event.class);
-        org.coner.hibernate.entity.Event hibernateEvent = mock(org.coner.hibernate.entity.Event.class);
+        EventHibernateEntity hibernateEvent = mock(EventHibernateEntity.class);
         when(eventBoundary.toHibernateEntity(event)).thenReturn(hibernateEvent);
 
         eventGateway.create(event);

@@ -12,16 +12,16 @@ public final class ApiEntityTestUtils {
     private ApiEntityTestUtils() {
     }
 
-    public static Event fullApiEvent() {
+    public static EventApiEntity fullApiEvent() {
         return fullApiEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
 
-    public static Event fullApiEvent(String eventId, String eventName, Date eventDate) {
-        Event apiEvent = new Event();
-        apiEvent.setId(eventId);
-        apiEvent.setName(eventName);
-        apiEvent.setDate(eventDate);
-        return apiEvent;
+    public static EventApiEntity fullApiEvent(String eventId, String eventName, Date eventDate) {
+        EventApiEntity event = new EventApiEntity();
+        event.setId(eventId);
+        event.setName(eventName);
+        event.setDate(eventDate);
+        return event;
     }
 
     public static RegistrationApiEntity fullApiRegistration() {

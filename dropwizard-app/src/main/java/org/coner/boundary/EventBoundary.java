@@ -1,29 +1,28 @@
 package org.coner.boundary;
 
+import org.coner.api.entity.EventApiEntity;
 import org.coner.core.domain.Event;
+import org.coner.hibernate.entity.EventHibernateEntity;
 
-public class EventBoundary extends AbstractBoundary<
-        org.coner.api.entity.Event,
-        Event,
-        org.coner.hibernate.entity.Event> {
+public class EventBoundary extends AbstractBoundary<EventApiEntity, Event, EventHibernateEntity> {
 
     @Override
-    protected EntityMerger<org.coner.api.entity.Event, Event> buildApiToDomainMerger() {
+    protected EntityMerger<EventApiEntity, Event> buildApiToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<Event, org.coner.api.entity.Event> buildDomainToApiMerger() {
+    protected EntityMerger<Event, EventApiEntity> buildDomainToApiMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<Event, org.coner.hibernate.entity.Event> buildDomainToHibernateMerger() {
+    protected EntityMerger<Event, EventHibernateEntity> buildDomainToHibernateMerger() {
         return new ReflectionEntityMerger<>();
     }
 
     @Override
-    protected EntityMerger<org.coner.hibernate.entity.Event, Event> buildHibernateToDomainMerger() {
+    protected EntityMerger<EventHibernateEntity, Event> buildHibernateToDomainMerger() {
         return new ReflectionEntityMerger<>();
     }
 }

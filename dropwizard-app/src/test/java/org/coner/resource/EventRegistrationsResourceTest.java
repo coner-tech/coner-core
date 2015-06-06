@@ -4,7 +4,7 @@ import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.*;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +30,7 @@ public class EventRegistrationsResourceTest {
     private final EventBoundary eventBoundary = mock(EventBoundary.class);
     private final RegistrationBoundary registrationBoundary = mock(RegistrationBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
-    
+
     private ObjectMapper objectMapper;
 
     @Rule
@@ -52,7 +52,7 @@ public class EventRegistrationsResourceTest {
         // Event
         final String eventId = TestConstants.EVENT_ID;
 
-        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
 
         // Registrations
         final String registrationID = TestConstants.REGISTRATION_ID;
@@ -101,7 +101,7 @@ public class EventRegistrationsResourceTest {
         requestRegistrationAsDomain.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
         requestRegistrationAsDomain.setLastName(TestConstants.REGISTRATION_LASTNAME);
 
-        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
 
         when(registrationBoundary.toDomainEntity(requestRegistration)).thenReturn(requestRegistrationAsDomain);
         when(conerCoreService.getEvent(eventId)).thenReturn(domainEvent);

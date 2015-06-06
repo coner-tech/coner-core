@@ -1,5 +1,6 @@
 package org.coner.resource;
 
+import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.EventBoundary;
 import org.coner.core.ConerCoreService;
@@ -67,11 +68,11 @@ public class EventsResourceTest {
 
     @Test
     public void whenAddValidEventItShouldAddEvent() throws Exception {
-        org.coner.api.entity.Event requestEvent = objectMapper.readValue(
+        EventApiEntity requestEvent = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-request.json"),
-                org.coner.api.entity.Event.class
+                EventApiEntity.class
         );
-        Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
+        Entity<EventApiEntity> requestEntity = Entity.json(requestEvent);
 
         Event requestEventAsDomain = new Event();
         requestEventAsDomain.setId("arbitrary-id-from-service");
@@ -95,11 +96,11 @@ public class EventsResourceTest {
 
     @Test
     public void whenAddEventWithUserSuppliedIdItShouldFailValidation() throws Exception {
-        org.coner.api.entity.Event requestEvent = objectMapper.readValue(
+        EventApiEntity requestEvent = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-request-with-id.json"),
-                org.coner.api.entity.Event.class
+                EventApiEntity.class
         );
-        Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
+        Entity<EventApiEntity> requestEntity = Entity.json(requestEvent);
 
         Response response = resources.client()
                 .target("/events")
@@ -116,11 +117,11 @@ public class EventsResourceTest {
 
     @Test
     public void whenAddEventWithoutNameItShouldFailValidation() throws Exception {
-        org.coner.api.entity.Event requestEvent = objectMapper.readValue(
+        EventApiEntity requestEvent = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-request-without-name.json"),
-                org.coner.api.entity.Event.class
+                EventApiEntity.class
         );
-        Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
+        Entity<EventApiEntity> requestEntity = Entity.json(requestEvent);
 
         Response response = resources.client()
                 .target("/events")
@@ -136,11 +137,11 @@ public class EventsResourceTest {
 
     @Test
     public void whenAddEventWithoutDateItShouldFailValidation() throws Exception {
-        org.coner.api.entity.Event requestEvent = objectMapper.readValue(
+        EventApiEntity requestEvent = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/entity/event_add-request-without-date.json"),
-                org.coner.api.entity.Event.class
+                EventApiEntity.class
         );
-        Entity<org.coner.api.entity.Event> requestEntity = Entity.json(requestEvent);
+        Entity<EventApiEntity> requestEntity = Entity.json(requestEvent);
 
 
         Response response = resources.client()

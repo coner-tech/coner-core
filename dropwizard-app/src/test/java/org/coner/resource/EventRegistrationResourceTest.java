@@ -3,7 +3,7 @@ package org.coner.resource;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.*;
 import org.coner.core.exception.EventRegistrationMismatchException;
 import org.coner.util.*;
 
@@ -40,7 +40,7 @@ public class EventRegistrationResourceTest {
 
     @Test
     public void itShouldGetRegistration() throws EventRegistrationMismatchException {
-        org.coner.core.domain.Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
+        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
         RegistrationApiEntity apiRegistration = ApiEntityTestUtils.fullApiRegistration();
 

@@ -1,20 +1,27 @@
-package org.coner.api.entity;
+package org.coner.hibernate.entity;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Date;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
-@JsonPropertyOrder({"id", "name", "date"})
-public class Event extends ApiEntity {
+@Entity
+@Table(name = "events")
+@NamedQueries({
+        @NamedQuery(
+                name = EventHibernateEntity.QUERY_FIND_ALL,
+                query = "from EventHibernateEntity"
+        )
+})
+public class EventHibernateEntity extends HibernateEntity {
 
-    @Null(message = "event.id may only be assigned by the system")
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.EventHibernateEntity.findAll";
     private String id;
-    @NotBlank
     private String name;
-    @NotNull
     private Date date;
 
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     public String getId() {
         return id;
     }
@@ -23,6 +30,7 @@ public class Event extends ApiEntity {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -31,6 +39,8 @@ public class Event extends ApiEntity {
         this.name = name;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
     public Date getDate() {
         return date;
     }
@@ -44,9 +54,9 @@ public class Event extends ApiEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Event event = (Event) o;
+        EventHibernateEntity event = (EventHibernateEntity) o;
 
-        if (date != null ? !date.equals(event.date) : event.date != null) return false;
+        if (date != null ? !(date.compareTo(event.date) == 0) : event.date != null) return false;
         if (id != null ? !id.equals(event.id) : event.id != null) return false;
         if (name != null ? !name.equals(event.name) : event.name != null) return false;
 

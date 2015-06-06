@@ -16,7 +16,7 @@ public class RegistrationDao extends AbstractDAO<RegistrationHibernateEntity> {
         return get(id);
     }
 
-    public List<RegistrationHibernateEntity> getAllWith(Event event) {
+    public List<RegistrationHibernateEntity> getAllWith(EventHibernateEntity event) {
         Query query = namedQuery(RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
         query.setParameter(RegistrationHibernateEntity.PARAMETER_EVENT_ID, event.getId());
         return list(query);
