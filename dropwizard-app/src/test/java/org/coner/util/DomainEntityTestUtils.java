@@ -5,6 +5,7 @@ import org.coner.core.domain.CompetitionGroup;
 import org.coner.core.domain.CompetitionGroupSet;
 import org.coner.core.domain.Event;
 import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.HandicapGroupSet;
 import org.coner.core.domain.Registration;
 
 import java.math.BigDecimal;
@@ -66,6 +67,28 @@ public final class DomainEntityTestUtils {
         domainHandicapGroup.setHandicapFactor(handicapGroupFactor);
         return domainHandicapGroup;
     }
+
+    public static HandicapGroupSet fullHandicapGroupSet(
+            String handicapGroupSetId,
+            String handicapGroupSetName,
+            Set<HandicapGroup> handicapGroups
+    ) {
+        HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
+        handicapGroupSet.setId(handicapGroupSetId);
+        handicapGroupSet.setName(handicapGroupSetName);
+        handicapGroupSet.setHandicapGroups(handicapGroups);
+        return handicapGroupSet;
+    }
+
+    public static HandicapGroupSet fullHandicapGroupSet() {
+        return fullHandicapGroupSet(
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.HANDICAP_GROUP_SET_NAME,
+                Sets.newHashSet(fullHandicapGroup())
+        );
+    }
+
+    // CompetitionGroup
 
     public static CompetitionGroup fullCompetitionGroup() {
         return fullCompetitionGroup(

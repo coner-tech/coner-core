@@ -141,7 +141,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
                     // not supported, skip
                     continue;
                 }
-
             }
 
             mergeOperationsBuilder.add(new MergeOperation(

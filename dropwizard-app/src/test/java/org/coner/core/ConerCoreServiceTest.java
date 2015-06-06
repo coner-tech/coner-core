@@ -8,6 +8,7 @@ import org.coner.core.gateway.CompetitionGroupGateway;
 import org.coner.core.gateway.CompetitionGroupSetGateway;
 import org.coner.core.gateway.EventGateway;
 import org.coner.core.gateway.HandicapGroupGateway;
+import org.coner.core.gateway.HandicapGroupSetGateway;
 import org.coner.core.gateway.RegistrationGateway;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,8 @@ public class ConerCoreServiceTest {
     private CompetitionGroupSetGateway competitionGroupSetGateway;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
+    @Mock
+    private HandicapGroupSetGateway handicapGroupSetGateway;
 
     private ConerCoreService conerCoreService;
 
@@ -52,7 +55,8 @@ public class ConerCoreServiceTest {
                 registrationGateway,
                 competitionGroupGateway,
                 competitionGroupSetGateway,
-                handicapGroupGateway
+                handicapGroupGateway,
+                handicapGroupSetGateway
         );
     }
 

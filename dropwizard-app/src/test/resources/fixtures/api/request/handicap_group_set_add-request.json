@@ -1,0 +1,11 @@
+{
+  "name": "2015 Handicap Group Set",
+  "handicapGroups": [
+    {
+      "id": "test-handicap-group-id-1"
+    },
+    {
+      "id": "test-handicap-group-id-2"
+    }
+  ]
+}

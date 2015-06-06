@@ -2,6 +2,7 @@ package org.coner.it;
 
 import org.coner.api.entity.HandicapGroup;
 import org.coner.api.request.AddHandicapGroupRequest;
+import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.util.TestConstants;
 import org.coner.util.UnitTestUtils;
@@ -22,6 +23,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
     private static final String HANDICAP_GROUPS_PATH = "/handicapGroups";
     private static final String HANDICAP_GROUP_PATH = "/handicapGroups/{handicapGroupId}";
+    private static final String HANDICAP_GROUP_SETS_PATH = "/handicapGroups/sets";
 
     @Test
     public void whenCreateHandicapGroupItShouldPersist() {
@@ -71,6 +73,42 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         assertThat(addHandicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         ErrorsResponse errorsResponse = addHandicapGroupResponseContainer.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors()).isNotEmpty();
+    }
+
+    @Test
+    public void whenCreateHandicapGroupSetItShouldPersist() {
+        URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUP_SETS_PATH)
+                .build();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
+        addHandicapGroupSetRequest.setName(TestConstants.HANDICAP_GROUP_SET_NAME);
+        addHandicapGroupSetRequest.setHandicapGroups(null); // perfectly ok to create an empty one
+
+        Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addHandicapGroupSetRequest));
+
+        assertThat(addHandicapGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        String handicapGroupSetId = UnitTestUtils.getEntityIdFromResponse(addHandicapGroupSetResponseContainer);
+        assertThat(handicapGroupSetId).isNotEmpty();
+    }
+
+    @Test
+    public void whenCreateInvalidHandicapGroupSetItShouldRejectUnprocessable() {
+        URI handicapGroupsSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUP_SETS_PATH)
+                .build();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
+        addHandicapGroupSetRequest.setName("  "); // whitespace only is not ok
+        addHandicapGroupSetRequest.setHandicapGroups(null);
+
+        Response addHandicapGroupSetResponseContainer = client.target(handicapGroupsSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addHandicapGroupSetRequest));
+
+        assertThat(addHandicapGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
     }
 
 }
