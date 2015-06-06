@@ -107,7 +107,7 @@ public final class ApiEntityTestUtils {
         );
     }
 
-    public static CompetitionGroup fullCompetitionGroup() {
+    public static CompetitionGroupApiEntity fullCompetitionGroup() {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
@@ -117,31 +117,31 @@ public final class ApiEntityTestUtils {
         );
     }
 
-    public static CompetitionGroup fullCompetitionGroup(
+    public static CompetitionGroupApiEntity fullCompetitionGroup(
             String competitionGroupId,
             String competitionGroupName,
             BigDecimal competitionGroupHandicapFactor,
             String competitionGroupResultTimeType,
             boolean competitionGroupGrouping
     ) {
-        CompetitionGroup apiCompetitionGroup = new CompetitionGroup();
-        apiCompetitionGroup.setId(competitionGroupId);
-        apiCompetitionGroup.setName(competitionGroupName);
-        apiCompetitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
-        apiCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
-        apiCompetitionGroup.setGrouping(competitionGroupGrouping);
-        return apiCompetitionGroup;
+        CompetitionGroupApiEntity competitionGroup = new CompetitionGroupApiEntity();
+        competitionGroup.setId(competitionGroupId);
+        competitionGroup.setName(competitionGroupName);
+        competitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
+        competitionGroup.setResultTimeType(competitionGroupResultTimeType);
+        competitionGroup.setGrouping(competitionGroupGrouping);
+        return competitionGroup;
     }
 
     public static CompetitionGroupSet fullCompetitionGroupSet(
             String competitionGroupSetId,
             String competitionGroupSetName,
-            Set<CompetitionGroup> competitionGroups
+            Set<CompetitionGroupApiEntity> competitionGroupApiEntities
     ) {
         CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
         competitionGroupSet.setId(competitionGroupSetId);
         competitionGroupSet.setName(competitionGroupSetName);
-        competitionGroupSet.setCompetitionGroups(competitionGroups);
+        competitionGroupSet.setCompetitionGroups(competitionGroupApiEntities);
         return competitionGroupSet;
     }
 

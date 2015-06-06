@@ -1,6 +1,6 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
@@ -45,10 +45,10 @@ public class CompetitionGroupsResource {
             )
     })
     public Response addCompetitionGroup(
-            @Valid @ApiParam(value = "Competition Group") CompetitionGroup competitionGroup
+            @Valid @ApiParam(value = "Competition Group") CompetitionGroupApiEntity competitionGroupApiEntity
     ) {
         org.coner.core.domain.CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(
-                competitionGroup
+                competitionGroupApiEntity
         );
         conerCoreService.addCompetitionGroup(domainCompetitionGroup);
         return Response.created(UriBuilder.fromResource(CompetitionGroupResource.class)

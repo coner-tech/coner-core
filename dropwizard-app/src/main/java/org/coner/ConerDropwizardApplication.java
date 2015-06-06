@@ -138,7 +138,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                     Registration.class,
                     HandicapGroup.class,
                     HandicapGroupSet.class,
-                    CompetitionGroup.class,
+                    CompetitionGroupHibernateEntity.class,
                     CompetitionGroupSet.class
             ) {
                 @Override

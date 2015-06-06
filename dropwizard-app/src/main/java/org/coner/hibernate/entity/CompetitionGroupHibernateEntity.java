@@ -9,13 +9,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "competition_groups")
 @NamedQueries({
         @NamedQuery(
-                name = CompetitionGroup.QUERY_FIND_ALL,
-                query = "from CompetitionGroup"
+                name = CompetitionGroupHibernateEntity.QUERY_FIND_ALL,
+                query = "from CompetitionGroupHibernateEntity"
         )
 })
-public class CompetitionGroup extends HibernateEntity {
+public class CompetitionGroupHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroup.findAll";
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroupHibernateEntity.findAll";
 
     private String id;
     private String name;

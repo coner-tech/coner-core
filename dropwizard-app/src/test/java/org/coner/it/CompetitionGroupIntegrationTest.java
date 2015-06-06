@@ -1,6 +1,6 @@
 package org.coner.it;
 
-import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.request.*;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.util.*;
@@ -49,8 +49,8 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .get();
 
         assertThat(getCompetitionGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
-        CompetitionGroup getCompetitionGroupResponse = getCompetitionGroupResponseContainer
-                .readEntity(CompetitionGroup.class);
+        CompetitionGroupApiEntity getCompetitionGroupResponse = getCompetitionGroupResponseContainer
+                .readEntity(CompetitionGroupApiEntity.class);
         assertThat(getCompetitionGroupResponse.getId()).isEqualTo(competitionGroupId);
     }
 

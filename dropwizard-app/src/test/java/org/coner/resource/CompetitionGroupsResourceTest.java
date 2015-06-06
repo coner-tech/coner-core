@@ -1,5 +1,6 @@
 package org.coner.resource;
 
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
@@ -26,9 +27,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class CompetitionGroupsResourceTest {
 
     private CompetitionGroupBoundary competitionGroupBoundary = mock(CompetitionGroupBoundary.class);
@@ -62,11 +60,11 @@ public class CompetitionGroupsResourceTest {
 
     @Test
     public void whenAddCompetitionGroupWithUserSuppliedIdItShouldFailValidation() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+        CompetitionGroupApiEntity requestCompetitionGroupApiEntity = objectMapper.readValue(
                 fixture("fixtures/api/entity/competition_group_add-request-with-id.json"),
-                org.coner.api.entity.CompetitionGroup.class
+                CompetitionGroupApiEntity.class
         );
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+        Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")
@@ -85,11 +83,11 @@ public class CompetitionGroupsResourceTest {
 
     @Test
     public void whenAddCompetitionGroupWithLargeHandicapFactorItShouldFailValidation() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+        CompetitionGroupApiEntity requestCompetitionGroupApiEntity = objectMapper.readValue(
                 fixture("fixtures/api/entity/competition_group_add-request-with-large-handicap-factor.json"),
-                org.coner.api.entity.CompetitionGroup.class
+                CompetitionGroupApiEntity.class
         );
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+        Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")
@@ -108,11 +106,11 @@ public class CompetitionGroupsResourceTest {
 
     @Test
     public void whenAddCompetitionGroupWithoutResultTimeTypeItShouldFailValidation() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+        CompetitionGroupApiEntity requestCompetitionGroupApiEntity = objectMapper.readValue(
                 fixture("fixtures/api/entity/competition_group_add-request-without-result-time-type.json"),
-                org.coner.api.entity.CompetitionGroup.class
+                CompetitionGroupApiEntity.class
         );
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+        Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")
@@ -131,11 +129,11 @@ public class CompetitionGroupsResourceTest {
 
     @Test
     public void whenAddCompetitionGroupWithoutGroupingItShouldFailValidation() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+        CompetitionGroupApiEntity requestCompetitionGroupApiEntity = objectMapper.readValue(
                 fixture("fixtures/api/entity/competition_group_add-request-without-grouping.json"),
-                org.coner.api.entity.CompetitionGroup.class
+                CompetitionGroupApiEntity.class
         );
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+        Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")
@@ -158,13 +156,13 @@ public class CompetitionGroupsResourceTest {
 
         List<CompetitionGroup> domainCompetitionGroups = new ArrayList<>();
         domainCompetitionGroups.add(DomainEntityTestUtils.fullCompetitionGroup());
-        List<org.coner.api.entity.CompetitionGroup> apiCompetitionGroups = new ArrayList<>();
-        apiCompetitionGroups.add(ApiEntityTestUtils.fullCompetitionGroup());
+        List<CompetitionGroupApiEntity> competitionGroupApiEntities = new ArrayList<>();
+        competitionGroupApiEntities.add(ApiEntityTestUtils.fullCompetitionGroup());
 
         when(conerCoreService.getCompetitionGroups())
                 .thenReturn(domainCompetitionGroups);
         when(competitionGroupBoundary.toApiEntities(domainCompetitionGroups))
-                .thenReturn(apiCompetitionGroups);
+                .thenReturn(competitionGroupApiEntities);
 
         GetCompetitionGroupsResponse response = resources.client()
                 .target("/competitionGroups")
@@ -183,18 +181,18 @@ public class CompetitionGroupsResourceTest {
     }
 
     private Response postCompetitionGroup() throws Exception {
-        org.coner.api.entity.CompetitionGroup requestCompetitionGroup = objectMapper.readValue(
+        CompetitionGroupApiEntity requestCompetitionGroupApiEntity = objectMapper.readValue(
                 fixture("fixtures/api/entity/competition_group_add-request.json"),
-                org.coner.api.entity.CompetitionGroup.class
+                CompetitionGroupApiEntity.class
         );
 
-        Entity<org.coner.api.entity.CompetitionGroup> requestEntity = Entity.json(requestCompetitionGroup);
+        Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
         org.coner.core.domain.CompetitionGroup requestCompetitionGroupAsDomain =
                 new org.coner.core.domain.CompetitionGroup();
         requestCompetitionGroupAsDomain.setId("arbitrary-id-from-service");
 
-        when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroup))
+        when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroupApiEntity))
                 .thenReturn(requestCompetitionGroupAsDomain);
 
         Response response = resources.client()
@@ -202,7 +200,7 @@ public class CompetitionGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(competitionGroupBoundary).toDomainEntity(requestCompetitionGroup);
+        verify(competitionGroupBoundary).toDomainEntity(requestCompetitionGroupApiEntity);
         verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupAsDomain);
         verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
 

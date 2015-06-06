@@ -10,7 +10,7 @@ public class CompetitionGroupSet extends HibernateEntity {
 
     private String competitionGroupSetId;
     private String name;
-    private Set<CompetitionGroup> competitionGroups;
+    private Set<CompetitionGroupHibernateEntity> competitionGroups;
 
     @Id
     @Column(name = "competitionGroupSetId")
@@ -34,11 +34,11 @@ public class CompetitionGroupSet extends HibernateEntity {
     }
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "competitionGroupSets")
-    public Set<CompetitionGroup> getCompetitionGroups() {
+    public Set<CompetitionGroupHibernateEntity> getCompetitionGroups() {
         return competitionGroups;
     }
 
-    public void setCompetitionGroups(Set<CompetitionGroup> competitionGroups) {
+    public void setCompetitionGroups(Set<CompetitionGroupHibernateEntity> competitionGroups) {
         this.competitionGroups = competitionGroups;
     }
 }

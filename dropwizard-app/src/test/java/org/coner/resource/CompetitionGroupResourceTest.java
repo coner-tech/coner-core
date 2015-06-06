@@ -1,6 +1,6 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroup;
+import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.util.*;
@@ -38,16 +38,16 @@ public class CompetitionGroupResourceTest {
     @Test
     public void itShouldGetCompetitionGroup() {
         org.coner.core.domain.CompetitionGroup domainCompetitionGroup = DomainEntityTestUtils.fullCompetitionGroup();
-        org.coner.api.entity.CompetitionGroup apiCompetitionGroup = ApiEntityTestUtils.fullCompetitionGroup();
+        CompetitionGroupApiEntity competitionGroupApiEntity = ApiEntityTestUtils.fullCompetitionGroup();
 
         // sanity check test
         assertThat(domainCompetitionGroup.getId()).isSameAs(TestConstants.COMPETITION_GROUP_ID);
-        assertThat(apiCompetitionGroup.getId()).isSameAs(TestConstants.COMPETITION_GROUP_ID);
+        assertThat(competitionGroupApiEntity.getId()).isSameAs(TestConstants.COMPETITION_GROUP_ID);
 
         when(conerCoreService.getCompetitionGroup(TestConstants.COMPETITION_GROUP_ID))
                 .thenReturn(domainCompetitionGroup);
         when(competitionGroupBoundary.toApiEntity(domainCompetitionGroup))
-                .thenReturn(apiCompetitionGroup);
+                .thenReturn(competitionGroupApiEntity);
 
         Response competitionGroupResourceContainer = resources.client()
                 .target("/competitionGroups/" + TestConstants.COMPETITION_GROUP_ID)
@@ -61,12 +61,12 @@ public class CompetitionGroupResourceTest {
         assertThat(competitionGroupResourceContainer).isNotNull();
         assertThat(competitionGroupResourceContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        CompetitionGroup getCompetitionGroupResponse = competitionGroupResourceContainer.readEntity(
-                CompetitionGroup.class
+        CompetitionGroupApiEntity getCompetitionGroupResponse = competitionGroupResourceContainer.readEntity(
+                CompetitionGroupApiEntity.class
         );
         assertThat(getCompetitionGroupResponse)
                 .isNotNull()
-                .isEqualTo(apiCompetitionGroup);
+                .isEqualTo(competitionGroupApiEntity);
     }
 
     @Test

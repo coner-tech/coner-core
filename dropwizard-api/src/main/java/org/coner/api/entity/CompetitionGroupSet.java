@@ -8,7 +8,7 @@ public class CompetitionGroupSet extends ApiEntity {
 
     private String id;
     private String name;
-    private Set<CompetitionGroup> competitionGroups;
+    private Set<CompetitionGroupApiEntity> competitionGroups;
 
     public String getId() {
         return id;
@@ -26,11 +26,11 @@ public class CompetitionGroupSet extends ApiEntity {
         this.name = name;
     }
 
-    public Set<CompetitionGroup> getCompetitionGroups() {
+    public Set<CompetitionGroupApiEntity> getCompetitionGroups() {
         return competitionGroups;
     }
 
-    public void setCompetitionGroups(Set<CompetitionGroup> competitionGroups) {
+    public void setCompetitionGroups(Set<CompetitionGroupApiEntity> competitionGroups) {
         this.competitionGroups = competitionGroups;
     }
 }
