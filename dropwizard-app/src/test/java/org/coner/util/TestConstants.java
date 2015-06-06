@@ -26,6 +26,10 @@ public final class TestConstants {
     public static final String HANDICAP_GROUP_NAME = "handicap-group-name";
 
     public static final BigDecimal HANDICAP_GROUP_FACTOR = BigDecimal.valueOf(0.75);
+    // HandicapGroupSet
+    public static final String HANDICAP_GROUP_SET_ID = "handicap-group-set-test-id";
+    public static final String HANDICAP_GROUP_SET_NAME = "handicap-group-set-test-name";
+
     // CompetitionGroup
     public static final String COMPETITION_GROUP_ID = "competition-group-test-id";
     public static final String COMPETITION_GROUP_NAME = "competition-group-name";

@@ -14,18 +14,21 @@ public class ConerCoreService {
     private final CompetitionGroupGateway competitionGroupGateway;
     private final CompetitionGroupSetGateway competitionGroupSetGateway;
     private final HandicapGroupGateway handicapGroupGateway;
+    private final HandicapGroupSetGateway handicapGroupSetGateway;
 
     public ConerCoreService(EventGateway eventGateway,
                             RegistrationGateway registrationGateway,
                             CompetitionGroupGateway competitionGroupGateway,
                             CompetitionGroupSetGateway competitionGroupSetGateway,
-                            HandicapGroupGateway handicapGroupGateway
+                            HandicapGroupGateway handicapGroupGateway,
+                            HandicapGroupSetGateway handicapGroupSetGateway
     ) {
         this.eventGateway = eventGateway;
         this.registrationGateway = registrationGateway;
         this.competitionGroupSetGateway = competitionGroupSetGateway;
-        this.handicapGroupGateway = handicapGroupGateway;
         this.competitionGroupGateway = competitionGroupGateway;
+        this.handicapGroupGateway = handicapGroupGateway;
+        this.handicapGroupSetGateway = handicapGroupSetGateway;
     }
 
     public List<Event> getEvents() {
@@ -103,5 +106,10 @@ public class ConerCoreService {
     public HandicapGroup getHandicapGroup(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
         return handicapGroupGateway.findById(id);
+    }
+
+    public void addHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
+        Preconditions.checkNotNull(handicapGroupSet);
+        handicapGroupSetGateway.create(handicapGroupSet);
     }
 }

@@ -29,12 +29,12 @@ import static org.mockito.Mockito.when;
 public class ConerDropwizardApplicationTest {
 
     // Test constants
-    private static final int NUMBER_OF_RESOURCES = 10;
+    private static final int NUMBER_OF_RESOURCES = 11;
 
     // application dependencies
     private final HibernateBundle<ConerDropwizardConfiguration> hibernate = mock(HibernateBundle.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
-    private final ConerDropwizardApplication application = new ConerDropwizardApplication();
+
     // Event
     @Mock
     private EventBoundary eventBoundary;
@@ -42,6 +42,7 @@ public class ConerDropwizardApplicationTest {
     private EventDao eventDao;
     @Mock
     private EventGateway eventGateway;
+
     // Registration
     @Mock
     private RegistrationBoundary registrationBoundary;
@@ -49,6 +50,7 @@ public class ConerDropwizardApplicationTest {
     private RegistrationDao registrationDao;
     @Mock
     private RegistrationGateway registrationGateway;
+
     // HandicapGroup
     @Mock
     private HandicapGroupBoundary handicapGroupBoundary;
@@ -56,6 +58,7 @@ public class ConerDropwizardApplicationTest {
     private HandicapGroupDao handicapGroupDao;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
+
     // Competition Group
     @Mock
     private CompetitionGroupBoundary competitionGroupBoundary;
@@ -63,11 +66,14 @@ public class ConerDropwizardApplicationTest {
     private CompetitionGroupDao competitionGroupDao;
     @Mock
     private CompetitionGroupGateway competitionGroupGateway;
+
+
     // initialize method parameters
     @Mock
     private Bootstrap<ConerDropwizardConfiguration> bootstrap;
     @Mock
     private ObjectMapper objectMapper;
+
     // run method parameters
     @Mock
     private ConerDropwizardConfiguration config;
@@ -77,6 +83,8 @@ public class ConerDropwizardApplicationTest {
     private Environment environment;
     @Mock
     private JerseyEnvironment jersey;
+
+    private final ConerDropwizardApplication application = new ConerDropwizardApplication();
 
     @Before
     public void setup() {
@@ -142,6 +150,7 @@ public class ConerDropwizardApplicationTest {
         assertThat(registeredClasses).contains(EventRegistrationResource.class);
         assertThat(registeredClasses).contains(HandicapGroupsResource.class);
         assertThat(registeredClasses).contains(HandicapGroupResource.class);
+        assertThat(registeredClasses).contains(HandicapGroupSetsResource.class);
         assertThat(registeredClasses).contains(CompetitionGroupsResource.class);
         assertThat(registeredClasses).contains(CompetitionGroupResource.class);
         assertThat(registeredClasses).contains(CompetitionGroupSetsResource.class);

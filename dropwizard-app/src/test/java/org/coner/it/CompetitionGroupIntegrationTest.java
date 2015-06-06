@@ -91,7 +91,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenCreateInvalidCompetitionGroupSetItShouldPersist() {
+    public void whenCreateInvalidCompetitionGroupSetItShouldRejectUnprocessable() {
         URI competitionGroupsSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();

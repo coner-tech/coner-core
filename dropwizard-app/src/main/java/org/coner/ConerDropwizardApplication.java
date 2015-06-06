@@ -34,8 +34,17 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private HandicapGroupBoundary handicapGroupBoundary;
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
+    private HandicapGroupSetBoundary handicapGroupSetBoundary;
+    private HandicapGroupSetDao handicapGroupSetDao;
+    private HandicapGroupSetGateway handicapGroupSetGateway;
     private ConerCoreService conerCoreService;
 
+    /**
+     * The main method of the application.
+     *
+     * @param args raw String arguments
+     * @throws Exception any uncaught exception
+     */
     public static void main(String[] args) throws Exception {
         new ConerDropwizardApplication().run(args);
     }
@@ -85,6 +94,10 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 getHandicapGroupBoundary(),
                 getConerCoreService()
         );
+        HandicapGroupSetsResource handicapGroupSetsResource = new HandicapGroupSetsResource(
+                getHandicapGroupSetBoundary(),
+                getConerCoreService()
+        );
 
         CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
                 getCompetitionGroupBoundary(),
@@ -105,6 +118,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         jersey.register(eventRegistrationResource);
         jersey.register(handicapGroupsResource);
         jersey.register(handicapGroupResource);
+        jersey.register(handicapGroupSetsResource);
         jersey.register(competitionGroupsResource);
         jersey.register(competitionGroupResource);
         jersey.register(competitionGroupSetsResource);
@@ -123,6 +137,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                     Event.class,
                     Registration.class,
                     HandicapGroup.class,
+                    HandicapGroupSet.class,
                     CompetitionGroup.class,
                     CompetitionGroupSet.class
             ) {
@@ -243,6 +258,42 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupGateway = handicapGroupGateway;
     }
 
+    private HandicapGroupSetGateway getHandicapGroupSetGateway() {
+        if (handicapGroupSetGateway == null) {
+            handicapGroupSetGateway = new HandicapGroupSetGateway(
+                    getHandicapGroupSetBoundary(),
+                    getHandicapGroupSetDao()
+            );
+        }
+        return handicapGroupSetGateway;
+    }
+
+    void setHandicapGroupSetGateway(HandicapGroupSetGateway handicapGroupSetGateway) {
+        this.handicapGroupSetGateway = handicapGroupSetGateway;
+    }
+
+    private HandicapGroupSetBoundary getHandicapGroupSetBoundary() {
+        if (handicapGroupSetBoundary == null) {
+            handicapGroupSetBoundary = new HandicapGroupSetBoundary();
+        }
+        return handicapGroupSetBoundary;
+    }
+
+    void setHandicapGroupSetBoundary(HandicapGroupSetBoundary handicapGroupSetBoundary) {
+        this.handicapGroupSetBoundary = handicapGroupSetBoundary;
+    }
+
+    private HandicapGroupSetDao getHandicapGroupSetDao() {
+        if (handicapGroupSetDao == null) {
+            handicapGroupSetDao = new HandicapGroupSetDao(getHibernate().getSessionFactory());
+        }
+        return handicapGroupSetDao;
+    }
+
+    void setHandicapGroupSetDao(HandicapGroupSetDao handicapGroupSetDao) {
+        this.handicapGroupSetDao = handicapGroupSetDao;
+    }
+
     private CompetitionGroupBoundary getCompetitionGroupBoundary() {
         if (competitionGroupBoundary == null) {
             competitionGroupBoundary = new CompetitionGroupBoundary();
@@ -315,14 +366,16 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupSetDao = competitionGroupSetDao;
     }
 
-    private ConerCoreService getConerCoreService() {
+
+   private ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
             conerCoreService = new ConerCoreService(
                     getEventGateway(),
                     getRegistrationGateway(),
                     getCompetitionGroupGateway(),
                     getCompetitionGroupSetGateway(),
-                    getHandicapGroupGateway()
+                    getHandicapGroupGateway(),
+                    getHandicapGroupSetGateway()
             );
         }
         return conerCoreService;

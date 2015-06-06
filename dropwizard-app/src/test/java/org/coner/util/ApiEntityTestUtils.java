@@ -1,6 +1,7 @@
 package org.coner.util;
 
 import org.coner.api.entity.*;
+import org.coner.api.request.AddHandicapGroupSetRequest;
 
 import com.google.common.collect.Sets;
 import java.math.BigDecimal;
@@ -53,6 +54,57 @@ public final class ApiEntityTestUtils {
         apiHandicapGroup.setName(handicapGroupName);
         apiHandicapGroup.setHandicapFactor(handicapGroupFactor);
         return apiHandicapGroup;
+    }
+
+    public static HandicapGroupSet fullHandicapGroupSet(
+            String handicapGroupSetId,
+            String handicapGroupSetName,
+            Set<HandicapGroup> handicapGroups
+    ) {
+        HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
+        handicapGroupSet.setId(handicapGroupSetId);
+        handicapGroupSet.setName(handicapGroupSetName);
+        handicapGroupSet.setHandicapGroups(handicapGroups);
+        return handicapGroupSet;
+    }
+
+    public static HandicapGroupSet fullHandicapGroupSet() {
+        return fullHandicapGroupSet(
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.HANDICAP_GROUP_SET_NAME,
+                Sets.newHashSet(fullHandicapGroup())
+        );
+    }
+
+    public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest(
+            String addHandicapGroupSetRequestName,
+            Set<AddHandicapGroupSetRequest.HandicapGroup> addHandicapGroupSetRequestHandicapGroups
+    ) {
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
+        addHandicapGroupSetRequest.setName(addHandicapGroupSetRequestName);
+        addHandicapGroupSetRequest.setHandicapGroups(addHandicapGroupSetRequestHandicapGroups);
+        return addHandicapGroupSetRequest;
+    }
+
+    public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest() {
+        return fullAddHandicapGroupSetRequest(
+                TestConstants.HANDICAP_GROUP_SET_NAME,
+                Sets.newHashSet(fullAddHandicapGroupSetRequestHandicapGroup())
+        );
+    }
+
+    public static AddHandicapGroupSetRequest.HandicapGroup fullAddHandicapGroupSetRequestHandicapGroup(
+            String handicapGroupId
+    ) {
+        AddHandicapGroupSetRequest.HandicapGroup handicapGroup = new AddHandicapGroupSetRequest.HandicapGroup();
+        handicapGroup.setId(handicapGroupId);
+        return handicapGroup;
+    }
+
+    public static AddHandicapGroupSetRequest.HandicapGroup fullAddHandicapGroupSetRequestHandicapGroup() {
+        return fullAddHandicapGroupSetRequestHandicapGroup(
+                TestConstants.HANDICAP_GROUP_ID
+        );
     }
 
     public static CompetitionGroup fullCompetitionGroup() {

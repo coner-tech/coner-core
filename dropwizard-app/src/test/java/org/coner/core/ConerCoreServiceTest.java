@@ -30,6 +30,8 @@ public class ConerCoreServiceTest {
     private CompetitionGroupSetGateway competitionGroupSetGateway;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
+    @Mock
+    private HandicapGroupSetGateway handicapGroupSetGateway;
 
     private ConerCoreService conerCoreService;
 
@@ -40,7 +42,8 @@ public class ConerCoreServiceTest {
                 registrationGateway,
                 competitionGroupGateway,
                 competitionGroupSetGateway,
-                handicapGroupGateway
+                handicapGroupGateway,
+                handicapGroupSetGateway
         );
     }
 

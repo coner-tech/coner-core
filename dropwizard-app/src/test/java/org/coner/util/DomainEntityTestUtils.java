@@ -56,6 +56,26 @@ public final class DomainEntityTestUtils {
         return domainHandicapGroup;
     }
 
+    public static HandicapGroupSet fullHandicapGroupSet(
+            String handicapGroupSetId,
+            String handicapGroupSetName,
+            Set<HandicapGroup> handicapGroups
+    ) {
+        HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
+        handicapGroupSet.setId(handicapGroupSetId);
+        handicapGroupSet.setName(handicapGroupSetName);
+        handicapGroupSet.setHandicapGroups(handicapGroups);
+        return handicapGroupSet;
+    }
+
+    public static HandicapGroupSet fullHandicapGroupSet() {
+        return fullHandicapGroupSet(
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.HANDICAP_GROUP_SET_NAME,
+                Sets.newHashSet(fullHandicapGroup())
+        );
+    }
+
     public static CompetitionGroup fullCompetitionGroup() {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,
