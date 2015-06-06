@@ -78,7 +78,7 @@ public class CompetitionGroupsResourceTest {
                 .isNotEmpty()
                 .contains("id competitionGroup.id may only be assigned by the system (was bad-id-in-request)");
 
-        verify(conerCoreService, never()).addCompetitionGroup(any(org.coner.core.domain.CompetitionGroup.class));
+        verify(conerCoreService, never()).addCompetitionGroup(any(CompetitionGroup.class));
     }
 
     @Test
@@ -188,12 +188,11 @@ public class CompetitionGroupsResourceTest {
 
         Entity<CompetitionGroupApiEntity> requestEntity = Entity.json(requestCompetitionGroupApiEntity);
 
-        org.coner.core.domain.CompetitionGroup requestCompetitionGroupAsDomain =
-                new org.coner.core.domain.CompetitionGroup();
-        requestCompetitionGroupAsDomain.setId("arbitrary-id-from-service");
+        CompetitionGroup requestCompetitionGroupDomainEntity = new CompetitionGroup();
+        requestCompetitionGroupDomainEntity.setId("arbitrary-id-from-service");
 
         when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroupApiEntity))
-                .thenReturn(requestCompetitionGroupAsDomain);
+                .thenReturn(requestCompetitionGroupDomainEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")
@@ -201,7 +200,7 @@ public class CompetitionGroupsResourceTest {
                 .post(requestEntity);
 
         verify(competitionGroupBoundary).toDomainEntity(requestCompetitionGroupApiEntity);
-        verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupAsDomain);
+        verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupDomainEntity);
         verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
 
         return response;

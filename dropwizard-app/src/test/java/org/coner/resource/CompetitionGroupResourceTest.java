@@ -3,6 +3,7 @@ package org.coner.resource;
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.CompetitionGroup;
 import org.coner.util.*;
 
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
@@ -37,7 +38,7 @@ public class CompetitionGroupResourceTest {
 
     @Test
     public void itShouldGetCompetitionGroup() {
-        org.coner.core.domain.CompetitionGroup domainCompetitionGroup = DomainEntityTestUtils.fullCompetitionGroup();
+        CompetitionGroup domainCompetitionGroup = DomainEntityTestUtils.fullCompetitionGroup();
         CompetitionGroupApiEntity competitionGroupApiEntity = ApiEntityTestUtils.fullCompetitionGroup();
 
         // sanity check test

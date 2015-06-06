@@ -4,6 +4,7 @@ import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupBoundary;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.CompetitionGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -38,7 +39,7 @@ public class CompetitionGroupResource {
     public CompetitionGroupApiEntity getCompetitionGroup(
             @PathParam("competitionGroupId") @ApiParam(value = "Competition Group ID", required = true) String id
     ) {
-        org.coner.core.domain.CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(id);
+        CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(id);
         if (domainCompetitionGroup == null) {
             throw new NotFoundException("No competition group with id " + id);
         }
