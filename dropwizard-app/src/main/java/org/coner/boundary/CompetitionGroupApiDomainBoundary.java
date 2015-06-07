@@ -2,15 +2,16 @@ package org.coner.boundary;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.domain.CompetitionGroup;
+import org.coner.util.merger.*;
 
 public class CompetitionGroupApiDomainBoundary extends AbstractBoundary<CompetitionGroupApiEntity, CompetitionGroup> {
     @Override
-    protected EntityMerger<CompetitionGroupApiEntity, CompetitionGroup> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<CompetitionGroupApiEntity, CompetitionGroup> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<CompetitionGroup, CompetitionGroupApiEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<CompetitionGroup, CompetitionGroupApiEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

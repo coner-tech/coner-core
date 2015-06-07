@@ -2,16 +2,17 @@ package org.coner.boundary;
 
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.core.domain.Registration;
+import org.coner.util.merger.*;
 
 public class RegistrationApiDomainBoundary extends AbstractBoundary<RegistrationApiEntity, Registration> {
 
     @Override
-    protected EntityMerger<RegistrationApiEntity, Registration> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<RegistrationApiEntity, Registration> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<Registration, RegistrationApiEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<Registration, RegistrationApiEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

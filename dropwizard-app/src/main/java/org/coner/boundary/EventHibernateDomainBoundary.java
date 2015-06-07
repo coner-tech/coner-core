@@ -2,15 +2,16 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Event;
 import org.coner.hibernate.entity.EventHibernateEntity;
+import org.coner.util.merger.*;
 
 public class EventHibernateDomainBoundary extends AbstractBoundary<EventHibernateEntity, Event> {
     @Override
-    protected EntityMerger<EventHibernateEntity, Event> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<EventHibernateEntity, Event> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<Event, EventHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<Event, EventHibernateEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

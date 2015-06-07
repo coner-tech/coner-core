@@ -1,4 +1,4 @@
-package org.coner.boundary;
+package org.coner.util.merger;
 
 import org.junit.*;
 
@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ReflectionEntityMergerTest {
+public class ReflectionJavaBeanMergerTest {
 
     private static final String VALUE_PROPERTY_COMMON = "property-common";
     private static final boolean VALUE_PROPERTY_BOOLEAN = true;
@@ -44,7 +44,7 @@ public class ReflectionEntityMergerTest {
 
     @Test
     public void itShouldMergeEntities() {
-        ReflectionEntityMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionEntityMerger<>();
+        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>();
 
         merger.merge(testSourceEntity, testDestinationEntity);
 
@@ -62,19 +62,19 @@ public class ReflectionEntityMergerTest {
 
     @Test
     public void itShouldCallAdditionalEntityMerger() {
-        EntityMerger mockEntityMerger = mock(EntityMerger.class);
-        ReflectionEntityMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionEntityMerger<>(
-                mockEntityMerger
+        ObjectMerger mockObjectMerger = mock(ObjectMerger.class);
+        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>(
+                mockObjectMerger
         );
 
         merger.merge(testSourceEntity, testDestinationEntity);
 
-        verify(mockEntityMerger).merge(testSourceEntity, testDestinationEntity);
+        verify(mockObjectMerger).merge(testSourceEntity, testDestinationEntity);
     }
 
     @Test
     public void itShouldCallAdditionalEntityMergerAfterReflectionMergeComplete() {
-        ReflectionEntityMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionEntityMerger<>(
+        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>(
                 (sourceEntity, destinationEntity) -> {
                     assertThat(destinationEntity.propertyCommon).isEqualTo(VALUE_PROPERTY_COMMON);
                     assertThat(destinationEntity.propertyBoolean).isTrue();
@@ -86,7 +86,7 @@ public class ReflectionEntityMergerTest {
 
     @Test
     public void itShouldTransformStringValueInvalidToEnumNull() {
-        ReflectionEntityMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionEntityMerger<>();
+        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>();
 
         // null string
         testSourceEntity.setPropertyStringWithDestinationEnum(null);

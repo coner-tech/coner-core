@@ -2,17 +2,18 @@ package org.coner.boundary;
 
 import org.coner.core.domain.HandicapGroup;
 import org.coner.hibernate.entity.HandicapGroupHibernateEntity;
+import org.coner.util.merger.*;
 
 public class HandicapGroupHibernateDomainBoundary extends AbstractBoundary<
         HandicapGroupHibernateEntity,
         HandicapGroup> {
     @Override
-    protected EntityMerger<HandicapGroupHibernateEntity, HandicapGroup> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<HandicapGroupHibernateEntity, HandicapGroup> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<HandicapGroup, HandicapGroupHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<HandicapGroup, HandicapGroupHibernateEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

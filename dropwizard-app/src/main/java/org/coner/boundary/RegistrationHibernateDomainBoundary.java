@@ -2,6 +2,7 @@ package org.coner.boundary;
 
 import org.coner.core.domain.Registration;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
+import org.coner.util.merger.*;
 
 public class RegistrationHibernateDomainBoundary extends AbstractBoundary<RegistrationHibernateEntity, Registration> {
 
@@ -12,15 +13,15 @@ public class RegistrationHibernateDomainBoundary extends AbstractBoundary<Regist
     }
 
     @Override
-    protected EntityMerger<RegistrationHibernateEntity, Registration> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>((source, destination) -> {
+    protected ObjectMerger<RegistrationHibernateEntity, Registration> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>((source, destination) -> {
             destination.setEvent(eventHibernateDomainBoundary.toRemoteEntity(source.getEvent()));
         });
     }
 
     @Override
-    protected EntityMerger<Registration, RegistrationHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>((source, destination) -> {
+    protected ObjectMerger<Registration, RegistrationHibernateEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>((source, destination) -> {
             destination.setEvent(eventHibernateDomainBoundary.toLocalEntity(source.getEvent()));
         });
     }
