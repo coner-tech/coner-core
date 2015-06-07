@@ -1,6 +1,7 @@
 package org.coner.core;
 
 import org.coner.core.domain.entity.*;
+import org.coner.core.domain.service.EventService;
 import org.coner.core.gateway.*;
 
 import java.util.*;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ConerCoreServiceTest {
 
     @Mock
-    private EventGateway eventGateway;
+    private EventService eventService;
     @Mock
     private RegistrationGateway registrationGateway;
     @Mock
@@ -38,7 +39,7 @@ public class ConerCoreServiceTest {
     @Before
     public void setup() {
         conerCoreService = new ConerCoreService(
-                eventGateway,
+                eventService,
                 registrationGateway,
                 competitionGroupGateway,
                 competitionGroupSetGateway,
@@ -50,11 +51,11 @@ public class ConerCoreServiceTest {
     @Test
     public void whenGetEventsItShouldGetFromEventGateway() {
         List<Event> expected = new ArrayList<>();
-        when(eventGateway.getAll()).thenReturn(expected);
+        when(eventService.getAll()).thenReturn(expected);
 
         List<Event> actual = conerCoreService.getEvents();
 
-        verify(eventGateway).getAll();
+        verify(eventService).getAll();
         assertThat(actual)
                 .isSameAs(expected);
     }
@@ -65,7 +66,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addEvent(event);
 
-        verify(eventGateway).create(event);
+        verify(eventService).add(event);
     }
 
     @Test
@@ -77,35 +78,33 @@ public class ConerCoreServiceTest {
         } catch (Exception e) {
             assertThat(e)
                     .isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(eventGateway);
+            verifyZeroInteractions(eventService);
         }
     }
 
     @Test
-    public void whenGetEventItShouldFindById() {
+    public void whenGetEventItShouldGetById() {
         String id = "test";
         Event expected = mock(Event.class);
-        when(eventGateway.findById(id)).thenReturn(expected);
+        when(eventService.getById(id)).thenReturn(expected);
 
         Event actual = conerCoreService.getEvent(id);
 
-        verify(eventGateway).findById(id);
-        verifyNoMoreInteractions(eventGateway);
+        verify(eventService).getById(id);
+        verifyNoMoreInteractions(eventService);
 
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
-    public void whenGetEventWithoutIdItShouldThrow() {
-        String[] invalidIds = new String[]{null, ""};
-        for (String invalidId : invalidIds) {
-            try {
-                Event actual = conerCoreService.getEvent(invalidId);
-                failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
-            } catch (Exception e) {
-                assertThat(e).isInstanceOf(IllegalArgumentException.class);
-                verifyZeroInteractions(eventGateway);
-            }
+    public void whenGetEventWithNullIdItShouldThrow() {
+        String nullId = null;
+        try {
+            Event actual = conerCoreService.getEvent(nullId);
+            failBecauseExceptionWasNotThrown(NullPointerException.class);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(NullPointerException.class);
+            verifyZeroInteractions(eventService);
         }
     }
 

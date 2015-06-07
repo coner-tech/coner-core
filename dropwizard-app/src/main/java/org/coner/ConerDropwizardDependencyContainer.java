@@ -2,6 +2,7 @@ package org.coner;
 
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.service.EventService;
 import org.coner.core.gateway.*;
 import org.coner.hibernate.dao.*;
 import org.coner.hibernate.entity.HibernateEntity;
@@ -15,6 +16,7 @@ import org.reflections.Reflections;
 public class ConerDropwizardDependencyContainer {
 
     private HibernateBundle<ConerDropwizardConfiguration> hibernate;
+    private EventService eventService;
     private EventApiDomainBoundary eventApiDomainBoundary;
     private EventHibernateDomainBoundary eventHibernateDomainBoundary;
     private EventDao eventDao;
@@ -57,6 +59,13 @@ public class ConerDropwizardDependencyContainer {
             };
         }
         return hibernate;
+    }
+
+    EventService getEventService() {
+        if (eventService == null) {
+            eventService = new EventService(getEventGateway());
+        }
+        return eventService;
     }
 
     EventApiDomainBoundary getEventApiDomainBoundary() {
@@ -248,7 +257,7 @@ public class ConerDropwizardDependencyContainer {
     ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
             conerCoreService = new ConerCoreService(
-                    getEventGateway(),
+                    getEventService(),
                     getRegistrationGateway(),
                     getCompetitionGroupGateway(),
                     getCompetitionGroupSetGateway(),
