@@ -2,15 +2,16 @@ package org.coner.boundary;
 
 import org.coner.api.entity.EventApiEntity;
 import org.coner.core.domain.Event;
+import org.coner.util.merger.*;
 
 public class EventApiDomainBoundary extends AbstractBoundary<EventApiEntity, Event> {
     @Override
-    protected EntityMerger<EventApiEntity, Event> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<EventApiEntity, Event> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<Event, EventApiEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<Event, EventApiEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

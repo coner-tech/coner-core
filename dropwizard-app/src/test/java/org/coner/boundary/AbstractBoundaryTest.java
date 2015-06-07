@@ -3,6 +3,7 @@ package org.coner.boundary;
 import org.coner.api.entity.ApiEntity;
 import org.coner.core.domain.DomainEntity;
 import org.coner.hibernate.entity.HibernateEntity;
+import org.coner.util.merger.ObjectMerger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -26,9 +27,9 @@ public class AbstractBoundaryTest {
     private final Random random = new Random();
     private AbstractBoundary<TestLocalEntity, TestRemoteEntity> abstractBoundary;
     @Mock
-    private EntityMerger<TestLocalEntity, TestRemoteEntity> localToRemoteMerger;
+    private ObjectMerger<TestLocalEntity, TestRemoteEntity> localToRemoteMerger;
     @Mock
-    private EntityMerger<TestRemoteEntity, TestLocalEntity> remoteToLocalMerger;
+    private ObjectMerger<TestRemoteEntity, TestLocalEntity> remoteToLocalMerger;
 
     @Before
     public void setup() {
@@ -227,12 +228,12 @@ public class AbstractBoundaryTest {
     private class TestBoundary extends AbstractBoundary<TestLocalEntity, TestRemoteEntity> {
 
         @Override
-        protected EntityMerger<TestLocalEntity, TestRemoteEntity> buildLocalToRemoteMerger() {
+        protected ObjectMerger<TestLocalEntity, TestRemoteEntity> buildLocalToRemoteMerger() {
             return localToRemoteMerger;
         }
 
         @Override
-        protected EntityMerger<TestRemoteEntity, TestLocalEntity> buildRemoteToLocalMerger() {
+        protected ObjectMerger<TestRemoteEntity, TestLocalEntity> buildRemoteToLocalMerger() {
             return remoteToLocalMerger;
         }
     }

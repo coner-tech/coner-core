@@ -1,5 +1,7 @@
 package org.coner.boundary;
 
+import org.coner.util.merger.ObjectMerger;
+
 import com.google.common.base.Preconditions;
 import java.lang.reflect.*;
 import java.util.*;
@@ -20,8 +22,8 @@ public abstract class AbstractBoundary<L, R> {
 
     private final Class<L> localClass;
     private final Class<R> remoteClass;
-    private EntityMerger<L, R> localToRemoteMerger;
-    private EntityMerger<R, L> remoteToLocalMerger;
+    private ObjectMerger<L, R> localToRemoteMerger;
+    private ObjectMerger<R, L> remoteToLocalMerger;
 
     public AbstractBoundary() {
         Type[] typeParameters = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
@@ -29,7 +31,7 @@ public abstract class AbstractBoundary<L, R> {
         this.remoteClass = (Class<R>) typeParameters[1];
     }
 
-    private EntityMerger<L, R> getLocalToRemoteMerger() {
+    private ObjectMerger<L, R> getLocalToRemoteMerger() {
         if (localToRemoteMerger == null) {
             localToRemoteMerger = buildLocalToRemoteMerger();
         }
@@ -45,7 +47,7 @@ public abstract class AbstractBoundary<L, R> {
         return remoteEntity;
     }
 
-    private EntityMerger<R, L> getRemoteToLocalMerger() {
+    private ObjectMerger<R, L> getRemoteToLocalMerger() {
         if (remoteToLocalMerger == null) {
             remoteToLocalMerger = buildRemoteToLocalMerger();
         }
@@ -105,7 +107,7 @@ public abstract class AbstractBoundary<L, R> {
         getRemoteToLocalMerger().merge(fromRemoteEntity, intoLocalEntity);
     }
 
-    protected abstract EntityMerger<L, R> buildLocalToRemoteMerger();
+    protected abstract ObjectMerger<L, R> buildLocalToRemoteMerger();
 
-    protected abstract EntityMerger<R, L> buildRemoteToLocalMerger();
+    protected abstract ObjectMerger<R, L> buildRemoteToLocalMerger();
 }

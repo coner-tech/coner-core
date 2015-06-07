@@ -3,17 +3,18 @@ package org.coner.boundary;
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.CompetitionGroupSet;
+import org.coner.util.merger.*;
 
 public class CompetitionGroupSetApiDomainBoundary extends AbstractBoundary<
         CompetitionGroupSetApiEntity,
         CompetitionGroupSet> {
 
-    private EntityMerger<AddCompetitionGroupSetRequest, CompetitionGroupSet>
+    private ObjectMerger<AddCompetitionGroupSetRequest, CompetitionGroupSet>
             addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger;
 
     public CompetitionGroupSet toRemoteEntity(AddCompetitionGroupSetRequest addCompetitionGroupSetRequest) {
         if (addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger == null) {
-            addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger = new ReflectionEntityMerger<>();
+            addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger = new ReflectionJavaBeanMerger<>();
         }
         CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
         addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger.merge(
@@ -24,12 +25,12 @@ public class CompetitionGroupSetApiDomainBoundary extends AbstractBoundary<
     }
 
     @Override
-    protected EntityMerger<CompetitionGroupSetApiEntity, CompetitionGroupSet> buildLocalToRemoteMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<CompetitionGroupSetApiEntity, CompetitionGroupSet> buildLocalToRemoteMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 
     @Override
-    protected EntityMerger<CompetitionGroupSet, CompetitionGroupSetApiEntity> buildRemoteToLocalMerger() {
-        return new ReflectionEntityMerger<>();
+    protected ObjectMerger<CompetitionGroupSet, CompetitionGroupSetApiEntity> buildRemoteToLocalMerger() {
+        return new ReflectionJavaBeanMerger<>();
     }
 }

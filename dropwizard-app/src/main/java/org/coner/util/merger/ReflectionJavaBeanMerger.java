@@ -1,47 +1,50 @@
-package org.coner.boundary;
+package org.coner.util.merger;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.*;
 import java.util.HashMap;
 
 /**
- * ReflectionEntityMerger uses reflection to automatically merge entities that follow the JavaBean convention.
+ * ReflectionObjectMerger uses reflection to automatically merge objects that follow the JavaBean convention.
  * <p>
- * Only the destination entity's setters which correspond to the source entity's getters will be called. Only the
+ * Only the destination object's setters which correspond to the source object's getters will be called. Only the
  * getters/setters which correspond to like-named properties will be used. Strings corresponding to Enum names will be
  * transformed automatically.
  *
- * @param <F> source entity class
- * @param <T> destination entity class
+ * @param <S> source JavaBean class
+ * @param <D> destination JavaBean class
  */
-public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
+public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
 
-    private final EntityMerger<F, T> additionalEntityMerger;
+    private final ObjectMerger<S, D> additionalMerger;
     private ImmutableList<MergeOperation> mergeOperations;
 
     /**
-     * Construct a ReflectionEntityMerger with default functionality.
+     * Construct a ReflectionJavaBeanMerger with default functionality.
      */
-    public ReflectionEntityMerger() {
-        this.additionalEntityMerger = null;
+    public ReflectionJavaBeanMerger() {
+        this.additionalMerger = null;
     }
 
     /**
-     * Construct a ReflectionEntityMerger with an additional EntityMerger.
+     * Construct a ReflectionJavaBeanMerger with an additional ObjectMerger. This is useful in case there are some
+     * differences in class design that ReflectionJavaBeanMerger can't reasonably account for, such as different
+     * property names or data types. You might use this in case your classes are mostly similar with only a couple
+     * exceptions. However, if your objects diverge much, you may be better off implementing a custom ObjectMerger
+     * which handles the entire merge itself.
      *
-     * @param additionalEntityMerger an additional EntityMerger which will be called after reflection-based merge
-     *                               operations have been performed
+     * @param additionalMerger an additional ObjectMerger which will be called after reflection-based merge
+     *                         operations have been performed
      */
-    public ReflectionEntityMerger(EntityMerger<F, T> additionalEntityMerger) {
-        this.additionalEntityMerger = additionalEntityMerger;
+    public ReflectionJavaBeanMerger(ObjectMerger<S, D> additionalMerger) {
+        this.additionalMerger = additionalMerger;
     }
 
     /**
      * Build the sourceDestinationMethodPairs list.
      *
-     * @param sourceClass      the class of the source entity
-     * @param destinationClass the class of the destination entity
+     * @param sourceClass      the class of the source
+     * @param destinationClass the class of the destination
      */
     private void buildSourceDestinationMethodPairs(Class<?> sourceClass, Class<?> destinationClass) {
         Method[] allSourceMethods = sourceClass.getDeclaredMethods();
@@ -149,13 +152,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
         mergeOperations = mergeOperationsBuilder.build();
     }
 
-    /**
-     * Check whether a MergeOperation should use a StringToEnumValueTransformer.
-     *
-     * @param sourceGetterReturnType          the type returned by the source getter
-     * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
-     * @return true if should or false if shouldn't
-     */
     private boolean shouldUseStringToEnumValueTransformer(
             Class<?> sourceGetterReturnType,
             Class<?> destinationSetterParameter0Type
@@ -163,13 +159,6 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
         return sourceGetterReturnType == String.class && Enum.class.isAssignableFrom(destinationSetterParameter0Type);
     }
 
-    /**
-     * Check whether a MergeOperation should use an EnumToStringValueTransformer.
-     *
-     * @param sourceGetterReturnType          the type returned by the source getter
-     * @param destinationSetterParameter0Type the type of the first parameter of the destination setter
-     * @return true if should or false if shouldn't
-     */
     private boolean shouldUseEnumToStringValueTransformer(
             Class<?> sourceGetterReturnType,
             Class<?> destinationSetterParameter0Type
@@ -178,46 +167,34 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
     }
 
     @Override
-    public final void merge(F sourceEntity, T destinationEntity) {
+    public final void merge(S source, D destination) {
         if (mergeOperations == null) {
-            buildSourceDestinationMethodPairs(sourceEntity.getClass(), destinationEntity.getClass());
+            buildSourceDestinationMethodPairs(source.getClass(), destination.getClass());
         }
 
         for (MergeOperation mergeOperation : mergeOperations) {
             try {
-                Object value = mergeOperation.sourceMethod.invoke(sourceEntity);
+                Object value = mergeOperation.sourceMethod.invoke(source);
                 if (mergeOperation.valueTransformer != null) {
                     value = mergeOperation.valueTransformer.transform(value);
                 }
-                mergeOperation.destinationMethod.invoke(destinationEntity, value);
+                mergeOperation.destinationMethod.invoke(destination, value);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
 
-        if (additionalEntityMerger != null) {
-            additionalEntityMerger.merge(sourceEntity, destinationEntity);
+        if (additionalMerger != null) {
+            additionalMerger.merge(source, destination);
         }
     }
 
-    /**
-     * A SourceDestinationMethodPair is a tuple which pairs a getter method from the source entity class and a setter
-     * method from the destination entity class. The merge implementation.
-     */
     private static final class MergeOperation {
         private final Method sourceMethod;
         private final Method destinationMethod;
         private final ValueTransformer valueTransformer;
 
-        /**
-         * Private constructor accepting and assigning both the sourceMethod and destinationMethod as well as the
-         * valueTransformer.
-         *
-         * @param sourceMethod      the sourceMethod
-         * @param destinationMethod the destinationMethod
-         * @param valueTransformer  the valueTransformer
-         */
         private MergeOperation(Method sourceMethod, Method destinationMethod, ValueTransformer valueTransformer) {
             this.sourceMethod = sourceMethod;
             this.destinationMethod = destinationMethod;
@@ -225,57 +202,4 @@ public class ReflectionEntityMerger<F, T> implements EntityMerger<F, T> {
         }
     }
 
-    /**
-     * A ValueTransformer accepts a value and creates a transformed representation of the value.
-     */
-    private interface ValueTransformer {
-        /**
-         * Transform an input value and return the transformed value.
-         *
-         * @param value the input value
-         * @return the transformed value
-         */
-        Object transform(Object value);
-    }
-
-    /**
-     * StringToEnumValueTransformer transforms a String value containing an Enum name-value to the instance of the
-     * Enum name-value.
-     */
-    private static class StringToEnumValueTransformer implements ValueTransformer {
-        private final Class<? extends Enum> destinationEnumType;
-
-        /**
-         * @param destinationEnumType the destinationEnumType
-         */
-        public StringToEnumValueTransformer(Class<? extends Enum> destinationEnumType) {
-            this.destinationEnumType = destinationEnumType;
-        }
-
-        @Override
-        public Object transform(Object value) {
-            String stringValue = (String) value;
-            if (Strings.isNullOrEmpty(stringValue)) {
-                return null;
-            }
-            try {
-                return Enum.valueOf(destinationEnumType, stringValue);
-            } catch (IllegalArgumentException e) {
-                // the destinationEnumType does not contain an Enum constant with the name contained in stringValue
-                return null;
-            }
-        }
-    }
-
-    /**
-     * EnumToStringValueTransformer transforms an Enum value to a String containing the name.
-     */
-    private static class EnumToStringValueTransformer implements ValueTransformer {
-
-        @Override
-        public Object transform(Object value) {
-            Enum<?> enumValue = (Enum<?>) value;
-            return enumValue.name();
-        }
-    }
 }
