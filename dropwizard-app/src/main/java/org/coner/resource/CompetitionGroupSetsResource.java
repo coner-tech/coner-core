@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.CompetitionGroupSetBoundary;
+import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
 
@@ -20,14 +20,14 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Competition Groups")
 public class CompetitionGroupSetsResource {
 
-    private final CompetitionGroupSetBoundary competitionGroupSetBoundary;
+    private final CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
     public CompetitionGroupSetsResource(
-            CompetitionGroupSetBoundary competitionGroupSetBoundary,
+            CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary,
             ConerCoreService conerCoreService
     ) {
-        this.competitionGroupSetBoundary = competitionGroupSetBoundary;
+        this.competitionGroupSetApiDomainBoundary = competitionGroupSetApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -55,8 +55,8 @@ public class CompetitionGroupSetsResource {
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
 
     ) {
-        org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetBoundary
-                .toDomainEntity(request);
+        org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetApiDomainBoundary
+                .toRemoteEntity(request);
         Set<AddCompetitionGroupSetRequest.CompetitionGroup> requestCompetitionGroups = request.getCompetitionGroups();
         if (requestCompetitionGroups != null) {
             Set<CompetitionGroup> domainCompetitionGroups = new HashSet<>();

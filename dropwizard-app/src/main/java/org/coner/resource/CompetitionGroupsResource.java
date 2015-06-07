@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
 
@@ -20,14 +20,14 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Competition Groups")
 public class CompetitionGroupsResource {
 
-    private final CompetitionGroupBoundary competitionGroupBoundary;
+    private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
     public CompetitionGroupsResource(
-            CompetitionGroupBoundary competitionGroupBoundary,
+            CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
             ConerCoreService conerCoreService
     ) {
-        this.competitionGroupBoundary = competitionGroupBoundary;
+        this.competitionGroupApiDomainBoundary = competitionGroupApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -46,9 +46,9 @@ public class CompetitionGroupsResource {
             )
     })
     public Response addCompetitionGroup(
-            @Valid @ApiParam(value = "Competition Group") CompetitionGroupApiEntity competitionGroupApiEntity
+            @Valid @ApiParam(value = "Competition Group") CompetitionGroupApiEntity addCompetitionGroup
     ) {
-        CompetitionGroup domainCompetitionGroup = competitionGroupBoundary.toDomainEntity(competitionGroupApiEntity);
+        CompetitionGroup domainCompetitionGroup = competitionGroupApiDomainBoundary.toRemoteEntity(addCompetitionGroup);
         conerCoreService.addCompetitionGroup(domainCompetitionGroup);
         return Response.created(UriBuilder.fromResource(CompetitionGroupResource.class)
                 .build(domainCompetitionGroup.getId()))
@@ -61,7 +61,7 @@ public class CompetitionGroupsResource {
     public GetCompetitionGroupsResponse getCompetitionGroups() {
         List<CompetitionGroup> domainCompetitionGroups = conerCoreService.getCompetitionGroups();
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
-        response.setCompetitionGroups(competitionGroupBoundary.toApiEntities(domainCompetitionGroups));
+        response.setCompetitionGroups(competitionGroupApiDomainBoundary.toLocalEntities(domainCompetitionGroups));
         return response;
     }
 }

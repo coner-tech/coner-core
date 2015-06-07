@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.Event;
 
@@ -20,11 +20,11 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Events")
 public class EventsResource {
 
-    private final EventBoundary eventBoundary;
+    private final EventApiDomainBoundary eventApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
-    public EventsResource(EventBoundary eventBoundary, ConerCoreService conerCoreService) {
-        this.eventBoundary = eventBoundary;
+    public EventsResource(EventApiDomainBoundary eventApiDomainBoundary, ConerCoreService conerCoreService) {
+        this.eventApiDomainBoundary = eventApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -34,7 +34,7 @@ public class EventsResource {
     public GetEventsResponse getEvents() {
         List<Event> domainEvents = conerCoreService.getEvents();
         GetEventsResponse response = new GetEventsResponse();
-        response.setEvents(eventBoundary.toApiEntities(domainEvents));
+        response.setEvents(eventApiDomainBoundary.toLocalEntities(domainEvents));
         return response;
     }
 
@@ -56,7 +56,7 @@ public class EventsResource {
     public Response addEvent(
             @Valid @ApiParam(value = "Event", required = true) EventApiEntity event
     ) {
-        Event domainEvent = eventBoundary.toDomainEntity(event);
+        Event domainEvent = eventApiDomainBoundary.toRemoteEntity(event);
         conerCoreService.addEvent(domainEvent);
         return Response.created(UriBuilder.fromResource(EventResource.class)
                 .build(domainEvent.getId()))

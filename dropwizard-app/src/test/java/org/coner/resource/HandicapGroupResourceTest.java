@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.entity.HandicapGroupApiEntity;
-import org.coner.boundary.HandicapGroupBoundary;
+import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.HandicapGroup;
 import org.coner.util.*;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class HandicapGroupResourceTest {
 
-    private final HandicapGroupBoundary handicapGroupBoundary = mock(HandicapGroupBoundary.class);
+    private final HandicapGroupApiDomainBoundary handicapGroupBoundary = mock(HandicapGroupApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     @Rule
@@ -46,7 +46,7 @@ public class HandicapGroupResourceTest {
         assertThat(handicapGroupApiEntity.getId()).isSameAs(TestConstants.HANDICAP_GROUP_ID);
 
         when(conerCoreService.getHandicapGroup(TestConstants.HANDICAP_GROUP_ID)).thenReturn(domainHandicapGroup);
-        when(handicapGroupBoundary.toApiEntity(domainHandicapGroup)).thenReturn(handicapGroupApiEntity);
+        when(handicapGroupBoundary.toLocalEntity(domainHandicapGroup)).thenReturn(handicapGroupApiEntity);
 
         Response responseContainer = resources.client()
                 .target("/handicapGroups/" + TestConstants.HANDICAP_GROUP_ID)
@@ -54,7 +54,7 @@ public class HandicapGroupResourceTest {
                 .get();
 
         verify(conerCoreService).getHandicapGroup(TestConstants.HANDICAP_GROUP_ID);
-        verify(handicapGroupBoundary).toApiEntity(domainHandicapGroup);
+        verify(handicapGroupBoundary).toLocalEntity(domainHandicapGroup);
         verifyNoMoreInteractions(conerCoreService, handicapGroupBoundary);
 
         assertThat(responseContainer).isNotNull();

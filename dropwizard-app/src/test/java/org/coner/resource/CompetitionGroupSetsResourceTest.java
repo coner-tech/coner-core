@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.request.AddCompetitionGroupSetRequest;
-import org.coner.boundary.CompetitionGroupSetBoundary;
+import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 import org.coner.util.*;
@@ -27,10 +27,12 @@ import static org.mockito.Mockito.when;
 
 public class CompetitionGroupSetsResourceTest {
 
-    private CompetitionGroupSetBoundary competitionGroupSetBoundary = mock(CompetitionGroupSetBoundary.class);
+    private CompetitionGroupSetApiDomainBoundary competitionGroupSetBoundary = mock(
+            CompetitionGroupSetApiDomainBoundary.class
+    );
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
     private ObjectMapper objectMapper;
-    
+
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupSetsResource(competitionGroupSetBoundary, conerCoreService))
@@ -64,7 +66,7 @@ public class CompetitionGroupSetsResourceTest {
 
         org.coner.core.domain.CompetitionGroupSet requestCompetitionGroupSetAsDomain = new CompetitionGroupSet();
         requestCompetitionGroupSetAsDomain.setId("arbitrary-id-from-service");
-        when(competitionGroupSetBoundary.toDomainEntity(requestAddCompetitionGroupSet))
+        when(competitionGroupSetBoundary.toRemoteEntity(requestAddCompetitionGroupSet))
                 .thenReturn(requestCompetitionGroupSetAsDomain);
 
         CompetitionGroup competitionGroup1 = new CompetitionGroup();
@@ -86,7 +88,7 @@ public class CompetitionGroupSetsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(competitionGroupSetBoundary).toDomainEntity(any(AddCompetitionGroupSetRequest.class));
+        verify(competitionGroupSetBoundary).toRemoteEntity(any(AddCompetitionGroupSetRequest.class));
         verify(conerCoreService).getCompetitionGroup("test-competition-group-id-1");
         verify(conerCoreService).getCompetitionGroup("test-competition-group-id-2");
         ArgumentCaptor<CompetitionGroupSet> competitionGroupSetCaptor = ArgumentCaptor

@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.HandicapGroupBoundary;
+import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.HandicapGroup;
 
@@ -18,11 +18,14 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Handicap Groups")
 public class HandicapGroupResource {
 
-    private final HandicapGroupBoundary handicapGroupBoundary;
+    private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
-    public HandicapGroupResource(HandicapGroupBoundary handicapGroupBoundary, ConerCoreService conerCoreService) {
-        this.handicapGroupBoundary = handicapGroupBoundary;
+    public HandicapGroupResource(
+            HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
+            ConerCoreService conerCoreService
+    ) {
+        this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -40,7 +43,7 @@ public class HandicapGroupResource {
         if (domainHandicapGroup == null) {
             throw new NotFoundException("No handicap group with id " + id);
         }
-        HandicapGroupApiEntity handicapGroup = handicapGroupBoundary.toApiEntity(domainHandicapGroup);
+        HandicapGroupApiEntity handicapGroup = handicapGroupApiDomainBoundary.toLocalEntity(domainHandicapGroup);
         return handicapGroup;
     }
 }

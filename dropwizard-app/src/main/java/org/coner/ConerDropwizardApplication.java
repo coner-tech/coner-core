@@ -19,22 +19,28 @@ import io.federecio.dropwizard.swagger.*;
 public class ConerDropwizardApplication extends Application<ConerDropwizardConfiguration> {
 
     private HibernateBundle<ConerDropwizardConfiguration> hibernate;
-    private EventBoundary eventBoundary;
+    private EventApiDomainBoundary eventApiDomainBoundary;
+    private EventHibernateDomainBoundary eventHibernateDomainBoundary;
     private EventDao eventDao;
     private EventGateway eventGateway;
-    private RegistrationBoundary registrationBoundary;
+    private RegistrationApiDomainBoundary registrationApiDomainBoundary;
+    private RegistrationHibernateDomainBoundary registrationHibernateDomainBoundary;
     private RegistrationDao registrationDao;
     private RegistrationGateway registrationGateway;
-    private CompetitionGroupBoundary competitionGroupBoundary;
+    private CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
+    private CompetitionGroupHibernateDomainBoundary competitionGroupHibernateDomainBoundary;
     private CompetitionGroupDao competitionGroupDao;
     private CompetitionGroupGateway competitionGroupGateway;
-    private CompetitionGroupSetBoundary competitionGroupSetBoundary;
+    private CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
+    private CompetitionGroupSetHibernateDomainBoundary competitionGroupSetHibernateDomainBoundary;
     private CompetitionGroupSetGateway competitionGroupSetGateway;
     private CompetitionGroupSetDao competitionGroupSetDao;
-    private HandicapGroupBoundary handicapGroupBoundary;
+    private HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
+    private HandicapGroupHibernateDomainBoundary handicapGroupHibernateDomainBoundary;
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
-    private HandicapGroupSetBoundary handicapGroupSetBoundary;
+    private HandicapGroupSetApiDomainBoundary handicapGroupSetApiDomainBoundary;
+    private HandicapGroupSetHibernateDomainBoundary handicapGroupSetHibernateDomainBoundary;
     private HandicapGroupSetDao handicapGroupSetDao;
     private HandicapGroupSetGateway handicapGroupSetGateway;
     private ConerCoreService conerCoreService;
@@ -74,41 +80,39 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         JerseyEnvironment jersey = environment.jersey();
 
         // init resources
-        EventsResource eventsResource = new EventsResource(getEventBoundary(), getConerCoreService());
-        EventResource eventResource = new EventResource(getEventBoundary(), getConerCoreService());
+        EventsResource eventsResource = new EventsResource(getEventApiDomainBoundary(), getConerCoreService());
+        EventResource eventResource = new EventResource(getEventApiDomainBoundary(), getConerCoreService());
         EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(
-                getEventBoundary(),
-                getRegistrationBoundary(),
+                getRegistrationApiDomainBoundary(),
                 getConerCoreService()
         );
         EventRegistrationResource eventRegistrationResource = new EventRegistrationResource(
-                getEventBoundary(),
-                getRegistrationBoundary(),
+                getRegistrationApiDomainBoundary(),
                 getConerCoreService()
         );
         HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(
-                getHandicapGroupBoundary(),
+                getHandicapGroupApiDomainBoundary(),
                 getConerCoreService()
         );
         HandicapGroupResource handicapGroupResource = new HandicapGroupResource(
-                getHandicapGroupBoundary(),
+                getHandicapGroupApiDomainBoundary(),
                 getConerCoreService()
         );
         HandicapGroupSetsResource handicapGroupSetsResource = new HandicapGroupSetsResource(
-                getHandicapGroupSetBoundary(),
+                getHandicapGroupSetApiDomainBoundary(),
                 getConerCoreService()
         );
 
         CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
-                getCompetitionGroupBoundary(),
+                getCompetitionGroupApiDomainBoundary(),
                 getConerCoreService()
         );
         CompetitionGroupResource competitionGroupResource = new CompetitionGroupResource(
-                getCompetitionGroupBoundary(),
+                getCompetitionGroupApiDomainBoundary(),
                 getConerCoreService()
         );
         CompetitionGroupSetsResource competitionGroupSetsResource = new CompetitionGroupSetsResource(
-                getCompetitionGroupSetBoundary(),
+                getCompetitionGroupSetApiDomainBoundary(),
                 getConerCoreService()
         );
 
@@ -155,15 +159,22 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.hibernate = hibernate;
     }
 
-    private EventBoundary getEventBoundary() {
-        if (eventBoundary == null) {
-            eventBoundary = new EventBoundary();
+    private EventApiDomainBoundary getEventApiDomainBoundary() {
+        if (eventApiDomainBoundary == null) {
+            eventApiDomainBoundary = new EventApiDomainBoundary();
         }
-        return eventBoundary;
+        return eventApiDomainBoundary;
     }
 
-    void setEventBoundary(EventBoundary eventBoundary) {
-        this.eventBoundary = eventBoundary;
+    void setEventApiDomainBoundary(EventApiDomainBoundary eventApiDomainBoundary) {
+        this.eventApiDomainBoundary = eventApiDomainBoundary;
+    }
+
+    private EventHibernateDomainBoundary getEventHibernateDomainBoundary() {
+        if (eventHibernateDomainBoundary == null) {
+            eventHibernateDomainBoundary = new EventHibernateDomainBoundary();
+        }
+        return eventHibernateDomainBoundary;
     }
 
     private EventDao getEventDao() {
@@ -179,7 +190,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
     private EventGateway getEventGateway() {
         if (eventGateway == null) {
-            eventGateway = new EventGateway(getEventBoundary(), getEventDao());
+            eventGateway = new EventGateway(getEventHibernateDomainBoundary(), getEventDao());
         }
         return eventGateway;
     }
@@ -188,15 +199,24 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.eventGateway = eventGateway;
     }
 
-    private RegistrationBoundary getRegistrationBoundary() {
-        if (registrationBoundary == null) {
-            registrationBoundary = new RegistrationBoundary(getEventBoundary());
+    private RegistrationApiDomainBoundary getRegistrationApiDomainBoundary() {
+        if (registrationApiDomainBoundary == null) {
+            registrationApiDomainBoundary = new RegistrationApiDomainBoundary();
         }
-        return registrationBoundary;
+        return registrationApiDomainBoundary;
     }
 
-    void setRegistrationBoundary(RegistrationBoundary registrationBoundary) {
-        this.registrationBoundary = registrationBoundary;
+    void setRegistrationApiDomainBoundary(RegistrationApiDomainBoundary registrationApiDomainBoundary) {
+        this.registrationApiDomainBoundary = registrationApiDomainBoundary;
+    }
+
+    private RegistrationHibernateDomainBoundary getRegistrationHibernateDomainBoundary() {
+        if (registrationHibernateDomainBoundary == null) {
+            registrationHibernateDomainBoundary = new RegistrationHibernateDomainBoundary(
+                    getEventHibernateDomainBoundary()
+            );
+        }
+        return registrationHibernateDomainBoundary;
     }
 
     private RegistrationDao getRegistrationDao() {
@@ -213,9 +233,9 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private RegistrationGateway getRegistrationGateway() {
         if (registrationGateway == null) {
             registrationGateway = new RegistrationGateway(
-                    getRegistrationBoundary(),
+                    getRegistrationHibernateDomainBoundary(),
                     getRegistrationDao(),
-                    getEventBoundary()
+                    getEventHibernateDomainBoundary()
             );
         }
         return registrationGateway;
@@ -225,15 +245,28 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.registrationGateway = registrationGateway;
     }
 
-    private HandicapGroupBoundary getHandicapGroupBoundary() {
-        if (handicapGroupBoundary == null) {
-            handicapGroupBoundary = new HandicapGroupBoundary();
+    private HandicapGroupApiDomainBoundary getHandicapGroupApiDomainBoundary() {
+        if (handicapGroupApiDomainBoundary == null) {
+            handicapGroupApiDomainBoundary = new HandicapGroupApiDomainBoundary();
         }
-        return handicapGroupBoundary;
+        return handicapGroupApiDomainBoundary;
     }
 
-    void setHandicapGroupBoundary(HandicapGroupBoundary handicapGroupBoundary) {
-        this.handicapGroupBoundary = handicapGroupBoundary;
+    void setHandicapGroupApiDomainBoundary(HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary) {
+        this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
+    }
+
+    private HandicapGroupHibernateDomainBoundary getHandicapGroupHibernateDomainBoundary() {
+        if (handicapGroupHibernateDomainBoundary == null) {
+            handicapGroupHibernateDomainBoundary = new HandicapGroupHibernateDomainBoundary();
+        }
+        return handicapGroupHibernateDomainBoundary;
+    }
+
+    void setHandicapGroupHibernateDomainBoundary(
+            HandicapGroupHibernateDomainBoundary handicapGroupHibernateDomainBoundary
+    ) {
+        this.handicapGroupHibernateDomainBoundary = handicapGroupHibernateDomainBoundary;
     }
 
     private HandicapGroupDao getHandicapGroupDao() {
@@ -249,7 +282,10 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
     private HandicapGroupGateway getHandicapGroupGateway() {
         if (handicapGroupGateway == null) {
-            handicapGroupGateway = new HandicapGroupGateway(getHandicapGroupBoundary(), getHandicapGroupDao());
+            handicapGroupGateway = new HandicapGroupGateway(
+                    getHandicapGroupHibernateDomainBoundary(),
+                    getHandicapGroupDao()
+            );
         }
         return handicapGroupGateway;
     }
@@ -261,7 +297,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private HandicapGroupSetGateway getHandicapGroupSetGateway() {
         if (handicapGroupSetGateway == null) {
             handicapGroupSetGateway = new HandicapGroupSetGateway(
-                    getHandicapGroupSetBoundary(),
+                    getHandicapGroupSetHibernateDomainBoundary(),
                     getHandicapGroupSetDao()
             );
         }
@@ -272,15 +308,28 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupSetGateway = handicapGroupSetGateway;
     }
 
-    private HandicapGroupSetBoundary getHandicapGroupSetBoundary() {
-        if (handicapGroupSetBoundary == null) {
-            handicapGroupSetBoundary = new HandicapGroupSetBoundary();
+    private HandicapGroupSetApiDomainBoundary getHandicapGroupSetApiDomainBoundary() {
+        if (handicapGroupSetApiDomainBoundary == null) {
+            handicapGroupSetApiDomainBoundary = new HandicapGroupSetApiDomainBoundary();
         }
-        return handicapGroupSetBoundary;
+        return handicapGroupSetApiDomainBoundary;
     }
 
-    void setHandicapGroupSetBoundary(HandicapGroupSetBoundary handicapGroupSetBoundary) {
-        this.handicapGroupSetBoundary = handicapGroupSetBoundary;
+    void setHandicapGroupSetApiDomainBoundary(HandicapGroupSetApiDomainBoundary handicapGroupSetApiDomainBoundary) {
+        this.handicapGroupSetApiDomainBoundary = handicapGroupSetApiDomainBoundary;
+    }
+
+    private HandicapGroupSetHibernateDomainBoundary getHandicapGroupSetHibernateDomainBoundary() {
+        if (handicapGroupSetHibernateDomainBoundary == null) {
+            handicapGroupSetHibernateDomainBoundary = new HandicapGroupSetHibernateDomainBoundary();
+        }
+        return handicapGroupSetHibernateDomainBoundary;
+    }
+
+    void setHandicapGroupSetHibernateDomainBoundary(
+            HandicapGroupSetHibernateDomainBoundary handicapGroupSetHibernateDomainBoundary
+    ) {
+        this.handicapGroupSetHibernateDomainBoundary = handicapGroupSetHibernateDomainBoundary;
     }
 
     private HandicapGroupSetDao getHandicapGroupSetDao() {
@@ -294,15 +343,28 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.handicapGroupSetDao = handicapGroupSetDao;
     }
 
-    private CompetitionGroupBoundary getCompetitionGroupBoundary() {
-        if (competitionGroupBoundary == null) {
-            competitionGroupBoundary = new CompetitionGroupBoundary();
+    private CompetitionGroupApiDomainBoundary getCompetitionGroupApiDomainBoundary() {
+        if (competitionGroupApiDomainBoundary == null) {
+            competitionGroupApiDomainBoundary = new CompetitionGroupApiDomainBoundary();
         }
-        return competitionGroupBoundary;
+        return competitionGroupApiDomainBoundary;
     }
 
-    void setCompetitionGroupBoundary(CompetitionGroupBoundary competitionGroupBoundary) {
-        this.competitionGroupBoundary = competitionGroupBoundary;
+    void setCompetitionGroupApiDomainBoundary(CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary) {
+        this.competitionGroupApiDomainBoundary = competitionGroupApiDomainBoundary;
+    }
+
+    private CompetitionGroupHibernateDomainBoundary getCompetitionGroupHibernateDomainBoundary() {
+        if (competitionGroupHibernateDomainBoundary == null) {
+            competitionGroupHibernateDomainBoundary = new CompetitionGroupHibernateDomainBoundary();
+        }
+        return competitionGroupHibernateDomainBoundary;
+    }
+
+    void setCompetitionGroupHibernateDomainBoundary(
+            CompetitionGroupHibernateDomainBoundary competitionGroupHibernateDomainBoundary
+    ) {
+        this.competitionGroupHibernateDomainBoundary = competitionGroupHibernateDomainBoundary;
     }
 
     private CompetitionGroupDao getCompetitionGroupDao() {
@@ -319,7 +381,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private CompetitionGroupGateway getCompetitionGroupGateway() {
         if (competitionGroupGateway == null) {
             this.competitionGroupGateway = new CompetitionGroupGateway(
-                    getCompetitionGroupBoundary(),
+                    getCompetitionGroupHibernateDomainBoundary(),
                     getCompetitionGroupDao()
             );
         }
@@ -333,7 +395,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     private CompetitionGroupSetGateway getCompetitionGroupSetGateway() {
         if (competitionGroupSetGateway == null) {
             competitionGroupSetGateway = new CompetitionGroupSetGateway(
-                    getCompetitionGroupSetBoundary(),
+                    getCompetitionGroupSetHibernateDomainBoundary(),
                     getCompetitionGroupSetDao()
             );
         }
@@ -344,15 +406,30 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         this.competitionGroupSetGateway = competitionGroupSetGateway;
     }
 
-    private CompetitionGroupSetBoundary getCompetitionGroupSetBoundary() {
-        if (competitionGroupSetBoundary == null) {
-            competitionGroupSetBoundary = new CompetitionGroupSetBoundary();
+    private CompetitionGroupSetApiDomainBoundary getCompetitionGroupSetApiDomainBoundary() {
+        if (competitionGroupSetApiDomainBoundary == null) {
+            competitionGroupSetApiDomainBoundary = new CompetitionGroupSetApiDomainBoundary();
         }
-        return competitionGroupSetBoundary;
+        return competitionGroupSetApiDomainBoundary;
     }
 
-    void setCompetitionGroupSetBoundary(CompetitionGroupSetBoundary competitionGroupSetBoundary) {
-        this.competitionGroupSetBoundary = competitionGroupSetBoundary;
+    void setCompetitionGroupSetApiDomainBoundary(
+            CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary
+    ) {
+        this.competitionGroupSetApiDomainBoundary = competitionGroupSetApiDomainBoundary;
+    }
+
+    private CompetitionGroupSetHibernateDomainBoundary getCompetitionGroupSetHibernateDomainBoundary() {
+        if (competitionGroupSetHibernateDomainBoundary == null) {
+            competitionGroupSetHibernateDomainBoundary = new CompetitionGroupSetHibernateDomainBoundary();
+        }
+        return competitionGroupSetHibernateDomainBoundary;
+    }
+
+    void setCompetitionGroupSetHibernateDomainBoundary(
+            CompetitionGroupSetHibernateDomainBoundary competitionGroupSetHibernateDomainBoundary
+    ) {
+        this.competitionGroupSetHibernateDomainBoundary = competitionGroupSetHibernateDomainBoundary;
     }
 
     private CompetitionGroupSetDao getCompetitionGroupSetDao() {

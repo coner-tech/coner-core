@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.GetEventRegistrationsResponse;
-import org.coner.boundary.*;
+import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 import org.coner.util.*;
@@ -27,21 +27,20 @@ import static org.mockito.Mockito.when;
 
 public class EventRegistrationsResourceTest {
 
-    private final EventBoundary eventBoundary = mock(EventBoundary.class);
-    private final RegistrationBoundary registrationBoundary = mock(RegistrationBoundary.class);
+    private final RegistrationApiDomainBoundary registrationBoundary = mock(RegistrationApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     private ObjectMapper objectMapper;
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new EventRegistrationsResource(eventBoundary, registrationBoundary, conerCoreService))
+            .addResource(new EventRegistrationsResource(registrationBoundary, conerCoreService))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(eventBoundary, registrationBoundary, conerCoreService);
+        reset(registrationBoundary, conerCoreService);
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
     }
@@ -68,7 +67,7 @@ public class EventRegistrationsResourceTest {
 
         when(conerCoreService.getEvent(eventId)).thenReturn(domainEvent);
         when(conerCoreService.getRegistrations(domainEvent)).thenReturn(domainRegistrations);
-        when(registrationBoundary.toApiEntities(domainRegistrations)).thenReturn(apiRegistrations);
+        when(registrationBoundary.toLocalEntities(domainRegistrations)).thenReturn(apiRegistrations);
 
         GetEventRegistrationsResponse response = resources.client()
                 .target("/events/" + eventId + "/registrations")
@@ -76,7 +75,7 @@ public class EventRegistrationsResourceTest {
                 .get(GetEventRegistrationsResponse.class);
 
         verify(conerCoreService).getRegistrations(domainEvent);
-        verify(registrationBoundary).toApiEntities(domainRegistrations);
+        verify(registrationBoundary).toLocalEntities(domainRegistrations);
 
         assertThat(response).isNotNull();
         assertThat(response.getRegistrations())
@@ -103,7 +102,7 @@ public class EventRegistrationsResourceTest {
 
         Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
 
-        when(registrationBoundary.toDomainEntity(requestRegistration)).thenReturn(requestRegistrationAsDomain);
+        when(registrationBoundary.toRemoteEntity(requestRegistration)).thenReturn(requestRegistrationAsDomain);
         when(conerCoreService.getEvent(eventId)).thenReturn(domainEvent);
 
         Response response = resources.client()

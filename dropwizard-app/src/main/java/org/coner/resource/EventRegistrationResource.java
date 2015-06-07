@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.*;
+import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.Registration;
 import org.coner.core.exception.EventRegistrationMismatchException;
@@ -20,16 +20,13 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Event Registrations")
 public class EventRegistrationResource {
 
-    private final EventBoundary eventBoundary;
-    private final RegistrationBoundary registrationBoundary;
+    private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
     public EventRegistrationResource(
-            EventBoundary eventBoundary,
-            RegistrationBoundary registrationBoundary,
+            RegistrationApiDomainBoundary registrationApiDomainBoundary,
             ConerCoreService conerCoreService) {
-        this.eventBoundary = eventBoundary;
-        this.registrationBoundary = registrationBoundary;
+        this.registrationApiDomainBoundary = registrationApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -67,7 +64,7 @@ public class EventRegistrationResource {
             throw new NotFoundException("No registration with id " + registrationId);
         }
 
-        RegistrationApiEntity registration = registrationBoundary.toApiEntity(domainRegistration);
+        RegistrationApiEntity registration = registrationApiDomainBoundary.toLocalEntity(domainRegistration);
 
         return Response.ok(registration, MediaType.APPLICATION_JSON_TYPE)
                 .build();

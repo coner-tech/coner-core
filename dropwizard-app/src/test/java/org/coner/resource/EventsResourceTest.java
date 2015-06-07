@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.Event;
 import org.coner.util.JacksonUtil;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 public class EventsResourceTest {
 
-    private final EventBoundary eventBoundary = mock(EventBoundary.class);
+    private final EventApiDomainBoundary eventBoundary = mock(EventApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
@@ -58,7 +58,7 @@ public class EventsResourceTest {
                 .get(GetEventsResponse.class);
 
         verify(conerCoreService).getEvents();
-        verify(eventBoundary).toApiEntities(domainEvents);
+        verify(eventBoundary).toLocalEntities(domainEvents);
         assertThat(response)
                 .isNotNull();
         assertThat(response.getEvents())
@@ -79,7 +79,7 @@ public class EventsResourceTest {
         requestEventAsDomain.setName("add this event");
         requestEventAsDomain.setDate(Date.from(ZonedDateTime.parse("2014-12-25T09:15:00-05:00").toInstant()));
 
-        when(eventBoundary.toDomainEntity(requestEvent)).thenReturn(requestEventAsDomain);
+        when(eventBoundary.toRemoteEntity(requestEvent)).thenReturn(requestEventAsDomain);
 
         Response response = resources.client()
                 .target("/events")

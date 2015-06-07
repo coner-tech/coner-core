@@ -11,21 +11,24 @@ import java.util.List;
 public class RegistrationGateway extends AbstractGateway<
         Registration,
         RegistrationHibernateEntity,
-        RegistrationBoundary,
+        RegistrationHibernateDomainBoundary,
         RegistrationDao> {
 
-    private final EventBoundary eventBoundary;
+    private final EventHibernateDomainBoundary eventBoundary;
 
-    public RegistrationGateway(RegistrationBoundary boundary, RegistrationDao dao, EventBoundary eventBoundary) {
+    public RegistrationGateway(
+            RegistrationHibernateDomainBoundary boundary,
+            RegistrationDao dao,
+            EventHibernateDomainBoundary eventBoundary) {
         super(boundary, dao);
         this.eventBoundary = eventBoundary;
     }
 
     public List<Registration> getAllWith(Event event) {
         Preconditions.checkNotNull(event);
-        EventHibernateEntity hibernateEvent = eventBoundary.toHibernateEntity(event);
+        EventHibernateEntity hibernateEvent = eventBoundary.toLocalEntity(event);
         List<RegistrationHibernateEntity> registrations = getDao().getAllWith(hibernateEvent);
-        return getBoundary().toDomainEntities(registrations);
+        return getBoundary().toRemoteEntities(registrations);
     }
 
 }

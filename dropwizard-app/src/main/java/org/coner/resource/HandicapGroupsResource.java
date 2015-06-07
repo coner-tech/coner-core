@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.HandicapGroupBoundary;
+import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.HandicapGroup;
 
@@ -20,11 +20,14 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Handicap Groups")
 public class HandicapGroupsResource {
 
-    private final HandicapGroupBoundary handicapGroupBoundary;
+    private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
-    public HandicapGroupsResource(HandicapGroupBoundary handicapGroupBoundary, ConerCoreService conerCoreService) {
-        this.handicapGroupBoundary = handicapGroupBoundary;
+    public HandicapGroupsResource(
+            HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
+            ConerCoreService conerCoreService
+    ) {
+        this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -45,7 +48,7 @@ public class HandicapGroupsResource {
     public Response addHandicapGroup(
             @Valid @ApiParam(value = "Handicap Group") HandicapGroupApiEntity handicapGroup
     ) {
-        HandicapGroup domainHandicapGroup = handicapGroupBoundary.toDomainEntity(handicapGroup);
+        HandicapGroup domainHandicapGroup = handicapGroupApiDomainBoundary.toRemoteEntity(handicapGroup);
         conerCoreService.addHandicapGroup(domainHandicapGroup);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)
                 .build(domainHandicapGroup.getId()))
@@ -58,7 +61,7 @@ public class HandicapGroupsResource {
     public GetHandicapGroupsResponse getHandicapGroups() {
         List<HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
-        response.setHandicapGroups(handicapGroupBoundary.toApiEntities(domainHandicapGroups));
+        response.setHandicapGroups(handicapGroupApiDomainBoundary.toLocalEntities(domainHandicapGroups));
         return response;
     }
 }
