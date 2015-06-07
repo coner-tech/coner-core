@@ -27,6 +27,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     public void initialize(
             Bootstrap<ConerDropwizardConfiguration> bootstrap
     ) {
+        ConerDropwizardDependencyContainer dependencies = getDependencies();
+
         bootstrap.addBundle(dependencies.getHibernate());
         bootstrap.addBundle(new SwaggerBundle<ConerDropwizardConfiguration>() {
             @Override
@@ -45,6 +47,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
             ConerDropwizardConfiguration conerDropwizardConfiguration,
             Environment environment
     ) throws Exception {
+        ConerDropwizardDependencyContainer dependencies = getDependencies();
         JerseyEnvironment jersey = environment.jersey();
 
         // init resources
@@ -105,6 +108,16 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
 
         jersey.register(webApplicationExceptionMapper);
+    }
 
+    private ConerDropwizardDependencyContainer getDependencies() {
+        if (dependencies == null) {
+            dependencies = new ConerDropwizardDependencyContainer();
+        }
+        return dependencies;
+    }
+
+    void setDependencies(ConerDropwizardDependencyContainer conerDropwizardDependencyContainer) {
+        this.dependencies = conerDropwizardDependencyContainer;
     }
 }

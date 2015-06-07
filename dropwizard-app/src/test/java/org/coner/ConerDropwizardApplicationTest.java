@@ -20,7 +20,6 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,34 +31,30 @@ public class ConerDropwizardApplicationTest {
     private static final int NUMBER_OF_RESOURCES = 11;
 
     // application dependencies
-    private final HibernateBundle<ConerDropwizardConfiguration> hibernate = mock(HibernateBundle.class);
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
-
-    // Event
+    @Mock
+    private ConerDropwizardDependencyContainer dependencies;
+    @Mock
+    private HibernateBundle<ConerDropwizardConfiguration> hibernate;
+    @Mock
+    private ConerCoreService conerCoreService;
     @Mock
     private EventApiDomainBoundary eventBoundary;
     @Mock
     private EventDao eventDao;
     @Mock
     private EventGateway eventGateway;
-
-    // Registration
     @Mock
     private RegistrationApiDomainBoundary registrationBoundary;
     @Mock
     private RegistrationDao registrationDao;
     @Mock
     private RegistrationGateway registrationGateway;
-
-    // HandicapGroup
     @Mock
     private HandicapGroupApiDomainBoundary handicapGroupBoundary;
     @Mock
     private HandicapGroupDao handicapGroupDao;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
-
-    // Competition Group
     @Mock
     private CompetitionGroupApiDomainBoundary competitionGroupBoundary;
     @Mock
@@ -84,24 +79,27 @@ public class ConerDropwizardApplicationTest {
     @Mock
     private JerseyEnvironment jersey;
 
-    private final ConerDropwizardApplication application = new ConerDropwizardApplication();
+    private ConerDropwizardApplication application;
 
     @Before
     public void setup() {
-        application.setHibernate(hibernate);
-        application.setConerCoreService(conerCoreService);
-        application.setEventApiDomainBoundary(eventBoundary);
-        application.setEventDao(eventDao);
-        application.setEventGateway(eventGateway);
-        application.setRegistrationApiDomainBoundary(registrationBoundary);
-        application.setRegistrationDao(registrationDao);
-        application.setRegistrationGateway(registrationGateway);
-        application.setHandicapGroupApiDomainBoundary(handicapGroupBoundary);
-        application.setHandicapGroupDao(handicapGroupDao);
-        application.setHandicapGroupGateway(handicapGroupGateway);
-        application.setCompetitionGroupApiDomainBoundary(competitionGroupBoundary);
-        application.setCompetitionGroupDao(competitionGroupDao);
-        application.setCompetitionGroupGateway(competitionGroupGateway);
+        application = new ConerDropwizardApplication();
+        application.setDependencies(dependencies);
+
+        when(dependencies.getHibernate()).thenReturn(hibernate);
+        when(dependencies.getConerCoreService()).thenReturn(conerCoreService);
+        when(dependencies.getEventApiDomainBoundary()).thenReturn(eventBoundary);
+        when(dependencies.getEventDao()).thenReturn(eventDao);
+        when(dependencies.getEventGateway()).thenReturn(eventGateway);
+        when(dependencies.getRegistrationApiDomainBoundary()).thenReturn(registrationBoundary);
+        when(dependencies.getRegistrationDao()).thenReturn(registrationDao);
+        when(dependencies.getRegistrationGateway()).thenReturn(registrationGateway);
+        when(dependencies.getHandicapGroupApiDomainBoundary()).thenReturn(handicapGroupBoundary);
+        when(dependencies.getHandicapGroupDao()).thenReturn(handicapGroupDao);
+        when(dependencies.getHandicapGroupGateway()).thenReturn(handicapGroupGateway);
+        when(dependencies.getCompetitionGroupApiDomainBoundary()).thenReturn(competitionGroupBoundary);
+        when(dependencies.getCompetitionGroupDao()).thenReturn(competitionGroupDao);
+        when(dependencies.getCompetitionGroupGateway()).thenReturn(competitionGroupGateway);
 
         // initialize method
         when(bootstrap.getObjectMapper()).thenReturn(objectMapper);
