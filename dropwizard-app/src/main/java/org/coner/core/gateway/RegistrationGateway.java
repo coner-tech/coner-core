@@ -5,43 +5,27 @@ import org.coner.core.domain.*;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.*;
 
-import com.google.common.base.*;
+import com.google.common.base.Preconditions;
 import java.util.List;
 
-public class RegistrationGateway {
+public class RegistrationGateway extends AbstractGateway<
+        Registration,
+        RegistrationHibernateEntity,
+        RegistrationBoundary,
+        RegistrationDao> {
 
-    private final RegistrationBoundary registrationBoundary;
     private final EventBoundary eventBoundary;
-    private final RegistrationDao registrationDao;
 
-    public RegistrationGateway(
-            RegistrationBoundary registrationBoundary,
-            EventBoundary eventBoundary,
-            RegistrationDao registrationDao) {
-        this.registrationBoundary = registrationBoundary;
+    public RegistrationGateway(RegistrationBoundary boundary, RegistrationDao dao, EventBoundary eventBoundary) {
+        super(boundary, dao);
         this.eventBoundary = eventBoundary;
-        this.registrationDao = registrationDao;
-    }
-
-    public Registration findById(String registrationId) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(registrationId));
-        RegistrationHibernateEntity hibernateRegistration = registrationDao.findById(registrationId);
-        return registrationBoundary.toDomainEntity(hibernateRegistration);
     }
 
     public List<Registration> getAllWith(Event event) {
         Preconditions.checkNotNull(event);
         EventHibernateEntity hibernateEvent = eventBoundary.toHibernateEntity(event);
-        List<RegistrationHibernateEntity> registrations = registrationDao.getAllWith(hibernateEvent);
-        return registrationBoundary.toDomainEntities(registrations);
-    }
-
-    public void create(Registration registration) {
-        Preconditions.checkNotNull(registration);
-        RegistrationHibernateEntity hibernateRegistration =
-                registrationBoundary.toHibernateEntity(registration);
-        registrationDao.create(hibernateRegistration);
-        registrationBoundary.merge(hibernateRegistration, registration);
+        List<RegistrationHibernateEntity> registrations = getDao().getAllWith(hibernateEvent);
+        return getBoundary().toDomainEntities(registrations);
     }
 
 }
