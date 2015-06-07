@@ -5,16 +5,19 @@ import org.coner.core.ConerCoreService;
 import org.coner.core.gateway.*;
 import org.coner.exception.WebApplicationExceptionMapper;
 import org.coner.hibernate.dao.*;
-import org.coner.hibernate.entity.*;
+import org.coner.hibernate.entity.HibernateEntity;
 import org.coner.resource.*;
 import org.coner.util.JacksonUtil;
 
+import com.google.common.collect.ImmutableList;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.*;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.*;
 import io.federecio.dropwizard.swagger.*;
+import java.util.Set;
+import org.reflections.Reflections;
 
 public class ConerDropwizardApplication extends Application<ConerDropwizardConfiguration> {
 
@@ -137,13 +140,11 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
     private HibernateBundle<ConerDropwizardConfiguration> getHibernate() {
         if (hibernate == null) {
+            Reflections r = new Reflections("org.coner.hibernate.entity");
+            Set<Class<? extends HibernateEntity>> hibernateEntityClasses = r.getSubTypesOf(HibernateEntity.class);
             hibernate = new HibernateBundle<ConerDropwizardConfiguration>(
-                    EventHibernateEntity.class,
-                    RegistrationHibernateEntity.class,
-                    HandicapGroupHibernateEntity.class,
-                    HandicapGroupSetHibernateEntity.class,
-                    CompetitionGroupHibernateEntity.class,
-                    CompetitionGroupSetHibernateEntity.class
+                    ImmutableList.copyOf(hibernateEntityClasses),
+                    new SessionFactoryFactory()
             ) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(
