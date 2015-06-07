@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
-import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
 import org.coner.util.*;
@@ -22,18 +22,18 @@ import static org.mockito.Mockito.when;
 
 public class CompetitionGroupResourceTest {
 
-    private final CompetitionGroupBoundary competitionGroupBoundary = mock(CompetitionGroupBoundary.class);
+    private final CompetitionGroupApiDomainBoundary boundary = mock(CompetitionGroupApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CompetitionGroupResource(competitionGroupBoundary, conerCoreService))
+            .addResource(new CompetitionGroupResource(boundary, conerCoreService))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(competitionGroupBoundary, conerCoreService);
+        reset(boundary, conerCoreService);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class CompetitionGroupResourceTest {
 
         when(conerCoreService.getCompetitionGroup(TestConstants.COMPETITION_GROUP_ID))
                 .thenReturn(domainCompetitionGroup);
-        when(competitionGroupBoundary.toApiEntity(domainCompetitionGroup))
+        when(boundary.toLocalEntity(domainCompetitionGroup))
                 .thenReturn(competitionGroupApiEntity);
 
         Response competitionGroupResourceContainer = resources.client()
@@ -56,8 +56,8 @@ public class CompetitionGroupResourceTest {
                 .get();
 
         verify(conerCoreService).getCompetitionGroup(TestConstants.COMPETITION_GROUP_ID);
-        verify(competitionGroupBoundary).toApiEntity(domainCompetitionGroup);
-        verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
+        verify(boundary).toLocalEntity(domainCompetitionGroup);
+        verifyNoMoreInteractions(conerCoreService, boundary);
 
         assertThat(competitionGroupResourceContainer).isNotNull();
         assertThat(competitionGroupResourceContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
@@ -81,7 +81,7 @@ public class CompetitionGroupResourceTest {
 
         verify(conerCoreService).getCompetitionGroup(TestConstants.COMPETITION_GROUP_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(competitionGroupBoundary);
+        verifyZeroInteractions(boundary);
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);

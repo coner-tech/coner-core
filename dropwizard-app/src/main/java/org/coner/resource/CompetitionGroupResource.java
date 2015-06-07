@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
 
@@ -18,14 +18,14 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Competition Groups")
 public class CompetitionGroupResource {
 
-    private final CompetitionGroupBoundary competitionGroupBoundary;
+    private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
     public CompetitionGroupResource(
-            CompetitionGroupBoundary competitionGroupBoundary,
+            CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
             ConerCoreService conerCoreService
     ) {
-        this.competitionGroupBoundary = competitionGroupBoundary;
+        this.competitionGroupApiDomainBoundary = competitionGroupApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -43,6 +43,6 @@ public class CompetitionGroupResource {
         if (domainCompetitionGroup == null) {
             throw new NotFoundException("No competition group with id " + id);
         }
-        return competitionGroupBoundary.toApiEntity(domainCompetitionGroup);
+        return competitionGroupApiDomainBoundary.toLocalEntity(domainCompetitionGroup);
     }
 }

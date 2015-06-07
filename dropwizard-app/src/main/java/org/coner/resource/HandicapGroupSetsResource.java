@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.HandicapGroupSetBoundary;
+import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 
@@ -21,11 +21,11 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Handicap Groups")
 public class HandicapGroupSetsResource {
 
-    private final HandicapGroupSetBoundary handicapGroupSetBoundary;
+    private final HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary;
     private final ConerCoreService conerCoreService;
 
     public HandicapGroupSetsResource(
-            HandicapGroupSetBoundary handicapGroupSetBoundary,
+            HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary,
             ConerCoreService conerCoreService
     ) {
         this.handicapGroupSetBoundary = handicapGroupSetBoundary;
@@ -55,7 +55,7 @@ public class HandicapGroupSetsResource {
     public Response add(
             @Valid @NotNull @ApiParam(value = "Handicap Group Set") AddHandicapGroupSetRequest request
     ) {
-        HandicapGroupSet domainHandicapGroupSet = handicapGroupSetBoundary.toDomainEntity(request);
+        HandicapGroupSet domainHandicapGroupSet = handicapGroupSetBoundary.toRemoteEntity(request);
         Set<AddHandicapGroupSetRequest.HandicapGroup> apiHandicapGroups = request.getHandicapGroups();
         if (apiHandicapGroups != null) {
             Set<HandicapGroup> domainHandicapGroups = new HashSet<>();

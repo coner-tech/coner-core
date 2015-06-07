@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.*;
+import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 
@@ -20,16 +20,13 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
-    private final EventBoundary eventBoundary;
-    private final RegistrationBoundary registrationBoundary;
+    private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
     public EventRegistrationsResource(
-            EventBoundary eventBoundary,
-            RegistrationBoundary registrationBoundary,
+            RegistrationApiDomainBoundary registrationApiDomainBoundary,
             ConerCoreService conerCoreService) {
-        this.eventBoundary = eventBoundary;
-        this.registrationBoundary = registrationBoundary;
+        this.registrationApiDomainBoundary = registrationApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -58,7 +55,7 @@ public class EventRegistrationsResource {
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);
         }
-        List<RegistrationApiEntity> registrations = registrationBoundary.toApiEntities(
+        List<RegistrationApiEntity> registrations = registrationApiDomainBoundary.toLocalEntities(
                 conerCoreService.getRegistrations(domainEvent)
         );
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
@@ -90,7 +87,7 @@ public class EventRegistrationsResource {
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @Valid @ApiParam(value = "Registration", required = true) RegistrationApiEntity registration
     ) {
-        Registration domainRegistration = registrationBoundary.toDomainEntity(registration);
+        Registration domainRegistration = registrationApiDomainBoundary.toRemoteEntity(registration);
         Event domainEvent = conerCoreService.getEvent(eventId);
         if (domainEvent == null) {
             throw new NotFoundException("No event with id " + eventId);

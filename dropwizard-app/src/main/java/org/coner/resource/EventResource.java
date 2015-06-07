@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.Event;
 
@@ -18,11 +18,11 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Events")
 public class EventResource {
 
-    private final EventBoundary eventBoundary;
+    private final EventApiDomainBoundary eventApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
-    public EventResource(EventBoundary eventBoundary, ConerCoreService conerCoreService) {
-        this.eventBoundary = eventBoundary;
+    public EventResource(EventApiDomainBoundary eventApiDomainBoundary, ConerCoreService conerCoreService) {
+        this.eventApiDomainBoundary = eventApiDomainBoundary;
         this.conerCoreService = conerCoreService;
     }
 
@@ -40,7 +40,7 @@ public class EventResource {
         if (domainEvent == null) {
             throw new NotFoundException("No event found with id " + id);
         }
-        EventApiEntity event = eventBoundary.toApiEntity(domainEvent);
+        EventApiEntity event = eventApiDomainBoundary.toLocalEntity(domainEvent);
         return event;
     }
 }

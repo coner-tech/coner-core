@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.request.AddHandicapGroupSetRequest;
-import org.coner.boundary.HandicapGroupSetBoundary;
+import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 import org.coner.util.*;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 public class HandicapGroupSetsResourceTest {
 
-    private HandicapGroupSetBoundary handicapGroupSetBoundary = mock(HandicapGroupSetBoundary.class);
+    private HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary = mock(HandicapGroupSetApiDomainBoundary.class);
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     private ObjectMapper objectMapper;
@@ -71,7 +71,7 @@ public class HandicapGroupSetsResourceTest {
                 null
 
         );
-        when(handicapGroupSetBoundary.toDomainEntity(requestAddHandicapGroupSet))
+        when(handicapGroupSetBoundary.toRemoteEntity(requestAddHandicapGroupSet))
                 .thenReturn(requestHandicapGroupSetAsDomain);
         HandicapGroup handicapGroup1 = DomainEntityTestUtils.fullHandicapGroup(
                 handicapGroup1Id,
@@ -92,7 +92,7 @@ public class HandicapGroupSetsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(handicapGroupSetBoundary).toDomainEntity(any(AddHandicapGroupSetRequest.class));
+        verify(handicapGroupSetBoundary).toRemoteEntity(any(AddHandicapGroupSetRequest.class));
         verify(conerCoreService).getHandicapGroup(handicapGroup1Id);
         verify(conerCoreService).getHandicapGroup(handicapGroup2Id);
         ArgumentCaptor<HandicapGroupSet> handicapGroupSetCaptor = ArgumentCaptor

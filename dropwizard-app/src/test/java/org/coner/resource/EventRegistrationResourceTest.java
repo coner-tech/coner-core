@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.entity.RegistrationApiEntity;
-import org.coner.boundary.*;
+import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.*;
 import org.coner.core.exception.EventRegistrationMismatchException;
@@ -23,19 +23,18 @@ import static org.mockito.Mockito.when;
 
 public class EventRegistrationResourceTest {
 
-    private final EventBoundary eventBoundary = mock(EventBoundary.class);
-    private final RegistrationBoundary registrationBoundary = mock(RegistrationBoundary.class);
+    private final RegistrationApiDomainBoundary registrationBoundary = mock(RegistrationApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new EventRegistrationResource(eventBoundary, registrationBoundary, conerCoreService))
+            .addResource(new EventRegistrationResource(registrationBoundary, conerCoreService))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(eventBoundary, registrationBoundary, conerCoreService);
+        reset(registrationBoundary, conerCoreService);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class EventRegistrationResourceTest {
 
         when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID))
                 .thenReturn(domainRegistration);
-        when(registrationBoundary.toApiEntity(domainRegistration)).thenReturn(apiRegistration);
+        when(registrationBoundary.toLocalEntity(domainRegistration)).thenReturn(apiRegistration);
 
         Response responseContainer = resources.client()
                 .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
@@ -59,9 +58,8 @@ public class EventRegistrationResourceTest {
                 .get();
 
         verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
-        verify(registrationBoundary).toApiEntity(domainRegistration);
+        verify(registrationBoundary).toLocalEntity(domainRegistration);
         verifyNoMoreInteractions(conerCoreService, registrationBoundary);
-        verifyZeroInteractions(eventBoundary);
 
         assertThat(responseContainer).isNotNull();
         assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
@@ -83,7 +81,7 @@ public class EventRegistrationResourceTest {
 
         verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(eventBoundary, registrationBoundary);
+        verifyZeroInteractions(registrationBoundary);
 
         assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
@@ -100,7 +98,7 @@ public class EventRegistrationResourceTest {
 
         verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(eventBoundary, registrationBoundary);
+        verifyZeroInteractions(registrationBoundary);
 
         assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
@@ -119,7 +117,7 @@ public class EventRegistrationResourceTest {
 
         verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(eventBoundary, registrationBoundary);
+        verifyZeroInteractions(registrationBoundary);
 
         assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.CONFLICT_409);

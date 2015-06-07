@@ -1,6 +1,6 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventHibernateDomainBoundary;
 import org.coner.core.domain.Event;
 import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.entity.EventHibernateEntity;
@@ -8,10 +8,10 @@ import org.coner.hibernate.entity.EventHibernateEntity;
 public class EventGateway extends AbstractGateway<
         Event,
         EventHibernateEntity,
-        EventBoundary,
+        EventHibernateDomainBoundary,
         EventDao> {
 
-    public EventGateway(EventBoundary boundary, EventDao dao) {
+    public EventGateway(EventHibernateDomainBoundary boundary, EventDao dao) {
         super(boundary, dao);
     }
 }

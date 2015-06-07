@@ -1,6 +1,6 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.boundary.CompetitionGroupHibernateDomainBoundary;
 import org.coner.core.domain.CompetitionGroup;
 import org.coner.hibernate.dao.CompetitionGroupDao;
 import org.coner.hibernate.entity.CompetitionGroupHibernateEntity;
@@ -8,10 +8,10 @@ import org.coner.hibernate.entity.CompetitionGroupHibernateEntity;
 public class CompetitionGroupGateway extends AbstractGateway<
         CompetitionGroup,
         CompetitionGroupHibernateEntity,
-        CompetitionGroupBoundary,
+        CompetitionGroupHibernateDomainBoundary,
         CompetitionGroupDao> {
 
-    public CompetitionGroupGateway(CompetitionGroupBoundary boundary, CompetitionGroupDao dao) {
+    public CompetitionGroupGateway(CompetitionGroupHibernateDomainBoundary boundary, CompetitionGroupDao dao) {
         super(boundary, dao);
     }
 }

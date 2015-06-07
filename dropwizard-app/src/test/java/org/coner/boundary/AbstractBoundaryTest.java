@@ -21,19 +21,14 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractBoundaryTest {
 
-    private final Class<TestApiEntity> apiClass = TestApiEntity.class;
-    private final Class<TestDomainEntity> domainClass = TestDomainEntity.class;
-    private final Class<TestHibernateEntity> hibernateClass = TestHibernateEntity.class;
+    private final Class<TestLocalEntity> localClass = TestLocalEntity.class;
+    private final Class<TestRemoteEntity> remoteClass = TestRemoteEntity.class;
     private final Random random = new Random();
-    private AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> abstractBoundary;
+    private AbstractBoundary<TestLocalEntity, TestRemoteEntity> abstractBoundary;
     @Mock
-    private EntityMerger<TestApiEntity, TestDomainEntity> apiToDomainMerger;
+    private EntityMerger<TestLocalEntity, TestRemoteEntity> localToRemoteMerger;
     @Mock
-    private EntityMerger<TestDomainEntity, TestApiEntity> domainToApiMerger;
-    @Mock
-    private EntityMerger<TestDomainEntity, TestHibernateEntity> domainToHibernateMerger;
-    @Mock
-    private EntityMerger<TestHibernateEntity, TestDomainEntity> hibernateToDomainMerger;
+    private EntityMerger<TestRemoteEntity, TestLocalEntity> remoteToLocalMerger;
 
     @Before
     public void setup() {
@@ -41,282 +36,130 @@ public class AbstractBoundaryTest {
     }
 
     @Test
-    public void whenConvertDomainNullToApiEntityItShouldReturnNull() {
-        TestDomainEntity testDomainEntity = null;
-        Object actual = abstractBoundary.toApiEntity(testDomainEntity);
+    public void whenConvertRemoteNullToLocalEntityItShouldReturnNull() {
+        TestRemoteEntity testRemoteEntity = null;
+        Object actual = abstractBoundary.toLocalEntity(testRemoteEntity);
         assertThat(actual).isNull();
     }
 
     @Test
-    public void whenConvertDomainInstanceToApiEntityItShouldReturnInstance() {
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-        TestApiEntity actual = abstractBoundary.toApiEntity(testDomainEntity);
+    public void whenConvertRemoteInstanceToLocalEntityItShouldReturnInstance() {
+        TestRemoteEntity testRemoteEntity = new TestRemoteEntity();
+        TestLocalEntity actual = abstractBoundary.toLocalEntity(testRemoteEntity);
         assertThat(actual).isNotNull();
-        verify(domainToApiMerger).merge(testDomainEntity, actual);
+        verify(remoteToLocalMerger).merge(testRemoteEntity, actual);
     }
 
     @Test
-    public void whenConvertApiNullToDomainEntityItShouldReturnNull() {
-        TestApiEntity testApiEntity = null;
-        TestDomainEntity actual = abstractBoundary.toDomainEntity(testApiEntity);
+    public void whenConvertLocalNullToRemoteEntityItShouldReturnNull() {
+        TestLocalEntity testLocalEntity = null;
+        TestRemoteEntity actual = abstractBoundary.toRemoteEntity(testLocalEntity);
         assertThat(actual).isNull();
-        verify(apiToDomainMerger, never()).merge(any(), any());
+        verify(localToRemoteMerger, never()).merge(any(), any());
     }
 
     @Test
-    public void whenConvertApiInstanceToDomainEntityItShouldReturnInstance() {
-        TestApiEntity apiEntity = new TestApiEntity();
-        TestDomainEntity actual = abstractBoundary.toDomainEntity(apiEntity);
+    public void whenConvertLocalInstanceToRemoteEntityItShouldReturnInstance() {
+        TestLocalEntity testLocalEntity = new TestLocalEntity();
+        TestRemoteEntity actual = abstractBoundary.toRemoteEntity(testLocalEntity);
         assertThat(actual).isNotNull();
-        verify(apiToDomainMerger).merge(apiEntity, actual);
+        verify(localToRemoteMerger).merge(testLocalEntity, actual);
     }
 
     @Test
-    public void whenConvertHibernateNullToDomainEntityItShouldReturnNull() {
-        TestHibernateEntity testHibernateEntity = null;
-        TestDomainEntity actual = abstractBoundary.toDomainEntity(testHibernateEntity);
-        assertThat(actual).isNull();
-        verify(hibernateToDomainMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenConvertHibernateInstanceToDomainEntityItShouldReturnInstance() {
-        TestHibernateEntity testHibernateEntity = new TestHibernateEntity();
-        TestDomainEntity actual = abstractBoundary.toDomainEntity(testHibernateEntity);
-        assertThat(actual).isNotNull();
-        verify(hibernateToDomainMerger).merge(testHibernateEntity, actual);
-    }
-
-    @Test
-    public void whenConvertDomainNullToHibernateEntityItShouldReturnNull() {
-        TestDomainEntity testDomainEntity = null;
-        TestHibernateEntity actual = abstractBoundary.toHibernateEntity(testDomainEntity);
-        assertThat(actual).isNull();
-        verify(domainToHibernateMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenConvertDomainInstanceToHibernateEntityItShouldReturnInstance() {
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-        TestHibernateEntity actual = abstractBoundary.toHibernateEntity(testDomainEntity);
-        assertThat(actual).isNotNull();
-        verify(domainToHibernateMerger).merge(testDomainEntity, actual);
-    }
-
-    @Test
-    public void whenConvertListDomainEntitiesToApiEntitiesItShouldConvert() {
+    public void whenConvertListRemoteEntitiesToLocalEntitiesItShouldConvert() {
         final int size = 1 + random.nextInt(5);
-        List<TestDomainEntity> testDomainEntities = new ArrayList<>(size);
+        List<TestRemoteEntity> testRemoteEntities = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            testDomainEntities.add(new TestDomainEntity());
+            testRemoteEntities.add(new TestRemoteEntity());
         }
-        List<TestApiEntity> actual = abstractBoundary.toApiEntities(testDomainEntities);
+        List<TestLocalEntity> actual = abstractBoundary.toLocalEntities(testRemoteEntities);
         assertThat(actual)
                 .isNotNull()
                 .hasSize(size);
-        verify(domainToApiMerger, times(size)).merge(any(domainClass), any(apiClass));
+        verify(remoteToLocalMerger, times(size)).merge(any(remoteClass), any(localClass));
     }
 
     @Test
-    public void whenConvertListDomainNullToApiEntitiesItShouldReturnEmpty() {
-        List<TestDomainEntity> testDomainEntities = null;
-        List<TestApiEntity> actual = abstractBoundary.toApiEntities(testDomainEntities);
+    public void whenConvertListRemoteNullToLocalEntitiesItShouldReturnEmpty() {
+        List<TestRemoteEntity> testRemoteEntities = null;
+        List<TestLocalEntity> actual = abstractBoundary.toLocalEntities(testRemoteEntities);
         assertThat(actual)
                 .isNotNull()
                 .isEmpty();
-        verify(domainToApiMerger, never()).merge(any(domainClass), any(apiClass));
+        verify(remoteToLocalMerger, never()).merge(any(remoteClass), any(localClass));
     }
 
     @Test
-    public void whenConvertListHibernateEntitiesToDomainEntitiesItShouldConvert() {
-        final int size = 1 + random.nextInt(5);
-        List<TestHibernateEntity> testHibernateEntities = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            testHibernateEntities.add(new TestHibernateEntity());
-        }
-        List<TestDomainEntity> actual = abstractBoundary.toDomainEntities(testHibernateEntities);
-        assertThat(actual)
-                .isNotNull()
-                .hasSize(size);
-        verify(hibernateToDomainMerger, times(size)).merge(any(hibernateClass), any(domainClass));
+    public void whenMergeLocalIntoRemoteItShouldMerge() {
+        TestLocalEntity testLocalEntity = new TestLocalEntity();
+        TestRemoteEntity testRemoteEntity = new TestRemoteEntity();
+
+        abstractBoundary.mergeLocalIntoRemote(testLocalEntity, testRemoteEntity);
+
+        verify(localToRemoteMerger).merge(testLocalEntity, testRemoteEntity);
     }
 
     @Test
-    public void whenConvertListHibernateNullToDomainEntitiesItShouldReturnEmpty() {
-        List<TestHibernateEntity> testHibernateEntities = null;
-        List<TestDomainEntity> actual = abstractBoundary.toDomainEntities(testHibernateEntities);
-        assertThat(actual)
-                .isNotNull()
-                .isEmpty();
-        verify(hibernateToDomainMerger, never()).merge(any(hibernateClass), any(domainClass));
-    }
-
-    @Test
-    public void whenConvertListDomainEntitiesToHibernateEntitiesItShouldConvert() {
-        final int size = 1 + random.nextInt(5);
-        List<TestDomainEntity> testDomainEntities = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            testDomainEntities.add(new TestDomainEntity());
-        }
-        List<TestHibernateEntity> actual = abstractBoundary.toHibernateEntities(testDomainEntities);
-        assertThat(actual)
-                .isNotNull()
-                .hasSize(size);
-        verify(domainToHibernateMerger, times(size)).merge(any(domainClass), any(hibernateClass));
-    }
-
-    @Test
-    public void whenConvertListDomainNullToHibernateEntitiesItShouldReturnEmpty() {
-        List<TestDomainEntity> testDomainEntities = null;
-        List<TestHibernateEntity> actual = abstractBoundary.toHibernateEntities(testDomainEntities);
-        assertThat(actual)
-                .isNotNull()
-                .isEmpty();
-        verify(domainToHibernateMerger, never()).merge(any(domainClass), any(hibernateClass));
-    }
-
-    @Test
-    public void whenMergeApiIntoDomainItShouldMerge() {
-        TestApiEntity testApiEntity = new TestApiEntity();
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-
-        abstractBoundary.merge(testApiEntity, testDomainEntity);
-
-        verify(apiToDomainMerger).merge(testApiEntity, testDomainEntity);
-    }
-
-    @Test
-    public void whenMergeNullApiIntoDomainItShouldNpe() {
+    public void whenMergeNullLocalIntoRemoteItShouldNpe() {
         try {
-            TestApiEntity testApiEntity = null;
-            TestDomainEntity testDomainEntity = new TestDomainEntity();
-            abstractBoundary.merge(testApiEntity, testDomainEntity);
+            TestLocalEntity testLocalEntity = null;
+            TestRemoteEntity testRemoteEntity = new TestRemoteEntity();
+            abstractBoundary.mergeLocalIntoRemote(testLocalEntity, testRemoteEntity);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException npe) {
             assertThat(true).isTrue();
         }
-        verify(apiToDomainMerger, never()).merge(any(), any());
+        verify(localToRemoteMerger, never()).merge(any(), any());
     }
 
     @Test
-    public void whenMergeApiIntoNullDomainItShouldNpe() {
+    public void whenMergeLocalIntoNullRemoteItShouldNpe() {
         try {
-            TestApiEntity testApiEntity = new TestApiEntity();
-            TestDomainEntity testDomainEntity = null;
-            abstractBoundary.merge(testApiEntity, testDomainEntity);
+            TestLocalEntity testLocalEntity = new TestLocalEntity();
+            TestRemoteEntity testRemoteEntity = null;
+            abstractBoundary.mergeLocalIntoRemote(testLocalEntity, testRemoteEntity);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException npe) {
             assertThat(true).isTrue();
         }
-        verify(apiToDomainMerger, never()).merge(any(), any());
+        verify(localToRemoteMerger, never()).merge(any(), any());
     }
 
     @Test
-    public void whenMergeDomainIntoApiItShouldMerge() {
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-        TestApiEntity testApiEntity = new TestApiEntity();
+    public void whenMergeRemoteIntoLocalItShouldMerge() {
+        TestRemoteEntity testRemoteEntity = new TestRemoteEntity();
+        TestLocalEntity testLocalEntity = new TestLocalEntity();
 
-        abstractBoundary.merge(testDomainEntity, testApiEntity);
+        abstractBoundary.mergeRemoteIntoLocal(testRemoteEntity, testLocalEntity);
 
-        verify(domainToApiMerger).merge(testDomainEntity, testApiEntity);
+        verify(remoteToLocalMerger).merge(testRemoteEntity, testLocalEntity);
     }
 
     @Test
-    public void whenMergeNullDomainIntoApiItShouldNpe() {
+    public void whenMergeNullRemoteIntoLocalItShouldNpe() {
         try {
-            TestDomainEntity testDomainEntity = null;
-            TestApiEntity testApiEntity = new TestApiEntity();
-            abstractBoundary.merge(testDomainEntity, testApiEntity);
+            TestRemoteEntity testRemoteEntity = null;
+            TestLocalEntity testLocalEntity = new TestLocalEntity();
+            abstractBoundary.mergeRemoteIntoLocal(testRemoteEntity, testLocalEntity);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException npe) {
             assertThat(true).isTrue();
         }
-        verify(domainToApiMerger, never()).merge(any(), any());
+        verify(remoteToLocalMerger, never()).merge(any(), any());
     }
 
     @Test
-    public void whenMergeDomainIntoNullApiItShouldNpe() {
+    public void whenMergeRemoteIntoNullLocalItShouldNpe() {
         try {
-            TestDomainEntity testDomainEntity = new TestDomainEntity();
-            TestApiEntity testApiEntity = null;
-            abstractBoundary.merge(testDomainEntity, testApiEntity);
+            TestRemoteEntity testRemoteEntity = new TestRemoteEntity();
+            TestLocalEntity testLocalEntity = null;
+            abstractBoundary.mergeRemoteIntoLocal(testRemoteEntity, testLocalEntity);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (NullPointerException npe) {
             assertThat(true).isTrue();
         }
-        verify(domainToApiMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenMergeDomainIntoHibernateItShouldMerge() {
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-        TestHibernateEntity testHibernateEntity = new TestHibernateEntity();
-
-        abstractBoundary.merge(testDomainEntity, testHibernateEntity);
-
-        verify(domainToHibernateMerger).merge(testDomainEntity, testHibernateEntity);
-    }
-
-    @Test
-    public void whenMergeNullDomainIntoHibernateItShouldNpe() {
-        try {
-            TestDomainEntity testDomainEntity = null;
-            TestHibernateEntity testHibernateEntity = new TestHibernateEntity();
-            abstractBoundary.merge(testDomainEntity, testHibernateEntity);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (NullPointerException npe) {
-            assertThat(true).isTrue();
-        }
-        verify(domainToHibernateMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenMergeDomainIntoNullHibernateItShouldNpe() {
-        try {
-            TestDomainEntity testDomainEntity = new TestDomainEntity();
-            TestHibernateEntity testHibernateEntity = null;
-            abstractBoundary.merge(testDomainEntity, testHibernateEntity);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (NullPointerException npe) {
-            assertThat(true).isTrue();
-        }
-        verify(domainToHibernateMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenMergeHibernateIntoDomainItShouldMerge() {
-        TestHibernateEntity testHibernateEntity = new TestHibernateEntity();
-        TestDomainEntity testDomainEntity = new TestDomainEntity();
-
-        abstractBoundary.merge(testHibernateEntity, testDomainEntity);
-
-        verify(hibernateToDomainMerger).merge(testHibernateEntity, testDomainEntity);
-    }
-
-    @Test
-    public void whenMergeNullHibernateIntoDomainItShouldNpe() {
-        try {
-            TestHibernateEntity testHibernateEntity = null;
-            TestDomainEntity testDomainEntity = new TestDomainEntity();
-            abstractBoundary.merge(testHibernateEntity, testDomainEntity);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (NullPointerException npe) {
-            assertThat(true).isTrue();
-        }
-        verify(hibernateToDomainMerger, never()).merge(any(), any());
-    }
-
-    @Test
-    public void whenMergeHibernateIntoNullDomainItShouldNpe() {
-        try {
-            TestHibernateEntity testHibernateEntity = new TestHibernateEntity();
-            TestDomainEntity testDomainEntity = null;
-            abstractBoundary.merge(testHibernateEntity, testDomainEntity);
-            failBecauseExceptionWasNotThrown(NullPointerException.class);
-        } catch (NullPointerException npe) {
-            assertThat(true).isTrue();
-        }
-        verify(hibernateToDomainMerger, never()).merge(any(), any());
+        verify(remoteToLocalMerger, never()).merge(any(), any());
     }
 
     @Test
@@ -358,10 +201,10 @@ public class AbstractBoundaryTest {
         }
     }
 
-    public static class TestApiEntity extends ApiEntity {
+    public static class TestLocalEntity extends ApiEntity {
     }
 
-    public static class TestDomainEntity extends DomainEntity {
+    public static class TestRemoteEntity extends DomainEntity {
     }
 
     public static class TestHibernateEntity extends HibernateEntity {
@@ -381,26 +224,16 @@ public class AbstractBoundaryTest {
     public abstract static class AbstractEntity {
     }
 
-    private class TestBoundary extends AbstractBoundary<TestApiEntity, TestDomainEntity, TestHibernateEntity> {
+    private class TestBoundary extends AbstractBoundary<TestLocalEntity, TestRemoteEntity> {
 
         @Override
-        protected EntityMerger<TestApiEntity, TestDomainEntity> buildApiToDomainMerger() {
-            return apiToDomainMerger;
+        protected EntityMerger<TestLocalEntity, TestRemoteEntity> buildLocalToRemoteMerger() {
+            return localToRemoteMerger;
         }
 
         @Override
-        protected EntityMerger<TestDomainEntity, TestApiEntity> buildDomainToApiMerger() {
-            return domainToApiMerger;
-        }
-
-        @Override
-        protected EntityMerger<TestDomainEntity, TestHibernateEntity> buildDomainToHibernateMerger() {
-            return domainToHibernateMerger;
-        }
-
-        @Override
-        protected EntityMerger<TestHibernateEntity, TestDomainEntity> buildHibernateToDomainMerger() {
-            return hibernateToDomainMerger;
+        protected EntityMerger<TestRemoteEntity, TestLocalEntity> buildRemoteToLocalMerger() {
+            return remoteToLocalMerger;
         }
     }
 

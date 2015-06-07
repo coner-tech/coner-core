@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
-import org.coner.boundary.CompetitionGroupBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.CompetitionGroup;
 import org.coner.util.*;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 public class CompetitionGroupsResourceTest {
 
-    private CompetitionGroupBoundary competitionGroupBoundary = mock(CompetitionGroupBoundary.class);
+    private CompetitionGroupApiDomainBoundary competitionGroupBoundary = mock(CompetitionGroupApiDomainBoundary.class);
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
@@ -161,7 +161,7 @@ public class CompetitionGroupsResourceTest {
 
         when(conerCoreService.getCompetitionGroups())
                 .thenReturn(domainCompetitionGroups);
-        when(competitionGroupBoundary.toApiEntities(domainCompetitionGroups))
+        when(competitionGroupBoundary.toLocalEntities(domainCompetitionGroups))
                 .thenReturn(competitionGroupApiEntities);
 
         GetCompetitionGroupsResponse response = resources.client()
@@ -170,7 +170,7 @@ public class CompetitionGroupsResourceTest {
                 .get(GetCompetitionGroupsResponse.class);
 
         verify(conerCoreService).getCompetitionGroups();
-        verify(competitionGroupBoundary).toApiEntities(domainCompetitionGroups);
+        verify(competitionGroupBoundary).toLocalEntities(domainCompetitionGroups);
         verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
 
         assertThat(response)
@@ -191,7 +191,7 @@ public class CompetitionGroupsResourceTest {
         CompetitionGroup requestCompetitionGroupDomainEntity = new CompetitionGroup();
         requestCompetitionGroupDomainEntity.setId("arbitrary-id-from-service");
 
-        when(competitionGroupBoundary.toDomainEntity(requestCompetitionGroupApiEntity))
+        when(competitionGroupBoundary.toRemoteEntity(requestCompetitionGroupApiEntity))
                 .thenReturn(requestCompetitionGroupDomainEntity);
 
         Response response = resources.client()
@@ -199,7 +199,7 @@ public class CompetitionGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(competitionGroupBoundary).toDomainEntity(requestCompetitionGroupApiEntity);
+        verify(competitionGroupBoundary).toRemoteEntity(requestCompetitionGroupApiEntity);
         verify(conerCoreService).addCompetitionGroup(requestCompetitionGroupDomainEntity);
         verifyNoMoreInteractions(conerCoreService, competitionGroupBoundary);
 

@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class AbstractGateway<
         DE extends DomainEntity,
         HE extends HibernateEntity,
-        B extends AbstractBoundary<?, DE, HE>,
+        B extends AbstractBoundary<HE, DE>,
         D extends HibernateEntityDao<HE>> {
 
     private final B boundary;
@@ -24,20 +24,20 @@ public abstract class AbstractGateway<
 
     public void create(DE domainEntity) {
         Preconditions.checkNotNull(domainEntity);
-        HE hibernateEntity = boundary.toHibernateEntity(domainEntity);
+        HE hibernateEntity = boundary.toLocalEntity(domainEntity);
         dao.create(hibernateEntity);
-        boundary.merge(hibernateEntity, domainEntity);
+        boundary.mergeLocalIntoRemote(hibernateEntity, domainEntity);
     }
 
     public List<DE> getAll() {
         List<HE> hibernateEntities = dao.findAll();
-        return boundary.toDomainEntities(hibernateEntities);
+        return boundary.toRemoteEntities(hibernateEntities);
     }
 
     public DE findById(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id), "id must not be null or empty");
         HE hibernateEntity = dao.findById(id);
-        return boundary.toDomainEntity(hibernateEntity);
+        return boundary.toRemoteEntity(hibernateEntity);
     }
 
     protected B getBoundary() {

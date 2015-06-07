@@ -37,7 +37,7 @@ public class ConerDropwizardApplicationTest {
 
     // Event
     @Mock
-    private EventBoundary eventBoundary;
+    private EventApiDomainBoundary eventBoundary;
     @Mock
     private EventDao eventDao;
     @Mock
@@ -45,7 +45,7 @@ public class ConerDropwizardApplicationTest {
 
     // Registration
     @Mock
-    private RegistrationBoundary registrationBoundary;
+    private RegistrationApiDomainBoundary registrationBoundary;
     @Mock
     private RegistrationDao registrationDao;
     @Mock
@@ -53,7 +53,7 @@ public class ConerDropwizardApplicationTest {
 
     // HandicapGroup
     @Mock
-    private HandicapGroupBoundary handicapGroupBoundary;
+    private HandicapGroupApiDomainBoundary handicapGroupBoundary;
     @Mock
     private HandicapGroupDao handicapGroupDao;
     @Mock
@@ -61,7 +61,7 @@ public class ConerDropwizardApplicationTest {
 
     // Competition Group
     @Mock
-    private CompetitionGroupBoundary competitionGroupBoundary;
+    private CompetitionGroupApiDomainBoundary competitionGroupBoundary;
     @Mock
     private CompetitionGroupDao competitionGroupDao;
     @Mock
@@ -90,16 +90,16 @@ public class ConerDropwizardApplicationTest {
     public void setup() {
         application.setHibernate(hibernate);
         application.setConerCoreService(conerCoreService);
-        application.setEventBoundary(eventBoundary);
+        application.setEventApiDomainBoundary(eventBoundary);
         application.setEventDao(eventDao);
         application.setEventGateway(eventGateway);
-        application.setRegistrationBoundary(registrationBoundary);
+        application.setRegistrationApiDomainBoundary(registrationBoundary);
         application.setRegistrationDao(registrationDao);
         application.setRegistrationGateway(registrationGateway);
-        application.setHandicapGroupBoundary(handicapGroupBoundary);
+        application.setHandicapGroupApiDomainBoundary(handicapGroupBoundary);
         application.setHandicapGroupDao(handicapGroupDao);
         application.setHandicapGroupGateway(handicapGroupGateway);
-        application.setCompetitionGroupBoundary(competitionGroupBoundary);
+        application.setCompetitionGroupApiDomainBoundary(competitionGroupBoundary);
         application.setCompetitionGroupDao(competitionGroupDao);
         application.setCompetitionGroupGateway(competitionGroupGateway);
 

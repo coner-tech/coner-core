@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.entity.EventApiEntity;
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.Event;
 import org.coner.util.*;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 public class EventResourceTest {
 
-    private final EventBoundary eventBoundary = mock(EventBoundary.class);
+    private final EventApiDomainBoundary eventBoundary = mock(EventApiDomainBoundary.class);
     private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
 
     @Rule
@@ -45,7 +45,7 @@ public class EventResourceTest {
         assertThat(apiEvent.getId()).isSameAs(TestConstants.EVENT_ID);
 
         when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(domainEvent);
-        when(eventBoundary.toApiEntity(domainEvent)).thenReturn(apiEvent);
+        when(eventBoundary.toLocalEntity(domainEvent)).thenReturn(apiEvent);
 
         Response getEventResponseContainer = resources.client()
                 .target("/events/" + TestConstants.EVENT_ID)
@@ -53,7 +53,7 @@ public class EventResourceTest {
                 .get();
 
         verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
-        verify(eventBoundary).toApiEntity(domainEvent);
+        verify(eventBoundary).toLocalEntity(domainEvent);
         verifyNoMoreInteractions(conerCoreService, eventBoundary);
 
         assertThat(getEventResponseContainer).isNotNull();

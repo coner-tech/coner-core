@@ -1,7 +1,7 @@
 package org.coner.core.gateway;
 
 
-import org.coner.boundary.EventBoundary;
+import org.coner.boundary.EventHibernateDomainBoundary;
 import org.coner.core.domain.Event;
 import org.coner.hibernate.dao.EventDao;
 import org.coner.hibernate.entity.EventHibernateEntity;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class EventGatewayTest {
 
     @Mock
-    private EventBoundary eventBoundary;
+    private EventHibernateDomainBoundary eventBoundary;
     @Mock
     private EventDao eventDao;
 
@@ -40,12 +40,12 @@ public class EventGatewayTest {
         List<EventHibernateEntity> hibernateEvents = new ArrayList<>();
         List<Event> expected = new ArrayList<>();
         when(eventDao.findAll()).thenReturn(hibernateEvents);
-        when(eventBoundary.toDomainEntities(hibernateEvents)).thenReturn(expected);
+        when(eventBoundary.toRemoteEntities(hibernateEvents)).thenReturn(expected);
 
         List<Event> actual = eventGateway.getAll();
 
         verify(eventDao).findAll();
-        verify(eventBoundary).toDomainEntities(hibernateEvents);
+        verify(eventBoundary).toRemoteEntities(hibernateEvents);
         verifyNoMoreInteractions(eventDao);
         verifyNoMoreInteractions(eventBoundary);
         assertThat(actual).isSameAs(expected);
@@ -57,12 +57,12 @@ public class EventGatewayTest {
         EventHibernateEntity hibernateEvent = mock(EventHibernateEntity.class);
         Event expected = mock(Event.class);
         when(eventDao.findById(id)).thenReturn(hibernateEvent);
-        when(eventBoundary.toDomainEntity(hibernateEvent)).thenReturn(expected);
+        when(eventBoundary.toRemoteEntity(hibernateEvent)).thenReturn(expected);
 
         Event actual = eventGateway.findById(id);
 
         verify(eventDao).findById(id);
-        verify(eventBoundary).toDomainEntity(hibernateEvent);
+        verify(eventBoundary).toRemoteEntity(hibernateEvent);
         verifyNoMoreInteractions(eventDao);
         verifyNoMoreInteractions(eventBoundary);
         assertThat(actual).isSameAs(expected);
@@ -87,13 +87,13 @@ public class EventGatewayTest {
     public void whenCreateItShouldConvertToHibernateAndCreateAndMergeHibernateIntoDomain() {
         Event event = mock(Event.class);
         EventHibernateEntity hibernateEvent = mock(EventHibernateEntity.class);
-        when(eventBoundary.toHibernateEntity(event)).thenReturn(hibernateEvent);
+        when(eventBoundary.toLocalEntity(event)).thenReturn(hibernateEvent);
 
         eventGateway.create(event);
 
-        verify(eventBoundary).toHibernateEntity(event);
+        verify(eventBoundary).toLocalEntity(event);
         verify(eventDao).create(hibernateEvent);
-        verify(eventBoundary).merge(hibernateEvent, event);
+        verify(eventBoundary).mergeLocalIntoRemote(hibernateEvent, event);
         verifyNoMoreInteractions(eventBoundary);
         verifyNoMoreInteractions(eventDao);
     }
