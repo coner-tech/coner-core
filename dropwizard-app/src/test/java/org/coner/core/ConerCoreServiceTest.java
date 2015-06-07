@@ -1,6 +1,6 @@
 package org.coner.core;
 
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.core.gateway.*;
 
 import java.util.*;

@@ -4,7 +4,7 @@ import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;

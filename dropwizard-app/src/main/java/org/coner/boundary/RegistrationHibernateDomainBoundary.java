@@ -1,6 +1,6 @@
 package org.coner.boundary;
 
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.entity.Registration;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.util.merger.*;
 

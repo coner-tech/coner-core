@@ -1,7 +1,7 @@
 package org.coner.boundary;
 
 import org.coner.api.entity.ApiEntity;
-import org.coner.core.domain.DomainEntity;
+import org.coner.core.domain.entity.DomainEntity;
 import org.coner.hibernate.entity.HibernateEntity;
 import org.coner.util.merger.ObjectMerger;
 

@@ -4,7 +4,7 @@ import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.Event;
+import org.coner.core.domain.entity.Event;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;

@@ -1,7 +1,7 @@
 package org.coner.core.gateway;
 
 import org.coner.boundary.HandicapGroupHibernateDomainBoundary;
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.hibernate.dao.HandicapGroupDao;
 import org.coner.hibernate.entity.HandicapGroupHibernateEntity;
 

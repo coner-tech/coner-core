@@ -1,10 +1,7 @@
-package org.coner.core.domain;
+package org.coner.core.domain.entity;
 
 import java.math.BigDecimal;
 
-/**
- * Domain entity for the representation of HandicapGroups.
- */
 public class HandicapGroup extends DomainEntity {
     private String id;
     private String name;

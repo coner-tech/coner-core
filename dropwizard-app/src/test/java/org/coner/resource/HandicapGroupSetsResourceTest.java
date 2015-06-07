@@ -3,7 +3,7 @@ package org.coner.resource;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

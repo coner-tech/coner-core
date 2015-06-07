@@ -1,6 +1,6 @@
 package org.coner.util;
 
-import org.coner.core.domain.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;

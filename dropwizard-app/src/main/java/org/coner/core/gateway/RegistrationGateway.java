@@ -1,7 +1,7 @@
 package org.coner.core.gateway;
 
 import org.coner.boundary.*;
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.*;
 

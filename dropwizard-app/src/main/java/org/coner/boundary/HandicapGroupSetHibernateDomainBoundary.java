@@ -1,6 +1,6 @@
 package org.coner.boundary;
 
-import org.coner.core.domain.HandicapGroupSet;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.coner.util.merger.*;
 

@@ -1,7 +1,7 @@
 package org.coner.boundary;
 
 import org.coner.api.entity.EventApiEntity;
-import org.coner.core.domain.Event;
+import org.coner.core.domain.entity.Event;
 import org.coner.util.merger.*;
 
 public class EventApiDomainBoundary extends AbstractBoundary<EventApiEntity, Event> {

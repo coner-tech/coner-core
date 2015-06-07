@@ -1,7 +1,7 @@
 package org.coner.boundary;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
-import org.coner.core.domain.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.util.merger.*;
 
 public class CompetitionGroupApiDomainBoundary extends AbstractBoundary<CompetitionGroupApiEntity, CompetitionGroup> {

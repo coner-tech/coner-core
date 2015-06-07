@@ -4,7 +4,7 @@ import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

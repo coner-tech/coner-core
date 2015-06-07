@@ -3,7 +3,7 @@ package org.coner.resource;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.core.exception.EventRegistrationMismatchException;
 import org.coner.util.*;
 

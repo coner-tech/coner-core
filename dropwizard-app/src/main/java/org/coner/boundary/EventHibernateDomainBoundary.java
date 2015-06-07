@@ -1,6 +1,6 @@
 package org.coner.boundary;
 
-import org.coner.core.domain.Event;
+import org.coner.core.domain.entity.Event;
 import org.coner.hibernate.entity.EventHibernateEntity;
 import org.coner.util.merger.*;
 

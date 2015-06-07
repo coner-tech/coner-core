@@ -4,7 +4,7 @@ import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;

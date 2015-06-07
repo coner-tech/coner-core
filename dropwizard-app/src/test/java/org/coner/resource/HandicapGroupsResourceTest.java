@@ -4,7 +4,7 @@ import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.*;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
