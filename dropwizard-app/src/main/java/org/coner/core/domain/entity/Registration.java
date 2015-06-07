@@ -1,8 +1,5 @@
-package org.coner.core.domain;
+package org.coner.core.domain.entity;
 
-/**
- * Domain entity for the representation of Registrations.
- */
 public class Registration extends DomainEntity {
 
     private String id;

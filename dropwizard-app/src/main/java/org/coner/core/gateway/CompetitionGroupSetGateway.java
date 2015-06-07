@@ -1,7 +1,7 @@
 package org.coner.core.gateway;
 
 import org.coner.boundary.CompetitionGroupSetHibernateDomainBoundary;
-import org.coner.core.domain.CompetitionGroupSet;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.hibernate.dao.CompetitionGroupSetDao;
 import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
 

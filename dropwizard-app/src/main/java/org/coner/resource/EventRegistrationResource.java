@@ -4,7 +4,7 @@ import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.exception.EventRegistrationMismatchException;
 
 import com.wordnik.swagger.annotations.*;

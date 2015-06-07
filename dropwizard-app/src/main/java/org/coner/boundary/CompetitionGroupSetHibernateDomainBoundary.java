@@ -1,6 +1,6 @@
 package org.coner.boundary;
 
-import org.coner.core.domain.CompetitionGroupSet;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.util.merger.*;
 

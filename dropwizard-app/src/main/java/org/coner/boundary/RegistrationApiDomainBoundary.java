@@ -1,7 +1,7 @@
 package org.coner.boundary;
 
 import org.coner.api.entity.RegistrationApiEntity;
-import org.coner.core.domain.Registration;
+import org.coner.core.domain.entity.Registration;
 import org.coner.util.merger.*;
 
 public class RegistrationApiDomainBoundary extends AbstractBoundary<RegistrationApiEntity, Registration> {

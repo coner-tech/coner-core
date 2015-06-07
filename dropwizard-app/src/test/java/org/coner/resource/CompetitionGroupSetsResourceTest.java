@@ -3,7 +3,7 @@ package org.coner.resource;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,7 +64,7 @@ public class CompetitionGroupSetsResourceTest {
 
         Entity<AddCompetitionGroupSetRequest> requestEntity = Entity.json(requestAddCompetitionGroupSet);
 
-        org.coner.core.domain.CompetitionGroupSet requestCompetitionGroupSetAsDomain = new CompetitionGroupSet();
+        CompetitionGroupSet requestCompetitionGroupSetAsDomain = new CompetitionGroupSet();
         requestCompetitionGroupSetAsDomain.setId("arbitrary-id-from-service");
         when(competitionGroupSetBoundary.toRemoteEntity(requestAddCompetitionGroupSet))
                 .thenReturn(requestCompetitionGroupSetAsDomain);

@@ -4,7 +4,7 @@ import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.CompetitionGroup;
+import org.coner.core.domain.entity.*;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -55,7 +55,7 @@ public class CompetitionGroupSetsResource {
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
 
     ) {
-        org.coner.core.domain.CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetApiDomainBoundary
+        CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetApiDomainBoundary
                 .toRemoteEntity(request);
         Set<AddCompetitionGroupSetRequest.CompetitionGroup> requestCompetitionGroups = request.getCompetitionGroups();
         if (requestCompetitionGroups != null) {

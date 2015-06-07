@@ -1,6 +1,6 @@
 package org.coner.util;
 
-import org.coner.core.domain.*;
+import org.coner.core.domain.entity.*;
 
 import com.google.common.collect.Sets;
 import java.math.BigDecimal;

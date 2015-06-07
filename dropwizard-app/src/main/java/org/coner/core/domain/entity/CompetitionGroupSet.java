@@ -1,10 +1,7 @@
-package org.coner.core.domain;
+package org.coner.core.domain.entity;
 
 import java.util.Set;
 
-/**
- * Domain entity for the representation of CompetitionGroupSets.
- */
 public class CompetitionGroupSet extends DomainEntity {
 
     private String id;

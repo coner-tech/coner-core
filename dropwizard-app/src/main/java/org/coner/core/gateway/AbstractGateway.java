@@ -1,7 +1,7 @@
 package org.coner.core.gateway;
 
 import org.coner.boundary.AbstractBoundary;
-import org.coner.core.domain.DomainEntity;
+import org.coner.core.domain.entity.DomainEntity;
 import org.coner.hibernate.dao.HibernateEntityDao;
 import org.coner.hibernate.entity.HibernateEntity;
 

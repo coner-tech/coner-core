@@ -3,7 +3,7 @@ package org.coner.resource;
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.util.*;
 
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;

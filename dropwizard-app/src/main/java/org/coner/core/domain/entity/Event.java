@@ -1,4 +1,4 @@
-package org.coner.core.domain;
+package org.coner.core.domain.entity;
 
 import java.util.Date;
 
