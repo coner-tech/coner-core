@@ -214,8 +214,8 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         if (registrationGateway == null) {
             registrationGateway = new RegistrationGateway(
                     getRegistrationBoundary(),
-                    getEventBoundary(),
-                    getRegistrationDao()
+                    getRegistrationDao(),
+                    getEventBoundary()
             );
         }
         return registrationGateway;
@@ -367,7 +367,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     }
 
 
-   private ConerCoreService getConerCoreService() {
+    private ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
             conerCoreService = new ConerCoreService(
                     getEventGateway(),
