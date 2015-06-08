@@ -15,7 +15,7 @@ public class ConerCoreService {
     private final EventService eventService;
     private final RegistrationService registrationService;
     private final CompetitionGroupService competitionGroupService;
-    private final CompetitionGroupSetGateway competitionGroupSetGateway;
+    private final CompetitionGroupSetService competitionGroupSetService;
     private final HandicapGroupGateway handicapGroupGateway;
     private final HandicapGroupSetGateway handicapGroupSetGateway;
 
@@ -23,13 +23,13 @@ public class ConerCoreService {
             EventService eventService,
             RegistrationService registrationService,
             CompetitionGroupService competitionGroupService,
-            CompetitionGroupSetGateway competitionGroupSetGateway,
+            CompetitionGroupSetService competitionGroupSetService,
             HandicapGroupGateway handicapGroupGateway,
             HandicapGroupSetGateway handicapGroupSetGateway
     ) {
         this.eventService = eventService;
         this.registrationService = registrationService;
-        this.competitionGroupSetGateway = competitionGroupSetGateway;
+        this.competitionGroupSetService = competitionGroupSetService;
         this.competitionGroupService = competitionGroupService;
         this.handicapGroupGateway = handicapGroupGateway;
         this.handicapGroupSetGateway = handicapGroupSetGateway;
@@ -75,8 +75,7 @@ public class ConerCoreService {
     }
 
     public void addCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
-        checkNotNull(competitionGroupSet);
-        competitionGroupSetGateway.create(competitionGroupSet);
+        competitionGroupSetService.add(checkNotNull(competitionGroupSet));
     }
 
     public void addHandicapGroup(HandicapGroup handicapGroup) {

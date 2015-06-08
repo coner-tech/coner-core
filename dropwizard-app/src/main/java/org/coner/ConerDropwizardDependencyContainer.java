@@ -31,6 +31,7 @@ public class ConerDropwizardDependencyContainer {
     private CompetitionGroupHibernateDomainBoundary competitionGroupHibernateDomainBoundary;
     private CompetitionGroupDao competitionGroupDao;
     private CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupSetService competitionGroupSetService;
     private CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
     private CompetitionGroupSetHibernateDomainBoundary competitionGroupSetHibernateDomainBoundary;
     private CompetitionGroupSetGateway competitionGroupSetGateway;
@@ -239,6 +240,13 @@ public class ConerDropwizardDependencyContainer {
         return competitionGroupGateway;
     }
 
+    CompetitionGroupSetService getCompetitionGroupSetService() {
+        if (competitionGroupSetService == null) {
+            competitionGroupSetService = new CompetitionGroupSetService(getCompetitionGroupSetGateway());
+        }
+        return competitionGroupSetService;
+    }
+
     CompetitionGroupSetGateway getCompetitionGroupSetGateway() {
         if (competitionGroupSetGateway == null) {
             competitionGroupSetGateway = new CompetitionGroupSetGateway(
@@ -276,7 +284,7 @@ public class ConerDropwizardDependencyContainer {
                     getEventService(),
                     getRegistrationService(),
                     getCompetitionGroupService(),
-                    getCompetitionGroupSetGateway(),
+                    getCompetitionGroupSetService(),
                     getHandicapGroupGateway(),
                     getHandicapGroupSetGateway()
             );

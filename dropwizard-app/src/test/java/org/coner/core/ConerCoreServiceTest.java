@@ -28,7 +28,7 @@ public class ConerCoreServiceTest {
     @Mock
     private CompetitionGroupService competitionGroupService;
     @Mock
-    private CompetitionGroupSetGateway competitionGroupSetGateway;
+    private CompetitionGroupSetService competitionGroupSetService;
     @Mock
     private HandicapGroupGateway handicapGroupGateway;
     @Mock
@@ -42,7 +42,7 @@ public class ConerCoreServiceTest {
                 eventService,
                 registrationService,
                 competitionGroupService,
-                competitionGroupSetGateway,
+                competitionGroupSetService,
                 handicapGroupGateway,
                 handicapGroupSetGateway
         );
