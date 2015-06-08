@@ -2,7 +2,6 @@ package org.coner.core;
 
 import org.coner.core.domain.entity.*;
 import org.coner.core.domain.service.*;
-import org.coner.core.gateway.HandicapGroupSetGateway;
 
 import java.util.*;
 import org.junit.*;
@@ -32,7 +31,7 @@ public class ConerCoreServiceTest {
     @Mock
     private HandicapGroupService handicapGroupService;
     @Mock
-    private HandicapGroupSetGateway handicapGroupSetGateway;
+    private HandicapGroupSetService handicapGroupSetService;
 
     private ConerCoreService conerCoreService;
 
@@ -44,7 +43,7 @@ public class ConerCoreServiceTest {
                 competitionGroupService,
                 competitionGroupSetService,
                 handicapGroupService,
-                handicapGroupSetGateway
+                handicapGroupSetService
         );
     }
 

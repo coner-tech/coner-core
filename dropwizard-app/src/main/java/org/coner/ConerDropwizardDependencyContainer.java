@@ -41,6 +41,7 @@ public class ConerDropwizardDependencyContainer {
     private HandicapGroupHibernateDomainBoundary handicapGroupHibernateDomainBoundary;
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
+    private HandicapGroupSetService handicapGroupSetService;
     private HandicapGroupSetApiDomainBoundary handicapGroupSetApiDomainBoundary;
     private HandicapGroupSetHibernateDomainBoundary handicapGroupSetHibernateDomainBoundary;
     private HandicapGroupSetDao handicapGroupSetDao;
@@ -180,6 +181,13 @@ public class ConerDropwizardDependencyContainer {
         return handicapGroupGateway;
     }
 
+    HandicapGroupSetService getHandicapGroupSetService() {
+        if (handicapGroupSetService == null) {
+            handicapGroupSetService = new HandicapGroupSetService(getHandicapGroupSetGateway());
+        }
+        return handicapGroupSetService;
+    }
+
     HandicapGroupSetGateway getHandicapGroupSetGateway() {
         if (handicapGroupSetGateway == null) {
             handicapGroupSetGateway = new HandicapGroupSetGateway(
@@ -295,7 +303,7 @@ public class ConerDropwizardDependencyContainer {
                     getCompetitionGroupService(),
                     getCompetitionGroupSetService(),
                     getHandicapGroupService(),
-                    getHandicapGroupSetGateway()
+                    getHandicapGroupSetService()
             );
         }
         return conerCoreService;

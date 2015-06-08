@@ -3,7 +3,6 @@ package org.coner.core;
 import org.coner.core.domain.entity.*;
 import org.coner.core.domain.service.*;
 import org.coner.core.exception.EventMismatchException;
-import org.coner.core.gateway.HandicapGroupSetGateway;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class ConerCoreService {
     private final CompetitionGroupService competitionGroupService;
     private final CompetitionGroupSetService competitionGroupSetService;
     private final HandicapGroupService handicapGroupService;
-    private final HandicapGroupSetGateway handicapGroupSetGateway;
+    private final HandicapGroupSetService handicapGroupSetService;
 
     public ConerCoreService(
             EventService eventService,
@@ -24,14 +23,14 @@ public class ConerCoreService {
             CompetitionGroupService competitionGroupService,
             CompetitionGroupSetService competitionGroupSetService,
             HandicapGroupService handicapGroupService,
-            HandicapGroupSetGateway handicapGroupSetGateway
+            HandicapGroupSetService handicapGroupSetService
     ) {
         this.eventService = eventService;
         this.registrationService = registrationService;
         this.competitionGroupSetService = competitionGroupSetService;
         this.competitionGroupService = competitionGroupService;
         this.handicapGroupService = handicapGroupService;
-        this.handicapGroupSetGateway = handicapGroupSetGateway;
+        this.handicapGroupSetService = handicapGroupSetService;
     }
 
     public List<Event> getEvents() {
@@ -90,7 +89,6 @@ public class ConerCoreService {
     }
 
     public void addHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
-        checkNotNull(handicapGroupSet);
-        handicapGroupSetGateway.create(handicapGroupSet);
+        handicapGroupSetService.add(checkNotNull(handicapGroupSet));
     }
 }
