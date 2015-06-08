@@ -2,7 +2,7 @@ package org.coner.core;
 
 import org.coner.core.domain.entity.*;
 import org.coner.core.domain.service.*;
-import org.coner.core.gateway.*;
+import org.coner.core.gateway.HandicapGroupSetGateway;
 
 import java.util.*;
 import org.junit.*;
@@ -30,7 +30,7 @@ public class ConerCoreServiceTest {
     @Mock
     private CompetitionGroupSetService competitionGroupSetService;
     @Mock
-    private HandicapGroupGateway handicapGroupGateway;
+    private HandicapGroupService handicapGroupService;
     @Mock
     private HandicapGroupSetGateway handicapGroupSetGateway;
 
@@ -43,7 +43,7 @@ public class ConerCoreServiceTest {
                 registrationService,
                 competitionGroupService,
                 competitionGroupSetService,
-                handicapGroupGateway,
+                handicapGroupService,
                 handicapGroupSetGateway
         );
     }
@@ -140,7 +140,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addHandicapGroup(handicapGroup);
 
-        verify(handicapGroupGateway).create(handicapGroup);
+        verify(handicapGroupService).add(handicapGroup);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ConerCoreServiceTest {
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(handicapGroupGateway);
+            verifyZeroInteractions(handicapGroupService);
         }
     }
 

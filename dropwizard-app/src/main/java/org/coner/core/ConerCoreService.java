@@ -3,9 +3,8 @@ package org.coner.core;
 import org.coner.core.domain.entity.*;
 import org.coner.core.domain.service.*;
 import org.coner.core.exception.EventMismatchException;
-import org.coner.core.gateway.*;
+import org.coner.core.gateway.HandicapGroupSetGateway;
 
-import com.google.common.base.*;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,7 +15,7 @@ public class ConerCoreService {
     private final RegistrationService registrationService;
     private final CompetitionGroupService competitionGroupService;
     private final CompetitionGroupSetService competitionGroupSetService;
-    private final HandicapGroupGateway handicapGroupGateway;
+    private final HandicapGroupService handicapGroupService;
     private final HandicapGroupSetGateway handicapGroupSetGateway;
 
     public ConerCoreService(
@@ -24,14 +23,14 @@ public class ConerCoreService {
             RegistrationService registrationService,
             CompetitionGroupService competitionGroupService,
             CompetitionGroupSetService competitionGroupSetService,
-            HandicapGroupGateway handicapGroupGateway,
+            HandicapGroupService handicapGroupService,
             HandicapGroupSetGateway handicapGroupSetGateway
     ) {
         this.eventService = eventService;
         this.registrationService = registrationService;
         this.competitionGroupSetService = competitionGroupSetService;
         this.competitionGroupService = competitionGroupService;
-        this.handicapGroupGateway = handicapGroupGateway;
+        this.handicapGroupService = handicapGroupService;
         this.handicapGroupSetGateway = handicapGroupSetGateway;
     }
 
@@ -79,17 +78,15 @@ public class ConerCoreService {
     }
 
     public void addHandicapGroup(HandicapGroup handicapGroup) {
-        checkNotNull(handicapGroup);
-        handicapGroupGateway.create(handicapGroup);
+        handicapGroupService.add(checkNotNull(handicapGroup));
     }
 
     public List<HandicapGroup> getHandicapGroups() {
-        return handicapGroupGateway.getAll();
+        return handicapGroupService.getAll();
     }
 
     public HandicapGroup getHandicapGroup(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return handicapGroupGateway.findById(id);
+        return handicapGroupService.getById(checkNotNull(id));
     }
 
     public void addHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
