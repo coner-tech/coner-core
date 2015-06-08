@@ -1,7 +1,7 @@
 package org.coner.core;
 
 import org.coner.core.domain.entity.*;
-import org.coner.core.domain.service.EventService;
+import org.coner.core.domain.service.*;
 import org.coner.core.gateway.*;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class ConerCoreServiceTest {
     @Mock
     private EventService eventService;
     @Mock
-    private RegistrationGateway registrationGateway;
+    private RegistrationService registrationService;
     @Mock
     private CompetitionGroupGateway competitionGroupGateway;
     @Mock
@@ -40,7 +40,7 @@ public class ConerCoreServiceTest {
     public void setup() {
         conerCoreService = new ConerCoreService(
                 eventService,
-                registrationGateway,
+                registrationService,
                 competitionGroupGateway,
                 competitionGroupSetGateway,
                 handicapGroupGateway,
@@ -112,13 +112,13 @@ public class ConerCoreServiceTest {
     public void whenGetRegistrationsForEventItShouldGetGetAllWithEvent() {
         Event event = mock(Event.class);
         List<Registration> expected = new ArrayList<>();
-        when(registrationGateway.getAllWith(event)).thenReturn(expected);
+        when(registrationService.getAllWith(event)).thenReturn(expected);
 
         List<Registration> actual = conerCoreService.getRegistrations(event);
 
-        verify(registrationGateway).getAllWith(event);
+        verify(registrationService).getAllWith(event);
         assertThat(actual).isSameAs(expected);
-        verifyNoMoreInteractions(registrationGateway);
+        verifyNoMoreInteractions(registrationService);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ConerCoreServiceTest {
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(registrationGateway);
+            verifyZeroInteractions(registrationService);
         }
     }
 
