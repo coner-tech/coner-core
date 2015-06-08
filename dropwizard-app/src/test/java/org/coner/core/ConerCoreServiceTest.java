@@ -26,7 +26,7 @@ public class ConerCoreServiceTest {
     @Mock
     private RegistrationService registrationService;
     @Mock
-    private CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupService competitionGroupService;
     @Mock
     private CompetitionGroupSetGateway competitionGroupSetGateway;
     @Mock
@@ -41,7 +41,7 @@ public class ConerCoreServiceTest {
         conerCoreService = new ConerCoreService(
                 eventService,
                 registrationService,
-                competitionGroupGateway,
+                competitionGroupService,
                 competitionGroupSetGateway,
                 handicapGroupGateway,
                 handicapGroupSetGateway
@@ -162,7 +162,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addCompetitionGroup(competitionGroup);
 
-        verify(competitionGroupGateway).create(competitionGroup);
+        verify(competitionGroupService).add(competitionGroup);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class ConerCoreServiceTest {
             conerCoreService.addCompetitionGroup(competitionGroup);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(competitionGroupGateway);
+            verifyZeroInteractions(competitionGroupService);
         }
     }
 

@@ -14,7 +14,7 @@ public class ConerCoreService {
 
     private final EventService eventService;
     private final RegistrationService registrationService;
-    private final CompetitionGroupGateway competitionGroupGateway;
+    private final CompetitionGroupService competitionGroupService;
     private final CompetitionGroupSetGateway competitionGroupSetGateway;
     private final HandicapGroupGateway handicapGroupGateway;
     private final HandicapGroupSetGateway handicapGroupSetGateway;
@@ -22,7 +22,7 @@ public class ConerCoreService {
     public ConerCoreService(
             EventService eventService,
             RegistrationService registrationService,
-            CompetitionGroupGateway competitionGroupGateway,
+            CompetitionGroupService competitionGroupService,
             CompetitionGroupSetGateway competitionGroupSetGateway,
             HandicapGroupGateway handicapGroupGateway,
             HandicapGroupSetGateway handicapGroupSetGateway
@@ -30,7 +30,7 @@ public class ConerCoreService {
         this.eventService = eventService;
         this.registrationService = registrationService;
         this.competitionGroupSetGateway = competitionGroupSetGateway;
-        this.competitionGroupGateway = competitionGroupGateway;
+        this.competitionGroupService = competitionGroupService;
         this.handicapGroupGateway = handicapGroupGateway;
         this.handicapGroupSetGateway = handicapGroupSetGateway;
     }
@@ -63,17 +63,15 @@ public class ConerCoreService {
     }
 
     public void addCompetitionGroup(CompetitionGroup competitionGroup) {
-        checkNotNull(competitionGroup);
-        competitionGroupGateway.create(competitionGroup);
+        competitionGroupService.add(checkNotNull(competitionGroup));
     }
 
     public List<CompetitionGroup> getCompetitionGroups() {
-        return competitionGroupGateway.getAll();
+        return competitionGroupService.getAll();
     }
 
     public CompetitionGroup getCompetitionGroup(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return competitionGroupGateway.findById(id);
+        return competitionGroupService.getById(checkNotNull(id));
     }
 
     public void addCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
