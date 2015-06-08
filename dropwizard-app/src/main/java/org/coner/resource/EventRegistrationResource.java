@@ -5,7 +5,7 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Registration;
-import org.coner.core.exception.EventRegistrationMismatchException;
+import org.coner.core.exception.EventMismatchException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -49,7 +49,7 @@ public class EventRegistrationResource {
         Registration domainRegistration;
         try {
             domainRegistration = conerCoreService.getRegistration(eventId, registrationId);
-        } catch (EventRegistrationMismatchException e) {
+        } catch (EventMismatchException e) {
             ErrorsResponse errorsResponse = new ErrorsResponse();
             errorsResponse.setErrors(Arrays.asList(
                     Response.Status.CONFLICT.getReasonPhrase(),

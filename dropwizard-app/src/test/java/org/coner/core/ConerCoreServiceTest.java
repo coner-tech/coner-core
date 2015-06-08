@@ -1,7 +1,7 @@
 package org.coner.core;
 
 import org.coner.core.domain.entity.*;
-import org.coner.core.gateway.*;
+import org.coner.core.domain.service.*;
 
 import java.util.*;
 import org.junit.*;
@@ -21,40 +21,40 @@ import static org.mockito.Mockito.when;
 public class ConerCoreServiceTest {
 
     @Mock
-    private EventGateway eventGateway;
+    private EventService eventService;
     @Mock
-    private RegistrationGateway registrationGateway;
+    private RegistrationService registrationService;
     @Mock
-    private CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupService competitionGroupService;
     @Mock
-    private CompetitionGroupSetGateway competitionGroupSetGateway;
+    private CompetitionGroupSetService competitionGroupSetService;
     @Mock
-    private HandicapGroupGateway handicapGroupGateway;
+    private HandicapGroupService handicapGroupService;
     @Mock
-    private HandicapGroupSetGateway handicapGroupSetGateway;
+    private HandicapGroupSetService handicapGroupSetService;
 
     private ConerCoreService conerCoreService;
 
     @Before
     public void setup() {
         conerCoreService = new ConerCoreService(
-                eventGateway,
-                registrationGateway,
-                competitionGroupGateway,
-                competitionGroupSetGateway,
-                handicapGroupGateway,
-                handicapGroupSetGateway
+                eventService,
+                registrationService,
+                competitionGroupService,
+                competitionGroupSetService,
+                handicapGroupService,
+                handicapGroupSetService
         );
     }
 
     @Test
     public void whenGetEventsItShouldGetFromEventGateway() {
         List<Event> expected = new ArrayList<>();
-        when(eventGateway.getAll()).thenReturn(expected);
+        when(eventService.getAll()).thenReturn(expected);
 
         List<Event> actual = conerCoreService.getEvents();
 
-        verify(eventGateway).getAll();
+        verify(eventService).getAll();
         assertThat(actual)
                 .isSameAs(expected);
     }
@@ -65,7 +65,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addEvent(event);
 
-        verify(eventGateway).create(event);
+        verify(eventService).add(event);
     }
 
     @Test
@@ -77,35 +77,33 @@ public class ConerCoreServiceTest {
         } catch (Exception e) {
             assertThat(e)
                     .isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(eventGateway);
+            verifyZeroInteractions(eventService);
         }
     }
 
     @Test
-    public void whenGetEventItShouldFindById() {
+    public void whenGetEventItShouldGetById() {
         String id = "test";
         Event expected = mock(Event.class);
-        when(eventGateway.findById(id)).thenReturn(expected);
+        when(eventService.getById(id)).thenReturn(expected);
 
         Event actual = conerCoreService.getEvent(id);
 
-        verify(eventGateway).findById(id);
-        verifyNoMoreInteractions(eventGateway);
+        verify(eventService).getById(id);
+        verifyNoMoreInteractions(eventService);
 
         assertThat(actual).isSameAs(expected);
     }
 
     @Test
-    public void whenGetEventWithoutIdItShouldThrow() {
-        String[] invalidIds = new String[]{null, ""};
-        for (String invalidId : invalidIds) {
-            try {
-                Event actual = conerCoreService.getEvent(invalidId);
-                failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
-            } catch (Exception e) {
-                assertThat(e).isInstanceOf(IllegalArgumentException.class);
-                verifyZeroInteractions(eventGateway);
-            }
+    public void whenGetEventWithNullIdItShouldThrow() {
+        String nullId = null;
+        try {
+            Event actual = conerCoreService.getEvent(nullId);
+            failBecauseExceptionWasNotThrown(NullPointerException.class);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(NullPointerException.class);
+            verifyZeroInteractions(eventService);
         }
     }
 
@@ -113,13 +111,13 @@ public class ConerCoreServiceTest {
     public void whenGetRegistrationsForEventItShouldGetGetAllWithEvent() {
         Event event = mock(Event.class);
         List<Registration> expected = new ArrayList<>();
-        when(registrationGateway.getAllWith(event)).thenReturn(expected);
+        when(registrationService.getAllWith(event)).thenReturn(expected);
 
         List<Registration> actual = conerCoreService.getRegistrations(event);
 
-        verify(registrationGateway).getAllWith(event);
+        verify(registrationService).getAllWith(event);
         assertThat(actual).isSameAs(expected);
-        verifyNoMoreInteractions(registrationGateway);
+        verifyNoMoreInteractions(registrationService);
     }
 
     @Test
@@ -131,7 +129,7 @@ public class ConerCoreServiceTest {
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(registrationGateway);
+            verifyZeroInteractions(registrationService);
         }
     }
 
@@ -141,7 +139,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addHandicapGroup(handicapGroup);
 
-        verify(handicapGroupGateway).create(handicapGroup);
+        verify(handicapGroupService).add(handicapGroup);
     }
 
     @Test
@@ -153,7 +151,7 @@ public class ConerCoreServiceTest {
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(handicapGroupGateway);
+            verifyZeroInteractions(handicapGroupService);
         }
     }
 
@@ -163,7 +161,7 @@ public class ConerCoreServiceTest {
 
         conerCoreService.addCompetitionGroup(competitionGroup);
 
-        verify(competitionGroupGateway).create(competitionGroup);
+        verify(competitionGroupService).add(competitionGroup);
     }
 
     @Test
@@ -174,7 +172,7 @@ public class ConerCoreServiceTest {
             conerCoreService.addCompetitionGroup(competitionGroup);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
-            verifyZeroInteractions(competitionGroupGateway);
+            verifyZeroInteractions(competitionGroupService);
         }
     }
 

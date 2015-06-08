@@ -12,7 +12,8 @@ public abstract class AbstractGateway<
         DE extends DomainEntity,
         HE extends HibernateEntity,
         B extends AbstractBoundary<HE, DE>,
-        D extends HibernateEntityDao<HE>> {
+        D extends HibernateEntityDao<HE>>
+        implements Gateway<DE, HE> {
 
     private final B boundary;
     private final D dao;
@@ -22,6 +23,7 @@ public abstract class AbstractGateway<
         this.dao = dao;
     }
 
+    @Override
     public void create(DE domainEntity) {
         Preconditions.checkNotNull(domainEntity);
         HE hibernateEntity = boundary.toLocalEntity(domainEntity);
@@ -29,11 +31,13 @@ public abstract class AbstractGateway<
         boundary.mergeLocalIntoRemote(hibernateEntity, domainEntity);
     }
 
+    @Override
     public List<DE> getAll() {
         List<HE> hibernateEntities = dao.findAll();
         return boundary.toRemoteEntities(hibernateEntities);
     }
 
+    @Override
     public DE findById(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id), "id must not be null or empty");
         HE hibernateEntity = dao.findById(id);

@@ -2,6 +2,7 @@ package org.coner;
 
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
+import org.coner.core.domain.service.*;
 import org.coner.core.gateway.*;
 import org.coner.hibernate.dao.*;
 import org.coner.hibernate.entity.HibernateEntity;
@@ -15,26 +16,32 @@ import org.reflections.Reflections;
 public class ConerDropwizardDependencyContainer {
 
     private HibernateBundle<ConerDropwizardConfiguration> hibernate;
+    private EventService eventService;
     private EventApiDomainBoundary eventApiDomainBoundary;
     private EventHibernateDomainBoundary eventHibernateDomainBoundary;
     private EventDao eventDao;
     private EventGateway eventGateway;
+    private RegistrationService registrationService;
     private RegistrationApiDomainBoundary registrationApiDomainBoundary;
     private RegistrationHibernateDomainBoundary registrationHibernateDomainBoundary;
     private RegistrationDao registrationDao;
     private RegistrationGateway registrationGateway;
+    private CompetitionGroupService competitionGroupService;
     private CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
     private CompetitionGroupHibernateDomainBoundary competitionGroupHibernateDomainBoundary;
     private CompetitionGroupDao competitionGroupDao;
     private CompetitionGroupGateway competitionGroupGateway;
+    private CompetitionGroupSetService competitionGroupSetService;
     private CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
     private CompetitionGroupSetHibernateDomainBoundary competitionGroupSetHibernateDomainBoundary;
     private CompetitionGroupSetGateway competitionGroupSetGateway;
     private CompetitionGroupSetDao competitionGroupSetDao;
+    private HandicapGroupService handicapGroupService;
     private HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
     private HandicapGroupHibernateDomainBoundary handicapGroupHibernateDomainBoundary;
     private HandicapGroupDao handicapGroupDao;
     private HandicapGroupGateway handicapGroupGateway;
+    private HandicapGroupSetService handicapGroupSetService;
     private HandicapGroupSetApiDomainBoundary handicapGroupSetApiDomainBoundary;
     private HandicapGroupSetHibernateDomainBoundary handicapGroupSetHibernateDomainBoundary;
     private HandicapGroupSetDao handicapGroupSetDao;
@@ -57,6 +64,13 @@ public class ConerDropwizardDependencyContainer {
             };
         }
         return hibernate;
+    }
+
+    EventService getEventService() {
+        if (eventService == null) {
+            eventService = new EventService(getEventGateway());
+        }
+        return eventService;
     }
 
     EventApiDomainBoundary getEventApiDomainBoundary() {
@@ -85,6 +99,13 @@ public class ConerDropwizardDependencyContainer {
             eventGateway = new EventGateway(getEventHibernateDomainBoundary(), getEventDao());
         }
         return eventGateway;
+    }
+
+    RegistrationService getRegistrationService() {
+        if (registrationService == null) {
+            registrationService = new RegistrationService(getRegistrationGateway());
+        }
+        return registrationService;
     }
 
     RegistrationApiDomainBoundary getRegistrationApiDomainBoundary() {
@@ -121,6 +142,14 @@ public class ConerDropwizardDependencyContainer {
         return registrationGateway;
     }
 
+
+    HandicapGroupService getHandicapGroupService() {
+        if (handicapGroupService == null) {
+            handicapGroupService = new HandicapGroupService(getHandicapGroupGateway());
+        }
+        return handicapGroupService;
+    }
+
     HandicapGroupApiDomainBoundary getHandicapGroupApiDomainBoundary() {
         if (handicapGroupApiDomainBoundary == null) {
             handicapGroupApiDomainBoundary = new HandicapGroupApiDomainBoundary();
@@ -150,6 +179,13 @@ public class ConerDropwizardDependencyContainer {
             );
         }
         return handicapGroupGateway;
+    }
+
+    HandicapGroupSetService getHandicapGroupSetService() {
+        if (handicapGroupSetService == null) {
+            handicapGroupSetService = new HandicapGroupSetService(getHandicapGroupSetGateway());
+        }
+        return handicapGroupSetService;
     }
 
     HandicapGroupSetGateway getHandicapGroupSetGateway() {
@@ -183,6 +219,13 @@ public class ConerDropwizardDependencyContainer {
         return handicapGroupSetDao;
     }
 
+    CompetitionGroupService getCompetitionGroupService() {
+        if (competitionGroupService == null) {
+            competitionGroupService = new CompetitionGroupService(getCompetitionGroupGateway());
+        }
+        return competitionGroupService;
+    }
+
     CompetitionGroupApiDomainBoundary getCompetitionGroupApiDomainBoundary() {
         if (competitionGroupApiDomainBoundary == null) {
             competitionGroupApiDomainBoundary = new CompetitionGroupApiDomainBoundary();
@@ -212,6 +255,13 @@ public class ConerDropwizardDependencyContainer {
             );
         }
         return competitionGroupGateway;
+    }
+
+    CompetitionGroupSetService getCompetitionGroupSetService() {
+        if (competitionGroupSetService == null) {
+            competitionGroupSetService = new CompetitionGroupSetService(getCompetitionGroupSetGateway());
+        }
+        return competitionGroupSetService;
     }
 
     CompetitionGroupSetGateway getCompetitionGroupSetGateway() {
@@ -248,12 +298,12 @@ public class ConerDropwizardDependencyContainer {
     ConerCoreService getConerCoreService() {
         if (conerCoreService == null) {
             conerCoreService = new ConerCoreService(
-                    getEventGateway(),
-                    getRegistrationGateway(),
-                    getCompetitionGroupGateway(),
-                    getCompetitionGroupSetGateway(),
-                    getHandicapGroupGateway(),
-                    getHandicapGroupSetGateway()
+                    getEventService(),
+                    getRegistrationService(),
+                    getCompetitionGroupService(),
+                    getCompetitionGroupSetService(),
+                    getHandicapGroupService(),
+                    getHandicapGroupSetService()
             );
         }
         return conerCoreService;

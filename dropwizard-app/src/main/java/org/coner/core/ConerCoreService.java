@@ -1,115 +1,94 @@
 package org.coner.core;
 
 import org.coner.core.domain.entity.*;
-import org.coner.core.exception.EventRegistrationMismatchException;
-import org.coner.core.gateway.*;
+import org.coner.core.domain.service.*;
+import org.coner.core.exception.EventMismatchException;
 
-import com.google.common.base.*;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConerCoreService {
 
-    private final EventGateway eventGateway;
-    private final RegistrationGateway registrationGateway;
-    private final CompetitionGroupGateway competitionGroupGateway;
-    private final CompetitionGroupSetGateway competitionGroupSetGateway;
-    private final HandicapGroupGateway handicapGroupGateway;
-    private final HandicapGroupSetGateway handicapGroupSetGateway;
+    private final EventService eventService;
+    private final RegistrationService registrationService;
+    private final CompetitionGroupService competitionGroupService;
+    private final CompetitionGroupSetService competitionGroupSetService;
+    private final HandicapGroupService handicapGroupService;
+    private final HandicapGroupSetService handicapGroupSetService;
 
-    public ConerCoreService(EventGateway eventGateway,
-                            RegistrationGateway registrationGateway,
-                            CompetitionGroupGateway competitionGroupGateway,
-                            CompetitionGroupSetGateway competitionGroupSetGateway,
-                            HandicapGroupGateway handicapGroupGateway,
-                            HandicapGroupSetGateway handicapGroupSetGateway
+    public ConerCoreService(
+            EventService eventService,
+            RegistrationService registrationService,
+            CompetitionGroupService competitionGroupService,
+            CompetitionGroupSetService competitionGroupSetService,
+            HandicapGroupService handicapGroupService,
+            HandicapGroupSetService handicapGroupSetService
     ) {
-        this.eventGateway = eventGateway;
-        this.registrationGateway = registrationGateway;
-        this.competitionGroupSetGateway = competitionGroupSetGateway;
-        this.competitionGroupGateway = competitionGroupGateway;
-        this.handicapGroupGateway = handicapGroupGateway;
-        this.handicapGroupSetGateway = handicapGroupSetGateway;
+        this.eventService = eventService;
+        this.registrationService = registrationService;
+        this.competitionGroupSetService = competitionGroupSetService;
+        this.competitionGroupService = competitionGroupService;
+        this.handicapGroupService = handicapGroupService;
+        this.handicapGroupSetService = handicapGroupSetService;
     }
 
     public List<Event> getEvents() {
-        return eventGateway.getAll();
+        return eventService.getAll();
     }
 
     public void addEvent(Event event) {
-        Preconditions.checkNotNull(event);
-        eventGateway.create(event);
+        eventService.add(checkNotNull(event));
     }
 
     public Event getEvent(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return eventGateway.findById(id);
+        return eventService.getById(checkNotNull(id));
     }
 
-    public Registration getRegistration(String eventId, String registrationId)
-            throws EventRegistrationMismatchException {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(eventId));
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(registrationId));
-        Event event = eventGateway.findById(eventId);
-        if (event == null) {
-            return null;
-        }
-        Registration registration = registrationGateway.findById(registrationId);
-        if (registration == null) {
-            return null;
-        }
-        if (!registration.getEvent().getId().equals(eventId)) {
-            throw new EventRegistrationMismatchException();
-        }
-        return registration;
+    public Registration getRegistration(String eventId, String registrationId) throws EventMismatchException {
+        Event event = eventService.getById(checkNotNull(eventId));
+        return registrationService.getByIdWithEvent(checkNotNull(registrationId), event);
     }
 
     public void addRegistration(Event event, Registration registration) {
-        Preconditions.checkNotNull(registration);
-        Preconditions.checkNotNull(event);
-        registration.setEvent(event);
-        registrationGateway.create(registration);
+        registration.setEvent(checkNotNull(event));
+        registrationService.add(registration);
     }
 
     public List<Registration> getRegistrations(Event event) {
-        Preconditions.checkNotNull(event);
-        return registrationGateway.getAllWith(event);
+        checkNotNull(event);
+        return registrationService.getAllWith(event);
     }
 
     public void addCompetitionGroup(CompetitionGroup competitionGroup) {
-        Preconditions.checkNotNull(competitionGroup);
-        competitionGroupGateway.create(competitionGroup);
+        competitionGroupService.add(checkNotNull(competitionGroup));
     }
 
     public List<CompetitionGroup> getCompetitionGroups() {
-        return competitionGroupGateway.getAll();
+        return competitionGroupService.getAll();
     }
 
     public CompetitionGroup getCompetitionGroup(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return competitionGroupGateway.findById(id);
+        return competitionGroupService.getById(checkNotNull(id));
     }
 
     public void addCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
-        Preconditions.checkNotNull(competitionGroupSet);
-        competitionGroupSetGateway.create(competitionGroupSet);
+        competitionGroupSetService.add(checkNotNull(competitionGroupSet));
     }
 
     public void addHandicapGroup(HandicapGroup handicapGroup) {
-        Preconditions.checkNotNull(handicapGroup);
-        handicapGroupGateway.create(handicapGroup);
+        handicapGroupService.add(checkNotNull(handicapGroup));
     }
 
     public List<HandicapGroup> getHandicapGroups() {
-        return handicapGroupGateway.getAll();
+        return handicapGroupService.getAll();
     }
 
     public HandicapGroup getHandicapGroup(String id) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-        return handicapGroupGateway.findById(id);
+        return handicapGroupService.getById(checkNotNull(id));
     }
 
     public void addHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
-        Preconditions.checkNotNull(handicapGroupSet);
-        handicapGroupSetGateway.create(handicapGroupSet);
+        handicapGroupSetService.add(checkNotNull(handicapGroupSet));
     }
 }

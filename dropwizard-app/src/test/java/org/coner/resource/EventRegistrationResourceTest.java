@@ -4,7 +4,7 @@ import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.*;
-import org.coner.core.exception.EventRegistrationMismatchException;
+import org.coner.core.exception.EventMismatchException;
 import org.coner.util.*;
 
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
@@ -38,7 +38,7 @@ public class EventRegistrationResourceTest {
     }
 
     @Test
-    public void itShouldGetRegistration() throws EventRegistrationMismatchException {
+    public void itShouldGetRegistration() throws EventMismatchException {
         Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
         RegistrationApiEntity apiRegistration = ApiEntityTestUtils.fullApiRegistration();
@@ -71,7 +71,7 @@ public class EventRegistrationResourceTest {
     }
 
     @Test
-    public void whenEventIdDoesNotExistItShouldReturnNotFound() throws EventRegistrationMismatchException {
+    public void whenEventIdDoesNotExistItShouldReturnNotFound() throws EventMismatchException {
         when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID)).thenReturn(null);
 
         Response registrationResponseContainer = resources.client()
@@ -88,7 +88,7 @@ public class EventRegistrationResourceTest {
     }
 
     @Test
-    public void whenRegistrationIdDoesNotExistItShouldReturnNotFound() throws EventRegistrationMismatchException {
+    public void whenRegistrationIdDoesNotExistItShouldReturnNotFound() throws EventMismatchException {
         when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID)).thenReturn(null);
 
         Response registrationResponseContainer = resources.client()
@@ -106,9 +106,9 @@ public class EventRegistrationResourceTest {
 
     @Test
     public void whenRegistrationEventIdDoesNotMatchEventIdItShouldReturnConflict()
-            throws EventRegistrationMismatchException {
+            throws EventMismatchException {
         when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID))
-                .thenThrow(new EventRegistrationMismatchException());
+                .thenThrow(new EventMismatchException());
 
         Response registrationResponseContainer = resources.client()
                 .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
