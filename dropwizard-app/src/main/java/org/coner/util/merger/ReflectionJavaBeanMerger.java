@@ -2,10 +2,10 @@ package org.coner.util.merger;
 
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.*;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
- * ReflectionObjectMerger uses reflection to automatically merge objects that follow the JavaBean convention.
+ * ReflectionJavaBeanMerger uses reflection to automatically merge objects that follow the JavaBean convention.
  * <p>
  * Only the destination object's setters which correspond to the source object's getters will be called. Only the
  * getters/setters which correspond to like-named properties will be used. Strings corresponding to Enum names will be
@@ -47,82 +47,23 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
      * @param destinationClass the class of the destination
      */
     private void buildSourceDestinationMethodPairs(Class<?> sourceClass, Class<?> destinationClass) {
-        Method[] allSourceMethods = sourceClass.getDeclaredMethods();
-        Method[] allDestinationMethods = destinationClass.getDeclaredMethods();
+        JavaBeanClassInspector sourceClassInspector = new JavaBeanClassInspector(sourceClass);
+        Map<String, Method> sourceFieldsToAccessors = sourceClassInspector.getFieldNamesToDirectAccessors();
 
-        // build map of source getters by field name
-        HashMap<String, Method> sourceGettersByFieldName = new HashMap<>();
-        for (Method sourceMethod : allSourceMethods) {
-            boolean sourceMethodStartsWithGet = sourceMethod.getName().startsWith("get");
-            boolean sourceMethodStartsWithIs = sourceMethod.getName().startsWith("is");
-            if (!sourceMethodStartsWithGet && !sourceMethodStartsWithIs) {
-                // if it doesn't start with "get" or "is" it's not a getter
-                continue;
-            }
-            if (sourceMethod.getParameterCount() > 0) {
-                // if it has parameters it's not a getter
-                continue;
-            }
-            String sourceFieldName;
-            if (sourceMethodStartsWithGet) {
-                sourceFieldName = new StringBuilder(sourceMethod.getName().substring(3, 4).toLowerCase())
-                        .append(sourceMethod.getName().substring(4))
-                        .toString();
-            } else if (sourceMethodStartsWithIs) {
-                sourceFieldName = new StringBuilder(sourceMethod.getName().substring(2, 3).toLowerCase())
-                        .append(sourceMethod.getName().substring(3))
-                        .toString();
-            } else {
-                throw new IllegalStateException(
-                        "should never reach here unless acceptable getter name prefixes expand beyond \"get\", \"is\""
-                );
-            }
-            Field sourceField;
-            try {
-                sourceField = sourceClass.getDeclaredField(sourceFieldName);
-            } catch (NoSuchFieldException e) {
-                // if it doesn't have a field matching the same name, we're not using it
-                continue;
-            }
-            sourceGettersByFieldName.put(sourceFieldName, sourceMethod);
-        }
-
-        // build map of destination setters by field name
-        HashMap<String, Method> destinationSettersByFieldName = new HashMap<>();
-        for (Method destinationMethod : allDestinationMethods) {
-            if (!destinationMethod.getName().startsWith("set")) {
-                // if it doesn't start with "set" it's not a setter
-                continue;
-            }
-            if (destinationMethod.getParameterCount() != 1) {
-                // if it doesn't have 1 parameter it's not a setter
-                continue;
-            }
-            String destinationFieldName = new StringBuilder(destinationMethod.getName().substring(3, 4).toLowerCase())
-                    .append(destinationMethod.getName().substring(4))
-                    .toString();
-            Field destinationField;
-            try {
-                destinationField = destinationClass.getDeclaredField(destinationFieldName);
-            } catch (NoSuchFieldException e) {
-                // if it doesn't have a field matching the same name, we're not using it
-                continue;
-            }
-            destinationSettersByFieldName.put(destinationFieldName, destinationMethod);
-        }
+        JavaBeanClassInspector destinationClassInspector = new JavaBeanClassInspector(destinationClass);
+        Map<String, Method> destinationFieldsToMutators = destinationClassInspector.getFieldNamesToDirectMutators();
 
         // build map of source getter and destination setter pairs by source field name
-        ImmutableList.Builder<MergeOperation> mergeOperationsBuilder = ImmutableList
-                .builder();
-        for (String sourceFieldName : sourceGettersByFieldName.keySet()) {
+        ImmutableList.Builder<MergeOperation> mergeOperationsBuilder = ImmutableList.builder();
+        for (String sourceFieldName : sourceFieldsToAccessors.keySet()) {
             ValueTransformer valueTransformer = null;
-            if (!destinationSettersByFieldName.containsKey(sourceFieldName)) {
+            if (!destinationFieldsToMutators.containsKey(sourceFieldName)) {
                 // no destination setter to pair with the source getter
                 continue;
             }
 
-            Method sourceGetter = sourceGettersByFieldName.get(sourceFieldName);
-            Method destinationSetter = destinationSettersByFieldName.get(sourceFieldName);
+            Method sourceGetter = sourceFieldsToAccessors.get(sourceFieldName);
+            Method destinationSetter = destinationFieldsToMutators.get(sourceFieldName);
 
             if (!destinationSetter.getParameters()[0].getType().isAssignableFrom(sourceGetter.getReturnType())) {
                 // source getter return type doesn't match destination setter type.
