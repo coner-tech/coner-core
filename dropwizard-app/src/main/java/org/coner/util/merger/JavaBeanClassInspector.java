@@ -1,4 +1,4 @@
-package org.coner.util;
+package org.coner.util.merger;
 
 import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Method;

@@ -1,7 +1,5 @@
 package org.coner.util.merger;
 
-import org.coner.util.JavaBeanClassInspector;
-
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.*;
 import java.util.Map;
