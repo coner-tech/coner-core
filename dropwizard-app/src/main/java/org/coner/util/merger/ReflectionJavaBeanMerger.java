@@ -56,7 +56,6 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
         // build map of source getter and destination setter pairs by source field name
         ImmutableList.Builder<MergeOperation> mergeOperationsBuilder = ImmutableList.builder();
         for (String sourceFieldName : sourceFieldsToAccessors.keySet()) {
-            ValueTransformer valueTransformer = null;
             if (!destinationFieldsToMutators.containsKey(sourceFieldName)) {
                 // no destination setter to pair with the source getter
                 continue;
@@ -65,23 +64,16 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
             Method sourceGetter = sourceFieldsToAccessors.get(sourceFieldName);
             Method destinationSetter = destinationFieldsToMutators.get(sourceFieldName);
 
-            if (!destinationSetter.getParameters()[0].getType().isAssignableFrom(sourceGetter.getReturnType())) {
-                // source getter return type doesn't match destination setter type.
-
-                Class<?> sourceGetterReturnType = sourceGetter.getReturnType();
-                Class<?> destinationSetterParameter0Type = destinationSetter.getParameterTypes()[0];
-                if (shouldUseStringToEnumValueTransformer(sourceGetterReturnType, destinationSetterParameter0Type)) {
-                    valueTransformer = new StringToEnumValueTransformer(
-                            (Class<? extends Enum>) destinationSetter.getParameterTypes()[0]
-                    );
-                } else if (shouldUseEnumToStringValueTransformer(
+            Class<?> sourceGetterReturnType = sourceGetter.getReturnType();
+            Class<?> destinationSetterParameter0Type = destinationSetter.getParameterTypes()[0];
+            ValueTransformer valueTransformer = null;
+            try {
+                valueTransformer = ValueTransformerFactory.getValueTransformer(
                         sourceGetterReturnType,
-                        destinationSetterParameter0Type)) {
-                    valueTransformer = new EnumToStringValueTransformer();
-                } else {
-                    // not supported, skip
-                    continue;
-                }
+                        destinationSetterParameter0Type
+                );
+            } catch (UnsupportedOperationException e) {
+                continue;
             }
 
             mergeOperationsBuilder.add(new MergeOperation(
@@ -91,20 +83,6 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
             ));
         }
         mergeOperations = mergeOperationsBuilder.build();
-    }
-
-    private boolean shouldUseStringToEnumValueTransformer(
-            Class<?> sourceGetterReturnType,
-            Class<?> destinationSetterParameter0Type
-    ) {
-        return sourceGetterReturnType == String.class && Enum.class.isAssignableFrom(destinationSetterParameter0Type);
-    }
-
-    private boolean shouldUseEnumToStringValueTransformer(
-            Class<?> sourceGetterReturnType,
-            Class<?> destinationSetterParameter0Type
-    ) {
-        return Enum.class.isAssignableFrom(sourceGetterReturnType) && destinationSetterParameter0Type == String.class;
     }
 
     @Override

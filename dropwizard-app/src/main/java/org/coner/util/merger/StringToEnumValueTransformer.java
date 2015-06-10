@@ -9,6 +9,10 @@ public class StringToEnumValueTransformer implements ValueTransformer {
         this.destinationEnumType = destinationEnumType;
     }
 
+    public static boolean areEligible(Class<?> sourceType, Class<?> destinationType) {
+        return sourceType == String.class && Enum.class.isAssignableFrom(destinationType);
+    }
+
     @Override
     public Object transform(Object value) {
         String stringValue = (String) value;
