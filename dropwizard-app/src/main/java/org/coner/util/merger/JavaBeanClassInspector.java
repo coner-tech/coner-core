@@ -1,6 +1,6 @@
 package org.coner.util.merger;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -15,18 +15,32 @@ public final class JavaBeanClassInspector {
         this.javaBeanClass = javaBeanClass;
     }
 
-    public ImmutableMap<String, Method> getFieldNamesToDirectAccessors() {
+    public ImmutableSet<String> getFieldNamesWithDirectAccessors() {
         if (fieldNamesToDirectAccessors == null) {
             buildFieldNamesToDirectAccessors();
         }
-        return fieldNamesToDirectAccessors;
+        return fieldNamesToDirectAccessors.keySet();
     }
 
-    public ImmutableMap<String, Method> getFieldNamesToDirectMutators() {
+    public Method getDirectAccessorByFieldName(String name) {
+        if (fieldNamesToDirectAccessors == null) {
+            buildFieldNamesToDirectAccessors();
+        }
+        return fieldNamesToDirectAccessors.get(name);
+    }
+
+    public Method getDirectMutatorByFieldName(String name) {
         if (fieldNamesToDirectMutators == null) {
             buildFieldNamesToDirectMutators();
         }
-        return fieldNamesToDirectMutators;
+        return fieldNamesToDirectMutators.get(name);
+    }
+
+    public boolean hasFieldWithDirectMutator(String fieldName) {
+        if (fieldNamesToDirectMutators == null) {
+            buildFieldNamesToDirectMutators();
+        }
+        return fieldNamesToDirectMutators.containsKey(fieldName);
     }
 
     private void buildFieldNamesToDirectAccessors() {

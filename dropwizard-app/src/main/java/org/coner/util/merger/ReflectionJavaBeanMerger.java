@@ -2,7 +2,6 @@ package org.coner.util.merger;
 
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.*;
-import java.util.Map;
 
 /**
  * ReflectionJavaBeanMerger uses reflection to automatically merge objects that follow the JavaBean convention.
@@ -46,39 +45,37 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
      * @param sourceClass      the class of the source
      * @param destinationClass the class of the destination
      */
-    private void buildSourceDestinationMethodPairs(Class<?> sourceClass, Class<?> destinationClass) {
+    private void buildMergeOperations(Class<?> sourceClass, Class<?> destinationClass) {
         JavaBeanClassInspector sourceClassInspector = new JavaBeanClassInspector(sourceClass);
-        Map<String, Method> sourceFieldsToAccessors = sourceClassInspector.getFieldNamesToDirectAccessors();
 
         JavaBeanClassInspector destinationClassInspector = new JavaBeanClassInspector(destinationClass);
-        Map<String, Method> destinationFieldsToMutators = destinationClassInspector.getFieldNamesToDirectMutators();
 
         // build map of source getter and destination setter pairs by source field name
         ImmutableList.Builder<MergeOperation> mergeOperationsBuilder = ImmutableList.builder();
-        for (String sourceFieldName : sourceFieldsToAccessors.keySet()) {
-            if (!destinationFieldsToMutators.containsKey(sourceFieldName)) {
+        for (String sourceFieldName : sourceClassInspector.getFieldNamesWithDirectAccessors()) {
+            if (!destinationClassInspector.hasFieldWithDirectMutator(sourceFieldName)) {
                 // no destination setter to pair with the source getter
                 continue;
             }
 
-            Method sourceGetter = sourceFieldsToAccessors.get(sourceFieldName);
-            Method destinationSetter = destinationFieldsToMutators.get(sourceFieldName);
+            Method sourceAccessor = sourceClassInspector.getDirectAccessorByFieldName(sourceFieldName);
+            Method destinationMutator = destinationClassInspector.getDirectMutatorByFieldName(sourceFieldName);
 
-            Class<?> sourceGetterReturnType = sourceGetter.getReturnType();
-            Class<?> destinationSetterParameter0Type = destinationSetter.getParameterTypes()[0];
+            Class<?> sourceAccessorReturnType = sourceAccessor.getReturnType();
+            Class<?> destinationMutatorParameterType = destinationMutator.getParameterTypes()[0];
             ValueTransformer valueTransformer = null;
             try {
                 valueTransformer = ValueTransformerFactory.getValueTransformer(
-                        sourceGetterReturnType,
-                        destinationSetterParameter0Type
+                        sourceAccessorReturnType,
+                        destinationMutatorParameterType
                 );
             } catch (UnsupportedOperationException e) {
                 continue;
             }
 
             mergeOperationsBuilder.add(new MergeOperation(
-                    sourceGetter,
-                    destinationSetter,
+                    sourceAccessor,
+                    destinationMutator,
                     valueTransformer
             ));
         }
@@ -88,20 +85,11 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
     @Override
     public final void merge(S source, D destination) {
         if (mergeOperations == null) {
-            buildSourceDestinationMethodPairs(source.getClass(), destination.getClass());
+            buildMergeOperations(source.getClass(), destination.getClass());
         }
 
         for (MergeOperation mergeOperation : mergeOperations) {
-            try {
-                Object value = mergeOperation.sourceMethod.invoke(source);
-                if (mergeOperation.valueTransformer != null) {
-                    value = mergeOperation.valueTransformer.transform(value);
-                }
-                mergeOperation.destinationMethod.invoke(destination, value);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+            mergeOperation.execute(source, destination);
         }
 
         if (additionalMerger != null) {
@@ -109,15 +97,28 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
         }
     }
 
-    private static final class MergeOperation {
-        private final Method sourceMethod;
-        private final Method destinationMethod;
+    private static final class MergeOperation<S, D> {
+        private final Method sourceAccessor;
+        private final Method destinationMutator;
         private final ValueTransformer valueTransformer;
 
-        private MergeOperation(Method sourceMethod, Method destinationMethod, ValueTransformer valueTransformer) {
-            this.sourceMethod = sourceMethod;
-            this.destinationMethod = destinationMethod;
+        private MergeOperation(Method sourceAccessor, Method destinationMutator, ValueTransformer valueTransformer) {
+            this.sourceAccessor = sourceAccessor;
+            this.destinationMutator = destinationMutator;
             this.valueTransformer = valueTransformer;
+        }
+
+        private void execute(S source, D destination) {
+            try {
+                Object value = sourceAccessor.invoke(source);
+                if (valueTransformer != null) {
+                    value = valueTransformer.transform(value);
+                }
+                destinationMutator.invoke(destination, value);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         }
     }
 
