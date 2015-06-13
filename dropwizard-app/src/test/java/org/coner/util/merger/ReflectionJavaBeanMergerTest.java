@@ -3,8 +3,6 @@ package org.coner.util.merger;
 import org.junit.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class ReflectionJavaBeanMergerTest {
 
@@ -58,30 +56,6 @@ public class ReflectionJavaBeanMergerTest {
         assertThat(testDestinationEntity.propertyStringWithDestinationEnum)
                 .isEqualTo(TestDestinationEntity.Direction.EAST);
         assertThat(testDestinationEntity.propertyEnumWithStringDestination).isEqualTo("PLAYING");
-    }
-
-    @Test
-    public void itShouldCallAdditionalEntityMerger() {
-        ObjectMerger mockObjectMerger = mock(ObjectMerger.class);
-        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>(
-                mockObjectMerger
-        );
-
-        merger.merge(testSourceEntity, testDestinationEntity);
-
-        verify(mockObjectMerger).merge(testSourceEntity, testDestinationEntity);
-    }
-
-    @Test
-    public void itShouldCallAdditionalEntityMergerAfterReflectionMergeComplete() {
-        ReflectionJavaBeanMerger<TestSourceEntity, TestDestinationEntity> merger = new ReflectionJavaBeanMerger<>(
-                (sourceEntity, destinationEntity) -> {
-                    assertThat(destinationEntity.propertyCommon).isEqualTo(VALUE_PROPERTY_COMMON);
-                    assertThat(destinationEntity.propertyBoolean).isTrue();
-                }
-        );
-
-        merger.merge(testSourceEntity, testDestinationEntity);
     }
 
     @Test

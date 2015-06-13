@@ -15,28 +15,9 @@ import java.lang.reflect.*;
  */
 public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
 
-    private final ObjectMerger<S, D> additionalMerger;
     private ImmutableList<MergeOperation> mergeOperations;
 
-    /**
-     * Construct a ReflectionJavaBeanMerger with default functionality.
-     */
     public ReflectionJavaBeanMerger() {
-        this.additionalMerger = null;
-    }
-
-    /**
-     * Construct a ReflectionJavaBeanMerger with an additional ObjectMerger. This is useful in case there are some
-     * differences in class design that ReflectionJavaBeanMerger can't reasonably account for, such as different
-     * property names or data types. You might use this in case your classes are mostly similar with only a couple
-     * exceptions. However, if your objects diverge much, you may be better off implementing a custom ObjectMerger
-     * which handles the entire merge itself.
-     *
-     * @param additionalMerger an additional ObjectMerger which will be called after reflection-based merge
-     *                         operations have been performed
-     */
-    public ReflectionJavaBeanMerger(ObjectMerger<S, D> additionalMerger) {
-        this.additionalMerger = additionalMerger;
     }
 
     /**
@@ -90,10 +71,6 @@ public class ReflectionJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
 
         for (MergeOperation mergeOperation : mergeOperations) {
             mergeOperation.execute(source, destination);
-        }
-
-        if (additionalMerger != null) {
-            additionalMerger.merge(source, destination);
         }
     }
 

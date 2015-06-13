@@ -1,14 +1,11 @@
 package org.coner.util.merger;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.coner.util.merger.ReflectionPayloadJavaBeanMerger.javaBeanToPayload;
 import static org.coner.util.merger.ReflectionPayloadJavaBeanMerger.payloadToJavaBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class ReflectionPayloadJavaBeanMergerTest {
 
@@ -36,19 +33,6 @@ public class ReflectionPayloadJavaBeanMergerTest {
         merger.merge(sourcePayload, destinationJavaBean);
 
         assertThat(destinationJavaBean.getTheInt()).isEqualTo(42);
-    }
-
-    @Test
-    public void whenGivenAdditionalMergerItShouldAlwaysMerge() {
-        ObjectMerger<SimpleJavaBean, SimplePayload> additionalMerger = Mockito.mock(ObjectMerger.class);
-        SimpleJavaBean simpleJavaBean = new SimpleJavaBean();
-        SimplePayload simplePayload = new SimplePayload();
-
-        ReflectionPayloadJavaBeanMerger<SimpleJavaBean, SimplePayload> merger = javaBeanToPayload(additionalMerger);
-        merger.merge(simpleJavaBean, simplePayload);
-
-        verify(additionalMerger).merge(simpleJavaBean, simplePayload);
-        verifyNoMoreInteractions(additionalMerger);
     }
 
     @Test

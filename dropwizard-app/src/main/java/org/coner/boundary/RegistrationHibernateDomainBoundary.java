@@ -14,15 +14,21 @@ public class RegistrationHibernateDomainBoundary extends AbstractBoundary<Regist
 
     @Override
     protected ObjectMerger<RegistrationHibernateEntity, Registration> buildLocalToRemoteMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setEvent(eventHibernateDomainBoundary.toRemoteEntity(source.getEvent()));
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setEvent(eventHibernateDomainBoundary.toRemoteEntity(source.getEvent()));
+                }
+        );
     }
 
     @Override
     protected ObjectMerger<Registration, RegistrationHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setEvent(eventHibernateDomainBoundary.toLocalEntity(source.getEvent()));
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setEvent(eventHibernateDomainBoundary.toLocalEntity(source.getEvent()));
+                }
+        );
     }
 }

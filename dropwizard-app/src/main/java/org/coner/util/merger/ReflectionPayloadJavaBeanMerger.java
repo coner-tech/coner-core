@@ -5,29 +5,19 @@ import java.lang.reflect.*;
 
 public class ReflectionPayloadJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
     private final Direction direction;
-    private final ObjectMerger<S, D> additionalMerger;
     private ImmutableList<MergeOperation<S, D>> mergeOperations;
 
-    public ReflectionPayloadJavaBeanMerger(Direction direction, ObjectMerger<S, D> additionalMerger) {
+    public ReflectionPayloadJavaBeanMerger(Direction direction) {
         this.direction = direction;
-        this.additionalMerger = additionalMerger;
-    }
-
-    public static <S, D> ReflectionPayloadJavaBeanMerger<S, D> payloadToJavaBean(ObjectMerger<S, D> additionalMerger) {
-        return new ReflectionPayloadJavaBeanMerger<>(Direction.PAYLOAD_TO_JAVABEAN, additionalMerger);
-    }
-
-    public static <S, D> ReflectionPayloadJavaBeanMerger<S, D> javaBeanToPayload(ObjectMerger<S, D> additionalMerger) {
-        return new ReflectionPayloadJavaBeanMerger<>(Direction.JAVABEAN_TO_PAYLOAD, additionalMerger);
     }
 
     public static <S, D> ReflectionPayloadJavaBeanMerger<S, D> javaBeanToPayload() {
-        return new ReflectionPayloadJavaBeanMerger<>(Direction.JAVABEAN_TO_PAYLOAD, null);
+        return new ReflectionPayloadJavaBeanMerger<>(Direction.JAVABEAN_TO_PAYLOAD);
     }
 
     public static <S, D> ReflectionPayloadJavaBeanMerger<S, D> payloadToJavaBean(
     ) {
-        return new ReflectionPayloadJavaBeanMerger<>(Direction.PAYLOAD_TO_JAVABEAN, null);
+        return new ReflectionPayloadJavaBeanMerger<>(Direction.PAYLOAD_TO_JAVABEAN);
     }
 
     @Override
@@ -38,10 +28,6 @@ public class ReflectionPayloadJavaBeanMerger<S, D> implements ObjectMerger<S, D>
 
         for (MergeOperation<S, D> mergeOperation : mergeOperations) {
             mergeOperation.execute(source, destination);
-        }
-
-        if (additionalMerger != null) {
-            additionalMerger.merge(source, destination);
         }
     }
 
