@@ -9,15 +9,21 @@ public class HandicapGroupSetHibernateDomainBoundary extends AbstractBoundary<
         HandicapGroupSet> {
     @Override
     protected ObjectMerger<HandicapGroupSetHibernateEntity, HandicapGroupSet> buildLocalToRemoteMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setId(source.getHandicapGroupSetId());
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setId(source.getHandicapGroupSetId());
+                }
+        );
     }
 
     @Override
     protected ObjectMerger<HandicapGroupSet, HandicapGroupSetHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setHandicapGroupSetId(source.getId());
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setHandicapGroupSetId(source.getId());
+                }
+        );
     }
 }

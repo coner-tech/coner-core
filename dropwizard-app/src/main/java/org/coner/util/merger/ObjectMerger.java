@@ -10,8 +10,8 @@ public interface ObjectMerger<S, D> {
     /**
      * Merge a source object into a destination object.
      *
-     * @param fromEntity the source entity
-     * @param toEntity   the destination entity
+     * @param source      the source object
+     * @param destination the destination object
      */
-    void merge(S fromEntity, D toEntity);
+    void merge(S source, D destination);
 }

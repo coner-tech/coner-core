@@ -10,15 +10,21 @@ public class CompetitionGroupSetHibernateDomainBoundary extends AbstractBoundary
 
     @Override
     protected ObjectMerger<CompetitionGroupSetHibernateEntity, CompetitionGroupSet> buildLocalToRemoteMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setId(source.getCompetitionGroupSetId());
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setId(source.getCompetitionGroupSetId());
+                }
+        );
     }
 
     @Override
     protected ObjectMerger<CompetitionGroupSet, CompetitionGroupSetHibernateEntity> buildRemoteToLocalMerger() {
-        return new ReflectionJavaBeanMerger<>((source, destination) -> {
-            destination.setCompetitionGroupSetId(source.getId());
-        });
+        return new CompositeMerger<>(
+                new ReflectionJavaBeanMerger<>(),
+                (source, destination) -> {
+                    destination.setCompetitionGroupSetId(source.getId());
+                }
+        );
     }
 }
