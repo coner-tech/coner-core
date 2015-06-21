@@ -1,7 +1,9 @@
 package org.coner.core;
 
 import org.coner.core.domain.entity.*;
+import org.coner.core.domain.payload.*;
 import org.coner.core.domain.service.*;
+import org.coner.util.TestConstants;
 
 import java.util.*;
 import org.junit.*;
@@ -61,16 +63,16 @@ public class ConerCoreServiceTest {
 
     @Test
     public void whenAddEventInstanceItShouldCreate() {
-        Event event = mock(Event.class);
+        EventAddPayload addPayload = mock(EventAddPayload.class);
 
-        conerCoreService.addEvent(event);
+        conerCoreService.addEvent(addPayload);
 
-        verify(eventService).add(event);
+        verify(eventService).add(addPayload);
     }
 
     @Test
     public void whenAddEventNullItShouldNpe() {
-        Event event = null;
+        EventAddPayload event = null;
         try {
             conerCoreService.addEvent(event);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
@@ -82,7 +84,7 @@ public class ConerCoreServiceTest {
     }
 
     @Test
-    public void whenGetEventItShouldGetById() {
+    public void whenGetEventItShouldGetById() throws Exception {
         String id = "test";
         Event expected = mock(Event.class);
         when(eventService.getById(id)).thenReturn(expected);
@@ -108,24 +110,27 @@ public class ConerCoreServiceTest {
     }
 
     @Test
-    public void whenGetRegistrationsForEventItShouldGetGetAllWithEvent() {
-        Event event = mock(Event.class);
+    public void whenGetRegistrationsForEventItShouldGetGetAllWithEvent() throws Exception {
+        String eventId = TestConstants.EVENT_ID;
         List<Registration> expected = new ArrayList<>();
+        Event event = mock(Event.class);
+        when(eventService.getById(eventId)).thenReturn(event);
         when(registrationService.getAllWith(event)).thenReturn(expected);
 
-        List<Registration> actual = conerCoreService.getRegistrations(event);
+        List<Registration> actual = conerCoreService.getRegistrations(eventId);
 
+        verify(eventService).getById(eventId);
         verify(registrationService).getAllWith(event);
         assertThat(actual).isSameAs(expected);
-        verifyNoMoreInteractions(registrationService);
+        verifyNoMoreInteractions(registrationService, eventService);
     }
 
     @Test
     public void whenGetRegistrationsForNullItShouldNpe() {
-        Event event = null;
+        String eventId = null;
 
         try {
-            conerCoreService.getRegistrations(event);
+            conerCoreService.getRegistrations(eventId);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
@@ -135,19 +140,20 @@ public class ConerCoreServiceTest {
 
     @Test
     public void whenAddHandicapGroupInstanceItShouldCreate() {
-        HandicapGroup handicapGroup = mock(HandicapGroup.class);
+        HandicapGroupAddPayload addPayload = mock(HandicapGroupAddPayload.class);
 
-        conerCoreService.addHandicapGroup(handicapGroup);
+        conerCoreService.addHandicapGroup(addPayload);
 
-        verify(handicapGroupService).add(handicapGroup);
+        verify(handicapGroupService).add(addPayload);
+        verifyNoMoreInteractions(handicapGroupService);
     }
 
     @Test
     public void whenAddHandicapGroupsAndNullItShouldNpe() {
-        HandicapGroup handicapGroup = null;
+        HandicapGroupAddPayload addPayload = null;
 
         try {
-            conerCoreService.addHandicapGroup(handicapGroup);
+            conerCoreService.addHandicapGroup(addPayload);
             failBecauseExceptionWasNotThrown(NullPointerException.class);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
@@ -156,20 +162,20 @@ public class ConerCoreServiceTest {
     }
 
     @Test
-    public void whenAddCompetitionGroupInstanceItShouldCreate() {
-        CompetitionGroup competitionGroup = mock(CompetitionGroup.class);
+    public void whenAddCompetitionGroupInstanceItShouldAdd() {
+        CompetitionGroupAddPayload addPayload = mock(CompetitionGroupAddPayload.class);
 
-        conerCoreService.addCompetitionGroup(competitionGroup);
+        conerCoreService.addCompetitionGroup(addPayload);
 
-        verify(competitionGroupService).add(competitionGroup);
+        verify(competitionGroupService).add(addPayload);
     }
 
     @Test
     public void whenAddCompetitionGroupsAndNullItShouldNpe() {
-        CompetitionGroup competitionGroup = null;
+        CompetitionGroupAddPayload addPayload = null;
 
         try {
-            conerCoreService.addCompetitionGroup(competitionGroup);
+            conerCoreService.addCompetitionGroup(addPayload);
         } catch (Exception e) {
             assertThat(e).isInstanceOf(NullPointerException.class);
             verifyZeroInteractions(competitionGroupService);

@@ -1,14 +1,15 @@
 package org.coner.resource;
 
+import org.coner.api.entity.HandicapGroupSetApiEntity;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.*;
+import org.coner.core.domain.entity.HandicapGroupSet;
+import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
-import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -21,15 +22,18 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Handicap Groups")
 public class HandicapGroupSetsResource {
 
-    private final HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary;
     private final ConerCoreService conerCoreService;
+    private final HandicapGroupSetApiDomainBoundary apiDomainBoundary;
+    private final HandicapGroupSetApiAddPayloadBoundary apiAddPayloadBoundary;
 
     public HandicapGroupSetsResource(
+            ConerCoreService conerCoreService,
             HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary,
-            ConerCoreService conerCoreService
+            HandicapGroupSetApiAddPayloadBoundary handicapGroupSetApiAddPayloadBoundary
     ) {
-        this.handicapGroupSetBoundary = handicapGroupSetBoundary;
         this.conerCoreService = conerCoreService;
+        this.apiDomainBoundary = handicapGroupSetBoundary;
+        this.apiAddPayloadBoundary = handicapGroupSetApiAddPayloadBoundary;
     }
 
     @POST
@@ -55,24 +59,11 @@ public class HandicapGroupSetsResource {
     public Response add(
             @Valid @NotNull @ApiParam(value = "Handicap Group Set") AddHandicapGroupSetRequest request
     ) {
-        HandicapGroupSet domainHandicapGroupSet = handicapGroupSetBoundary.toRemoteEntity(request);
-        Set<AddHandicapGroupSetRequest.HandicapGroup> apiHandicapGroups = request.getHandicapGroups();
-        if (apiHandicapGroups != null) {
-            Set<HandicapGroup> domainHandicapGroups = new HashSet<>();
-            for (AddHandicapGroupSetRequest.HandicapGroup apiHandicapGroup : apiHandicapGroups) {
-                HandicapGroup domainHandicapGroup = conerCoreService.getHandicapGroup(
-                        apiHandicapGroup.getId()
-                );
-                if (domainHandicapGroup == null) {
-                    throw new NotFoundException("No handicap group with id " + apiHandicapGroup.getId());
-                }
-                domainHandicapGroups.add(domainHandicapGroup);
-            }
-            domainHandicapGroupSet.setHandicapGroups(domainHandicapGroups);
-        }
-        conerCoreService.addHandicapGroupSet(domainHandicapGroupSet);
+        HandicapGroupSetAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        HandicapGroupSet domainEntity = conerCoreService.addHandicapGroupSet(addPayload);
+        HandicapGroupSetApiEntity entity = apiDomainBoundary.toLocalEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(HandicapGroupSetResource.class)
-                .build(domainHandicapGroupSet.getId()))
+                .build(entity.getId()))
                 .build();
     }
 }

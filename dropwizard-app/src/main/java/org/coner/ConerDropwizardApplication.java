@@ -52,44 +52,51 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
 
         // init resources
         EventsResource eventsResource = new EventsResource(
+                dependencies.getConerCoreService(),
                 dependencies.getEventApiDomainBoundary(),
-                dependencies.getConerCoreService()
+                dependencies.getEventApiAddPayloadBoundary()
         );
         EventResource eventResource = new EventResource(
                 dependencies.getEventApiDomainBoundary(),
-                dependencies.getConerCoreService());
-        EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(
-                dependencies.getRegistrationApiDomainBoundary(),
                 dependencies.getConerCoreService()
+        );
+        EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(
+                dependencies.getConerCoreService(),
+                dependencies.getRegistrationApiDomainBoundary(),
+                dependencies.getRegistrationApiAddPayloadBoundary()
         );
         EventRegistrationResource eventRegistrationResource = new EventRegistrationResource(
                 dependencies.getRegistrationApiDomainBoundary(),
                 dependencies.getConerCoreService()
         );
         HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(
+                dependencies.getConerCoreService(),
                 dependencies.getHandicapGroupApiDomainBoundary(),
-                dependencies.getConerCoreService()
+                dependencies.getHandicapGroupApiAddPayloadBoundary()
         );
         HandicapGroupResource handicapGroupResource = new HandicapGroupResource(
                 dependencies.getHandicapGroupApiDomainBoundary(),
                 dependencies.getConerCoreService()
         );
         HandicapGroupSetsResource handicapGroupSetsResource = new HandicapGroupSetsResource(
+                dependencies.getConerCoreService(),
                 dependencies.getHandicapGroupSetApiDomainBoundary(),
-                dependencies.getConerCoreService()
+                dependencies.getHandicapGroupSetApiAddPayloadBoundary()
         );
 
         CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
+                dependencies.getConerCoreService(),
                 dependencies.getCompetitionGroupApiDomainBoundary(),
-                dependencies.getConerCoreService()
+                dependencies.getCompetitionGroupApiAddPayloadBoundary()
         );
         CompetitionGroupResource competitionGroupResource = new CompetitionGroupResource(
                 dependencies.getCompetitionGroupApiDomainBoundary(),
                 dependencies.getConerCoreService()
         );
         CompetitionGroupSetsResource competitionGroupSetsResource = new CompetitionGroupSetsResource(
+                dependencies.getConerCoreService(),
                 dependencies.getCompetitionGroupSetApiDomainBoundary(),
-                dependencies.getConerCoreService()
+                dependencies.getCompetitionGroupSetApiAddPayloadBoundary()
         );
 
         jersey.register(eventsResource);

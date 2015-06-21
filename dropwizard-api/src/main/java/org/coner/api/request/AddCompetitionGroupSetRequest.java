@@ -21,6 +21,10 @@ public class AddCompetitionGroupSetRequest {
         return competitionGroups;
     }
 
+    public boolean hasCompetitionGroups() {
+        return competitionGroups != null && !competitionGroups.isEmpty();
+    }
+
     public void setCompetitionGroups(Set<CompetitionGroup> competitionGroups) {
         this.competitionGroups = competitionGroups;
     }

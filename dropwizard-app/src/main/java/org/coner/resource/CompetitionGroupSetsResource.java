@@ -1,14 +1,16 @@
 package org.coner.resource;
 
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.*;
+import org.coner.core.domain.entity.CompetitionGroupSet;
+import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
+import org.coner.core.exception.EntityNotFoundException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
-import java.util.*;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -20,15 +22,18 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Competition Groups")
 public class CompetitionGroupSetsResource {
 
-    private final CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
     private final ConerCoreService conerCoreService;
+    private final CompetitionGroupSetApiDomainBoundary apiDomainBoundary;
+    private final CompetitionGroupSetApiAddPayloadBoundary apiAddPayloadBoundary;
 
     public CompetitionGroupSetsResource(
+            ConerCoreService conerCoreService,
             CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary,
-            ConerCoreService conerCoreService
+            CompetitionGroupSetApiAddPayloadBoundary competitionGroupSetApiAddPayloadBoundary
     ) {
-        this.competitionGroupSetApiDomainBoundary = competitionGroupSetApiDomainBoundary;
         this.conerCoreService = conerCoreService;
+        this.apiDomainBoundary = competitionGroupSetApiDomainBoundary;
+        this.apiAddPayloadBoundary = competitionGroupSetApiAddPayloadBoundary;
     }
 
     @POST
@@ -53,27 +58,20 @@ public class CompetitionGroupSetsResource {
     })
     public Response add(
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
-
     ) {
-        CompetitionGroupSet domainCompetitionGroupSet = competitionGroupSetApiDomainBoundary
-                .toRemoteEntity(request);
-        Set<AddCompetitionGroupSetRequest.CompetitionGroup> requestCompetitionGroups = request.getCompetitionGroups();
-        if (requestCompetitionGroups != null) {
-            Set<CompetitionGroup> domainCompetitionGroups = new HashSet<>();
-            for (AddCompetitionGroupSetRequest.CompetitionGroup requestCompetitionGroup : requestCompetitionGroups) {
-                CompetitionGroup domainCompetitionGroup = conerCoreService.getCompetitionGroup(
-                        requestCompetitionGroup.getId()
-                );
-                if (domainCompetitionGroup == null) {
-                    throw new NotFoundException("No competition group with id " + requestCompetitionGroup.getId());
-                }
-                domainCompetitionGroups.add(domainCompetitionGroup);
-            }
-            domainCompetitionGroupSet.setCompetitionGroups(domainCompetitionGroups);
+        CompetitionGroupSetAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        CompetitionGroupSetApiEntity entity;
+        try {
+            CompetitionGroupSet domainEntity = conerCoreService.addCompetitionGroupSet(addPayload);
+            entity = apiDomainBoundary.toLocalEntity(domainEntity);
+        } catch (EntityNotFoundException e) {
+            return Response.status(HttpStatus.UNPROCESSABLE_ENTITY_422)
+                    .entity(new ErrorsResponse(e.getMessage()))
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .build();
         }
-        conerCoreService.addCompetitionGroupSet(domainCompetitionGroupSet);
         return Response.created(UriBuilder.fromResource(CompetitionGroupSetResource.class)
-                .build(domainCompetitionGroupSet.getId()))
+                .build(entity.getId()))
                 .build();
     }
 }

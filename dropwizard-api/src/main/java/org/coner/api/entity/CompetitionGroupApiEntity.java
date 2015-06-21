@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @JsonPropertyOrder({"id", "name", "handicapFactor", "grouping", "resultTimeType"})
 public class CompetitionGroupApiEntity extends ApiEntity {
 
-    @Null(message = "competitionGroup.id may only be assigned by the system")
     private String id;
     @NotBlank
     private String name;

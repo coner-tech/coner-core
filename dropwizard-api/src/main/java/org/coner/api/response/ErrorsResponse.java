@@ -5,9 +5,17 @@ import java.util.List;
 
 public class ErrorsResponse {
 
-    private ImmutableList<String> errors;
+    public ErrorsResponse() {
+        // no-op
+    }
 
-    public ImmutableList<String> getErrors() {
+    public ErrorsResponse(String... errors) {
+        this.errors = ImmutableList.copyOf(errors);
+    }
+
+    private List<String> errors;
+
+    public List<String> getErrors() {
         return errors;
     }
 

@@ -4,6 +4,7 @@ import org.coner.api.entity.EventApiEntity;
 import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Event;
+import org.coner.core.exception.EntityNotFoundException;
 import org.coner.util.*;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -11,12 +12,13 @@ import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.*;
 
+import static org.coner.util.TestConstants.EVENT_ID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventResourceTest {
@@ -36,23 +38,23 @@ public class EventResourceTest {
     }
 
     @Test
-    public void itShouldGetEvent() {
+    public void itShouldGetEvent() throws EntityNotFoundException {
         Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         EventApiEntity apiEvent = ApiEntityTestUtils.fullApiEvent();
 
         // sanity check test
-        assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
-        assertThat(apiEvent.getId()).isSameAs(TestConstants.EVENT_ID);
+        assertThat(domainEvent.getId()).isSameAs(EVENT_ID);
+        assertThat(apiEvent.getId()).isSameAs(EVENT_ID);
 
-        when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(domainEvent);
+        when(conerCoreService.getEvent(EVENT_ID)).thenReturn(domainEvent);
         when(eventBoundary.toLocalEntity(domainEvent)).thenReturn(apiEvent);
 
         Response getEventResponseContainer = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID)
+                .target("/events/" + EVENT_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
+        verify(conerCoreService).getEvent(EVENT_ID);
         verify(eventBoundary).toLocalEntity(domainEvent);
         verifyNoMoreInteractions(conerCoreService, eventBoundary);
 
@@ -66,19 +68,17 @@ public class EventResourceTest {
     }
 
     @Test
-    public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() {
-        when(conerCoreService.getEvent(TestConstants.EVENT_ID)).thenReturn(null);
+    public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() throws EntityNotFoundException {
+        when(conerCoreService.getEvent(EVENT_ID)).thenThrow(EntityNotFoundException.class);
 
         Response response = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID)
+                .target("/events/" + EVENT_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getEvent(TestConstants.EVENT_ID);
+        verify(conerCoreService).getEvent(EVENT_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(eventBoundary);
 
-        assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 
