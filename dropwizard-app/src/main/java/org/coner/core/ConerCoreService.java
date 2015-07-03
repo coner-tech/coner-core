@@ -91,4 +91,12 @@ public class ConerCoreService {
     public void addHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
         handicapGroupSetService.add(checkNotNull(handicapGroupSet));
     }
+
+    public List<CompetitionGroupSet> getCompetitionGroupSets() {
+        return competitionGroupSetService.getAll();
+    }
+
+    public CompetitionGroupSet getCompetitionGroupSet(String id) {
+        return competitionGroupSetService.getById(checkNotNull(id));
+    }
 }
