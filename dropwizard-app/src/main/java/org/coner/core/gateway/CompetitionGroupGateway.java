@@ -1,17 +1,24 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.CompetitionGroupHibernateDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.domain.entity.CompetitionGroup;
+import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.hibernate.dao.CompetitionGroupDao;
 import org.coner.hibernate.entity.CompetitionGroupHibernateEntity;
 
 public class CompetitionGroupGateway extends AbstractGateway<
         CompetitionGroup,
         CompetitionGroupHibernateEntity,
+        CompetitionGroupAddPayload,
         CompetitionGroupHibernateDomainBoundary,
+        CompetitionGroupHibernateAddPayloadBoundary,
         CompetitionGroupDao> {
 
-    public CompetitionGroupGateway(CompetitionGroupHibernateDomainBoundary boundary, CompetitionGroupDao dao) {
-        super(boundary, dao);
+    public CompetitionGroupGateway(
+            CompetitionGroupHibernateDomainBoundary entityBoundary,
+            CompetitionGroupHibernateAddPayloadBoundary addPayloadBoundary,
+            CompetitionGroupDao dao
+    ) {
+        super(entityBoundary, addPayloadBoundary, dao);
     }
 }

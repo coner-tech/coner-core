@@ -1,9 +1,11 @@
 package org.coner.resource;
 
+import org.coner.api.entity.HandicapGroupSetApiEntity;
 import org.coner.api.request.AddHandicapGroupSetRequest;
-import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.*;
+import org.coner.core.domain.entity.HandicapGroupSet;
+import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,32 +17,32 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.*;
-import org.mockito.ArgumentCaptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class HandicapGroupSetsResourceTest {
 
-    private HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary = mock(HandicapGroupSetApiDomainBoundary.class);
     private ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private HandicapGroupSetApiDomainBoundary domainEntityBoundary = mock(HandicapGroupSetApiDomainBoundary.class);
+    private HandicapGroupSetApiAddPayloadBoundary apiAddPayloadBoundary = mock(
+            HandicapGroupSetApiAddPayloadBoundary.class
+    );
 
     private ObjectMapper objectMapper;
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new HandicapGroupSetsResource(handicapGroupSetBoundary, conerCoreService))
+            .addResource(new HandicapGroupSetsResource(conerCoreService, domainEntityBoundary, apiAddPayloadBoundary))
             .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(handicapGroupSetBoundary, conerCoreService);
+        reset(domainEntityBoundary, conerCoreService);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -52,56 +54,30 @@ public class HandicapGroupSetsResourceTest {
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
-        assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo("arbitrary-id-from-service");
+        assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(TestConstants.HANDICAP_GROUP_SET_ID);
     }
 
     private Response postHandicapGroupSet() throws Exception {
-        AddHandicapGroupSetRequest requestAddHandicapGroupSet = objectMapper.readValue(
+        AddHandicapGroupSetRequest request = objectMapper.readValue(
                 FixtureHelpers.fixture("fixtures/api/request/handicap_group_set_add-request.json"),
                 AddHandicapGroupSetRequest.class
         );
+        Entity<AddHandicapGroupSetRequest> requestEntity = Entity.json(request);
 
-        Entity<AddHandicapGroupSetRequest> requestEntity = Entity.json(requestAddHandicapGroupSet);
-
-        String handicapGroup1Id = "test-handicap-group-id-1";
-        String handicapGroup2Id = "test-handicap-group-id-2";
-        HandicapGroupSet requestHandicapGroupSetAsDomain = DomainEntityTestUtils.fullHandicapGroupSet(
-                "arbitrary-id-from-service",
-                "2015 Handicap Group Set",
-                null
-
-        );
-        when(handicapGroupSetBoundary.toRemoteEntity(requestAddHandicapGroupSet))
-                .thenReturn(requestHandicapGroupSetAsDomain);
-        HandicapGroup handicapGroup1 = DomainEntityTestUtils.fullHandicapGroup(
-                handicapGroup1Id,
-                "test handicap group 1",
-                null
-        );
-        when(conerCoreService.getHandicapGroup(handicapGroup1Id)).thenReturn(handicapGroup1);
-
-        final HandicapGroup handicapGroup2 = DomainEntityTestUtils.fullHandicapGroup(
-                handicapGroup2Id,
-                "test handicap group 2",
-                null
-        );
-        when(conerCoreService.getHandicapGroup(handicapGroup2Id)).thenReturn(handicapGroup2);
+        HandicapGroupSetAddPayload addPayload = mock(HandicapGroupSetAddPayload.class);
+        when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
+        HandicapGroupSet domainEntity = mock(HandicapGroupSet.class);
+        when(conerCoreService.addHandicapGroupSet(addPayload)).thenReturn(domainEntity);
+        HandicapGroupSetApiEntity apiEntity = mock(HandicapGroupSetApiEntity.class);
+        when(domainEntityBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(apiEntity.getId()).thenReturn(TestConstants.HANDICAP_GROUP_SET_ID);
 
         Response response = resources.client()
                 .target("/handicapGroups/sets")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(handicapGroupSetBoundary).toRemoteEntity(any(AddHandicapGroupSetRequest.class));
-        verify(conerCoreService).getHandicapGroup(handicapGroup1Id);
-        verify(conerCoreService).getHandicapGroup(handicapGroup2Id);
-        ArgumentCaptor<HandicapGroupSet> handicapGroupSetCaptor = ArgumentCaptor
-                .forClass(HandicapGroupSet.class);
-        verify(conerCoreService).addHandicapGroupSet(handicapGroupSetCaptor.capture());
-        HandicapGroupSet addedHandicapGroupSet = handicapGroupSetCaptor.getValue();
-        assertThat(addedHandicapGroupSet.getId()).isNotEmpty();
-        assertThat(addedHandicapGroupSet.getHandicapGroups()).hasSize(2);
-        verifyNoMoreInteractions(conerCoreService, handicapGroupSetBoundary);
+        verify(conerCoreService).addHandicapGroupSet(addPayload);
 
         return response;
     }

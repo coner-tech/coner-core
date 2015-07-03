@@ -1,10 +1,13 @@
 package org.coner.resource;
 
 import org.coner.api.entity.RegistrationApiEntity;
+import org.coner.api.request.AddRegistrationRequest;
 import org.coner.api.response.*;
-import org.coner.boundary.RegistrationApiDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.*;
+import org.coner.core.domain.entity.Registration;
+import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.exception.EntityNotFoundException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -20,14 +23,18 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
-    private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
     private final ConerCoreService conerCoreService;
+    private final RegistrationApiDomainBoundary apiDomainEntityBoundary;
+    private final RegistrationApiAddPayloadBoundary addPayloadBoundary;
 
     public EventRegistrationsResource(
+            ConerCoreService conerCoreService,
             RegistrationApiDomainBoundary registrationApiDomainBoundary,
-            ConerCoreService conerCoreService) {
-        this.registrationApiDomainBoundary = registrationApiDomainBoundary;
+            RegistrationApiAddPayloadBoundary registrationApiAddPayloadBoundary
+    ) {
         this.conerCoreService = conerCoreService;
+        this.apiDomainEntityBoundary = registrationApiDomainBoundary;
+        this.addPayloadBoundary = registrationApiAddPayloadBoundary;
     }
 
     @GET
@@ -51,15 +58,14 @@ public class EventRegistrationsResource {
     public GetEventRegistrationsResponse getEventRegistrations(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId
     ) {
-        Event domainEvent = conerCoreService.getEvent(eventId);
-        if (domainEvent == null) {
-            throw new NotFoundException("No event with id " + eventId);
+        List<Registration> domainEntities;
+        try {
+            domainEntities = conerCoreService.getRegistrations(eventId);
+        } catch (EntityNotFoundException e) {
+            throw new NotFoundException(e.getMessage());
         }
-        List<RegistrationApiEntity> registrations = registrationApiDomainBoundary.toLocalEntities(
-                conerCoreService.getRegistrations(domainEvent)
-        );
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
-        response.setRegistrations(registrations);
+        response.setRegistrations(apiDomainEntityBoundary.toLocalEntities(domainEntities));
         return response;
     }
 
@@ -85,16 +91,19 @@ public class EventRegistrationsResource {
     })
     public Response addRegistration(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
-            @Valid @ApiParam(value = "Registration", required = true) RegistrationApiEntity registration
+            @Valid @ApiParam(value = "Registration", required = true) AddRegistrationRequest request
     ) {
-        Registration domainRegistration = registrationApiDomainBoundary.toRemoteEntity(registration);
-        Event domainEvent = conerCoreService.getEvent(eventId);
-        if (domainEvent == null) {
-            throw new NotFoundException("No event with id " + eventId);
+        RegistrationAddPayload addPayload = addPayloadBoundary.toRemoteEntity(request);
+        addPayload.eventId = eventId;
+        Registration domainEntity = null;
+        try {
+            domainEntity = conerCoreService.addRegistration(addPayload);
+        } catch (EntityNotFoundException e) {
+            throw new NotFoundException(e.getMessage());
         }
-        conerCoreService.addRegistration(domainEvent, domainRegistration);
+        RegistrationApiEntity registration = apiDomainEntityBoundary.toLocalEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventRegistrationResource.class)
-                .build(eventId, domainRegistration.getId()))
+                .build(eventId, registration.getId()))
                 .build();
     }
 }

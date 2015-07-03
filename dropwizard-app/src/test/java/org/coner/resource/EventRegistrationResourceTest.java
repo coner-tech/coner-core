@@ -3,8 +3,8 @@ package org.coner.resource;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.*;
-import org.coner.core.exception.EventMismatchException;
+import org.coner.core.domain.entity.Registration;
+import org.coner.core.exception.*;
 import org.coner.util.*;
 
 import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
@@ -13,12 +13,14 @@ import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.*;
 
+import static org.coner.util.TestConstants.EVENT_ID;
+import static org.coner.util.TestConstants.REGISTRATION_ID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventRegistrationResourceTest {
@@ -38,28 +40,21 @@ public class EventRegistrationResourceTest {
     }
 
     @Test
-    public void itShouldGetRegistration() throws EventMismatchException {
-        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
-        Registration domainRegistration = DomainEntityTestUtils.fullDomainRegistration();
-        RegistrationApiEntity apiRegistration = ApiEntityTestUtils.fullApiRegistration();
+    public void itShouldGetRegistration() throws Exception {
+        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
+        RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
 
-        // sanity check test
-        assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
-        assertThat(domainRegistration.getId()).isSameAs(TestConstants.REGISTRATION_ID);
-        assertThat(apiRegistration.getId()).isSameAs(TestConstants.REGISTRATION_ID);
-
-        when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID))
-                .thenReturn(domainRegistration);
-        when(registrationBoundary.toLocalEntity(domainRegistration)).thenReturn(apiRegistration);
+        when(conerCoreService.getRegistration(EVENT_ID, REGISTRATION_ID))
+                .thenReturn(domainEntity);
+        when(registrationBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
         Response responseContainer = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
+                .target("/events/" + EVENT_ID + "/registrations/" + REGISTRATION_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
-        verify(registrationBoundary).toLocalEntity(domainRegistration);
-        verifyNoMoreInteractions(conerCoreService, registrationBoundary);
+        verify(conerCoreService).getRegistration(EVENT_ID, REGISTRATION_ID);
+        verifyNoMoreInteractions(conerCoreService);
 
         assertThat(responseContainer).isNotNull();
         assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
@@ -67,57 +62,52 @@ public class EventRegistrationResourceTest {
         RegistrationApiEntity responseEntity = responseContainer.readEntity(RegistrationApiEntity.class);
         assertThat(responseEntity)
                 .isNotNull()
-                .isEqualToComparingFieldByField(apiRegistration);
+                .isEqualToComparingFieldByField(apiEntity);
     }
 
     @Test
-    public void whenEventIdDoesNotExistItShouldReturnNotFound() throws EventMismatchException {
-        when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID)).thenReturn(null);
+    public void whenEventIdDoesNotExistItShouldRespondNotFound() throws Exception {
+        when(conerCoreService.getRegistration(EVENT_ID, REGISTRATION_ID)).thenThrow(EntityNotFoundException.class);
 
         Response registrationResponseContainer = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
+                .target("/events/" + EVENT_ID + "/registrations/" + REGISTRATION_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
+        verify(conerCoreService).getRegistration(EVENT_ID, REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(registrationBoundary);
 
-        assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 
     @Test
-    public void whenRegistrationIdDoesNotExistItShouldReturnNotFound() throws EventMismatchException {
-        when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID)).thenReturn(null);
+    public void whenRegistrationIdDoesNotExistItShouldReturnNotFound() throws Exception {
+        when(conerCoreService.getRegistration(EVENT_ID, REGISTRATION_ID)).thenThrow(EntityNotFoundException.class);
 
         Response registrationResponseContainer = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
+                .target("/events/" + EVENT_ID + "/registrations/" + REGISTRATION_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
+        verify(conerCoreService).getRegistration(EVENT_ID, REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(registrationBoundary);
 
-        assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 
     @Test
     public void whenRegistrationEventIdDoesNotMatchEventIdItShouldReturnConflict()
-            throws EventMismatchException {
-        when(conerCoreService.getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID))
+            throws Exception {
+        when(conerCoreService.getRegistration(EVENT_ID, REGISTRATION_ID))
                 .thenThrow(new EventMismatchException());
 
         Response registrationResponseContainer = resources.client()
-                .target("/events/" + TestConstants.EVENT_ID + "/registrations/" + TestConstants.REGISTRATION_ID)
+                .target("/events/" + EVENT_ID + "/registrations/" + REGISTRATION_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getRegistration(TestConstants.EVENT_ID, TestConstants.REGISTRATION_ID);
+        verify(conerCoreService).getRegistration(EVENT_ID, REGISTRATION_ID);
         verifyNoMoreInteractions(conerCoreService);
-        verifyZeroInteractions(registrationBoundary);
 
         assertThat(registrationResponseContainer).isNotNull();
         assertThat(registrationResponseContainer.getStatus()).isEqualTo(HttpStatus.CONFLICT_409);

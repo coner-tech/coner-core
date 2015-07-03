@@ -5,11 +5,10 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Registration;
-import org.coner.core.exception.EventMismatchException;
+import org.coner.core.exception.*;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
-import java.util.Arrays;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
@@ -50,17 +49,16 @@ public class EventRegistrationResource {
         try {
             domainRegistration = conerCoreService.getRegistration(eventId, registrationId);
         } catch (EventMismatchException e) {
-            ErrorsResponse errorsResponse = new ErrorsResponse();
-            errorsResponse.setErrors(Arrays.asList(
-                    Response.Status.CONFLICT.getReasonPhrase(),
-                    e.getMessage()
-            ));
             return Response.status(Response.Status.CONFLICT)
                     .type(MediaType.APPLICATION_JSON_TYPE)
-                    .entity(errorsResponse)
+                    .entity(
+                            new ErrorsResponse(
+                                    Response.Status.CONFLICT.getReasonPhrase(),
+                                    e.getMessage()
+                            )
+                    )
                     .build();
-        }
-        if (domainRegistration == null) {
+        } catch (EntityNotFoundException e) {
             throw new NotFoundException("No registration with id " + registrationId);
         }
 

@@ -5,6 +5,7 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.EventApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Event;
+import org.coner.core.exception.EntityNotFoundException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -36,11 +37,12 @@ public class EventResource {
     public EventApiEntity getEvent(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String id
     ) {
-        Event domainEvent = conerCoreService.getEvent(id);
-        if (domainEvent == null) {
+        Event domainEntity = null;
+        try {
+            domainEntity = conerCoreService.getEvent(id);
+        } catch (EntityNotFoundException e) {
             throw new NotFoundException("No event found with id " + id);
         }
-        EventApiEntity event = eventApiDomainBoundary.toLocalEntity(domainEvent);
-        return event;
+        return eventApiDomainBoundary.toLocalEntity(domainEntity);
     }
 }

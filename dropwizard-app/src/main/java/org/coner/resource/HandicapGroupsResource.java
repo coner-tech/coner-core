@@ -1,10 +1,12 @@
 package org.coner.resource;
 
 import org.coner.api.entity.HandicapGroupApiEntity;
+import org.coner.api.request.AddHandicapGroupRequest;
 import org.coner.api.response.*;
-import org.coner.boundary.HandicapGroupApiDomainBoundary;
+import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.payload.HandicapGroupAddPayload;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -20,15 +22,18 @@ import org.eclipse.jetty.http.HttpStatus;
 @Api(value = "Handicap Groups")
 public class HandicapGroupsResource {
 
-    private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
+    private final HandicapGroupApiDomainBoundary apiDomainBoundary;
+    private final HandicapGroupApiAddPayloadBoundary apiAddPayloadBoundary;
 
     public HandicapGroupsResource(
+            ConerCoreService conerCoreService,
             HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
-            ConerCoreService conerCoreService
+            HandicapGroupApiAddPayloadBoundary handicapGroupApiAddPayloadBoundary
     ) {
-        this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
         this.conerCoreService = conerCoreService;
+        this.apiDomainBoundary = handicapGroupApiDomainBoundary;
+        this.apiAddPayloadBoundary = handicapGroupApiAddPayloadBoundary;
     }
 
     @POST
@@ -46,12 +51,13 @@ public class HandicapGroupsResource {
             )
     })
     public Response addHandicapGroup(
-            @Valid @ApiParam(value = "Handicap Group") HandicapGroupApiEntity handicapGroup
+            @Valid @ApiParam(value = "Handicap Group") AddHandicapGroupRequest request
     ) {
-        HandicapGroup domainHandicapGroup = handicapGroupApiDomainBoundary.toRemoteEntity(handicapGroup);
-        conerCoreService.addHandicapGroup(domainHandicapGroup);
+        HandicapGroupAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        HandicapGroup domainEntity = conerCoreService.addHandicapGroup(addPayload);
+        HandicapGroupApiEntity entity = apiDomainBoundary.toLocalEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)
-                .build(domainHandicapGroup.getId()))
+                .build(entity.getId()))
                 .build();
     }
 
@@ -61,7 +67,7 @@ public class HandicapGroupsResource {
     public GetHandicapGroupsResponse getHandicapGroups() {
         List<HandicapGroup> domainHandicapGroups = conerCoreService.getHandicapGroups();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
-        response.setHandicapGroups(handicapGroupApiDomainBoundary.toLocalEntities(domainHandicapGroups));
+        response.setHandicapGroups(apiDomainBoundary.toLocalEntities(domainHandicapGroups));
         return response;
     }
 }

@@ -2,14 +2,15 @@ package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotBlank;
 
 @JsonPropertyOrder({"id", "name", "handicapFactor"})
 public class HandicapGroupApiEntity extends ApiEntity {
 
-    @Null(message = "handicapGroup.id may only be assigned by the system")
     private String id;
-    @NotNull
+    @NotBlank
     private String name;
     @NotNull
     @DecimalMin("0.0000")
@@ -44,22 +45,14 @@ public class HandicapGroupApiEntity extends ApiEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        HandicapGroupApiEntity that = (HandicapGroupApiEntity) o;
-
-        if (handicapFactor != null ? !handicapFactor.equals(that.handicapFactor) : that.handicapFactor != null)
-            return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
-        return true;
+        HandicapGroupApiEntity apiEntity = (HandicapGroupApiEntity) o;
+        return Objects.equals(id, apiEntity.id) &&
+                Objects.equals(name, apiEntity.name) &&
+                Objects.equals(handicapFactor, apiEntity.handicapFactor);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (handicapFactor != null ? handicapFactor.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, handicapFactor);
     }
 }

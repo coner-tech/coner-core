@@ -3,21 +3,24 @@ package org.coner.it;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.request.*;
 import org.coner.api.response.*;
-import org.coner.util.*;
+import org.coner.util.UnitTestUtils;
 
 import java.net.URI;
-import java.util.*;
+import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.*;
 
+import static org.coner.util.TestConstants.EVENT_DATE;
+import static org.coner.util.TestConstants.EVENT_NAME;
+import static org.coner.util.TestConstants.REGISTRATION_FIRSTNAME;
+import static org.coner.util.TestConstants.REGISTRATION_LASTNAME;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
-    private final String eventName = TestConstants.EVENT_NAME;
-    private final Date eventDate = TestConstants.EVENT_DATE;
     private String eventId;
 
     @Before
@@ -27,8 +30,8 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .path("/events")
                 .build();
         AddEventRequest addEventRequest = new AddEventRequest();
-        addEventRequest.setName(eventName);
-        addEventRequest.setDate(eventDate);
+        addEventRequest.setName(EVENT_NAME);
+        addEventRequest.setDate(EVENT_DATE);
         Response addEventResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -51,22 +54,22 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(getRegistrationsResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
-        GetEventRegistrationsResponse getEventRegistrationsResponse = getRegistrationsResponseContainer
-                .readEntity(GetEventRegistrationsResponse.class);
-        assertThat(getEventRegistrationsResponse).isNotNull();
-        assertThat(getEventRegistrationsResponse.getRegistrations().size()).isZero();
+        GetEventRegistrationsResponse response = getRegistrationsResponseContainer.readEntity(
+                GetEventRegistrationsResponse.class
+        );
+        assertThat(response.getRegistrations()).isEmpty();
     }
 
     @Test
-    public void whenCreateRegistrationItShouldPersist() {
+    public void whenCreateRegistrationsItShouldPersist() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
 
         // Post first Registration
         AddRegistrationRequest addRegistrationRequest0 = new AddRegistrationRequest();
-        addRegistrationRequest0.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
-        addRegistrationRequest0.setLastName(TestConstants.REGISTRATION_LASTNAME);
+        addRegistrationRequest0.setFirstName(REGISTRATION_FIRSTNAME);
+        addRegistrationRequest0.setLastName(REGISTRATION_LASTNAME);
 
         Response addRegistrationResponse0 = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -78,8 +81,8 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
         // Post second Registration
         AddRegistrationRequest addRegistrationRequest1 = new AddRegistrationRequest();
-        addRegistrationRequest1.setFirstName(TestConstants.REGISTRATION_FIRSTNAME + "-2");
-        addRegistrationRequest1.setLastName(TestConstants.REGISTRATION_LASTNAME + "-2");
+        addRegistrationRequest1.setFirstName(REGISTRATION_FIRSTNAME + "-2");
+        addRegistrationRequest1.setLastName(REGISTRATION_LASTNAME + "-2");
 
         Response addRegistrationResponse1 = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -145,15 +148,15 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenInvalidEventItShouldReject() {
+    public void whenInvalidEventItShouldRespondNotFound() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build("987654321");
 
         // Post Registration
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
-        addRegistrationRequest.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
-        addRegistrationRequest.setLastName(TestConstants.REGISTRATION_LASTNAME);
+        addRegistrationRequest.setFirstName(REGISTRATION_FIRSTNAME);
+        addRegistrationRequest.setLastName(REGISTRATION_LASTNAME);
 
         Response addRegistrationResponse = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
