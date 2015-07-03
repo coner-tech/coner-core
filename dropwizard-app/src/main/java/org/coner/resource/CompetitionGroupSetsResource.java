@@ -1,7 +1,8 @@
 package org.coner.resource;
 
 import org.coner.api.request.AddCompetitionGroupSetRequest;
-import org.coner.api.response.*;
+import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.*;
