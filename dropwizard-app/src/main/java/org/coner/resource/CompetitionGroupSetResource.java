@@ -1,7 +1,7 @@
 package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
-//import org.coner.api.response.ErrorsResponse;
+//import org.coner.api.response.ErrorsResponse; // Not in use yet
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroupSet;
@@ -10,7 +10,7 @@ import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-//import org.eclipse.jetty.http.HttpStatus;
+//import org.eclipse.jetty.http.HttpStatus; // Not in use yet
 
 @Path("/competitionGroups/sets/{competitionGroupSetId}")
 @Consumes(MediaType.APPLICATION_JSON)
