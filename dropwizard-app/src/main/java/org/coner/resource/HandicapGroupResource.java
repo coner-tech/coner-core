@@ -5,6 +5,7 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.exception.EntityNotFoundException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -39,11 +40,12 @@ public class HandicapGroupResource {
     public HandicapGroupApiEntity getHandicapGroup(
             @PathParam("handicapGroupId") @ApiParam(value = "Handicap Group ID", required = true) String id
     ) {
-        HandicapGroup domainHandicapGroup = conerCoreService.getHandicapGroup(id);
-        if (domainHandicapGroup == null) {
+        HandicapGroup domainEntity = null;
+        try {
+            domainEntity = conerCoreService.getHandicapGroup(id);
+        } catch (EntityNotFoundException e) {
             throw new NotFoundException("No handicap group with id " + id);
         }
-        HandicapGroupApiEntity handicapGroup = handicapGroupApiDomainBoundary.toLocalEntity(domainHandicapGroup);
-        return handicapGroup;
+        return handicapGroupApiDomainBoundary.toLocalEntity(domainEntity);
     }
 }
