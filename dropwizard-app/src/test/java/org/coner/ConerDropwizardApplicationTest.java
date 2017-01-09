@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class ConerDropwizardApplicationTest {
 
     // Test constants
-    private static final int NUMBER_OF_RESOURCES = 11;
+    private static final int NUMBER_OF_RESOURCES = 12;
 
     // application dependencies
     @Mock
