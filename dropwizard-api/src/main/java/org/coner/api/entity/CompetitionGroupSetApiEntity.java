@@ -1,7 +1,7 @@
 package org.coner.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.Set;
+import java.util.*;
 
 @JsonPropertyOrder({"id", "name", "competitionGroups"})
 public class CompetitionGroupSetApiEntity extends ApiEntity {
@@ -32,5 +32,20 @@ public class CompetitionGroupSetApiEntity extends ApiEntity {
 
     public void setCompetitionGroups(Set<CompetitionGroupApiEntity> competitionGroups) {
         this.competitionGroups = competitionGroups;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompetitionGroupSetApiEntity that = (CompetitionGroupSetApiEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(competitionGroups, that.competitionGroups);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, competitionGroups);
     }
 }

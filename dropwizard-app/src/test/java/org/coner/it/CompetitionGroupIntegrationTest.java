@@ -1,8 +1,8 @@
 package org.coner.it;
 
-import org.coner.api.entity.CompetitionGroupApiEntity;
+import org.coner.api.entity.*;
 import org.coner.api.request.*;
-import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.*;
 import org.coner.util.*;
 
 import java.net.URI;
@@ -18,6 +18,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
     private static final String COMPETITION_GROUPS_PATH = "/competitionGroups";
     private static final String COMPETITION_GROUP_PATH = "/competitionGroups/{competitionGroupId}";
     private static final String COMPETITION_GROUP_SETS_PATH = "/competitionGroups/sets";
+    private static final String COMPETITION_GROUP_SET_PATH = "/competitionGroups/sets/{competitionGroupId}";
 
     @Test
     public void whenCreateCompetitionGroupItShouldPersist() {
@@ -88,6 +89,20 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         String competitionGroupSetId = UnitTestUtils.getEntityIdFromResponse(addCompetitionGroupSetResponseContainer);
         assertThat(competitionGroupSetId).isNotEmpty();
+
+        URI competitionGroupSetUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_SET_PATH)
+                .build(competitionGroupSetId);
+
+        Response getCompetitionGroupSetResponseContainer = client.target(competitionGroupSetUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        assertThat(getCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        CompetitionGroupSetApiEntity getCompetitionGroupResponse = getCompetitionGroupSetResponseContainer
+                .readEntity(CompetitionGroupSetApiEntity.class);
+        assertThat(getCompetitionGroupResponse.getId()).isEqualTo(competitionGroupSetId);
     }
 
     @Test
@@ -105,6 +120,31 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addCompetitionGroupSetRequest));
 
         assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+    }
+
+    @Test
+    public void whenGetAllCompetitionGroupSetsItShouldReturnIt() {
+        URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_SETS_PATH)
+                .build();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
+        addCompetitionGroupSetRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        addCompetitionGroupSetRequest.setCompetitionGroups(null);
+
+        Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addCompetitionGroupSetRequest));
+        assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+
+        Response getCompetitionGroupSetsResponseContainer = client.target(competitionGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+        GetCompetitionGroupSetsResponse getCompetitionGroupSetsResponse = getCompetitionGroupSetsResponseContainer
+                .readEntity(GetCompetitionGroupSetsResponse.class);
+        assertThat(getCompetitionGroupSetsResponse.getCompetitionGroupSets()).isNotEmpty();
+        assertThat(getCompetitionGroupSetsResponse.getCompetitionGroupSets().get(0).getId()).isNotEmpty();
     }
 
 }

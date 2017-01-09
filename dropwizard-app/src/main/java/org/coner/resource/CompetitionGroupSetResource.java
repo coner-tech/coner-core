@@ -1,6 +1,7 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroupSetApiEntity;
+import org.coner.api.entity.*;
+import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroupSet;
@@ -10,9 +11,7 @@ import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
-//import org.coner.api.response.ErrorsResponse; // Not in use yet
-//import org.eclipse.jetty.http.HttpStatus; // Not in use yet
+import org.eclipse.jetty.http.HttpStatus;
 
 @Path("/competitionGroups/sets/{competitionGroupSetId}")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -24,8 +23,7 @@ public class CompetitionGroupSetResource {
     private final ConerCoreService conerCoreService;
 
     public CompetitionGroupSetResource(
-            CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary,
-            ConerCoreService conerCoreService
+            ConerCoreService conerCoreService, CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary
     ) {
         this.competitionGroupSetApiDomainBoundary = competitionGroupSetApiDomainBoundary;
         this.conerCoreService = conerCoreService;
@@ -33,8 +31,11 @@ public class CompetitionGroupSetResource {
 
     @GET
     @UnitOfWork
-    @ApiOperation(value = "Get a single Competition Group Set", response = CompetitionGroupSetApiEntity.class)
-
+    @ApiOperation(value = "Get a Competition Group Set", response = CompetitionGroupSetApiEntity.class)
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroupApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found")
+    })
     public CompetitionGroupSetApiEntity getCompetitionGroupSet(
             @PathParam("competitionGroupSetId")
             @ApiParam(value = "Competition Group Set ID", required = true) String id
@@ -47,5 +48,4 @@ public class CompetitionGroupSetResource {
         }
         return competitionGroupSetApiDomainBoundary.toLocalEntity(domainEntity);
     }
-
 }
