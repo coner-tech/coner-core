@@ -6,8 +6,15 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "competition_group_sets")
+@NamedQueries(
+        @NamedQuery(
+                name = CompetitionGroupSetHibernateEntity.QUERY_FIND_ALL,
+                query = "from CompetitionGroupSetHibernateEntity"
+        )
+)
 public class CompetitionGroupSetHibernateEntity extends HibernateEntity {
 
+    public static final String QUERY_FIND_ALL = "org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity.findAll";
     private String competitionGroupSetId;
     private String name;
     private Set<CompetitionGroupHibernateEntity> competitionGroups;

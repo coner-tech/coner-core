@@ -2,7 +2,7 @@ package org.coner.resource;
 
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
-import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.*;
 import org.coner.boundary.*;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroupSet;
@@ -11,6 +11,7 @@ import org.coner.core.exception.EntityNotFoundException;
 
 import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -73,5 +74,15 @@ public class CompetitionGroupSetsResource {
         return Response.created(UriBuilder.fromResource(CompetitionGroupSetResource.class)
                 .build(entity.getId()))
                 .build();
+    }
+
+    @GET
+    @UnitOfWork
+    @ApiOperation(value = "Get all Competition Group Sets", response = GetCompetitionGroupSetsResponse.class)
+    public GetCompetitionGroupSetsResponse getCompetitionGroupSets() {
+        List<CompetitionGroupSet> domainCompetitionGroupSets = conerCoreService.getCompetitionGroupSets();
+        GetCompetitionGroupSetsResponse response = new GetCompetitionGroupSetsResponse();
+        response.setCompetitionGroupSets(apiDomainBoundary.toLocalEntities(domainCompetitionGroupSets));
+        return response;
     }
 }

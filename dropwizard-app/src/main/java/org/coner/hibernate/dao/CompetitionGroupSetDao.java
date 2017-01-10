@@ -21,11 +21,11 @@ public class CompetitionGroupSetDao
 
     @Override
     public List<CompetitionGroupSetHibernateEntity> findAll() {
-        throw new UnsupportedOperationException();
+        return list(namedQuery(CompetitionGroupSetHibernateEntity.QUERY_FIND_ALL));
     }
 
     @Override
     public CompetitionGroupSetHibernateEntity findById(String id) {
-        throw new UnsupportedOperationException();
+        return get(id);
     }
 }

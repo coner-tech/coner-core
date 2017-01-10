@@ -104,4 +104,12 @@ public class ConerCoreService {
     public HandicapGroupSet addHandicapGroupSet(HandicapGroupSetAddPayload addPayload) {
         return handicapGroupSetService.add(checkNotNull(addPayload));
     }
+
+    public List<CompetitionGroupSet> getCompetitionGroupSets() {
+        return competitionGroupSetService.getAll();
+    }
+
+    public CompetitionGroupSet getCompetitionGroupSet(String id) throws EntityNotFoundException {
+        return competitionGroupSetService.getById(checkNotNull(id));
+    }
 }

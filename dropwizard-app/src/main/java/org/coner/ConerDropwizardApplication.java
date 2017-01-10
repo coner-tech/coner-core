@@ -99,6 +99,10 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
                 dependencies.getCompetitionGroupSetApiAddPayloadBoundary()
         );
 
+        CompetitionGroupSetResource competitionGroupSetResource = new CompetitionGroupSetResource(
+                dependencies.getConerCoreService(), dependencies.getCompetitionGroupSetApiDomainBoundary()
+        );
+
         jersey.register(eventsResource);
         jersey.register(eventResource);
         jersey.register(eventRegistrationsResource);
@@ -109,7 +113,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
         jersey.register(competitionGroupsResource);
         jersey.register(competitionGroupResource);
         jersey.register(competitionGroupSetsResource);
-
+        jersey.register(competitionGroupSetResource);
 
         // init exception mappers
         WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
