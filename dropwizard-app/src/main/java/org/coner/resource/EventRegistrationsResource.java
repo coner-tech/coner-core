@@ -9,8 +9,8 @@ import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.exception.EntityNotFoundException;
 
-import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.*;
 import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.*;

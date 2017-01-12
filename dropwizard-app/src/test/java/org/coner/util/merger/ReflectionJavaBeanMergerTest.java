@@ -95,7 +95,7 @@ public class ReflectionJavaBeanMergerTest {
         private String propertyStringWithDestinationEnum;
         private Status propertyEnumWithStringDestination;
 
-        public TestSourceEntity(
+        TestSourceEntity(
                 String propertyCommon,
                 boolean propertyBoolean,
                 String propertyWithDifferentType,
@@ -197,7 +197,7 @@ public class ReflectionJavaBeanMergerTest {
             this.propertyStringWithDestinationEnum = propertyStringWithDestinationEnum;
         }
 
-        private static enum Status {
+        private enum Status {
             BUFFERING,
             PLAYING,
             PAUSED,
@@ -291,7 +291,7 @@ public class ReflectionJavaBeanMergerTest {
             this.propertyEnumWithStringDestination = propertyEnumWithStringDestination;
         }
 
-        private static enum Direction {
+        private enum Direction {
             NORTH,
             SOUTH,
             EAST,

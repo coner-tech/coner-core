@@ -7,7 +7,6 @@ import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.exception.EntityNotFoundException;
 import org.coner.util.*;
 
-import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
@@ -31,7 +30,6 @@ public class HandicapGroupResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupResource(handicapGroupBoundary, conerCoreService))
-            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before

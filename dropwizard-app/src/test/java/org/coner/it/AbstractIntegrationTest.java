@@ -7,6 +7,10 @@ import javax.ws.rs.client.Client;
 import org.junit.*;
 
 public class AbstractIntegrationTest {
+    protected AbstractIntegrationTest() {
+        // HideUtilityClassConstructor
+    }
+
     @ClassRule
     public static final DropwizardAppRule<ConerDropwizardConfiguration> RULE = IntegrationTestUtils.buildAppRule();
 

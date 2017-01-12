@@ -10,7 +10,6 @@ import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.ws.rs.client.Entity;
@@ -37,7 +36,6 @@ public class HandicapGroupSetsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupSetsResource(conerCoreService, domainEntityBoundary, apiAddPayloadBoundary))
-            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
 
     @Before

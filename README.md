@@ -30,6 +30,21 @@ $ curl http://localhost:8080/events
 {"events":[]}
 $ curl http://localhost:8081/healthcheck
 {"deadlocks":{"healthy":true},"hibernate":{"healthy":true}}
+# Add event
+$ cat src/test/resources/fixtures/api/entity/event_add.json | curl -H "Content-Type: application/json" -X POST -d @- http://localhost:8080/events
+> POST /events HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.43.0
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 60
+>
+* upload completely sent off: 60 out of 60 bytes
+< HTTP/1.1 201 Created
+< Date: Thu, 12 Jan 2017 18:43:48 GMT
+< Location: http://localhost:8080/events/3157e6cf-1f8c-4a03-9a97-513759ad17c2
+< Content-Length: 0
+<
 ```
 
 Accessing API (not completed): http://localhost:8080/swagger

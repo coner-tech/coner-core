@@ -9,8 +9,8 @@ import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.exception.EntityNotFoundException;
 
-import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.*;
 import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.*;

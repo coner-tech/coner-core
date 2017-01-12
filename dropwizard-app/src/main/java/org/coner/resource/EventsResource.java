@@ -8,8 +8,8 @@ import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 
-import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.*;
 import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.*;

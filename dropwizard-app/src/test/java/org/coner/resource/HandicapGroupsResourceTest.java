@@ -11,7 +11,6 @@ import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import java.util.*;
@@ -41,7 +40,6 @@ public class HandicapGroupsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupsResource(conerCoreService, apiDomainBoundary, apiAddPayloadBoundary))
-            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
@@ -89,7 +87,7 @@ public class HandicapGroupsResourceTest {
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors()).isNotEmpty();
         assertThat(errorsResponse.getErrors())
-                .contains("handicapFactor must be less than or equal to 1.0000 (was 5.00)");
+                .contains("handicapFactor must be less than or equal to 1.0000");
 
         verifyZeroInteractions(conerCoreService);
     }

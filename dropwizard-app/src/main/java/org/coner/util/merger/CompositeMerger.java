@@ -3,7 +3,7 @@ package org.coner.util.merger;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * An ObjectMerger which allows composing a chain of ObjectMerger instances
+ * An ObjectMerger which allows composing a chain of ObjectMerger instances.
  *
  * @param <S> the source object type
  * @param <D> the destination object type
