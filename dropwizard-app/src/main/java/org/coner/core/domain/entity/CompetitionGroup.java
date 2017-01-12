@@ -53,7 +53,7 @@ public class CompetitionGroup extends DomainEntity {
     /**
      * Indicates which result time type should be used to rank results pertaining to a competition group.
      */
-    public static enum ResultTimeType {
+    public enum ResultTimeType {
         HANDICAP,
         RAW
     }

@@ -30,7 +30,7 @@ public class AddCompetitionGroupSetRequest {
     }
 
     /**
-     * Request competition groups be added by Competition Group ID
+     * Request competition groups be added by Competition Group ID.
      */
     public static class CompetitionGroup {
         @NotBlank

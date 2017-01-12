@@ -11,7 +11,6 @@ import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import java.util.*;
 import javax.ws.rs.client.Entity;
@@ -48,7 +47,6 @@ public class CompetitionGroupsResourceTest {
                             apiAddPayloadBoundary
                     )
             )
-            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
@@ -91,7 +89,7 @@ public class CompetitionGroupsResourceTest {
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
-                .contains("handicapFactor must be less than or equal to 1.000 (was 1.0001)");
+                .contains("handicapFactor must be less than or equal to 1.000");
         verifyZeroInteractions(conerCoreService);
     }
 
@@ -112,7 +110,7 @@ public class CompetitionGroupsResourceTest {
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
-                .contains("resultTimeType may not be empty (was null)");
+                .contains("resultTimeType may not be empty");
         verifyZeroInteractions(conerCoreService);
     }
 
@@ -133,7 +131,7 @@ public class CompetitionGroupsResourceTest {
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
-                .contains("grouping may not be null (was null)");
+                .contains("grouping may not be null");
         verifyZeroInteractions(conerCoreService);
     }
 

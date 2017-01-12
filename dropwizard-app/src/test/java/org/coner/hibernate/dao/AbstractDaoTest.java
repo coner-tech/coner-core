@@ -2,19 +2,19 @@ package org.coner.hibernate.dao;
 
 import org.coner.hibernate.entity.*;
 
-import com.codahale.metrics.MetricRegistry;
-import io.dropwizard.db.DataSourceFactory;
 import java.sql.*;
 import java.util.*;
-import org.assertj.core.api.Assertions;
-import org.hibernate.*;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.*;
-import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
-import org.hibernate.service.ServiceRegistry;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
 
 public abstract class AbstractDaoTest {
+
+    private static final String URL_PREFIX = "jdbc:hsqldb:mem:coner-";
+    private static final String DB_USER = "sa";
+    private static final String DB_PASS = "";
+    private static final String DB_DRIVER = "org.hsqldb.jdbc.JDBCDriver";
 
     private final Class<? extends HibernateEntity>[] hibernateEntityClasses = new Class[]{
             EventHibernateEntity.class,
@@ -28,6 +28,13 @@ public abstract class AbstractDaoTest {
         for (Class<? extends HibernateEntity> hibernateEntityClass : hibernateEntityClasses) {
             configuration.addAnnotatedClass(hibernateEntityClass);
         }
+        configuration.setProperty(AvailableSettings.URL, URL_PREFIX + getClass().getSimpleName());
+        configuration.setProperty(AvailableSettings.USER, DB_USER);
+        configuration.setProperty(AvailableSettings.PASS, DB_PASS);
+        configuration.setProperty(AvailableSettings.DRIVER, DB_DRIVER);
+        configuration.setProperty(AvailableSettings.USE_SQL_COMMENTS, "false");
+        configuration.setProperty(AvailableSettings.SHOW_SQL, "false");
+
         configuration.setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.HSQLDialect");
         configuration.setProperty(AvailableSettings.HBM2DDL_AUTO, "create");
         configuration.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
@@ -38,36 +45,8 @@ public abstract class AbstractDaoTest {
         configuration.setProperty(AvailableSettings.ORDER_INSERTS, "true");
         configuration.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, "true");
         configuration.setProperty("jadira.usertype.autoRegisterUserTypes", "true");
-        ConnectionProvider connectionProvider = buildConnectionProvider();
-        try {
-            Connection connection = connectionProvider.getConnection();
-            if (connection.isClosed()) {
-                throw new RuntimeException("Connection closed, wtf");
-            }
-        } catch (SQLException e) {
-            Assertions.fail("SQLException", e);
-        }
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .addService(ConnectionProvider.class, connectionProvider)
-                .build();
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-    }
 
-    private ConnectionProvider buildConnectionProvider() {
-        DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
-        DataSourceFactory dataSourceFactory = new DataSourceFactory();
-        dataSourceFactory.setDriverClass("org.hsqldb.jdbc.JDBCDriver");
-        dataSourceFactory.setUser("sa");
-        dataSourceFactory.setUrl("jdbc:hsqldb:mem:coner-" + getClass().getSimpleName());
-        dataSourceFactory.setValidationQuery("SELECT * FROM INFORMATION_SCHEMA.SYSTEM_TABLES");
-        MetricRegistry metricRegistry = new MetricRegistry();
-        connectionProvider.setDataSource(
-                dataSourceFactory.build(metricRegistry, "coner-test")
-        );
-        Map<String, String> configValues = new HashMap<>();
-        configValues.put(Environment.USER, "sa");
-        connectionProvider.configure(configValues);
-        return connectionProvider;
+        sessionFactory = configuration.buildSessionFactory();
     }
 
     protected SessionFactory getSessionFactory() {

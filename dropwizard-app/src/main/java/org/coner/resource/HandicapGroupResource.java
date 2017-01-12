@@ -7,8 +7,8 @@ import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.exception.EntityNotFoundException;
 
-import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import org.eclipse.jetty.http.HttpStatus;

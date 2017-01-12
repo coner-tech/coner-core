@@ -144,7 +144,7 @@ public class ReflectionPayloadJavaBeanMerger<S, D> implements ObjectMerger<S, D>
 
     }
 
-    private static class PayloadToJavaBeanMergeOperation<S, D> extends MergeOperation<S, D> {
+    private static final class PayloadToJavaBeanMergeOperation<S, D> extends MergeOperation<S, D> {
 
         private PayloadToJavaBeanMergeOperation(
                 Field sourcePayloadField,
@@ -166,7 +166,7 @@ public class ReflectionPayloadJavaBeanMerger<S, D> implements ObjectMerger<S, D>
 
     }
 
-    private static class JavaBeanToPayloadMergeOperation<S, D> extends MergeOperation<S, D> {
+    private static final class JavaBeanToPayloadMergeOperation<S, D> extends MergeOperation<S, D> {
 
         private JavaBeanToPayloadMergeOperation(
                 Method sourceJavaBeanAccessor,

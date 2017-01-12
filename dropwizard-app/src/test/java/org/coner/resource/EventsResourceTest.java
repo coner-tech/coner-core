@@ -11,7 +11,6 @@ import org.coner.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import java.util.*;
@@ -37,7 +36,6 @@ public class EventsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventsResource(conerCoreService, apiDomainBoundary, addPayloadBoundary))
-            .addProvider(new ConstraintViolationExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
@@ -109,7 +107,7 @@ public class EventsResourceTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors()).isNotEmpty();
-        assertThat(errorsResponse.getErrors()).contains("name may not be empty (was null)");
+        assertThat(errorsResponse.getErrors()).contains("name may not be empty");
         verifyZeroInteractions(conerCoreService);
     }
 
@@ -129,7 +127,7 @@ public class EventsResourceTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
         ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
         assertThat(errorsResponse.getErrors()).isNotEmpty();
-        assertThat(errorsResponse.getErrors()).contains("date may not be null (was null)");
+        assertThat(errorsResponse.getErrors()).contains("date may not be null");
 
         verifyZeroInteractions(conerCoreService);
     }

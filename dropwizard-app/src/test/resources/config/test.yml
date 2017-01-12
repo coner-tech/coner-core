@@ -20,7 +20,5 @@ swagger:
 
 # Logging settings.
 logging:
-
     loggers:
-
         org.hibernate.SQL: ALL

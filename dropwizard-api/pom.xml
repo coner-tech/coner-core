@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <dropwizard.version>0.8.1</dropwizard.version>
+        <dropwizard.version>1.0.5</dropwizard.version>
     </properties>
 
     <artifactId>dropwizard-api</artifactId>

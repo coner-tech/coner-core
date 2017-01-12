@@ -7,8 +7,8 @@ import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.exception.*;
 
-import com.wordnik.swagger.annotations.*;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.eclipse.jetty.http.HttpStatus;
