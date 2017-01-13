@@ -3,7 +3,8 @@ package org.coner.boundary;
 import org.coner.api.entity.HandicapGroupSetApiEntity;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.domain.entity.HandicapGroupSet;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class HandicapGroupSetApiDomainBoundary extends AbstractBoundary<HandicapGroupSetApiEntity, HandicapGroupSet> {
 

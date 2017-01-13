@@ -2,7 +2,9 @@ package org.coner.boundary;
 
 import org.coner.core.domain.entity.Registration;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
-import org.coner.util.merger.*;
+import org.coner.util.merger.CompositeMerger;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class RegistrationHibernateDomainBoundary extends AbstractBoundary<RegistrationHibernateEntity, Registration> {
 

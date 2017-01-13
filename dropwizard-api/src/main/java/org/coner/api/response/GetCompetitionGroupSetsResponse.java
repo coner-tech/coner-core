@@ -1,8 +1,8 @@
 package org.coner.api.response;
 
-import org.coner.api.entity.CompetitionGroupSetApiEntity;
-
 import java.util.List;
+
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
 
 public class GetCompetitionGroupSetsResponse {
     private List<CompetitionGroupSetApiEntity> competitionGroupSets;

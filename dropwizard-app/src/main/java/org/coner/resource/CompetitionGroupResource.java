@@ -1,17 +1,27 @@
 package org.coner.resource;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.exception.EntityNotFoundException;
+import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.*;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import org.eclipse.jetty.http.HttpStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/competitionGroups/{competitionGroupId}")
 @Produces(MediaType.APPLICATION_JSON)

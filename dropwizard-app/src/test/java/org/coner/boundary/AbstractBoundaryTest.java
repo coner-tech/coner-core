@@ -1,23 +1,26 @@
 package org.coner.boundary;
 
-import org.coner.api.entity.ApiEntity;
-import org.coner.core.domain.entity.DomainEntity;
-import org.coner.hibernate.entity.HibernateEntity;
-import org.coner.util.merger.ObjectMerger;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.coner.api.entity.ApiEntity;
+import org.coner.core.domain.entity.DomainEntity;
+import org.coner.hibernate.entity.HibernateEntity;
+import org.coner.util.merger.ObjectMerger;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractBoundaryTest {

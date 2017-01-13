@@ -1,26 +1,30 @@
 package org.coner.resource;
 
-import org.coner.api.entity.HandicapGroupApiEntity;
-import org.coner.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.HandicapGroup;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.util.*;
-
-import io.dropwizard.testing.junit.ResourceTestRule;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.*;
-
-import static org.coner.util.TestConstants.HANDICAP_GROUP_ID;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.coner.util.TestConstants.HANDICAP_GROUP_ID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.HandicapGroupApiEntity;
+import org.coner.boundary.HandicapGroupApiDomainBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class HandicapGroupResourceTest {
 

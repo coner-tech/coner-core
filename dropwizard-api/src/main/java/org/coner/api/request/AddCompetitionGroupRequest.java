@@ -2,7 +2,11 @@ package org.coner.api.request;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddCompetitionGroupRequest {

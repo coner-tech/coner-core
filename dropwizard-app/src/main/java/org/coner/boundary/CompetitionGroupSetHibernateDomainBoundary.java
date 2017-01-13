@@ -2,7 +2,9 @@ package org.coner.boundary;
 
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
-import org.coner.util.merger.*;
+import org.coner.util.merger.CompositeMerger;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class CompetitionGroupSetHibernateDomainBoundary extends AbstractBoundary<
         CompetitionGroupSetHibernateEntity,

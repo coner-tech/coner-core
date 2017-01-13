@@ -1,8 +1,8 @@
 package org.coner.api.response;
 
-import org.coner.api.entity.RegistrationApiEntity;
-
 import java.util.List;
+
+import org.coner.api.entity.RegistrationApiEntity;
 
 public class GetEventRegistrationsResponse {
 

@@ -1,11 +1,18 @@
 package org.coner.util;
 
-import org.coner.api.entity.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Set;
+
+import org.coner.api.entity.CompetitionGroupApiEntity;
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
+import org.coner.api.entity.EventApiEntity;
+import org.coner.api.entity.HandicapGroupApiEntity;
+import org.coner.api.entity.HandicapGroupSetApiEntity;
+import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 
 import com.google.common.collect.Sets;
-import java.math.BigDecimal;
-import java.util.*;
 
 public final class ApiEntityTestUtils {
 

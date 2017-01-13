@@ -1,17 +1,29 @@
 package org.coner.resource;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Registration;
-import org.coner.core.exception.*;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.exception.EventMismatchException;
+import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.*;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/events/{eventId}/registrations/{registrationId}")
 @Produces(MediaType.APPLICATION_JSON)

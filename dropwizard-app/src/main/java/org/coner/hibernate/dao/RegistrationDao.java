@@ -1,10 +1,13 @@
 package org.coner.hibernate.dao;
 
-import org.coner.hibernate.entity.*;
+import java.util.List;
+
+import org.coner.hibernate.entity.EventHibernateEntity;
+import org.coner.hibernate.entity.RegistrationHibernateEntity;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 
 import io.dropwizard.hibernate.AbstractDAO;
-import java.util.List;
-import org.hibernate.*;
 
 public class RegistrationDao
         extends AbstractDAO<RegistrationHibernateEntity>

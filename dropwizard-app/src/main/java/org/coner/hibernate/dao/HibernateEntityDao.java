@@ -1,8 +1,8 @@
 package org.coner.hibernate.dao;
 
-import org.coner.hibernate.entity.HibernateEntity;
-
 import java.util.List;
+
+import org.coner.hibernate.entity.HibernateEntity;
 
 public interface HibernateEntityDao<HE extends HibernateEntity> {
     void create(HE entity);

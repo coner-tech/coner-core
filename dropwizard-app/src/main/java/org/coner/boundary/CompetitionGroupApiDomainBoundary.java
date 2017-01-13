@@ -2,7 +2,8 @@ package org.coner.boundary;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.domain.entity.CompetitionGroup;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class CompetitionGroupApiDomainBoundary extends AbstractBoundary<CompetitionGroupApiEntity, CompetitionGroup> {
     @Override

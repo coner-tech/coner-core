@@ -1,6 +1,7 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.*;
+import org.coner.boundary.CompetitionGroupSetHibernateAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.hibernate.dao.CompetitionGroupSetDao;

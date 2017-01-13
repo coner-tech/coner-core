@@ -1,8 +1,9 @@
 package org.coner.util.merger;
 
-import org.junit.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class ReflectionJavaBeanMergerTest {
 

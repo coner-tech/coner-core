@@ -1,12 +1,15 @@
 package org.coner.exception;
 
+import java.util.Arrays;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+
 import org.coner.api.response.ErrorsResponse;
 
 import com.google.common.base.Strings;
-import java.util.Arrays;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.*;
-import javax.ws.rs.ext.ExceptionMapper;
 
 public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
     @Override

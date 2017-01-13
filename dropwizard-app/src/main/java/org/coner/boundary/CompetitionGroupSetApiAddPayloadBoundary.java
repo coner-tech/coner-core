@@ -2,7 +2,10 @@ package org.coner.boundary;
 
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
-import org.coner.util.merger.*;
+import org.coner.util.merger.CompositeMerger;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionPayloadJavaBeanMerger;
+import org.coner.util.merger.UnsupportedOperationMerger;
 
 import com.google.common.collect.ImmutableSet;
 

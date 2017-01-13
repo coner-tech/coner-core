@@ -1,27 +1,31 @@
 package org.coner.resource;
 
-import org.coner.api.entity.CompetitionGroupSetApiEntity;
-import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.CompetitionGroupSet;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.util.*;
-
-import io.dropwizard.testing.junit.ResourceTestRule;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.coner.util.TestConstants.COMPETITION_GROUP_SET_ID;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.coner.util.TestConstants.COMPETITION_GROUP_SET_ID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
+import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.CompetitionGroupSet;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompetitionGroupSetResourceTest {

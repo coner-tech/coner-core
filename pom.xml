@@ -39,19 +39,29 @@
                 <configuration>
                     <configLocation>build-tools/src/main/resources/checkstyle/checkstyle.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <suppressionsLocation>checkstyle/suppressions.xml</suppressionsLocation>
+                    <suppressionsLocation>build-tools/src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>
                     <linkXRef>false</linkXRef>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <encoding>UTF-8</encoding>
+                            <failsOnError>true</failsOnError>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
-                    <dependency>
-                        <groupId>org.coner</groupId>
-                        <artifactId>build-tools</artifactId>
-                        <version>1.0</version>
-                    </dependency>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>6.11.2</version>
+                        <version>6.19</version>
                     </dependency>
                 </dependencies>
             </plugin>

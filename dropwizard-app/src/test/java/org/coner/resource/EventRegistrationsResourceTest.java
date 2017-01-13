@@ -1,34 +1,42 @@
 package org.coner.resource;
 
-import org.coner.api.entity.RegistrationApiEntity;
-import org.coner.api.request.AddRegistrationRequest;
-import org.coner.api.response.GetEventRegistrationsResponse;
-import org.coner.boundary.*;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.Registration;
-import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.util.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.FixtureHelpers;
-import io.dropwizard.testing.junit.ResourceTestRule;
-import java.util.*;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.coner.util.TestConstants.EVENT_ID;
 import static org.coner.util.TestConstants.REGISTRATION_ID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.RegistrationApiEntity;
+import org.coner.api.request.AddRegistrationRequest;
+import org.coner.api.response.GetEventRegistrationsResponse;
+import org.coner.boundary.RegistrationApiAddPayloadBoundary;
+import org.coner.boundary.RegistrationApiDomainBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.Registration;
+import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.DomainEntityTestUtils;
+import org.coner.util.JacksonUtil;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.FixtureHelpers;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventRegistrationsResourceTest {
 

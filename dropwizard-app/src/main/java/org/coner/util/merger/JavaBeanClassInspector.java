@@ -1,8 +1,11 @@
 package org.coner.util.merger;
 
-import com.google.common.collect.*;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 public final class JavaBeanClassInspector {
 

@@ -1,13 +1,15 @@
 package org.coner.it;
 
-import org.coner.*;
+import javax.ws.rs.client.Client;
+
+import org.coner.ConerDropwizardApplication;
+import org.coner.ConerDropwizardConfiguration;
+import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 
 import com.google.common.base.Joiner;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import javax.ws.rs.client.Client;
-import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 
 public final class IntegrationTestUtils {
 

@@ -1,24 +1,5 @@
 package org.coner.resource;
 
-import org.coner.api.entity.EventApiEntity;
-import org.coner.api.request.AddEventRequest;
-import org.coner.api.response.*;
-import org.coner.boundary.*;
-import org.coner.core.ConerCoreService;
-import org.coner.core.domain.entity.Event;
-import org.coner.core.domain.payload.EventAddPayload;
-import org.coner.util.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.FixtureHelpers;
-import io.dropwizard.testing.junit.ResourceTestRule;
-import java.util.*;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.*;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -26,6 +7,34 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.EventApiEntity;
+import org.coner.api.request.AddEventRequest;
+import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetEventsResponse;
+import org.coner.boundary.EventApiAddPayloadBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
+import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.util.ApiEntityTestUtils;
+import org.coner.util.JacksonUtil;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.FixtureHelpers;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventsResourceTest {
 

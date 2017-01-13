@@ -1,6 +1,7 @@
 package org.coner.api.request;
 
 import java.util.Objects;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddRegistrationRequest {

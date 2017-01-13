@@ -65,14 +65,16 @@
 
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_imports.html -->
+        <module name="AvoidStarImport"/>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
         <module name="ImportOrder">
             <property name="severity" value="error"/>
-            <property name="groups" value="org.coner"/>
-            <property name="option" value="bottom"/>
+            <property name="groups" value="/^java\./,javax,org"/>
+            <property name="option" value="top"/>
             <property name="separated" value="true"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
         </module>
 
 

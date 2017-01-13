@@ -1,8 +1,8 @@
 package org.coner.api.response;
 
-import org.coner.api.entity.HandicapGroupApiEntity;
-
 import java.util.List;
+
+import org.coner.api.entity.HandicapGroupApiEntity;
 
 public class GetHandicapGroupsResponse {
     private List<HandicapGroupApiEntity> handicapGroups;

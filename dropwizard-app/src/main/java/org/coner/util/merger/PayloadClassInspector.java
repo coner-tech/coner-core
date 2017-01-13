@@ -1,7 +1,8 @@
 package org.coner.util.merger;
 
-import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Field;
+
+import com.google.common.collect.ImmutableMap;
 
 public final class PayloadClassInspector {
 

@@ -1,20 +1,34 @@
 package org.coner.resource;
 
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.request.AddCompetitionGroupRequest;
-import org.coner.api.response.*;
-import org.coner.boundary.*;
+import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetCompetitionGroupsResponse;
+import org.coner.boundary.CompetitionGroupApiAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
+import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.*;
-import java.util.List;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("/competitionGroups")
 @Produces(MediaType.APPLICATION_JSON)

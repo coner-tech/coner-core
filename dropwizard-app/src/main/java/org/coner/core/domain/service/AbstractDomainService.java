@@ -1,11 +1,11 @@
 package org.coner.core.domain.service;
 
+import java.util.List;
+
 import org.coner.core.domain.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
 import org.coner.core.exception.EntityNotFoundException;
 import org.coner.core.gateway.Gateway;
-
-import java.util.List;
 
 public abstract class AbstractDomainService<
         DE extends DomainEntity,

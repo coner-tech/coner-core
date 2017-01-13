@@ -1,6 +1,7 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.*;
+import org.coner.boundary.EventHibernateAddPayloadBoundary;
+import org.coner.boundary.EventHibernateDomainBoundary;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.hibernate.dao.EventDao;

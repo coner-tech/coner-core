@@ -1,10 +1,17 @@
 package org.coner.util;
 
-import org.coner.core.domain.entity.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Set;
+
+import org.coner.core.domain.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroupSet;
+import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.Registration;
 
 import com.google.common.collect.Sets;
-import java.math.BigDecimal;
-import java.util.*;
 
 public final class DomainEntityTestUtils {
 

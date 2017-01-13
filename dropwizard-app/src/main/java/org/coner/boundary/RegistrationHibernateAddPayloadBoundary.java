@@ -2,7 +2,10 @@ package org.coner.boundary;
 
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
-import org.coner.util.merger.*;
+import org.coner.util.merger.CompositeMerger;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionPayloadJavaBeanMerger;
+import org.coner.util.merger.UnsupportedOperationMerger;
 
 public class RegistrationHibernateAddPayloadBoundary extends AbstractBoundary<
         RegistrationHibernateEntity,

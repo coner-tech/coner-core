@@ -1,10 +1,12 @@
 package org.coner.util.merger;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.lang.reflect.Method;
 import java.util.Set;
-import org.junit.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 public class JavaBeanClassInspectorTest {
 
