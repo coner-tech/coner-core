@@ -1,13 +1,18 @@
 package org.coner.core.gateway;
 
-import org.coner.boundary.*;
-import org.coner.core.domain.entity.*;
+import java.util.List;
+
+import org.coner.boundary.EventHibernateDomainBoundary;
+import org.coner.boundary.RegistrationHibernateAddPayloadBoundary;
+import org.coner.boundary.RegistrationHibernateDomainBoundary;
+import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.hibernate.dao.RegistrationDao;
-import org.coner.hibernate.entity.*;
+import org.coner.hibernate.entity.EventHibernateEntity;
+import org.coner.hibernate.entity.RegistrationHibernateEntity;
 
 import com.google.common.base.Preconditions;
-import java.util.List;
 
 public class RegistrationGateway extends AbstractGateway<
         Registration,

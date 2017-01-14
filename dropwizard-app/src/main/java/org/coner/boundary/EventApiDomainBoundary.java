@@ -2,7 +2,8 @@ package org.coner.boundary;
 
 import org.coner.api.entity.EventApiEntity;
 import org.coner.core.domain.entity.Event;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class EventApiDomainBoundary extends AbstractBoundary<EventApiEntity, Event> {
     @Override

@@ -1,15 +1,32 @@
 package org.coner.core;
 
-import org.coner.core.domain.entity.*;
-import org.coner.core.domain.payload.*;
-import org.coner.core.domain.service.*;
-import org.coner.core.exception.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.List;
+
+import org.coner.core.domain.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroupSet;
+import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.Registration;
+import org.coner.core.domain.payload.CompetitionGroupAddPayload;
+import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
+import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.core.domain.payload.HandicapGroupAddPayload;
+import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
+import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.domain.service.CompetitionGroupService;
+import org.coner.core.domain.service.CompetitionGroupSetService;
+import org.coner.core.domain.service.EventService;
+import org.coner.core.domain.service.HandicapGroupService;
+import org.coner.core.domain.service.HandicapGroupSetService;
+import org.coner.core.domain.service.RegistrationService;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.exception.EventMismatchException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConerCoreService {
 

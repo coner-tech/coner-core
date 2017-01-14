@@ -1,7 +1,9 @@
 package org.coner.api.entity;
 
+import java.util.Objects;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.*;
 
 @JsonPropertyOrder({"id", "name", "competitionGroups"})
 public class CompetitionGroupSetApiEntity extends ApiEntity {

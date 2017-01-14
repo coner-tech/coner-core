@@ -1,11 +1,10 @@
 package org.coner.util.merger;
 
-import org.junit.Test;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.coner.util.merger.ReflectionPayloadJavaBeanMerger.javaBeanToPayload;
 import static org.coner.util.merger.ReflectionPayloadJavaBeanMerger.payloadToJavaBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
 public class ReflectionPayloadJavaBeanMergerTest {
 

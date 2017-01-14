@@ -1,10 +1,11 @@
 package org.coner.hibernate.dao;
 
+import java.util.List;
+
 import org.coner.hibernate.entity.CompetitionGroupSetHibernateEntity;
+import org.hibernate.SessionFactory;
 
 import io.dropwizard.hibernate.AbstractDAO;
-import java.util.List;
-import org.hibernate.SessionFactory;
 
 public class CompetitionGroupSetDao
         extends AbstractDAO<CompetitionGroupSetHibernateEntity>

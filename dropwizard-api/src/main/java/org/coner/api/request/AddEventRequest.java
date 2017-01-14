@@ -1,7 +1,10 @@
 package org.coner.api.request;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
+
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddEventRequest {

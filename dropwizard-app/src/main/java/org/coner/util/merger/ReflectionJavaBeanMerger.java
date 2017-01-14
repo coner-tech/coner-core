@@ -1,7 +1,9 @@
 package org.coner.util.merger;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.*;
 
 /**
  * ReflectionJavaBeanMerger uses reflection to automatically merge objects that follow the JavaBean convention.

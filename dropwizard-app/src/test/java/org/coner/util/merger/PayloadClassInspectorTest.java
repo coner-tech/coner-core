@@ -1,9 +1,11 @@
 package org.coner.util.merger;
 
-import java.lang.reflect.Field;
-import org.junit.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.lang.reflect.Field;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class PayloadClassInspectorTest {
 

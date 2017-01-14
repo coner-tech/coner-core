@@ -1,11 +1,13 @@
 package org.coner.core.domain.service;
 
-import org.coner.core.domain.entity.*;
-import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.exception.*;
-import org.coner.core.gateway.RegistrationGateway;
-
 import java.util.List;
+
+import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.Registration;
+import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.exception.EventMismatchException;
+import org.coner.core.gateway.RegistrationGateway;
 
 public class RegistrationService extends AbstractDomainService<
         Registration,

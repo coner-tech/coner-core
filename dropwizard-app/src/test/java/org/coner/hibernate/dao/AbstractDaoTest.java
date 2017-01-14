@@ -1,9 +1,8 @@
 package org.coner.hibernate.dao;
 
-import org.coner.hibernate.entity.*;
-
-import java.sql.*;
-import java.util.*;
+import org.coner.hibernate.entity.EventHibernateEntity;
+import org.coner.hibernate.entity.HibernateEntity;
+import org.coner.hibernate.entity.RegistrationHibernateEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;

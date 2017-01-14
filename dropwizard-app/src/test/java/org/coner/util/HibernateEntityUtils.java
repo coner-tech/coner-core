@@ -1,8 +1,8 @@
 package org.coner.util;
 
-import org.coner.hibernate.entity.EventHibernateEntity;
-
 import java.util.Date;
+
+import org.coner.hibernate.entity.EventHibernateEntity;
 
 /**
  *

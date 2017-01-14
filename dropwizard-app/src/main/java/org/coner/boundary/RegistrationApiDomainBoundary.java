@@ -2,7 +2,8 @@ package org.coner.boundary;
 
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.core.domain.entity.Registration;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class RegistrationApiDomainBoundary extends AbstractBoundary<RegistrationApiEntity, Registration> {
 

@@ -1,23 +1,27 @@
 package org.coner.it;
 
-import org.coner.api.entity.RegistrationApiEntity;
-import org.coner.api.request.*;
-import org.coner.api.response.*;
-import org.coner.util.UnitTestUtils;
-
-import java.net.URI;
-import java.util.List;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
-import org.eclipse.jetty.http.HttpStatus;
-import org.junit.*;
-
 import static org.coner.util.TestConstants.EVENT_DATE;
 import static org.coner.util.TestConstants.EVENT_NAME;
 import static org.coner.util.TestConstants.REGISTRATION_FIRSTNAME;
 import static org.coner.util.TestConstants.REGISTRATION_LASTNAME;
-
 import static org.fest.assertions.Assertions.assertThat;
+
+import java.net.URI;
+import java.util.List;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.RegistrationApiEntity;
+import org.coner.api.request.AddEventRequest;
+import org.coner.api.request.AddRegistrationRequest;
+import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetEventRegistrationsResponse;
+import org.coner.util.UnitTestUtils;
+import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Test;
 
 public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 

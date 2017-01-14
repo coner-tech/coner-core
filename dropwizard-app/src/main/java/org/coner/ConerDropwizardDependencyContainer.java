@@ -1,17 +1,57 @@
 package org.coner;
 
-import org.coner.boundary.*;
+import java.util.Set;
+
+import org.coner.boundary.CompetitionGroupApiAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupApiDomainBoundary;
+import org.coner.boundary.CompetitionGroupHibernateAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupHibernateDomainBoundary;
+import org.coner.boundary.CompetitionGroupSetApiAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
+import org.coner.boundary.CompetitionGroupSetHibernateAddPayloadBoundary;
+import org.coner.boundary.CompetitionGroupSetHibernateDomainBoundary;
+import org.coner.boundary.EventApiAddPayloadBoundary;
+import org.coner.boundary.EventApiDomainBoundary;
+import org.coner.boundary.EventHibernateAddPayloadBoundary;
+import org.coner.boundary.EventHibernateDomainBoundary;
+import org.coner.boundary.HandicapGroupApiAddPayloadBoundary;
+import org.coner.boundary.HandicapGroupApiDomainBoundary;
+import org.coner.boundary.HandicapGroupHibernateAddPayloadBoundary;
+import org.coner.boundary.HandicapGroupHibernateDomainBoundary;
+import org.coner.boundary.HandicapGroupSetApiAddPayloadBoundary;
+import org.coner.boundary.HandicapGroupSetApiDomainBoundary;
+import org.coner.boundary.HandicapGroupSetHibernateAddPayloadBoundary;
+import org.coner.boundary.HandicapGroupSetHibernateDomainBoundary;
+import org.coner.boundary.RegistrationApiAddPayloadBoundary;
+import org.coner.boundary.RegistrationApiDomainBoundary;
+import org.coner.boundary.RegistrationHibernateAddPayloadBoundary;
+import org.coner.boundary.RegistrationHibernateDomainBoundary;
 import org.coner.core.ConerCoreService;
-import org.coner.core.domain.service.*;
-import org.coner.core.gateway.*;
-import org.coner.hibernate.dao.*;
+import org.coner.core.domain.service.CompetitionGroupService;
+import org.coner.core.domain.service.CompetitionGroupSetService;
+import org.coner.core.domain.service.EventService;
+import org.coner.core.domain.service.HandicapGroupService;
+import org.coner.core.domain.service.HandicapGroupSetService;
+import org.coner.core.domain.service.RegistrationService;
+import org.coner.core.gateway.CompetitionGroupGateway;
+import org.coner.core.gateway.CompetitionGroupSetGateway;
+import org.coner.core.gateway.EventGateway;
+import org.coner.core.gateway.HandicapGroupGateway;
+import org.coner.core.gateway.HandicapGroupSetGateway;
+import org.coner.core.gateway.RegistrationGateway;
+import org.coner.hibernate.dao.CompetitionGroupDao;
+import org.coner.hibernate.dao.CompetitionGroupSetDao;
+import org.coner.hibernate.dao.EventDao;
+import org.coner.hibernate.dao.HandicapGroupDao;
+import org.coner.hibernate.dao.HandicapGroupSetDao;
+import org.coner.hibernate.dao.RegistrationDao;
 import org.coner.hibernate.entity.HibernateEntity;
+import org.reflections.Reflections;
 
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.hibernate.*;
-import java.util.Set;
-import org.reflections.Reflections;
+import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.SessionFactoryFactory;
 
 public class ConerDropwizardDependencyContainer {
 

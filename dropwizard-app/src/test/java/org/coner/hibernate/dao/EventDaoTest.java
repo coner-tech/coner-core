@@ -1,13 +1,16 @@
 package org.coner.hibernate.dao;
 
-import org.coner.hibernate.entity.EventHibernateEntity;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.time.ZonedDateTime;
-import java.util.*;
-import org.hibernate.Query;
-import org.junit.*;
+import java.util.Date;
+import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.coner.hibernate.entity.EventHibernateEntity;
+import org.hibernate.Query;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class EventDaoTest extends AbstractDaoTest {
 

@@ -1,7 +1,10 @@
 package org.coner.util.merger;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.*;
 
 public class ReflectionPayloadJavaBeanMerger<S, D> implements ObjectMerger<S, D> {
     private final Direction direction;

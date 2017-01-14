@@ -1,6 +1,7 @@
 package org.coner.core.domain.payload;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
 
 public class EventAddPayload extends DomainAddPayload {
     public String name;

@@ -1,17 +1,23 @@
 package org.coner.it;
 
-import org.coner.api.entity.*;
-import org.coner.api.request.*;
-import org.coner.api.response.*;
-import org.coner.util.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
+
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.coner.api.entity.CompetitionGroupApiEntity;
+import org.coner.api.entity.CompetitionGroupSetApiEntity;
+import org.coner.api.request.AddCompetitionGroupRequest;
+import org.coner.api.request.AddCompetitionGroupSetRequest;
+import org.coner.api.response.ErrorsResponse;
+import org.coner.api.response.GetCompetitionGroupSetsResponse;
+import org.coner.util.TestConstants;
+import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
 

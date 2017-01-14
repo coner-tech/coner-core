@@ -3,7 +3,8 @@ package org.coner.boundary;
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.entity.CompetitionGroupSet;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionJavaBeanMerger;
 
 public class CompetitionGroupSetApiDomainBoundary extends AbstractBoundary<
         CompetitionGroupSetApiEntity,

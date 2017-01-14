@@ -1,21 +1,22 @@
 package org.coner.core.domain.service;
 
-import org.coner.core.domain.entity.DomainEntity;
-import org.coner.core.domain.payload.DomainAddPayload;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.core.gateway.Gateway;
-
-import java.util.List;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
+
+import org.coner.core.domain.entity.DomainEntity;
+import org.coner.core.domain.payload.DomainAddPayload;
+import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.gateway.Gateway;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractDomainServiceTest {

@@ -1,18 +1,21 @@
 package org.coner.it;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.net.URI;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.request.AddHandicapGroupRequest;
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.api.response.ErrorsResponse;
-import org.coner.util.*;
-
-import java.net.URI;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
+import org.coner.util.TestConstants;
+import org.coner.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 

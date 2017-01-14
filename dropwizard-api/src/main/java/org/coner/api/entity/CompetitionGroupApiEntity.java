@@ -1,9 +1,16 @@
 package org.coner.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.math.BigDecimal;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+
 
 @JsonPropertyOrder({"id", "name", "handicapFactor", "grouping", "resultTimeType"})
 public class CompetitionGroupApiEntity extends ApiEntity {

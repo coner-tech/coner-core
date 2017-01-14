@@ -12,4 +12,7 @@
     <version>1.0</version>
     <name>Build Tools</name>
     <packaging>jar</packaging>
+    <properties>
+        <checkstyle.skip>true</checkstyle.skip>
+    </properties>
 </project>

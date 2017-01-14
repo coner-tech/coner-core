@@ -2,7 +2,9 @@ package org.coner.boundary;
 
 import org.coner.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
-import org.coner.util.merger.*;
+import org.coner.util.merger.ObjectMerger;
+import org.coner.util.merger.ReflectionPayloadJavaBeanMerger;
+import org.coner.util.merger.UnsupportedOperationMerger;
 
 public class HandicapGroupSetApiAddPayloadBoundary extends AbstractBoundary<
         AddHandicapGroupSetRequest,

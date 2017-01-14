@@ -1,4 +1,4 @@
 language: java
 jdk:
   - oraclejdk8
-script: mvn test && mvn checkstyle:check
+script: mvn test
