@@ -1,5 +1,7 @@
 package org.coner.boundary;
 
+import javax.inject.Inject;
+
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.entity.CompetitionGroupSet;
@@ -9,6 +11,10 @@ import org.coner.util.merger.ReflectionJavaBeanMerger;
 public class CompetitionGroupSetApiDomainBoundary extends AbstractBoundary<
         CompetitionGroupSetApiEntity,
         CompetitionGroupSet> {
+
+    @Inject
+    public CompetitionGroupSetApiDomainBoundary() {
+    }
 
     private ObjectMerger<AddCompetitionGroupSetRequest, CompetitionGroupSet>
             addCompetitionGroupSetRequestCompetitionGroupSetEntityMerger;

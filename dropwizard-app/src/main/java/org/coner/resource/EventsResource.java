@@ -2,6 +2,7 @@ package org.coner.resource;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -40,6 +41,7 @@ public class EventsResource {
     private final EventApiDomainBoundary apiDomainEntityBoundary;
     private final EventApiAddPayloadBoundary apiAddPayloadBoundary;
 
+    @Inject
     public EventsResource(
             ConerCoreService conerCoreService,
             EventApiDomainBoundary eventApiDomainBoundary,

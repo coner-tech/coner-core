@@ -2,6 +2,8 @@ package org.coner.core.gateway;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.boundary.EventHibernateDomainBoundary;
 import org.coner.boundary.RegistrationHibernateAddPayloadBoundary;
 import org.coner.boundary.RegistrationHibernateDomainBoundary;
@@ -24,6 +26,7 @@ public class RegistrationGateway extends AbstractGateway<
 
     private final EventHibernateDomainBoundary eventEntityBoundary;
 
+    @Inject
     public RegistrationGateway(
             RegistrationHibernateDomainBoundary entityBoundary,
             RegistrationHibernateAddPayloadBoundary addPayloadBoundary,

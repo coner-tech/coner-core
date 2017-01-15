@@ -131,7 +131,6 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .readEntity(RegistrationApiEntity.class);
         assertThat(registration).isNotNull();
         assertThat(registration.getId()).isEqualTo(registrationId0);
-
     }
 
     @Test

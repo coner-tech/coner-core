@@ -2,6 +2,8 @@ package org.coner.hibernate.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.hibernate.SessionFactory;
 
@@ -11,6 +13,7 @@ public class CompetitionGroupDao
         extends AbstractDAO<CompetitionGroupHibernateEntity>
         implements HibernateEntityDao<CompetitionGroupHibernateEntity> {
 
+    @Inject
     public CompetitionGroupDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }

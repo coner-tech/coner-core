@@ -2,6 +2,8 @@ package org.coner.core.domain.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
@@ -14,6 +16,7 @@ public class RegistrationService extends AbstractDomainService<
         RegistrationAddPayload,
         RegistrationGateway> {
 
+    @Inject
     public RegistrationService(RegistrationGateway gateway) {
         super(Registration.class, gateway);
     }

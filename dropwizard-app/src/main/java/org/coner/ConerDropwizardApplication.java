@@ -1,20 +1,19 @@
 package org.coner;
 
-import org.coner.exception.WebApplicationExceptionMapper;
-import org.coner.resource.CompetitionGroupResource;
-import org.coner.resource.CompetitionGroupSetResource;
-import org.coner.resource.CompetitionGroupSetsResource;
-import org.coner.resource.CompetitionGroupsResource;
-import org.coner.resource.EventRegistrationResource;
-import org.coner.resource.EventRegistrationsResource;
-import org.coner.resource.EventResource;
-import org.coner.resource.EventsResource;
-import org.coner.resource.HandicapGroupResource;
-import org.coner.resource.HandicapGroupSetsResource;
-import org.coner.resource.HandicapGroupsResource;
-import org.coner.util.JacksonUtil;
+import java.util.Set;
 
+import org.coner.dagger.ConerModule;
+import org.coner.dagger.DaggerJerseyRegistrationComponent;
+import org.coner.dagger.JerseyRegistrationComponent;
+import org.coner.hibernate.entity.HibernateEntity;
+import org.coner.util.JacksonUtil;
+import org.reflections.Reflections;
+
+import com.google.common.collect.ImmutableList;
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.SessionFactoryFactory;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,7 +22,8 @@ import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 public class ConerDropwizardApplication extends Application<ConerDropwizardConfiguration> {
 
-    private ConerDropwizardDependencyContainer dependencies;
+    JerseyRegistrationComponent components;
+    HibernateBundle<ConerDropwizardConfiguration> hibernateBundle;
 
     /**
      * The main method of the application.
@@ -39,9 +39,7 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
     public void initialize(
             Bootstrap<ConerDropwizardConfiguration> bootstrap
     ) {
-        ConerDropwizardDependencyContainer dependencies = getDependencies();
-
-        bootstrap.addBundle(dependencies.getHibernate());
+        bootstrap.addBundle(getHibernateBundle());
         bootstrap.addBundle(new SwaggerBundle<ConerDropwizardConfiguration>() {
             @Override
             protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(
@@ -59,88 +57,49 @@ public class ConerDropwizardApplication extends Application<ConerDropwizardConfi
             ConerDropwizardConfiguration conerDropwizardConfiguration,
             Environment environment
     ) throws Exception {
-        ConerDropwizardDependencyContainer dependencies = getDependencies();
+        initComponents();
         JerseyEnvironment jersey = environment.jersey();
-
-        // init resources
-        EventsResource eventsResource = new EventsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getEventApiDomainBoundary(),
-                dependencies.getEventApiAddPayloadBoundary()
-        );
-        EventResource eventResource = new EventResource(
-                dependencies.getEventApiDomainBoundary(),
-                dependencies.getConerCoreService()
-        );
-        EventRegistrationsResource eventRegistrationsResource = new EventRegistrationsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getRegistrationApiDomainBoundary(),
-                dependencies.getRegistrationApiAddPayloadBoundary()
-        );
-        EventRegistrationResource eventRegistrationResource = new EventRegistrationResource(
-                dependencies.getRegistrationApiDomainBoundary(),
-                dependencies.getConerCoreService()
-        );
-        HandicapGroupsResource handicapGroupsResource = new HandicapGroupsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getHandicapGroupApiDomainBoundary(),
-                dependencies.getHandicapGroupApiAddPayloadBoundary()
-        );
-        HandicapGroupResource handicapGroupResource = new HandicapGroupResource(
-                dependencies.getHandicapGroupApiDomainBoundary(),
-                dependencies.getConerCoreService()
-        );
-        HandicapGroupSetsResource handicapGroupSetsResource = new HandicapGroupSetsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getHandicapGroupSetApiDomainBoundary(),
-                dependencies.getHandicapGroupSetApiAddPayloadBoundary()
-        );
-
-        CompetitionGroupsResource competitionGroupsResource = new CompetitionGroupsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getCompetitionGroupApiDomainBoundary(),
-                dependencies.getCompetitionGroupApiAddPayloadBoundary()
-        );
-        CompetitionGroupResource competitionGroupResource = new CompetitionGroupResource(
-                dependencies.getCompetitionGroupApiDomainBoundary(),
-                dependencies.getConerCoreService()
-        );
-        CompetitionGroupSetsResource competitionGroupSetsResource = new CompetitionGroupSetsResource(
-                dependencies.getConerCoreService(),
-                dependencies.getCompetitionGroupSetApiDomainBoundary(),
-                dependencies.getCompetitionGroupSetApiAddPayloadBoundary()
-        );
-
-        CompetitionGroupSetResource competitionGroupSetResource = new CompetitionGroupSetResource(
-                dependencies.getConerCoreService(), dependencies.getCompetitionGroupSetApiDomainBoundary()
-        );
-
-        jersey.register(eventsResource);
-        jersey.register(eventResource);
-        jersey.register(eventRegistrationsResource);
-        jersey.register(eventRegistrationResource);
-        jersey.register(handicapGroupsResource);
-        jersey.register(handicapGroupResource);
-        jersey.register(handicapGroupSetsResource);
-        jersey.register(competitionGroupsResource);
-        jersey.register(competitionGroupResource);
-        jersey.register(competitionGroupSetsResource);
-        jersey.register(competitionGroupSetResource);
-
-        // init exception mappers
-        WebApplicationExceptionMapper webApplicationExceptionMapper = new WebApplicationExceptionMapper();
-
-        jersey.register(webApplicationExceptionMapper);
+        jersey.register(components.eventResource());
+        jersey.register(components.eventsResource());
+        jersey.register(components.eventRegistrationResource());
+        jersey.register(components.eventRegistrationsResource());
+        jersey.register(components.handicapGroupResource());
+        jersey.register(components.handicapGroupsResource());
+        jersey.register(components.handicapGroupSetsResource());
+        jersey.register(components.competitionGroupResource());
+        jersey.register(components.competitionGroupsResource());
+        jersey.register(components.competitionGroupSetResource());
+        jersey.register(components.competitionGroupSetsResource());
+        jersey.register(components.webApplicationExceptionMapper());
     }
 
-    private ConerDropwizardDependencyContainer getDependencies() {
-        if (dependencies == null) {
-            dependencies = new ConerDropwizardDependencyContainer();
+    private void initComponents() {
+        if (components != null) {
+            return;
         }
-        return dependencies;
+        ConerModule conerModule = new ConerModule(getHibernateBundle().getSessionFactory());
+        components = DaggerJerseyRegistrationComponent.builder()
+                .conerModule(conerModule)
+                .build();
     }
 
-    void setDependencies(ConerDropwizardDependencyContainer conerDropwizardDependencyContainer) {
-        this.dependencies = conerDropwizardDependencyContainer;
+    private HibernateBundle<ConerDropwizardConfiguration> getHibernateBundle() {
+        if (hibernateBundle == null) {
+            Reflections r = new Reflections("org.coner.hibernate.entity");
+            Set<Class<? extends HibernateEntity>> hibernateEntityClasses = r.getSubTypesOf(HibernateEntity.class);
+            hibernateBundle = new HibernateBundle<ConerDropwizardConfiguration>(
+                    ImmutableList.copyOf(hibernateEntityClasses),
+                    new SessionFactoryFactory()
+            ) {
+                @Override
+                public DataSourceFactory getDataSourceFactory(
+                        ConerDropwizardConfiguration conerDropwizardConfiguration
+                ) {
+                    return conerDropwizardConfiguration.getDataSourceFactory();
+                }
+            };
+        }
+        return hibernateBundle;
     }
 }
+

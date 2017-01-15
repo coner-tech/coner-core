@@ -1,5 +1,6 @@
 package org.coner.resource;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -34,6 +35,7 @@ public class EventRegistrationResource {
     private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
+    @Inject
     public EventRegistrationResource(
             RegistrationApiDomainBoundary registrationApiDomainBoundary,
             ConerCoreService conerCoreService) {

@@ -1,5 +1,6 @@
 package org.coner.resource;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -38,6 +39,7 @@ public class HandicapGroupSetsResource {
     private final HandicapGroupSetApiDomainBoundary apiDomainBoundary;
     private final HandicapGroupSetApiAddPayloadBoundary apiAddPayloadBoundary;
 
+    @Inject
     public HandicapGroupSetsResource(
             ConerCoreService conerCoreService,
             HandicapGroupSetApiDomainBoundary handicapGroupSetBoundary,

@@ -2,6 +2,8 @@ package org.coner.hibernate.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.hibernate.entity.HandicapGroupHibernateEntity;
 import org.hibernate.SessionFactory;
 
@@ -11,6 +13,7 @@ public class HandicapGroupDao
         extends AbstractDAO<HandicapGroupHibernateEntity>
         implements HibernateEntityDao<HandicapGroupHibernateEntity> {
 
+    @Inject
     public HandicapGroupDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }

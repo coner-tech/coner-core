@@ -2,6 +2,8 @@ package org.coner.hibernate.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.hibernate.entity.EventHibernateEntity;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
 import org.hibernate.Query;
@@ -13,6 +15,7 @@ public class RegistrationDao
         extends AbstractDAO<RegistrationHibernateEntity>
         implements HibernateEntityDao<RegistrationHibernateEntity> {
 
+    @Inject
     public RegistrationDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
