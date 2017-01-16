@@ -1,5 +1,7 @@
 package org.coner.core.gateway;
 
+import javax.inject.Inject;
+
 import org.coner.boundary.EventHibernateAddPayloadBoundary;
 import org.coner.boundary.EventHibernateDomainBoundary;
 import org.coner.core.domain.entity.Event;
@@ -15,6 +17,7 @@ public class EventGateway extends AbstractGateway<
         EventHibernateAddPayloadBoundary,
         EventDao> {
 
+    @Inject
     public EventGateway(
             EventHibernateDomainBoundary entityBoundary,
             EventHibernateAddPayloadBoundary addPayloadBoundary,

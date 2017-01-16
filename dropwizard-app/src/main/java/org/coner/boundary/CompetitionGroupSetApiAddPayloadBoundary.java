@@ -1,5 +1,7 @@
 package org.coner.boundary;
 
+import javax.inject.Inject;
+
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.util.merger.CompositeMerger;
@@ -12,6 +14,10 @@ import com.google.common.collect.ImmutableSet;
 public class CompetitionGroupSetApiAddPayloadBoundary extends AbstractBoundary<
         AddCompetitionGroupSetRequest,
         CompetitionGroupSetAddPayload> {
+
+    @Inject
+    public CompetitionGroupSetApiAddPayloadBoundary() {
+    }
 
     @Override
     protected ObjectMerger<AddCompetitionGroupSetRequest, CompetitionGroupSetAddPayload> buildLocalToRemoteMerger() {

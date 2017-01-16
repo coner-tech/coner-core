@@ -1,5 +1,7 @@
 package org.coner.boundary;
 
+import javax.inject.Inject;
+
 import org.coner.core.domain.entity.Registration;
 import org.coner.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.util.merger.CompositeMerger;
@@ -10,6 +12,7 @@ public class RegistrationHibernateDomainBoundary extends AbstractBoundary<Regist
 
     private final EventHibernateDomainBoundary eventHibernateDomainBoundary;
 
+    @Inject
     public RegistrationHibernateDomainBoundary(EventHibernateDomainBoundary eventHibernateDomainBoundary) {
         this.eventHibernateDomainBoundary = eventHibernateDomainBoundary;
     }

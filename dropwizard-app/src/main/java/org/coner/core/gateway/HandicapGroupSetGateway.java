@@ -1,5 +1,7 @@
 package org.coner.core.gateway;
 
+import javax.inject.Inject;
+
 import org.coner.boundary.HandicapGroupSetHibernateAddPayloadBoundary;
 import org.coner.boundary.HandicapGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroupSet;
@@ -15,6 +17,7 @@ public class HandicapGroupSetGateway extends AbstractGateway<
         HandicapGroupSetHibernateAddPayloadBoundary,
         HandicapGroupSetDao> {
 
+    @Inject
     public HandicapGroupSetGateway(
             HandicapGroupSetHibernateDomainBoundary entityBoundary,
             HandicapGroupSetHibernateAddPayloadBoundary addPayloadBoundary,

@@ -2,6 +2,8 @@ package org.coner.hibernate.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.hibernate.entity.EventHibernateEntity;
 import org.hibernate.SessionFactory;
 
@@ -11,6 +13,7 @@ public class EventDao
         extends AbstractDAO<EventHibernateEntity>
         implements HibernateEntityDao<EventHibernateEntity> {
 
+    @Inject
     public EventDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }

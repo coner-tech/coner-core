@@ -1,5 +1,7 @@
 package org.coner.core.gateway;
 
+import javax.inject.Inject;
+
 import org.coner.boundary.CompetitionGroupSetHibernateAddPayloadBoundary;
 import org.coner.boundary.CompetitionGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroupSet;
@@ -15,6 +17,7 @@ public class CompetitionGroupSetGateway extends AbstractGateway<
         CompetitionGroupSetHibernateAddPayloadBoundary,
         CompetitionGroupSetDao> {
 
+    @Inject
     public CompetitionGroupSetGateway(
             CompetitionGroupSetHibernateDomainBoundary entityBoundary,
             CompetitionGroupSetHibernateAddPayloadBoundary addPayloadBoundary,

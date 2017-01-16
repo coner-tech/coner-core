@@ -1,5 +1,6 @@
 package org.coner.resource;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -32,6 +33,7 @@ public class CompetitionGroupResource {
     private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
     private final ConerCoreService conerCoreService;
 
+    @Inject
     public CompetitionGroupResource(
             CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
             ConerCoreService conerCoreService

@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.entity.Event;
@@ -25,7 +27,6 @@ import org.coner.core.domain.service.RegistrationService;
 import org.coner.core.exception.EntityNotFoundException;
 import org.coner.core.exception.EventMismatchException;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
 public class ConerCoreService {
@@ -37,6 +38,7 @@ public class ConerCoreService {
     private final HandicapGroupService handicapGroupService;
     private final HandicapGroupSetService handicapGroupSetService;
 
+    @Inject
     public ConerCoreService(
             EventService eventService,
             RegistrationService registrationService,
@@ -96,8 +98,8 @@ public class ConerCoreService {
 
     public CompetitionGroupSet addCompetitionGroupSet(CompetitionGroupSetAddPayload addPayload)
             throws EntityNotFoundException {
-        Preconditions.checkNotNull(addPayload);
-        Preconditions.checkNotNull(addPayload.competitionGroupIds);
+        checkNotNull(addPayload);
+        checkNotNull(addPayload.competitionGroupIds);
         ImmutableSet.Builder<CompetitionGroup> competitionGroupsBuilder = ImmutableSet.builder();
         for (String competitionGroupId : addPayload.competitionGroupIds) {
             competitionGroupsBuilder.add(competitionGroupService.getById(competitionGroupId));
