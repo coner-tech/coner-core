@@ -23,9 +23,9 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetCompetitionGroupsResponse;
 import org.coner.boundary.CompetitionGroupApiAddPayloadBoundary;
 import org.coner.boundary.CompetitionGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.JacksonUtil;
@@ -42,7 +42,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class CompetitionGroupsResourceTest {
 
-    private ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private CompetitionGroupEntityService competitionGroupEntityService = mock(CompetitionGroupEntityService.class);
     private CompetitionGroupApiDomainBoundary apiDomainEntityBoundary = mock(CompetitionGroupApiDomainBoundary.class);
     private CompetitionGroupApiAddPayloadBoundary apiAddPayloadBoundary = mock(
             CompetitionGroupApiAddPayloadBoundary.class
@@ -52,7 +52,7 @@ public class CompetitionGroupsResourceTest {
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(
                     new CompetitionGroupsResource(
-                            conerCoreService,
+                            competitionGroupEntityService,
                             apiDomainEntityBoundary,
                             apiAddPayloadBoundary
                     )
@@ -62,7 +62,7 @@ public class CompetitionGroupsResourceTest {
 
     @Before
     public void setup() {
-        reset(conerCoreService, apiDomainEntityBoundary, apiAddPayloadBoundary);
+        reset(competitionGroupEntityService, apiDomainEntityBoundary, apiAddPayloadBoundary);
 
         MockitoAnnotations.initMocks(this);
 
@@ -100,7 +100,7 @@ public class CompetitionGroupsResourceTest {
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
                 .contains("handicapFactor must be less than or equal to 1.000");
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(competitionGroupEntityService);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class CompetitionGroupsResourceTest {
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
                 .contains("resultTimeType may not be empty");
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(competitionGroupEntityService);
     }
 
     @Test
@@ -142,17 +142,17 @@ public class CompetitionGroupsResourceTest {
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
                 .contains("grouping may not be null");
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(competitionGroupEntityService);
     }
 
     @Test
     public void itShouldGetPostedCompetitionGroup() throws Exception {
         postCompetitionGroup();
 
-        reset(conerCoreService, apiDomainEntityBoundary, apiAddPayloadBoundary);
+        reset(competitionGroupEntityService, apiDomainEntityBoundary, apiAddPayloadBoundary);
 
         List<CompetitionGroup> domainEntities = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
-        when(conerCoreService.getCompetitionGroups()).thenReturn(domainEntities);
+        when(competitionGroupEntityService.getAll()).thenReturn(domainEntities);
         List<CompetitionGroupApiEntity> apiEntities = Arrays.asList(ApiEntityTestUtils.fullCompetitionGroup());
         when(apiDomainEntityBoundary.toLocalEntities(domainEntities)).thenReturn(apiEntities);
 
@@ -161,8 +161,8 @@ public class CompetitionGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetCompetitionGroupsResponse.class);
 
-        verify(conerCoreService).getCompetitionGroups();
-        verifyNoMoreInteractions(conerCoreService);
+        verify(competitionGroupEntityService).getAll();
+        verifyNoMoreInteractions(competitionGroupEntityService);
 
         assertThat(response)
                 .isNotNull();
@@ -180,7 +180,7 @@ public class CompetitionGroupsResourceTest {
         CompetitionGroupAddPayload addPayload = mock(CompetitionGroupAddPayload.class);
         when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
         CompetitionGroup domainEntity = mock(CompetitionGroup.class);
-        when(conerCoreService.addCompetitionGroup(addPayload)).thenReturn(domainEntity);
+        when(competitionGroupEntityService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();
         when(apiDomainEntityBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -189,8 +189,8 @@ public class CompetitionGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(conerCoreService).addCompetitionGroup(addPayload);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(competitionGroupEntityService).add(addPayload);
+        verifyNoMoreInteractions(competitionGroupEntityService);
 
         return response;
     }

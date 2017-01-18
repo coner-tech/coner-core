@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.coner.core.domain.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.Gateway;
 
-public abstract class AbstractDomainService<
+public abstract class AbstractEntityService<
         DE extends DomainEntity,
         AP extends DomainAddPayload,
         G extends Gateway<DE, AP>> {
@@ -15,12 +16,12 @@ public abstract class AbstractDomainService<
     private final Class<DE> domainEntityClass;
     protected final G gateway;
 
-    protected AbstractDomainService(Class<DE> domainEntityClass, G gateway) {
+    protected AbstractEntityService(Class<DE> domainEntityClass, G gateway) {
         this.domainEntityClass = domainEntityClass;
         this.gateway = gateway;
     }
 
-    public DE add(AP addPayload) {
+    public DE add(AP addPayload) throws AddEntityException {
         return gateway.add(addPayload);
     }
 

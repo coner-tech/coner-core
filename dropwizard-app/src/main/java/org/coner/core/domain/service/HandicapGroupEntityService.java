@@ -6,13 +6,13 @@ import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.gateway.HandicapGroupGateway;
 
-public class HandicapGroupService extends AbstractDomainService<
+public class HandicapGroupEntityService extends AbstractEntityService<
         HandicapGroup,
         HandicapGroupAddPayload,
         HandicapGroupGateway> {
 
     @Inject
-    public HandicapGroupService(HandicapGroupGateway gateway) {
+    public HandicapGroupEntityService(HandicapGroupGateway gateway) {
         super(HandicapGroup.class, gateway);
     }
 }

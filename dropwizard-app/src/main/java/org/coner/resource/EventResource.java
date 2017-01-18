@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import org.coner.api.entity.EventApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.EventApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Event;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -31,12 +31,12 @@ import io.swagger.annotations.ApiResponses;
 public class EventResource {
 
     private final EventApiDomainBoundary eventApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final EventEntityService eventEntityService;
 
     @Inject
-    public EventResource(EventApiDomainBoundary eventApiDomainBoundary, ConerCoreService conerCoreService) {
+    public EventResource(EventApiDomainBoundary eventApiDomainBoundary, EventEntityService eventEntityService) {
         this.eventApiDomainBoundary = eventApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
+        this.eventEntityService = eventEntityService;
     }
 
     @GET
@@ -51,7 +51,7 @@ public class EventResource {
     ) {
         Event domainEntity = null;
         try {
-            domainEntity = conerCoreService.getEvent(id);
+            domainEntity = eventEntityService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("No event found with id " + id);
         }

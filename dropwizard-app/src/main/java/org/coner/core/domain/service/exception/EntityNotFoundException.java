@@ -1,4 +1,4 @@
-package org.coner.core.exception;
+package org.coner.core.domain.service.exception;
 
 import org.coner.core.domain.entity.DomainEntity;
 
