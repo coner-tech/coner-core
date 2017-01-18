@@ -21,10 +21,8 @@ import org.coner.api.request.AddRegistrationRequest;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.util.ApiEntityTestUtils;
@@ -42,7 +40,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventRegistrationsResourceTest {
 
-    private final EventEntityService eventEntityService = mock(EventEntityService.class);
     private final RegistrationEntityService registrationEntityService = mock(RegistrationEntityService.class);
     private final RegistrationApiDomainBoundary apiDomainBoundary = mock(RegistrationApiDomainBoundary.class);
     private final RegistrationApiAddPayloadBoundary addPayloadBoundary = mock(RegistrationApiAddPayloadBoundary.class);
@@ -52,7 +49,6 @@ public class EventRegistrationsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventRegistrationsResource(
-                    eventEntityService,
                     registrationEntityService,
                     apiDomainBoundary,
                     addPayloadBoundary
@@ -68,11 +64,9 @@ public class EventRegistrationsResourceTest {
 
     @Test
     public void itShouldGetRegistrationsForEvent() throws Exception {
-        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
         List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
-        when(eventEntityService.getById(EVENT_ID)).thenReturn(domainEvent);
-        when(registrationEntityService.getAllWith(domainEvent)).thenReturn(domainRegistrations);
+        when(registrationEntityService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
         when(apiDomainBoundary.toLocalEntities(domainRegistrations)).thenReturn(apiRegistrations);
 
         GetEventRegistrationsResponse response = resources.client()
@@ -80,7 +74,7 @@ public class EventRegistrationsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetEventRegistrationsResponse.class);
 
-        verify(registrationEntityService).getAllWith(domainEvent);
+        verify(registrationEntityService).getAllWithEventId(EVENT_ID);
         assertThat(response).isNotNull();
         assertThat(response.getRegistrations())
                 .isNotNull()
@@ -117,14 +111,14 @@ public class EventRegistrationsResourceTest {
 
     @Test
     public void whenEventDoesNotExistItShouldRespondNotFound() throws Exception {
-        when(eventEntityService.getById(EVENT_ID)).thenThrow(EntityNotFoundException.class);
+        when(registrationEntityService.getAllWithEventId(EVENT_ID)).thenThrow(EntityNotFoundException.class);
 
         Response eventRegistrationResponseContainer = resources.client()
                 .target("/events/" + EVENT_ID + "/registrations")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(eventEntityService).getById(EVENT_ID);
+        verify(registrationEntityService).getAllWithEventId(EVENT_ID);
         verifyNoMoreInteractions(registrationEntityService);
 
         assertThat(eventRegistrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);

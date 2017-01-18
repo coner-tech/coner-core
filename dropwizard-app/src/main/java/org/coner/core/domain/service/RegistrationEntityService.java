@@ -25,16 +25,18 @@ public class RegistrationEntityService extends AbstractEntityService<
         this.eventEntityService = eventEntityService;
     }
 
-    public Registration getByIdWithEvent(String id, Event event)
+    public Registration getByEventIdAndRegistrationId(String eventId, String registrationId)
             throws EntityMismatchException, EntityNotFoundException {
-        Registration registration = getById(id);
+        Event event = eventEntityService.getById(eventId);
+        Registration registration = getById(registrationId);
         if (!registration.getEvent().getId().equals(event.getId())) {
             throw new EntityMismatchException();
         }
         return registration;
     }
 
-    public List<Registration> getAllWith(Event event) {
+    public List<Registration> getAllWithEventId(String eventId) throws EntityNotFoundException {
+        Event event = eventEntityService.getById(eventId);
         return gateway.getAllWith(event);
     }
 
