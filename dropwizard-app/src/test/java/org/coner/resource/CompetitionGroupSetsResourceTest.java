@@ -16,9 +16,9 @@ import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.request.AddCompetitionGroupSetRequest;
 import org.coner.boundary.CompetitionGroupSetApiAddPayloadBoundary;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
+import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.coner.util.UnitTestUtils;
@@ -40,7 +40,7 @@ public class CompetitionGroupSetsResourceTest {
     private CompetitionGroupSetApiAddPayloadBoundary addPayloadBoundary = mock(
             CompetitionGroupSetApiAddPayloadBoundary.class
     );
-    private ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private CompetitionGroupSetService conerCoreService = mock(CompetitionGroupSetService.class);
     private ObjectMapper objectMapper;
 
     @Rule
@@ -80,7 +80,7 @@ public class CompetitionGroupSetsResourceTest {
         CompetitionGroupSetAddPayload addPayload = mock(CompetitionGroupSetAddPayload.class);
         when(addPayloadBoundary.toRemoteEntity(requestAddCompetitionGroupSet)).thenReturn(addPayload);
         CompetitionGroupSet domainEntity = mock(CompetitionGroupSet.class);
-        when(conerCoreService.addCompetitionGroupSet(addPayload)).thenReturn(domainEntity);
+        when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupSetApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroupSet();
         when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -89,7 +89,7 @@ public class CompetitionGroupSetsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(conerCoreService).addCompetitionGroupSet(addPayload);
+        verify(conerCoreService).add(addPayload);
         verifyNoMoreInteractions(conerCoreService);
 
         return response;
