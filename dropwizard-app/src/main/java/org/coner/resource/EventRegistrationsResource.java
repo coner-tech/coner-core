@@ -21,10 +21,8 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
@@ -43,18 +41,16 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
-    private final EventEntityService eventEntityService;
     private final RegistrationEntityService registrationEntityService;
     private final RegistrationApiDomainBoundary apiDomainEntityBoundary;
     private final RegistrationApiAddPayloadBoundary addPayloadBoundary;
 
     @Inject
     public EventRegistrationsResource(
-            EventEntityService eventEntityService, RegistrationEntityService registrationEntityService,
+            RegistrationEntityService registrationEntityService,
             RegistrationApiDomainBoundary registrationApiDomainBoundary,
             RegistrationApiAddPayloadBoundary registrationApiAddPayloadBoundary
     ) {
-        this.eventEntityService = eventEntityService;
         this.registrationEntityService = registrationEntityService;
         this.apiDomainEntityBoundary = registrationApiDomainBoundary;
         this.addPayloadBoundary = registrationApiAddPayloadBoundary;
@@ -83,8 +79,7 @@ public class EventRegistrationsResource {
     ) {
         List<Registration> domainEntities;
         try {
-            Event event = eventEntityService.getById(eventId);
-            domainEntities = registrationEntityService.getAllWith(event);
+            domainEntities = registrationEntityService.getAllWithEventId(eventId);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException(e.getMessage());
         }
