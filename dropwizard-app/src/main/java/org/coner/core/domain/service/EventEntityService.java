@@ -6,10 +6,10 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.gateway.EventGateway;
 
-public class EventService extends AbstractDomainService<Event, EventAddPayload, EventGateway> {
+public class EventEntityService extends AbstractEntityService<Event, EventAddPayload, EventGateway> {
 
     @Inject
-    public EventService(EventGateway gateway) {
+    public EventEntityService(EventGateway gateway) {
         super(Event.class, gateway);
     }
 }

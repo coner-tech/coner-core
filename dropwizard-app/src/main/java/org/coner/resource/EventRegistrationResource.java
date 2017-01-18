@@ -13,10 +13,12 @@ import javax.ws.rs.core.Response;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.core.exception.EventMismatchException;
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.RegistrationEntityService;
+import org.coner.core.domain.service.exception.EntityMismatchException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -32,15 +34,19 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Event Registrations")
 public class EventRegistrationResource {
 
+    private final EventEntityService eventEntityService;
     private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final RegistrationEntityService registrationEntityService;
 
     @Inject
     public EventRegistrationResource(
-            RegistrationApiDomainBoundary registrationApiDomainBoundary,
-            ConerCoreService conerCoreService) {
+            EventEntityService eventEntityService,
+            RegistrationEntityService registrationEntityService,
+            RegistrationApiDomainBoundary registrationApiDomainBoundary
+    ) {
+        this.eventEntityService = eventEntityService;
         this.registrationApiDomainBoundary = registrationApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
+        this.registrationEntityService = registrationEntityService;
     }
 
     @GET
@@ -61,8 +67,9 @@ public class EventRegistrationResource {
     ) {
         Registration domainRegistration;
         try {
-            domainRegistration = conerCoreService.getRegistration(eventId, registrationId);
-        } catch (EventMismatchException e) {
+            Event event = eventEntityService.getById(eventId);
+            domainRegistration = registrationEntityService.getByIdWithEvent(registrationId, event);
+        } catch (EntityMismatchException e) {
             return Response.status(Response.Status.CONFLICT)
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(

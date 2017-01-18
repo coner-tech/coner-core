@@ -21,10 +21,13 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventRegistrationsResponse;
 import org.coner.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.ConerCoreService;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.RegistrationEntityService;
+import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -40,17 +43,19 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
-    private final ConerCoreService conerCoreService;
+    private final EventEntityService eventEntityService;
+    private final RegistrationEntityService registrationEntityService;
     private final RegistrationApiDomainBoundary apiDomainEntityBoundary;
     private final RegistrationApiAddPayloadBoundary addPayloadBoundary;
 
     @Inject
     public EventRegistrationsResource(
-            ConerCoreService conerCoreService,
+            EventEntityService eventEntityService, RegistrationEntityService registrationEntityService,
             RegistrationApiDomainBoundary registrationApiDomainBoundary,
             RegistrationApiAddPayloadBoundary registrationApiAddPayloadBoundary
     ) {
-        this.conerCoreService = conerCoreService;
+        this.eventEntityService = eventEntityService;
+        this.registrationEntityService = registrationEntityService;
         this.apiDomainEntityBoundary = registrationApiDomainBoundary;
         this.addPayloadBoundary = registrationApiAddPayloadBoundary;
     }
@@ -78,7 +83,8 @@ public class EventRegistrationsResource {
     ) {
         List<Registration> domainEntities;
         try {
-            domainEntities = conerCoreService.getRegistrations(eventId);
+            Event event = eventEntityService.getById(eventId);
+            domainEntities = registrationEntityService.getAllWith(event);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException(e.getMessage());
         }
@@ -115,8 +121,8 @@ public class EventRegistrationsResource {
         addPayload.eventId = eventId;
         Registration domainEntity = null;
         try {
-            domainEntity = conerCoreService.addRegistration(addPayload);
-        } catch (EntityNotFoundException e) {
+            domainEntity = registrationEntityService.add(addPayload);
+        } catch (AddEntityException e) {
             throw new NotFoundException(e.getMessage());
         }
         RegistrationApiEntity registration = apiDomainEntityBoundary.toLocalEntity(domainEntity);
