@@ -51,7 +51,8 @@ public class EventRegistrationResourceTest {
         Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
         RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
 
-        when(registrationEntityService.getByEventIdAndRegistrationId(EVENT_ID, REGISTRATION_ID)).thenReturn(domainEntity);
+        when(registrationEntityService.getByEventIdAndRegistrationId(EVENT_ID, REGISTRATION_ID))
+                .thenReturn(domainEntity);
         when(registrationBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
         Response responseContainer = resources.client()
