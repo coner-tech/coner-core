@@ -13,9 +13,9 @@ import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupSetApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroupSet;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.CompetitionGroupSetService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -32,14 +32,15 @@ import io.swagger.annotations.ApiResponses;
 public class CompetitionGroupSetResource {
 
     private final CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final CompetitionGroupSetService competitionGroupSetService;
 
     @Inject
     public CompetitionGroupSetResource(
-            ConerCoreService conerCoreService, CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary
+            CompetitionGroupSetService competitionGroupSetService,
+            CompetitionGroupSetApiDomainBoundary competitionGroupSetApiDomainBoundary
     ) {
         this.competitionGroupSetApiDomainBoundary = competitionGroupSetApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
+        this.competitionGroupSetService = competitionGroupSetService;
     }
 
     @GET
@@ -55,7 +56,7 @@ public class CompetitionGroupSetResource {
     ) {
         CompetitionGroupSet domainEntity = null;
         try {
-            domainEntity = conerCoreService.getCompetitionGroupSet(id);
+            domainEntity = competitionGroupSetService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("No competition group set found with id " + id);
         }

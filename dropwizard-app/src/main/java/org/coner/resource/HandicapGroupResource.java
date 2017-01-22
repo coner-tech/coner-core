@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -31,15 +31,15 @@ import io.swagger.annotations.ApiResponses;
 public class HandicapGroupResource {
 
     private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final HandicapGroupEntityService handicapGroupEntityService;
 
     @Inject
     public HandicapGroupResource(
             HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
-            ConerCoreService conerCoreService
+            HandicapGroupEntityService handicapGroupEntityService
     ) {
         this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
+        this.handicapGroupEntityService = handicapGroupEntityService;
     }
 
     @GET
@@ -54,7 +54,7 @@ public class HandicapGroupResource {
     ) {
         HandicapGroup domainEntity = null;
         try {
-            domainEntity = conerCoreService.getHandicapGroup(id);
+            domainEntity = handicapGroupEntityService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("No handicap group with id " + id);
         }

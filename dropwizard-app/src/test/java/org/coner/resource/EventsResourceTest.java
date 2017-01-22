@@ -21,9 +21,9 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetEventsResponse;
 import org.coner.boundary.EventApiAddPayloadBoundary;
 import org.coner.boundary.EventApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.core.domain.service.EventEntityService;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.JacksonUtil;
 import org.eclipse.jetty.http.HttpStatus;
@@ -38,7 +38,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventsResourceTest {
 
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private final EventEntityService conerCoreService = mock(EventEntityService.class);
     private final EventApiDomainBoundary apiDomainBoundary = mock(EventApiDomainBoundary.class);
     private final EventApiAddPayloadBoundary addPayloadBoundary = mock(EventApiAddPayloadBoundary.class);
 
@@ -59,14 +59,14 @@ public class EventsResourceTest {
     @Test
     public void itShouldGetEvents() {
         List<Event> domainEvents = new ArrayList<>();
-        when(conerCoreService.getEvents()).thenReturn(domainEvents);
+        when(conerCoreService.getAll()).thenReturn(domainEvents);
 
         GetEventsResponse response = resources.client()
                 .target("/events")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetEventsResponse.class);
 
-        verify(conerCoreService).getEvents();
+        verify(conerCoreService).getAll();
         verify(apiDomainBoundary).toLocalEntities(domainEvents);
         assertThat(response)
                 .isNotNull();
@@ -85,7 +85,7 @@ public class EventsResourceTest {
         EventAddPayload addPayload = mock(EventAddPayload.class);
         when(addPayloadBoundary.toRemoteEntity(requestEvent)).thenReturn(addPayload);
         Event domainEntity = mock(Event.class);
-        when(conerCoreService.addEvent(addPayload)).thenReturn(domainEntity);
+        when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         EventApiEntity apiEntity = ApiEntityTestUtils.fullApiEvent();
         when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -94,7 +94,7 @@ public class EventsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(conerCoreService).addEvent(addPayload);
+        verify(conerCoreService).add(addPayload);
         verifyNoMoreInteractions(conerCoreService);
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);

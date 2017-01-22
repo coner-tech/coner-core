@@ -13,10 +13,10 @@ import javax.ws.rs.core.Response;
 import org.coner.api.entity.RegistrationApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.Registration;
-import org.coner.core.exception.EntityNotFoundException;
-import org.coner.core.exception.EventMismatchException;
+import org.coner.core.domain.service.EventRegistrationService;
+import org.coner.core.domain.service.exception.EntityMismatchException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -33,14 +33,15 @@ import io.swagger.annotations.ApiResponses;
 public class EventRegistrationResource {
 
     private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final EventRegistrationService eventRegistrationService;
 
     @Inject
     public EventRegistrationResource(
-            RegistrationApiDomainBoundary registrationApiDomainBoundary,
-            ConerCoreService conerCoreService) {
+            EventRegistrationService eventRegistrationService,
+            RegistrationApiDomainBoundary registrationApiDomainBoundary
+    ) {
+        this.eventRegistrationService = eventRegistrationService;
         this.registrationApiDomainBoundary = registrationApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
     }
 
     @GET
@@ -61,8 +62,8 @@ public class EventRegistrationResource {
     ) {
         Registration domainRegistration;
         try {
-            domainRegistration = conerCoreService.getRegistration(eventId, registrationId);
-        } catch (EventMismatchException e) {
+            domainRegistration = eventRegistrationService.getByEventIdAndRegistrationId(eventId, registrationId);
+        } catch (EntityMismatchException e) {
             return Response.status(Response.Status.CONFLICT)
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(

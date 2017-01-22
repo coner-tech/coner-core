@@ -14,9 +14,9 @@ import javax.ws.rs.core.Response;
 
 import org.coner.api.entity.HandicapGroupApiEntity;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.DomainEntityTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -29,16 +29,16 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class HandicapGroupResourceTest {
 
     private final HandicapGroupApiDomainBoundary handicapGroupBoundary = mock(HandicapGroupApiDomainBoundary.class);
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private final HandicapGroupEntityService handicapGroupEntityService = mock(HandicapGroupEntityService.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new HandicapGroupResource(handicapGroupBoundary, conerCoreService))
+            .addResource(new HandicapGroupResource(handicapGroupBoundary, handicapGroupEntityService))
             .build();
 
     @Before
     public void setup() {
-        reset(handicapGroupBoundary, conerCoreService);
+        reset(handicapGroupBoundary, handicapGroupEntityService);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class HandicapGroupResourceTest {
         assertThat(domainHandicapGroup.getId()).isSameAs(HANDICAP_GROUP_ID);
         assertThat(handicapGroupApiEntity.getId()).isSameAs(HANDICAP_GROUP_ID);
 
-        when(conerCoreService.getHandicapGroup(HANDICAP_GROUP_ID)).thenReturn(domainHandicapGroup);
+        when(handicapGroupEntityService.getById(HANDICAP_GROUP_ID)).thenReturn(domainHandicapGroup);
         when(handicapGroupBoundary.toLocalEntity(domainHandicapGroup)).thenReturn(handicapGroupApiEntity);
 
         Response responseContainer = resources.client()
@@ -58,9 +58,9 @@ public class HandicapGroupResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getHandicapGroup(HANDICAP_GROUP_ID);
+        verify(handicapGroupEntityService).getById(HANDICAP_GROUP_ID);
         verify(handicapGroupBoundary).toLocalEntity(domainHandicapGroup);
-        verifyNoMoreInteractions(conerCoreService, handicapGroupBoundary);
+        verifyNoMoreInteractions(handicapGroupEntityService, handicapGroupBoundary);
 
         assertThat(responseContainer).isNotNull();
         assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
@@ -73,15 +73,15 @@ public class HandicapGroupResourceTest {
 
     @Test
     public void itShouldRespondWithNotFoundWhenHandicapGroupNotFound() throws EntityNotFoundException {
-        when(conerCoreService.getHandicapGroup(HANDICAP_GROUP_ID)).thenThrow(EntityNotFoundException.class);
+        when(handicapGroupEntityService.getById(HANDICAP_GROUP_ID)).thenThrow(EntityNotFoundException.class);
 
         Response response = resources.client()
                 .target("/handicapGroups/" + HANDICAP_GROUP_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getHandicapGroup(HANDICAP_GROUP_ID);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(handicapGroupEntityService).getById(HANDICAP_GROUP_ID);
+        verifyNoMoreInteractions(handicapGroupEntityService);
         verifyZeroInteractions(handicapGroupBoundary);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
