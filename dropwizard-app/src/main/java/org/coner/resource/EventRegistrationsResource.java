@@ -23,7 +23,7 @@ import org.coner.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.domain.service.RegistrationEntityService;
+import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
@@ -41,17 +41,17 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "Event Registrations")
 public class EventRegistrationsResource {
 
-    private final RegistrationEntityService registrationEntityService;
+    private final EventRegistrationService eventRegistrationService;
     private final RegistrationApiDomainBoundary apiDomainEntityBoundary;
     private final RegistrationApiAddPayloadBoundary addPayloadBoundary;
 
     @Inject
     public EventRegistrationsResource(
-            RegistrationEntityService registrationEntityService,
+            EventRegistrationService eventRegistrationService,
             RegistrationApiDomainBoundary registrationApiDomainBoundary,
             RegistrationApiAddPayloadBoundary registrationApiAddPayloadBoundary
     ) {
-        this.registrationEntityService = registrationEntityService;
+        this.eventRegistrationService = eventRegistrationService;
         this.apiDomainEntityBoundary = registrationApiDomainBoundary;
         this.addPayloadBoundary = registrationApiAddPayloadBoundary;
     }
@@ -79,7 +79,7 @@ public class EventRegistrationsResource {
     ) {
         List<Registration> domainEntities;
         try {
-            domainEntities = registrationEntityService.getAllWithEventId(eventId);
+            domainEntities = eventRegistrationService.getAllWithEventId(eventId);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException(e.getMessage());
         }
@@ -116,7 +116,7 @@ public class EventRegistrationsResource {
         addPayload.eventId = eventId;
         Registration domainEntity = null;
         try {
-            domainEntity = registrationEntityService.add(addPayload);
+            domainEntity = eventRegistrationService.add(addPayload);
         } catch (AddEntityException e) {
             throw new NotFoundException(e.getMessage());
         }
