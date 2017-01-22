@@ -23,7 +23,7 @@ import org.coner.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.core.domain.service.RegistrationEntityService;
+import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.DomainEntityTestUtils;
@@ -40,7 +40,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventRegistrationsResourceTest {
 
-    private final RegistrationEntityService registrationEntityService = mock(RegistrationEntityService.class);
+    private final EventRegistrationService eventRegistrationService = mock(EventRegistrationService.class);
     private final RegistrationApiDomainBoundary apiDomainBoundary = mock(RegistrationApiDomainBoundary.class);
     private final RegistrationApiAddPayloadBoundary addPayloadBoundary = mock(RegistrationApiAddPayloadBoundary.class);
 
@@ -49,7 +49,7 @@ public class EventRegistrationsResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventRegistrationsResource(
-                    registrationEntityService,
+                    eventRegistrationService,
                     apiDomainBoundary,
                     addPayloadBoundary
             ))
@@ -57,7 +57,7 @@ public class EventRegistrationsResourceTest {
 
     @Before
     public void setup() {
-        reset(apiDomainBoundary, registrationEntityService);
+        reset(apiDomainBoundary, eventRegistrationService);
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
     }
@@ -66,7 +66,7 @@ public class EventRegistrationsResourceTest {
     public void itShouldGetRegistrationsForEvent() throws Exception {
         List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
-        when(registrationEntityService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
+        when(eventRegistrationService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
         when(apiDomainBoundary.toLocalEntities(domainRegistrations)).thenReturn(apiRegistrations);
 
         GetEventRegistrationsResponse response = resources.client()
@@ -74,7 +74,7 @@ public class EventRegistrationsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetEventRegistrationsResponse.class);
 
-        verify(registrationEntityService).getAllWithEventId(EVENT_ID);
+        verify(eventRegistrationService).getAllWithEventId(EVENT_ID);
         assertThat(response).isNotNull();
         assertThat(response.getRegistrations())
                 .isNotNull()
@@ -93,7 +93,7 @@ public class EventRegistrationsResourceTest {
         RegistrationAddPayload addPayload = mock(RegistrationAddPayload.class);
         when(addPayloadBoundary.toRemoteEntity(apiRequest)).thenReturn(addPayload);
         Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
-        when(registrationEntityService.add(addPayload)).thenReturn(domainEntity);
+        when(eventRegistrationService.add(addPayload)).thenReturn(domainEntity);
         RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
         when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -102,8 +102,8 @@ public class EventRegistrationsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(registrationEntityService).add(addPayload);
-        verifyNoMoreInteractions(registrationEntityService);
+        verify(eventRegistrationService).add(addPayload);
+        verifyNoMoreInteractions(eventRegistrationService);
         assertThat(response)
                 .isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
@@ -111,15 +111,15 @@ public class EventRegistrationsResourceTest {
 
     @Test
     public void whenEventDoesNotExistItShouldRespondNotFound() throws Exception {
-        when(registrationEntityService.getAllWithEventId(EVENT_ID)).thenThrow(EntityNotFoundException.class);
+        when(eventRegistrationService.getAllWithEventId(EVENT_ID)).thenThrow(EntityNotFoundException.class);
 
         Response eventRegistrationResponseContainer = resources.client()
                 .target("/events/" + EVENT_ID + "/registrations")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(registrationEntityService).getAllWithEventId(EVENT_ID);
-        verifyNoMoreInteractions(registrationEntityService);
+        verify(eventRegistrationService).getAllWithEventId(EVENT_ID);
+        verifyNoMoreInteractions(eventRegistrationService);
 
         assertThat(eventRegistrationResponseContainer.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
