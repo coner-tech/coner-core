@@ -12,9 +12,9 @@ import javax.ws.rs.core.Response;
 
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.boundary.CompetitionGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroup;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.TestConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -27,23 +27,25 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class CompetitionGroupResourceTest {
 
     private final CompetitionGroupApiDomainBoundary boundary = mock(CompetitionGroupApiDomainBoundary.class);
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private final CompetitionGroupEntityService competitionGroupEntityService = mock(
+            CompetitionGroupEntityService.class
+    );
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CompetitionGroupResource(boundary, conerCoreService))
+            .addResource(new CompetitionGroupResource(boundary, competitionGroupEntityService))
             .build();
 
     @Before
     public void setup() {
-        reset(boundary, conerCoreService);
+        reset(boundary, competitionGroupEntityService);
     }
 
     @Test
     public void itShouldGetCompetitionGroup() throws Exception {
         final String competitionGroupId = TestConstants.COMPETITION_GROUP_ID;
         CompetitionGroup domainEntity = mock(CompetitionGroup.class);
-        when(conerCoreService.getCompetitionGroup(competitionGroupId)).thenReturn(domainEntity);
+        when(competitionGroupEntityService.getById(competitionGroupId)).thenReturn(domainEntity);
         CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();
         when(boundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -52,8 +54,8 @@ public class CompetitionGroupResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getCompetitionGroup(competitionGroupId);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(competitionGroupEntityService).getById(competitionGroupId);
+        verifyNoMoreInteractions(competitionGroupEntityService);
 
         assertThat(competitionGroupResourceContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         CompetitionGroupApiEntity getCompetitionGroupResponse = competitionGroupResourceContainer.readEntity(
@@ -65,15 +67,15 @@ public class CompetitionGroupResourceTest {
     @Test
     public void itShouldRespondWithNotFoundWhenCompetitionGroupNotFound() throws Exception {
         final String competitionGroupId = TestConstants.COMPETITION_GROUP_ID;
-        when(conerCoreService.getCompetitionGroup(competitionGroupId)).thenThrow(EntityNotFoundException.class);
+        when(competitionGroupEntityService.getById(competitionGroupId)).thenThrow(EntityNotFoundException.class);
 
         Response response = resources.client()
                 .target("/competitionGroups/" + competitionGroupId)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(conerCoreService).getCompetitionGroup(competitionGroupId);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(competitionGroupEntityService).getById(competitionGroupId);
+        verifyNoMoreInteractions(competitionGroupEntityService);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 }

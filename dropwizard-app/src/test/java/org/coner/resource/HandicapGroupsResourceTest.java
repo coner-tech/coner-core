@@ -23,9 +23,9 @@ import org.coner.api.response.ErrorsResponse;
 import org.coner.api.response.GetHandicapGroupsResponse;
 import org.coner.boundary.HandicapGroupApiAddPayloadBoundary;
 import org.coner.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
+import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.util.ApiEntityTestUtils;
 import org.coner.util.DomainEntityTestUtils;
 import org.coner.util.JacksonUtil;
@@ -42,20 +42,24 @@ import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class HandicapGroupsResourceTest {
-    private final ConerCoreService conerCoreService = mock(ConerCoreService.class);
+    private final HandicapGroupEntityService handicapGroupEntityService = mock(HandicapGroupEntityService.class);
     private final HandicapGroupApiDomainBoundary apiDomainBoundary = mock(HandicapGroupApiDomainBoundary.class);
     private final HandicapGroupApiAddPayloadBoundary apiAddPayloadBoundary = mock(
             HandicapGroupApiAddPayloadBoundary.class
     );
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new HandicapGroupsResource(conerCoreService, apiDomainBoundary, apiAddPayloadBoundary))
+            .addResource(new HandicapGroupsResource(
+                    handicapGroupEntityService,
+                    apiDomainBoundary,
+                    apiAddPayloadBoundary
+            ))
             .build();
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        reset(conerCoreService, apiDomainBoundary, apiAddPayloadBoundary);
+        reset(handicapGroupEntityService, apiDomainBoundary, apiAddPayloadBoundary);
 
         MockitoAnnotations.initMocks(this);
 
@@ -74,8 +78,8 @@ public class HandicapGroupsResourceTest {
         assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
         assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(HANDICAP_GROUP_ID);
 
-        verify(conerCoreService).addHandicapGroup(any(HandicapGroupAddPayload.class));
-        verifyNoMoreInteractions(conerCoreService);
+        verify(handicapGroupEntityService).add(any(HandicapGroupAddPayload.class));
+        verifyNoMoreInteractions(handicapGroupEntityService);
     }
 
     @Test
@@ -99,13 +103,13 @@ public class HandicapGroupsResourceTest {
         assertThat(errorsResponse.getErrors())
                 .contains("handicapFactor must be less than or equal to 1.0000");
 
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(handicapGroupEntityService);
     }
 
     @Test
     public void itShouldGetHandicapGroups() throws Exception {
         List<HandicapGroup> domainHandicapGroups = new ArrayList<>();
-        when(conerCoreService.getHandicapGroups()).thenReturn(domainHandicapGroups);
+        when(handicapGroupEntityService.getAll()).thenReturn(domainHandicapGroups);
 
         GetHandicapGroupsResponse response = resources.client()
                 .target("/handicapGroups")
@@ -118,9 +122,9 @@ public class HandicapGroupsResourceTest {
                 .isNotNull()
                 .isEmpty();
 
-        verify(conerCoreService).getHandicapGroups();
+        verify(handicapGroupEntityService).getAll();
         verify(apiDomainBoundary).toLocalEntities(domainHandicapGroups);
-        verifyNoMoreInteractions(conerCoreService);
+        verifyNoMoreInteractions(handicapGroupEntityService);
     }
 
     @Test
@@ -132,7 +136,7 @@ public class HandicapGroupsResourceTest {
         List<HandicapGroupApiEntity> handicapGroupApiEntities = new ArrayList<>();
         handicapGroupApiEntities.add(ApiEntityTestUtils.fullHandicapGroup());
 
-        when(conerCoreService.getHandicapGroups())
+        when(handicapGroupEntityService.getAll())
                 .thenReturn(domainHandicapGroups);
         when(apiDomainBoundary.toLocalEntities(domainHandicapGroups))
                 .thenReturn(handicapGroupApiEntities);
@@ -142,8 +146,8 @@ public class HandicapGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetHandicapGroupsResponse.class);
 
-        verify(conerCoreService).getHandicapGroups();
-        verifyNoMoreInteractions(conerCoreService);
+        verify(handicapGroupEntityService).getAll();
+        verifyNoMoreInteractions(handicapGroupEntityService);
 
         assertThat(response)
                 .isNotNull();
@@ -162,7 +166,7 @@ public class HandicapGroupsResourceTest {
         HandicapGroupAddPayload addPayload = mock(HandicapGroupAddPayload.class);
         when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
         HandicapGroup domainEntity = mock(HandicapGroup.class);
-        when(conerCoreService.addHandicapGroup(addPayload)).thenReturn(domainEntity);
+        when(handicapGroupEntityService.add(addPayload)).thenReturn(domainEntity);
         HandicapGroupApiEntity apiEntity = mock(HandicapGroupApiEntity.class);
         when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
         when(apiEntity.getId()).thenReturn(HANDICAP_GROUP_ID);
@@ -172,8 +176,8 @@ public class HandicapGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(conerCoreService).addHandicapGroup(addPayload);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(handicapGroupEntityService).add(addPayload);
+        verifyNoMoreInteractions(handicapGroupEntityService);
 
         return response;
     }

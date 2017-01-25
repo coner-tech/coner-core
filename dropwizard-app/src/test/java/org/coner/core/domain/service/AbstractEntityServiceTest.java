@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.coner.core.domain.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.Gateway;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +19,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AbstractDomainServiceTest {
+public class AbstractEntityServiceTest {
 
     private static final String TEST_ID = "test-id";
 
-    private TestDomainService service;
+    private TestEntityService service;
     @Mock
     private TestGateway gateway;
     @Mock
@@ -33,7 +33,7 @@ public class AbstractDomainServiceTest {
 
     @Before
     public void setup() {
-        service = new TestDomainService(gateway);
+        service = new TestEntityService(gateway);
     }
 
     @Test
@@ -62,12 +62,12 @@ public class AbstractDomainServiceTest {
         }
     }
 
-    private static class TestDomainService extends AbstractDomainService<
-            TestEntity,
-            TestAddPayload,
-            TestGateway> {
+    private static class TestEntityService extends AbstractEntityService<
+                TestEntity,
+                TestAddPayload,
+                TestGateway> {
 
-        protected TestDomainService(TestGateway gateway) {
+        protected TestEntityService(TestGateway gateway) {
             super(TestEntity.class, gateway);
         }
     }

@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import org.coner.api.entity.CompetitionGroupApiEntity;
 import org.coner.api.response.ErrorsResponse;
 import org.coner.boundary.CompetitionGroupApiDomainBoundary;
-import org.coner.core.ConerCoreService;
 import org.coner.core.domain.entity.CompetitionGroup;
-import org.coner.core.exception.EntityNotFoundException;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -31,15 +31,15 @@ import io.swagger.annotations.ApiResponses;
 public class CompetitionGroupResource {
 
     private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
-    private final ConerCoreService conerCoreService;
+    private final CompetitionGroupEntityService competitionGroupEntityService;
 
     @Inject
     public CompetitionGroupResource(
             CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
-            ConerCoreService conerCoreService
+            CompetitionGroupEntityService competitionGroupEntityService
     ) {
         this.competitionGroupApiDomainBoundary = competitionGroupApiDomainBoundary;
-        this.conerCoreService = conerCoreService;
+        this.competitionGroupEntityService = competitionGroupEntityService;
     }
 
     @GET
@@ -54,7 +54,7 @@ public class CompetitionGroupResource {
     ) {
         CompetitionGroup domainEntity = null;
         try {
-            domainEntity = conerCoreService.getCompetitionGroup(id);
+            domainEntity = competitionGroupEntityService.getById(id);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("No competition group with id " + id);
         }

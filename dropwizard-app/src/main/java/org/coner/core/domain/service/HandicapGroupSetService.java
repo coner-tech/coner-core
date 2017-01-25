@@ -6,7 +6,7 @@ import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.gateway.HandicapGroupSetGateway;
 
-public class HandicapGroupSetService extends AbstractDomainService<
+public class HandicapGroupSetService extends AbstractEntityService<
         HandicapGroupSet,
         HandicapGroupSetAddPayload,
         HandicapGroupSetGateway> {
