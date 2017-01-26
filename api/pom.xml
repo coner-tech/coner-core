@@ -13,7 +13,7 @@
         <dropwizard.version>1.0.5</dropwizard.version>
     </properties>
 
-    <artifactId>dropwizard-api</artifactId>
+    <artifactId>api</artifactId>
     <dependencies>
         <dependency>
             <groupId>io.dropwizard</groupId>

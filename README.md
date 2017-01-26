@@ -13,7 +13,7 @@ Coner is in a very early stage of development. It currently does more nothing th
 These steps assume you've cloned this repo, and have Maven and the Java 8 runtime installed already.
 
 1. `mvn clean install`
-2. `java -jar dropwizard-app/target/dropwizard-app-0.1-SNAPSHOT.jar server dropwizard-app/src/test/resources/config/test.yml`
+2. `java -jar service/target/service-0.1-SNAPSHOT.jar server service/src/test/resources/config/test.yml`
 
 The server should start up and spit out many lines of logging. It's probably worth taking a few minutes to look through those logs to get an idea of the structure of the app. The last few lines should resemble the following:
 

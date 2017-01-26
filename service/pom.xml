@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dropwizard-app</artifactId>
+    <artifactId>service</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.coner</groupId>
-            <artifactId>dropwizard-api</artifactId>
+            <artifactId>api</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
 
