@@ -2,7 +2,7 @@ package org.coner.core.domain.service;
 
 import javax.inject.Inject;
 
-import org.coner.core.domain.entity.Event;
+import org.coner.core.api.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.gateway.EventGateway;
 

@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.coner.core.domain.entity.Event;
-import org.coner.core.domain.entity.Registration;
+import org.coner.core.api.entity.Event;
+import org.coner.core.api.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityMismatchException;

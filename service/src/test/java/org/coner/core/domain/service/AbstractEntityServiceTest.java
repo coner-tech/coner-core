@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.coner.core.domain.entity.DomainEntity;
+import org.coner.core.api.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.Gateway;

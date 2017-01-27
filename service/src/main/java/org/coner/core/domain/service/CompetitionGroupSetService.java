@@ -2,8 +2,8 @@ package org.coner.core.domain.service;
 
 import javax.inject.Inject;
 
-import org.coner.core.domain.entity.CompetitionGroup;
-import org.coner.core.domain.entity.CompetitionGroupSet;
+import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.api.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;

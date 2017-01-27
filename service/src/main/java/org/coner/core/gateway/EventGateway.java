@@ -2,12 +2,12 @@ package org.coner.core.gateway;
 
 import javax.inject.Inject;
 
-import org.coner.boundary.EventHibernateAddPayloadBoundary;
-import org.coner.boundary.EventHibernateDomainBoundary;
-import org.coner.core.domain.entity.Event;
+import org.coner.core.boundary.EventHibernateAddPayloadBoundary;
+import org.coner.core.boundary.EventHibernateDomainBoundary;
+import org.coner.core.api.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
-import org.coner.hibernate.dao.EventDao;
-import org.coner.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.dao.EventDao;
+import org.coner.core.hibernate.entity.EventHibernateEntity;
 
 public class EventGateway extends AbstractGateway<
         Event,

@@ -2,7 +2,7 @@ package org.coner.core.domain.service;
 
 import java.util.List;
 
-import org.coner.core.domain.entity.DomainEntity;
+import org.coner.core.api.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;

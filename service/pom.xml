@@ -136,7 +136,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.coner.ConerDropwizardApplication</mainClass>
+                                    <mainClass>org.coner.core.ConerCoreApplication</mainClass>
                                     <manifestEntries>
                                         <Implementation-Version>${project.version}</Implementation-Version>
                                     </manifestEntries>

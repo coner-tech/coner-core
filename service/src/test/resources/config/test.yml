@@ -15,7 +15,7 @@ database:
 
 # Swagger settings
 swagger:
-    resourcePackage: org.coner.resource
+    resourcePackage: org.coner.core.resource
 
 
 # Logging settings.

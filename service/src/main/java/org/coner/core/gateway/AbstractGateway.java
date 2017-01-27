@@ -2,11 +2,11 @@ package org.coner.core.gateway;
 
 import java.util.List;
 
-import org.coner.boundary.AbstractBoundary;
-import org.coner.core.domain.entity.DomainEntity;
+import org.coner.core.boundary.AbstractBoundary;
+import org.coner.core.api.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
-import org.coner.hibernate.dao.HibernateEntityDao;
-import org.coner.hibernate.entity.HibernateEntity;
+import org.coner.core.hibernate.dao.HibernateEntityDao;
+import org.coner.core.hibernate.entity.HibernateEntity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;

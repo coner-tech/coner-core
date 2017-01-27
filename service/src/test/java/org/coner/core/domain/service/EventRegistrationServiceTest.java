@@ -7,10 +7,10 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.coner.core.domain.entity.Event;
-import org.coner.core.domain.entity.Registration;
+import org.coner.core.api.entity.Event;
+import org.coner.core.api.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
-import org.coner.util.TestConstants;
+import org.coner.core.util.TestConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
