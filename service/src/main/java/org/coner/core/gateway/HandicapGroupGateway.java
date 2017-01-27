@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.coner.core.boundary.HandicapGroupHibernateAddPayloadBoundary;
 import org.coner.core.boundary.HandicapGroupHibernateDomainBoundary;
-import org.coner.core.api.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.hibernate.dao.HandicapGroupDao;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;

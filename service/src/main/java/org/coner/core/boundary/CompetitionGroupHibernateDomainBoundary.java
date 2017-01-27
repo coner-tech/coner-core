@@ -2,7 +2,7 @@ package org.coner.core.boundary;
 
 import javax.inject.Inject;
 
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.util.merger.ObjectMerger;
 import org.coner.core.util.merger.ReflectionJavaBeanMerger;

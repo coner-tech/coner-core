@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
-import org.coner.core.api.entity.CompetitionGroupSet;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.util.merger.ObjectMerger;
 import org.coner.core.util.merger.ReflectionJavaBeanMerger;
 

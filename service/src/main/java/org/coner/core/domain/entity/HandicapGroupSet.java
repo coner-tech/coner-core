@@ -1,4 +1,4 @@
-package org.coner.core.api.entity;
+package org.coner.core.domain.entity;
 
 import java.util.Set;
 

@@ -2,7 +2,7 @@ package org.coner.core.domain.service;
 
 import javax.inject.Inject;
 
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.gateway.CompetitionGroupGateway;
 

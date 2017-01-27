@@ -14,7 +14,7 @@ import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.boundary.HandicapGroupSetApiAddPayloadBoundary;
 import org.coner.core.boundary.HandicapGroupSetApiDomainBoundary;
-import org.coner.core.api.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.util.JacksonUtil;

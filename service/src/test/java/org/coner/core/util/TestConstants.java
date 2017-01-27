@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 
 public final class TestConstants {
 

@@ -1,6 +1,6 @@
 package org.coner.core.domain.service.exception;
 
-import org.coner.core.api.entity.DomainEntity;
+import org.coner.core.domain.entity.DomainEntity;
 
 public class EntityNotFoundException extends Exception {
 

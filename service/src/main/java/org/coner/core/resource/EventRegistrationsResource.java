@@ -21,7 +21,7 @@ import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
 import org.coner.core.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.core.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.api.entity.Registration;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.AddEntityException;

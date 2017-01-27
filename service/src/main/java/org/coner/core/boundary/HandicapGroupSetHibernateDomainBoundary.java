@@ -2,7 +2,7 @@ package org.coner.core.boundary;
 
 import javax.inject.Inject;
 
-import org.coner.core.api.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.coner.core.util.merger.CompositeMerger;
 import org.coner.core.util.merger.ObjectMerger;

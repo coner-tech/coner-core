@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.util.ApiEntityTestUtils;

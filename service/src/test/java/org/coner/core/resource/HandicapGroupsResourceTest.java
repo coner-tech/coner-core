@@ -23,7 +23,7 @@ import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetHandicapGroupsResponse;
 import org.coner.core.boundary.HandicapGroupApiAddPayloadBoundary;
 import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.api.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.util.ApiEntityTestUtils;

@@ -24,7 +24,8 @@ import org.hibernate.annotations.GenericGenerator;
 )
 public class CompetitionGroupSetHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL = "org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity.findAll";
+    public static final String QUERY_FIND_ALL =
+            "org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity.findAll";
     private String competitionGroupSetId;
     private String name;
     private Set<CompetitionGroupHibernateEntity> competitionGroups;

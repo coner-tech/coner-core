@@ -3,7 +3,7 @@ package org.coner.core.boundary;
 import javax.inject.Inject;
 
 import org.coner.core.api.entity.HandicapGroupApiEntity;
-import org.coner.core.api.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.util.merger.ObjectMerger;
 import org.coner.core.util.merger.ReflectionJavaBeanMerger;
 

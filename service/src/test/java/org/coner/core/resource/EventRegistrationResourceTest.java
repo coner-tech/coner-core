@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.boundary.RegistrationApiDomainBoundary;
-import org.coner.core.api.entity.Registration;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;

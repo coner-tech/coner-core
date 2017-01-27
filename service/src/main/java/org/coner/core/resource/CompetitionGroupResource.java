@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;

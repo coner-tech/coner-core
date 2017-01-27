@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.boundary.EventApiDomainBoundary;
-import org.coner.core.api.entity.Event;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.util.ApiEntityTestUtils;

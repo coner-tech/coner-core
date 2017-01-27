@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.coner.core.boundary.CompetitionGroupHibernateAddPayloadBoundary;
 import org.coner.core.boundary.CompetitionGroupHibernateDomainBoundary;
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.hibernate.dao.CompetitionGroupDao;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;

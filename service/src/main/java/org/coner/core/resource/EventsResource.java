@@ -19,7 +19,7 @@ import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.boundary.EventApiAddPayloadBoundary;
 import org.coner.core.boundary.EventApiDomainBoundary;
-import org.coner.core.api.entity.Event;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;

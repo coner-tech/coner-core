@@ -2,7 +2,7 @@ package org.coner.core.boundary;
 
 import javax.inject.Inject;
 
-import org.coner.core.api.entity.Event;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.util.merger.ObjectMerger;
 import org.coner.core.util.merger.ReflectionJavaBeanMerger;

@@ -8,8 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
-import org.coner.core.ConerCoreApplication;
-import org.coner.core.ConerCoreConfiguration;
 import org.coner.core.dagger.DaggerMockitoJerseyRegistrationComponent;
 import org.coner.core.dagger.JerseyRegistrationComponent;
 import org.coner.core.dagger.MockitoJerseyRegistrationModule;

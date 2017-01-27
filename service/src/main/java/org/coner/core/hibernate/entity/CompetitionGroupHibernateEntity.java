@@ -28,7 +28,8 @@ import org.hibernate.annotations.GenericGenerator;
 })
 public class CompetitionGroupHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL = "org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity.findAll";
+    public static final String QUERY_FIND_ALL =
+            "org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity.findAll";
 
     private String id;
     private String name;

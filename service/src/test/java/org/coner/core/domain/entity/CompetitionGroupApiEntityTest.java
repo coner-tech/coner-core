@@ -1,6 +1,7 @@
-package org.coner.core.api.entity;
+package org.coner.core.domain.entity;
 
 import org.assertj.core.api.Assertions;
+import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.junit.Before;

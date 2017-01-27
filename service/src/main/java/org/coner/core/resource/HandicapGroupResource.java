@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.api.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;

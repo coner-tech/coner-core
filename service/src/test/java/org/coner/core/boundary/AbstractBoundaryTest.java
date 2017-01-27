@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.coner.core.api.entity.ApiEntity;
-import org.coner.core.api.entity.DomainEntity;
+import org.coner.core.domain.entity.DomainEntity;
 import org.coner.core.hibernate.entity.HibernateEntity;
 import org.coner.core.util.merger.ObjectMerger;
 import org.junit.Before;

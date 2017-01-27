@@ -19,7 +19,7 @@ import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.core.boundary.CompetitionGroupSetApiAddPayloadBoundary;
 import org.coner.core.boundary.CompetitionGroupSetApiDomainBoundary;
-import org.coner.core.api.entity.CompetitionGroupSet;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.exception.AddEntityException;

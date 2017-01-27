@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
-import org.coner.core.api.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.util.ApiEntityTestUtils;

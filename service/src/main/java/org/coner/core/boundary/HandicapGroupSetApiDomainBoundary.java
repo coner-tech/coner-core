@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
-import org.coner.core.api.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.util.merger.ObjectMerger;
 import org.coner.core.util.merger.ReflectionJavaBeanMerger;
 

@@ -2,7 +2,7 @@ package org.coner.core.domain.payload;
 
 import java.util.Set;
 
-import org.coner.core.api.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroup;
 
 public class CompetitionGroupSetAddPayload extends DomainAddPayload {
     public String name;
