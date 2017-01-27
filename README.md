@@ -6,7 +6,7 @@ Coner is an autocross event operations system.
 
 Coner is in a very early stage of development. It currently does more nothing than anything.
 
-![Travis CI Build Status](https://travis-ci.org/carltonwhitehead/coner.svg?branch=master)
+![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
 
 ## Build, Test, and Run
 
