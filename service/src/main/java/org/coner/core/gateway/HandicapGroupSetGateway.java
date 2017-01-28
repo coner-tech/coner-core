@@ -2,12 +2,12 @@ package org.coner.core.gateway;
 
 import javax.inject.Inject;
 
-import org.coner.boundary.HandicapGroupSetHibernateAddPayloadBoundary;
-import org.coner.boundary.HandicapGroupSetHibernateDomainBoundary;
+import org.coner.core.boundary.HandicapGroupSetHibernateAddPayloadBoundary;
+import org.coner.core.boundary.HandicapGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
-import org.coner.hibernate.dao.HandicapGroupSetDao;
-import org.coner.hibernate.entity.HandicapGroupSetHibernateEntity;
+import org.coner.core.hibernate.dao.HandicapGroupSetDao;
+import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 
 public class HandicapGroupSetGateway extends AbstractGateway<
         HandicapGroupSet,
