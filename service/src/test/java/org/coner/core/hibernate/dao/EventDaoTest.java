@@ -7,27 +7,38 @@ import java.util.Date;
 import java.util.List;
 
 import org.coner.core.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.hibernate.Query;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-public class EventDaoTest extends AbstractDaoTest {
+import io.dropwizard.testing.junit.DAOTestRule;
+
+public class EventDaoTest {
 
     private final String name = "EventDao test event";
     private final Date date = Date.from(ZonedDateTime.parse("2014-12-26T22:12:00-05:00").toInstant());
     private EventDao eventDao;
 
+    @Rule
+    public DAOTestRule daoTestRule = DAOTestRule.newBuilder()
+        .setDriver(org.hsqldb.jdbc.JDBCDriver.class)
+        .setUrl("jdbc:hsqldb:mem:coner-" + getClass().getSimpleName())
+        .addEntityClass(EventHibernateEntity.class)
+        .addEntityClass(RegistrationHibernateEntity.class)
+        .build();
+
     @Before
     public void setup() {
-        eventDao = new EventDao(getSessionFactory());
+        eventDao = new EventDao(daoTestRule.getSessionFactory());
 
-        getSession().beginTransaction();
-
-        Query delete = getSession().createQuery("delete from EventHibernateEntity");
-        delete.executeUpdate();
-
-        getSession().getTransaction().commit();
+        daoTestRule.inTransaction(() -> {
+            Query delete = daoTestRule.getSessionFactory()
+                    .getCurrentSession().createQuery("delete from EventHibernateEntity");
+            delete.executeUpdate();
+        });
     }
 
     @After
@@ -36,25 +47,21 @@ public class EventDaoTest extends AbstractDaoTest {
 
     @Test
     public void whenFindAllItShouldReturnEmpty() {
-        getSession().beginTransaction();
-
-        List<EventHibernateEntity> actual = eventDao.findAll();
-        assertThat(actual)
-                .isNotNull()
-                .isEmpty();
-
-        getSession().getTransaction().commit();
+        daoTestRule.inTransaction(() -> {
+            List<EventHibernateEntity> actual = eventDao.findAll();
+            assertThat(actual)
+                    .isNotNull()
+                    .isEmpty();
+        });
     }
 
     @Test
     public void whenCreateItShouldCreateEvent() {
         EventHibernateEntity newEvent = buildNewEvent();
 
-        getSession().beginTransaction();
-
-        eventDao.create(newEvent);
-
-        getSession().getTransaction().commit();
+        daoTestRule.inTransaction(() -> {
+            eventDao.create(newEvent);
+        });
 
         assertThat(newEvent.getId())
                 .isNotEmpty();
@@ -63,15 +70,11 @@ public class EventDaoTest extends AbstractDaoTest {
     @Test
     public void whenCreatedItShouldFindById() {
         EventHibernateEntity newEvent = buildNewEvent();
-        getSession().beginTransaction();
-        eventDao.create(newEvent);
-        getSession().getTransaction().commit();
-
-        getSession().beginTransaction();
+        daoTestRule.inTransaction(() -> {
+            eventDao.create(newEvent);
+        });
 
         EventHibernateEntity actual = eventDao.findById(newEvent.getId());
-
-        getSession().getTransaction().commit();
 
         assertThat(actual)
                 .isNotNull()
@@ -81,15 +84,11 @@ public class EventDaoTest extends AbstractDaoTest {
     @Test
     public void whenCreateItShouldBeInFindAll() {
         EventHibernateEntity newEvent = buildNewEvent();
-        getSession().beginTransaction();
-        eventDao.create(newEvent);
-        getSession().getTransaction().commit();
-
-        getSession().beginTransaction();
+        daoTestRule.inTransaction(() -> {
+            eventDao.create(newEvent);
+        });
 
         List<EventHibernateEntity> events = eventDao.findAll();
-
-        getSession().getTransaction().commit();
 
         assertThat(events)
                 .isNotNull()
