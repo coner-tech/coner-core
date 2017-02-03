@@ -1,53 +1,68 @@
-# Coner
+# Coner Core
 
-Coner is an autocross event operations system.
+Coner Core is a REST API for autocross event operations.
 
 ## Development Status
 
-Coner is in a very early stage of development. It currently does more nothing than anything.
+As of Q1 2017, Coner Core is undergoing some [refactoring](https://github.com/caeos/coner-core/milestone/1) to simplify some of the original architecture which turned out to be too heavy-handed.
+
+The next step will be to resume [scaffolding](https://github.com/caeos/coner-core/milestone/2).
 
 ![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
 
 ## Build, Test, and Run
 
-These steps assume you've cloned this repo, and have Maven and the Java 8 runtime installed already.
+These steps assume you've cloned this repo, and have installed Maven and JDK 8 already.
 
 1. `mvn clean install`
 2. `java -jar service/target/service-0.1-SNAPSHOT.jar server service/src/test/resources/config/test.yml`
 
-The server should start up and spit out many lines of logging. It's probably worth taking a few minutes to look through those logs to get an idea of the structure of the app. The last few lines should resemble the following:
+The last few lines should resemble the following:
 
 ```
-INFO  [2014-12-31 17:13:40,897] org.eclipse.jetty.server.ServerConnector: Started application@7942a854{HTTP/1.1}{0.0.0.0:8080}
-INFO  [2014-12-31 17:13:40,897] org.eclipse.jetty.server.ServerConnector: Started admin@53b8afea{HTTP/1.1}{0.0.0.0:8081}
-INFO  [2014-12-31 17:13:40,897] org.eclipse.jetty.server.Server: Started @1990ms
+INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.AbstractConnector: Started application@683cd50d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.AbstractConnector: Started admin@280c955c{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.Server: Started @3880ms
 ```
 
-Now you should be able to make some simple requests.
+You may request a listing of Event entities like so:
 
 ```
 $ curl http://localhost:8080/events
 {"events":[]}
+```
+
+Check health status:
+
+```
 $ curl http://localhost:8081/healthcheck
 {"deadlocks":{"healthy":true},"hibernate":{"healthy":true}}
-# Add event
-$ cat src/test/resources/fixtures/api/entity/event_add.json | curl -H "Content-Type: application/json" -X POST -d @- http://localhost:8080/events
+```
+
+Add an event:
+```
+$ curl -v -H "Content-Type: application/json" -d @service/src/test/resources/fixtures/api/entity/event_add.json http://localhost:8080/events
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
 > POST /events HTTP/1.1
 > Host: localhost:8080
-> User-Agent: curl/7.43.0
+> User-Agent: curl/7.47.0
 > Accept: */*
 > Content-Type: application/json
 > Content-Length: 60
->
+> 
 * upload completely sent off: 60 out of 60 bytes
 < HTTP/1.1 201 Created
-< Date: Thu, 12 Jan 2017 18:43:48 GMT
-< Location: http://localhost:8080/events/3157e6cf-1f8c-4a03-9a97-513759ad17c2
+< Date: Thu, 02 Feb 2017 23:27:25 GMT
+< Location: http://localhost:8080/events/74c28128-0548-43c3-9a4c-a8d909d4effe
 < Content-Length: 0
-<
+< 
+* Connection #0 to host localhost left intact
 ```
 
-Accessing API (not completed): http://localhost:8080/swagger
+## API Spec
+
+Start the service and access the Swagger UI at http://localhost:8080/swagger
 
 ## Contributing
 
