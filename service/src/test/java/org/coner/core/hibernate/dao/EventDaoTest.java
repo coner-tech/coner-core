@@ -16,16 +16,14 @@ import org.junit.Test;
 
 import io.dropwizard.testing.junit.DAOTestRule;
 
-public class EventDaoTest {
+public class EventDaoTest extends AbstractDaoTest {
 
     private final String name = "EventDao test event";
     private final Date date = Date.from(ZonedDateTime.parse("2014-12-26T22:12:00-05:00").toInstant());
     private EventDao eventDao;
 
     @Rule
-    public DAOTestRule daoTestRule = DAOTestRule.newBuilder()
-        .setDriver(org.hsqldb.jdbc.JDBCDriver.class)
-        .setUrl("jdbc:hsqldb:mem:coner-" + getClass().getSimpleName())
+    public DAOTestRule daoTestRule = getDaoTestRuleBuilder()
         .addEntityClass(EventHibernateEntity.class)
         .addEntityClass(RegistrationHibernateEntity.class)
         .build();
