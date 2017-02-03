@@ -15,7 +15,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.boundary.EventApiAddPayloadBoundary;
 import org.coner.core.boundary.EventApiDomainBoundary;
@@ -26,6 +25,7 @@ import org.coner.core.domain.service.exception.AddEntityException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -74,7 +74,7 @@ public class EventsResource {
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
-                    response = ErrorsResponse.class,
+                    response = ErrorMessage.class,
                     message = "Failed validation"
             )
     })

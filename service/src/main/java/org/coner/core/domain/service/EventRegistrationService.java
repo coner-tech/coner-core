@@ -40,12 +40,8 @@ public class EventRegistrationService {
         return registrationEntityService.getAllWith(event);
     }
 
-    public Registration add(RegistrationAddPayload addPayload) throws AddEntityException {
-        try {
-            addPayload.event = eventEntityService.getById(addPayload.eventId);
-        } catch (EntityNotFoundException e) {
-            throw new AddEntityException(e);
-        }
+    public Registration add(RegistrationAddPayload addPayload) throws AddEntityException, EntityNotFoundException {
+        addPayload.event = eventEntityService.getById(addPayload.eventId);
         return registrationEntityService.add(addPayload);
     }
 }

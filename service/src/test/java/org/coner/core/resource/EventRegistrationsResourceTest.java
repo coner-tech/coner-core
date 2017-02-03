@@ -53,6 +53,7 @@ public class EventRegistrationsResourceTest {
                     apiDomainBoundary,
                     addPayloadBoundary
             ))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before

@@ -13,7 +13,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.boundary.HandicapGroupSetApiAddPayloadBoundary;
 import org.coner.core.boundary.HandicapGroupSetApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroupSet;
@@ -23,6 +22,7 @@ import org.coner.core.domain.service.exception.AddEntityException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -68,7 +68,7 @@ public class HandicapGroupSetsResource {
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     message = "Failed validation",
-                    response = ErrorsResponse.class
+                    response = ErrorMessage.class
             )
     })
     public Response add(

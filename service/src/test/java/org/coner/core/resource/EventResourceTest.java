@@ -33,6 +33,7 @@ public class EventResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventResource(eventBoundary, eventEntityService))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
 

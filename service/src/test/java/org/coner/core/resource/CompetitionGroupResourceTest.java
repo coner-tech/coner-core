@@ -34,6 +34,7 @@ public class CompetitionGroupResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupResource(boundary, competitionGroupEntityService))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
