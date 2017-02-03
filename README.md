@@ -8,9 +8,9 @@ As of Q1 2017, Coner Core is undergoing some [refactoring](https://github.com/ca
 
 The next step will be to resume [scaffolding](https://github.com/caeos/coner-core/milestone/2).
 
-![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
-
 ## Build, Test, and Run
+
+![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
 
 These steps assume you've cloned this repo, and have installed Maven and JDK 8 already.
 
