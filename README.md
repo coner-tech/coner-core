@@ -62,7 +62,7 @@ $ curl -v -H "Content-Type: application/json" -d @service/src/test/resources/fix
 
 ## API Spec
 
-Start the service and access the Swagger UI at http://localhost:8080/swagger
+Start the service and access the [local Swagger UI](http://localhost:8080/swagger).
 
 ## Contributing
 
