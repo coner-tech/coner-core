@@ -16,12 +16,13 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
+
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
@@ -61,7 +62,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         GetEventRegistrationsResponse response = getRegistrationsResponseContainer.readEntity(
                 GetEventRegistrationsResponse.class
         );
-        assertThat(response.getRegistrations()).isEmpty();
+        assertThat(response.getEntities()).isEmpty();
     }
 
     @Test
@@ -107,7 +108,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         GetEventRegistrationsResponse getEventRegistrationsResponse = getRegistrationsResponseContainer
                 .readEntity(GetEventRegistrationsResponse.class);
         assertThat(getEventRegistrationsResponse).isNotNull();
-        List<RegistrationApiEntity> registrationList = getEventRegistrationsResponse.getRegistrations();
+        List<RegistrationApiEntity> registrationList = getEventRegistrationsResponse.getEntities();
         assertThat(registrationList.size()).isEqualTo(2);
         assertThat(registrationList.get(0).getId())
                 .isNotEqualTo(registrationList.get(1).getId())
@@ -146,8 +147,10 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addRegistrationRequest));
 
         assertThat(addRegistrationResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = addRegistrationResponseContainer.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        ValidationErrorMessage validationErrorMessage = addRegistrationResponseContainer.readEntity(
+                ValidationErrorMessage.class
+        );
+        assertThat(validationErrorMessage.getErrors()).isNotEmpty();
     }
 
     @Test

@@ -77,10 +77,10 @@ public class EventRegistrationsResourceTest {
 
         verify(eventRegistrationService).getAllWithEventId(EVENT_ID);
         assertThat(response).isNotNull();
-        assertThat(response.getRegistrations())
+        assertThat(response.getEntities())
                 .isNotNull()
                 .isNotEmpty();
-        assertThat(response.getRegistrations().get(0).getId()).isEqualTo(REGISTRATION_ID);
+        assertThat(response.getEntities().get(0).getId()).isEqualTo(REGISTRATION_ID);
     }
 
     @Test

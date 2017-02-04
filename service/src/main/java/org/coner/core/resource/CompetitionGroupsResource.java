@@ -15,7 +15,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetCompetitionGroupsResponse;
 import org.coner.core.boundary.CompetitionGroupApiAddPayloadBoundary;
 import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
@@ -23,19 +22,23 @@ import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.util.swagger.ApiResponseConstants;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @Path("/competitionGroups")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Competition Groups")
+@Api(tags = ApiTagConstants.COMPETITION_GROUPS)
 public class CompetitionGroupsResource {
 
     private final CompetitionGroupEntityService competitionGroupEntityService;
@@ -59,12 +62,19 @@ public class CompetitionGroupsResource {
     @ApiResponses({
             @ApiResponse(
                     code = HttpStatus.CREATED_201,
-                    message = "Created at URI in Location header"
+                    message = ApiResponseConstants.Created.MESSAGE,
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION,
+                                    response = String.class
+                            )
+                    }
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     message = "Failed validation",
-                    response = ErrorsResponse.class
+                    response = ValidationErrorMessage.class
             )
     })
     public Response addCompetitionGroup(
@@ -84,7 +94,7 @@ public class CompetitionGroupsResource {
     public GetCompetitionGroupsResponse getCompetitionGroups() {
         List<CompetitionGroup> domainCompetitionGroups = competitionGroupEntityService.getAll();
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
-        response.setCompetitionGroups(apiDomainBoundary.toLocalEntities(domainCompetitionGroups));
+        response.setEntities(apiDomainBoundary.toLocalEntities(domainCompetitionGroups));
         return response;
     }
 }

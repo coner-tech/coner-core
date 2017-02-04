@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetCompetitionGroupsResponse;
 import org.coner.core.boundary.CompetitionGroupApiAddPayloadBoundary;
 import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
@@ -38,6 +37,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class CompetitionGroupsResourceTest {
@@ -96,7 +96,7 @@ public class CompetitionGroupsResourceTest {
                 .post(requestEntity);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
+        ValidationErrorMessage errorsResponse = response.readEntity(ValidationErrorMessage.class);
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
                 .contains("handicapFactor must be less than or equal to 1.000");
@@ -117,8 +117,8 @@ public class CompetitionGroupsResourceTest {
                 .post(requestEntity);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors())
+        ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(validationErrorMessage.getErrors())
                 .isNotEmpty()
                 .contains("resultTimeType may not be empty");
         verifyZeroInteractions(competitionGroupEntityService);
@@ -138,8 +138,8 @@ public class CompetitionGroupsResourceTest {
                 .post(requestEntity);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors())
+        ValidationErrorMessage errorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(errorMessage.getErrors())
                 .isNotEmpty()
                 .contains("grouping may not be null");
         verifyZeroInteractions(competitionGroupEntityService);
@@ -166,7 +166,7 @@ public class CompetitionGroupsResourceTest {
 
         assertThat(response)
                 .isNotNull();
-        assertThat(response.getCompetitionGroups())
+        assertThat(response.getEntities())
                 .isNotNull()
                 .hasSize(1);
     }

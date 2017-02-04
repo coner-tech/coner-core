@@ -8,11 +8,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-
-
-@JsonPropertyOrder({"id", "name", "handicapFactor", "grouping", "resultTimeType"})
 public class CompetitionGroupApiEntity extends ApiEntity {
 
     private String id;

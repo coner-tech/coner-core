@@ -13,6 +13,7 @@ import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -26,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/competitionGroups/{competitionGroupId}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Competition Groups")
+@Api(tags = ApiTagConstants.COMPETITION_GROUPS)
 public class CompetitionGroupResource {
 
     private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;

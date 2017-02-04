@@ -22,20 +22,23 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.util.swagger.ApiResponseConstants;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.errors.ErrorMessage;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @Path("/events")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Events")
+@Api(tags = ApiTagConstants.EVENTS)
 public class EventsResource {
 
     private final EventEntityService eventEntityService;
@@ -59,7 +62,7 @@ public class EventsResource {
     public GetEventsResponse getEvents() {
         List<Event> domainEvents = eventEntityService.getAll();
         GetEventsResponse response = new GetEventsResponse();
-        response.setEvents(apiDomainEntityBoundary.toLocalEntities(domainEvents));
+        response.setEntities(apiDomainEntityBoundary.toLocalEntities(domainEvents));
         return response;
     }
 
@@ -69,12 +72,18 @@ public class EventsResource {
     @ApiResponses({
             @ApiResponse(
                     code = HttpStatus.CREATED_201,
-                    response = Void.class,
-                    message = "Created at URI in Location header"
+                    message = ApiResponseConstants.Created.MESSAGE,
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION,
+                                    response = String.class
+                            )
+                    }
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
-                    response = ErrorMessage.class,
+                    response = ValidationErrorMessage.class,
                     message = "Failed validation"
             )
     })
