@@ -2,7 +2,7 @@ package org.coner.core.domain.service.exception;
 
 import org.coner.core.domain.entity.DomainEntity;
 
-public class EntityNotFoundException extends Exception {
+public class EntityNotFoundException extends DomainServiceException {
 
     public EntityNotFoundException(Class<? extends DomainEntity> domainEntityClass, String id) {
         super(

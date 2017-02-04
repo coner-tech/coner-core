@@ -70,7 +70,7 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         jersey.register(components.competitionGroupsResource());
         jersey.register(components.competitionGroupSetResource());
         jersey.register(components.competitionGroupSetsResource());
-        jersey.register(components.webApplicationExceptionMapper());
+        jersey.register(components.domainServiceExceptionMapper());
     }
 
     private void initComponents() {

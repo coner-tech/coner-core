@@ -15,7 +15,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.core.boundary.CompetitionGroupSetApiAddPayloadBoundary;
 import org.coner.core.boundary.CompetitionGroupSetApiDomainBoundary;
@@ -26,6 +25,7 @@ import org.coner.core.domain.service.exception.AddEntityException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -71,23 +71,15 @@ public class CompetitionGroupSetsResource {
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     message = "Failed validation",
-                    response = ErrorsResponse.class
+                    response = ErrorMessage.class
             )
     })
     public Response add(
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
-    ) {
+    ) throws AddEntityException {
         CompetitionGroupSetAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
-        CompetitionGroupSetApiEntity entity;
-        try {
-            CompetitionGroupSet domainEntity = competitionGroupSetService.add(addPayload);
-            entity = apiDomainBoundary.toLocalEntity(domainEntity);
-        } catch (AddEntityException e) {
-            return Response.status(HttpStatus.UNPROCESSABLE_ENTITY_422)
-                    .entity(new ErrorsResponse(e.getMessage()))
-                    .type(MediaType.APPLICATION_JSON_TYPE)
-                    .build();
-        }
+        CompetitionGroupSet domainEntity = competitionGroupSetService.add(addPayload);
+        CompetitionGroupSetApiEntity entity = apiDomainBoundary.toLocalEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(CompetitionGroupSetResource.class)
                 .build(entity.getId()))
                 .build();

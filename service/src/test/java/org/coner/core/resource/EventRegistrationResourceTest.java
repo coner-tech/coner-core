@@ -39,6 +39,7 @@ public class EventRegistrationResourceTest {
                     eventRegistrationService,
                     registrationBoundary
             ))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before

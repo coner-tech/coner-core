@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
 import org.coner.core.boundary.RegistrationApiAddPayloadBoundary;
 import org.coner.core.boundary.RegistrationApiDomainBoundary;
@@ -29,6 +27,7 @@ import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -71,18 +70,13 @@ public class EventRegistrationsResource {
             @ApiResponse(
                     code = HttpStatus.NOT_FOUND_404,
                     message = "No event with given ID",
-                    response = ErrorsResponse.class
+                    response = ErrorMessage.class
             )
     })
     public GetEventRegistrationsResponse getEventRegistrations(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId
-    ) {
-        List<Registration> domainEntities;
-        try {
-            domainEntities = eventRegistrationService.getAllWithEventId(eventId);
-        } catch (EntityNotFoundException e) {
-            throw new NotFoundException(e.getMessage());
-        }
+    ) throws EntityNotFoundException {
+        List<Registration> domainEntities = eventRegistrationService.getAllWithEventId(eventId);
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
         response.setRegistrations(apiDomainEntityBoundary.toLocalEntities(domainEntities));
         return response;
@@ -99,27 +93,22 @@ public class EventRegistrationsResource {
             ),
             @ApiResponse(
                     code = HttpStatus.NOT_FOUND_404,
-                    response = ErrorsResponse.class,
+                    response = ErrorMessage.class,
                     message = "No event with given ID"
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
-                    response = ErrorsResponse.class,
+                    response = ErrorMessage.class,
                     message = "Failed validation"
             )
     })
     public Response addRegistration(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @Valid @ApiParam(value = "Registration", required = true) AddRegistrationRequest request
-    ) {
+    ) throws AddEntityException, EntityNotFoundException {
         RegistrationAddPayload addPayload = addPayloadBoundary.toRemoteEntity(request);
         addPayload.eventId = eventId;
-        Registration domainEntity = null;
-        try {
-            domainEntity = eventRegistrationService.add(addPayload);
-        } catch (AddEntityException e) {
-            throw new NotFoundException(e.getMessage());
-        }
+        Registration domainEntity = eventRegistrationService.add(addPayload);
         RegistrationApiEntity registration = apiDomainEntityBoundary.toLocalEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventRegistrationResource.class)
                 .build(eventId, registration.getId()))

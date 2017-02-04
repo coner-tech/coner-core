@@ -34,6 +34,7 @@ public class HandicapGroupResourceTest {
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupResource(handicapGroupBoundary, handicapGroupEntityService))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before

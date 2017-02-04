@@ -3,7 +3,6 @@ package org.coner.core.resource;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -48,13 +47,8 @@ public class EventResource {
     })
     public EventApiEntity getEvent(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String id
-    ) {
-        Event domainEntity = null;
-        try {
-            domainEntity = eventEntityService.getById(id);
-        } catch (EntityNotFoundException e) {
-            throw new NotFoundException("No event found with id " + id);
-        }
+    ) throws EntityNotFoundException {
+        Event domainEntity = eventEntityService.getById(id);
         return eventApiDomainBoundary.toLocalEntity(domainEntity);
     }
 }

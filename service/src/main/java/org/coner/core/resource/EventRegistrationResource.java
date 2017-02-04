@@ -3,15 +3,12 @@ package org.coner.core.resource;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.service.EventRegistrationService;
@@ -20,6 +17,7 @@ import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -49,37 +47,21 @@ public class EventRegistrationResource {
     @ApiOperation(value = "Get a specific registration")
     @ApiResponses({
             @ApiResponse(code = HttpStatus.OK_200, response = RegistrationApiEntity.class, message = "OK"),
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorsResponse.class, message = "Not found"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found"),
             @ApiResponse(
                     code = HttpStatus.CONFLICT_409,
-                    response = ErrorsResponse.class,
+                    response = ErrorMessage.class,
                     message = "Event ID and Registration ID are mismatched"
             )
     })
-    public Response getRegistration(
+    public RegistrationApiEntity getRegistration(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @PathParam("registrationId") @ApiParam(value = "Registration ID", required = true) String registrationId
-    ) {
-        Registration domainRegistration;
-        try {
-            domainRegistration = eventRegistrationService.getByEventIdAndRegistrationId(eventId, registrationId);
-        } catch (EntityMismatchException e) {
-            return Response.status(Response.Status.CONFLICT)
-                    .type(MediaType.APPLICATION_JSON_TYPE)
-                    .entity(
-                            new ErrorsResponse(
-                                    Response.Status.CONFLICT.getReasonPhrase(),
-                                    e.getMessage()
-                            )
-                    )
-                    .build();
-        } catch (EntityNotFoundException e) {
-            throw new NotFoundException("No registration with id " + registrationId);
-        }
-
-        RegistrationApiEntity registration = registrationApiDomainBoundary.toLocalEntity(domainRegistration);
-
-        return Response.ok(registration, MediaType.APPLICATION_JSON_TYPE)
-                .build();
+    ) throws EntityMismatchException, EntityNotFoundException {
+        Registration domainRegistration = eventRegistrationService.getByEventIdAndRegistrationId(
+                eventId,
+                registrationId
+        );
+        return registrationApiDomainBoundary.toLocalEntity(domainRegistration);
     }
 }

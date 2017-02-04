@@ -2,11 +2,11 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
-import org.coner.core.exception.WebApplicationExceptionMapper;
 import org.coner.core.resource.CompetitionGroupResource;
 import org.coner.core.resource.CompetitionGroupSetResource;
 import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
+import org.coner.core.resource.DomainServiceExceptionMapper;
 import org.coner.core.resource.EventRegistrationResource;
 import org.coner.core.resource.EventRegistrationsResource;
 import org.coner.core.resource.EventResource;
@@ -90,7 +90,7 @@ public class MockitoJerseyRegistrationModule {
 
     @Provides
     @Singleton
-    public WebApplicationExceptionMapper getWebApplicationExceptionMapper() {
-        return Mockito.mock(WebApplicationExceptionMapper.class);
+    public DomainServiceExceptionMapper getDomainServiceExceptionMapper() {
+        return Mockito.mock(DomainServiceExceptionMapper.class);
     }
 }
