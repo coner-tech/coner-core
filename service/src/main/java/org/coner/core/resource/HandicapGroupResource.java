@@ -13,6 +13,7 @@ import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -26,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/handicapGroups/{handicapGroupId}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Handicap Groups")
+@Api(tags = ApiTagConstants.HANDICAP_GROUPS)
 public class HandicapGroupResource {
 
     private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;

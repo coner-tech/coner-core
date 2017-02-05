@@ -5,9 +5,6 @@ import javax.validation.constraints.Null;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "firstName", "lastName", "event"})
 public class RegistrationApiEntity extends ApiEntity {
 
     @Null(message = "registration.id may only be assigned by the system")

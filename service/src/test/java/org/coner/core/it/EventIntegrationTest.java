@@ -12,11 +12,12 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 
 public class EventIntegrationTest extends AbstractIntegrationTest {
@@ -47,8 +48,8 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(getEventsResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         GetEventsResponse getEventsResponse = getEventsResponseContainer.readEntity(GetEventsResponse.class);
-        assertThat(getEventsResponse.getEvents()).hasSize(1);
-        EventApiEntity event = getEventsResponse.getEvents().get(0);
+        assertThat(getEventsResponse.getEntities()).hasSize(1);
+        EventApiEntity event = getEventsResponse.getEntities().get(0);
         assertThat(event.getId()).isEqualTo(eventId);
 
         URI getEventByIdUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
@@ -78,8 +79,10 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addEventRequest));
 
         assertThat(addEventResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = addEventResponseContainer.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        ValidationErrorMessage validationErrorMessage = addEventResponseContainer.readEntity(
+                ValidationErrorMessage.class
+        );
+        assertThat(validationErrorMessage.getErrors()).isNotEmpty();
     }
 
 }

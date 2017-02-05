@@ -9,9 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "name", "handicapFactor"})
 public class HandicapGroupApiEntity extends ApiEntity {
 
     private String id;

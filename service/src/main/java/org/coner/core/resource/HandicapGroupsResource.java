@@ -22,20 +22,23 @@ import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.util.swagger.ApiResponseConstants;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.errors.ErrorMessage;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @Path("/handicapGroups")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Handicap Groups")
+@Api(tags = ApiTagConstants.HANDICAP_GROUPS)
 public class HandicapGroupsResource {
 
     private final HandicapGroupEntityService handicapGroupEntityService;
@@ -59,12 +62,19 @@ public class HandicapGroupsResource {
     @ApiResponses({
             @ApiResponse(
                     code = HttpStatus.CREATED_201,
-                    message = "Created at URI in Location header"
+                    message = ApiResponseConstants.Created.MESSAGE,
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION,
+                                    response = String.class
+                            )
+                    }
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     message = "Failed validation",
-                    response = ErrorMessage.class
+                    response = ValidationErrorMessage.class
             )
     })
     public Response addHandicapGroup(
@@ -84,7 +94,7 @@ public class HandicapGroupsResource {
     public GetHandicapGroupsResponse getHandicapGroups() {
         List<HandicapGroup> domainHandicapGroups = handicapGroupEntityService.getAll();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
-        response.setHandicapGroups(apiDomainBoundary.toLocalEntities(domainHandicapGroups));
+        response.setEntities(apiDomainBoundary.toLocalEntities(domainHandicapGroups));
         return response;
     }
 }

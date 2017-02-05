@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetHandicapGroupsResponse;
 import org.coner.core.boundary.HandicapGroupApiAddPayloadBoundary;
 import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
@@ -38,6 +37,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -98,9 +98,9 @@ public class HandicapGroupsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
-        assertThat(errorsResponse.getErrors())
+        ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(validationErrorMessage.getErrors())
+                .isNotEmpty()
                 .contains("handicapFactor must be less than or equal to 1.0000");
 
         verifyZeroInteractions(handicapGroupEntityService);
@@ -118,7 +118,7 @@ public class HandicapGroupsResourceTest {
 
         assertThat(response)
                 .isNotNull();
-        assertThat(response.getHandicapGroups())
+        assertThat(response.getEntities())
                 .isNotNull()
                 .isEmpty();
 
@@ -151,7 +151,7 @@ public class HandicapGroupsResourceTest {
 
         assertThat(response)
                 .isNotNull();
-        assertThat(response.getHandicapGroups())
+        assertThat(response.getEntities())
                 .isNotNull()
                 .hasSize(1);
 

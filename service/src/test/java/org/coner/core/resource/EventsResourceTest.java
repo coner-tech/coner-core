@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.boundary.EventApiAddPayloadBoundary;
 import org.coner.core.boundary.EventApiDomainBoundary;
@@ -33,6 +32,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.dropwizard.testing.FixtureHelpers;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -70,7 +70,7 @@ public class EventsResourceTest {
         verify(apiDomainBoundary).toLocalEntities(domainEvents);
         assertThat(response)
                 .isNotNull();
-        assertThat(response.getEvents())
+        assertThat(response.getEntities())
                 .isNotNull()
                 .isEmpty();
     }
@@ -114,9 +114,10 @@ public class EventsResourceTest {
                 .post(requestEntity);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
-        assertThat(errorsResponse.getErrors()).contains("name may not be empty");
+        ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(validationErrorMessage.getErrors())
+                .isNotEmpty()
+                .contains("name may not be empty");
         verifyZeroInteractions(conerCoreService);
     }
 
@@ -134,9 +135,10 @@ public class EventsResourceTest {
                 .post(requestEntity);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = response.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
-        assertThat(errorsResponse.getErrors()).contains("date may not be null");
+        ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(validationErrorMessage.getErrors())
+                .isNotEmpty()
+                .contains("date may not be null");
 
         verifyZeroInteractions(conerCoreService);
     }

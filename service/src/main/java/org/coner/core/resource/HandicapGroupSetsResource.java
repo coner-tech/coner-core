@@ -19,10 +19,12 @@ import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.util.swagger.ApiResponseConstants;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.errors.ErrorMessage;
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,7 +35,7 @@ import io.swagger.annotations.ResponseHeader;
 @Path("/handicapGroups/sets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Handicap Groups")
+@Api(tags = ApiTagConstants.HANDICAP_GROUPS)
 public class HandicapGroupSetsResource {
 
     private final HandicapGroupSetService handicapGroupSetService;
@@ -60,15 +62,19 @@ public class HandicapGroupSetsResource {
     @ApiResponses({
             @ApiResponse(
                     code = HttpStatus.CREATED_201,
-                    message = "Created",
+                    message = ApiResponseConstants.Created.MESSAGE,
                     responseHeaders = {
-                            @ResponseHeader(name = "Location", description = "URI of created Handicap Group Set")
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION,
+                                    response = String.class
+                            )
                     }
             ),
             @ApiResponse(
                     code = HttpStatus.UNPROCESSABLE_ENTITY_422,
                     message = "Failed validation",
-                    response = ErrorMessage.class
+                    response = ValidationErrorMessage.class
             )
     })
     public Response add(

@@ -11,11 +11,12 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
 
@@ -69,8 +70,10 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addHandicapGroupRequest));
 
         assertThat(addHandicapGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = addHandicapGroupResponseContainer.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        ValidationErrorMessage validationErrorMessage = addHandicapGroupResponseContainer.readEntity(
+                ValidationErrorMessage.class
+        );
+        assertThat(validationErrorMessage.getErrors()).isNotEmpty();
     }
 
     @Test

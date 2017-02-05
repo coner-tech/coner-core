@@ -7,9 +7,6 @@ import javax.validation.constraints.Null;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-@JsonPropertyOrder({"id", "name", "date"})
 public class EventApiEntity extends ApiEntity {
 
     @Null(message = "event.id may only be assigned by the system")

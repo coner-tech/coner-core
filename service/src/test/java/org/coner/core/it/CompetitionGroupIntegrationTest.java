@@ -12,12 +12,13 @@ import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
-import org.coner.core.api.response.ErrorsResponse;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
+
+import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
 
@@ -74,8 +75,10 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addCompetitionGroupRequest));
 
         assertThat(addCompetitionGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
-        ErrorsResponse errorsResponse = addCompetitionGroupResponseContainer.readEntity(ErrorsResponse.class);
-        assertThat(errorsResponse.getErrors()).isNotEmpty();
+        ValidationErrorMessage validationErrorMessage = addCompetitionGroupResponseContainer.readEntity(
+                ValidationErrorMessage.class
+        );
+        assertThat(validationErrorMessage.getErrors()).isNotEmpty();
     }
 
     @Test
@@ -149,8 +152,8 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .get();
         GetCompetitionGroupSetsResponse getCompetitionGroupSetsResponse = getCompetitionGroupSetsResponseContainer
                 .readEntity(GetCompetitionGroupSetsResponse.class);
-        assertThat(getCompetitionGroupSetsResponse.getCompetitionGroupSets()).isNotEmpty();
-        assertThat(getCompetitionGroupSetsResponse.getCompetitionGroupSets().get(0).getId()).isNotEmpty();
+        assertThat(getCompetitionGroupSetsResponse.getEntities()).isNotEmpty();
+        assertThat(getCompetitionGroupSetsResponse.getEntities().get(0).getId()).isNotEmpty();
     }
 
 }

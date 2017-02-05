@@ -14,6 +14,7 @@ import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/events/{eventId}/registrations/{registrationId}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(value = "Event Registrations")
+@Api(tags = {ApiTagConstants.EVENTS, ApiTagConstants.REGISTRATIONS})
 public class EventRegistrationResource {
 
     private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
