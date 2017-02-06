@@ -14,6 +14,7 @@
 
     <properties>
         <dropwizard.version>1.0.6</dropwizard.version>
+        <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,12 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -109,6 +116,19 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
@@ -148,6 +168,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
