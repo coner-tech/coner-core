@@ -1,9 +1,8 @@
-package org.coner.core.domain.entity;
+package org.coner.core.api.entity;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.junit.Before;
@@ -13,32 +12,37 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 
-public class EventApiEntityTest {
-
-    private final String fixturePath = "fixtures/api/entity/event_full.json";
+public class RegistrationApiEntityTest {
+    private final String fixturePath = "fixtures/api/entity/registration_full.json";
 
     private ObjectMapper objectMapper;
-    private EventApiEntity event;
+    private RegistrationApiEntity registration;
 
     @Before
     public void setup() {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        event = ApiEntityTestUtils.fullApiEvent();
+        registration = ApiEntityTestUtils.fullApiRegistration();
     }
 
     @Test
     public void deserializesFromJson() throws Exception {
-        EventApiEntity actual = objectMapper.readValue(fixture(fixturePath), EventApiEntity.class);
-        assertThat(actual).isEqualTo(event);
+        RegistrationApiEntity actual = objectMapper.readValue(fixture(fixturePath), RegistrationApiEntity.class);
+        assertThat(actual).isEqualTo(registration);
     }
 
     @Test
     public void serializesToJson() throws Exception {
-        String actual = objectMapper.writeValueAsString(event);
+        String actual = objectMapper.writeValueAsString(registration);
         String expected = fixture(fixturePath);
         JSONAssert.assertEquals(expected, actual, false);
     }
 
+    @Test
+    public void hashCodeTest() throws Exception {
+        RegistrationApiEntity otherRegistration = ApiEntityTestUtils.fullApiRegistration();
+
+        assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
+    }
 }
