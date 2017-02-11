@@ -1,4 +1,4 @@
-package exploratory.MapStruct;
+package exploratory.mapstruct;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package exploratory.MapStruct;
+package exploratory.mapstruct;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.domain.entity.Event;
