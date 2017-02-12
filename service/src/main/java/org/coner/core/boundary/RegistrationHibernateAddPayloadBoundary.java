@@ -40,12 +40,18 @@ public class RegistrationHibernateAddPayloadBoundary implements Boundary<
     }
 
     @Override
-    public void mergeLocalIntoRemote(RegistrationHibernateEntity fromLocalEntity, RegistrationAddPayload intoRemoteEntity) {
+    public void mergeLocalIntoRemote(
+            RegistrationHibernateEntity fromLocalEntity,
+            RegistrationAddPayload intoRemoteEntity
+    ) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void mergeRemoteIntoLocal(RegistrationAddPayload fromRemoteEntity, RegistrationHibernateEntity intoLocalEntity) {
+    public void mergeRemoteIntoLocal(
+            RegistrationAddPayload fromRemoteEntity,
+            RegistrationHibernateEntity intoLocalEntity
+    ) {
         throw new UnsupportedOperationException();
     }
 }

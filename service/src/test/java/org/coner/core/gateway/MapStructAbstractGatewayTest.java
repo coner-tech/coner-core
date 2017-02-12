@@ -23,12 +23,16 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStructAbstractGatewayTest {
 
-    @Mock HibernateEntityDao<TestHibernateEntity> dao;
-    @Mock MapStructAbstractGateway.Mapper<TestDomainAddPayload, TestHibernateEntity>
+    @Mock
+    HibernateEntityDao<TestHibernateEntity> dao;
+    @Mock
+    MapStructAbstractGateway.Mapper<TestDomainAddPayload, TestHibernateEntity>
             domainAddPayloadToHibernateEntityMapper;
-    @Mock MapStructAbstractGateway.Mapper<TestHibernateEntity, TestDomainEntity>
+    @Mock
+    MapStructAbstractGateway.Mapper<TestHibernateEntity, TestDomainEntity>
             hibernateEntityToDomainEntityMapper;
-    @Mock MapStructAbstractGateway.Mapper<List<TestHibernateEntity>, List<TestDomainEntity>>
+    @Mock
+    MapStructAbstractGateway.Mapper<List<TestHibernateEntity>, List<TestDomainEntity>>
             hibernateEntitiesToDomainEntitiesMapper;
 
     private TestMapStructAbstractGateway gateway;
@@ -108,7 +112,7 @@ public class MapStructAbstractGatewayTest {
                 Mapper<TestHibernateEntity, TestDomainEntity> hibernateEntityToDomainEntityMapper,
                 Mapper<List<TestHibernateEntity>, List<TestDomainEntity>> hibernateEntitiesToDomainEntitiesMapper,
                 HibernateEntityDao<TestHibernateEntity> dao
-                ) {
+        ) {
             super(
                     domainAddPayloadToHibernateEntityMapper,
                     hibernateEntityToDomainEntityMapper,
