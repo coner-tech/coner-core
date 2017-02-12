@@ -64,13 +64,13 @@ public class EventRegistrationServiceTest {
     @Test
     public void whenAddValid() throws Exception {
         RegistrationAddPayload registrationAddPayload = new RegistrationAddPayload();
-        registrationAddPayload.eventId = TestConstants.EVENT_ID;
+        registrationAddPayload.setEventId(TestConstants.EVENT_ID);
         Registration registration = mock(Registration.class);
         when(registrationEntityService.add(registrationAddPayload)).thenReturn(registration);
 
         Registration actual = eventRegistrationService.add(registrationAddPayload);
 
-        verify(eventEntityService).getById(registrationAddPayload.eventId);
+        verify(eventEntityService).getById(TestConstants.EVENT_ID);
         verify(registrationEntityService).add(registrationAddPayload);
         assertThat(actual).isSameAs(registration);
     }

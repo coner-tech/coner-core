@@ -14,11 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
-import org.coner.core.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -30,21 +30,21 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventRegistrationResourceTest {
 
-    private final RegistrationApiDomainBoundary registrationBoundary = mock(RegistrationApiDomainBoundary.class);
+    private final RegistrationMapper registrationMapper = mock(RegistrationMapper.class);
     private final EventRegistrationService eventRegistrationService = mock(EventRegistrationService.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventRegistrationResource(
                     eventRegistrationService,
-                    registrationBoundary
+                    registrationMapper
             ))
             .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(registrationBoundary, eventRegistrationService);
+        reset(registrationMapper, eventRegistrationService);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class EventRegistrationResourceTest {
 
         when(eventRegistrationService.getByEventIdAndRegistrationId(EVENT_ID, REGISTRATION_ID))
                 .thenReturn(domainEntity);
-        when(registrationBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(registrationMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response responseContainer = resources.client()
                 .target("/events/" + EVENT_ID + "/registrations/" + REGISTRATION_ID)

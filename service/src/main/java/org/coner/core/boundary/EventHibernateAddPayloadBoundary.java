@@ -10,11 +10,11 @@ import org.coner.core.mapper.EventMapper;
 
 public class EventHibernateAddPayloadBoundary implements Boundary<EventHibernateEntity, EventAddPayload> {
 
-    private final EventMapper eventMapper;
+    private final EventMapper mapper;
 
     @Inject
     public EventHibernateAddPayloadBoundary(EventMapper eventMapper) {
-        this.eventMapper = eventMapper;
+        this.mapper = eventMapper;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class EventHibernateAddPayloadBoundary implements Boundary<EventHibernate
 
     @Override
     public EventHibernateEntity toLocalEntity(EventAddPayload remoteEntity) {
-        return eventMapper.toHibernateEntity(remoteEntity);
+        return mapper.toHibernateEntity(remoteEntity);
     }
 
     @Override

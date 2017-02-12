@@ -17,13 +17,12 @@ import javax.ws.rs.core.UriBuilder;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
-import org.coner.core.boundary.RegistrationApiAddPayloadBoundary;
-import org.coner.core.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -45,18 +44,15 @@ import io.swagger.annotations.ResponseHeader;
 public class EventRegistrationsResource {
 
     private final EventRegistrationService eventRegistrationService;
-    private final RegistrationApiDomainBoundary apiDomainEntityBoundary;
-    private final RegistrationApiAddPayloadBoundary addPayloadBoundary;
+    private final RegistrationMapper registrationMapper;
 
     @Inject
     public EventRegistrationsResource(
             EventRegistrationService eventRegistrationService,
-            RegistrationApiDomainBoundary registrationApiDomainBoundary,
-            RegistrationApiAddPayloadBoundary registrationApiAddPayloadBoundary
+            RegistrationMapper registrationMapper
     ) {
         this.eventRegistrationService = eventRegistrationService;
-        this.apiDomainEntityBoundary = registrationApiDomainBoundary;
-        this.addPayloadBoundary = registrationApiAddPayloadBoundary;
+        this.registrationMapper = registrationMapper;
     }
 
     @GET
@@ -82,7 +78,7 @@ public class EventRegistrationsResource {
     ) throws EntityNotFoundException {
         List<Registration> domainEntities = eventRegistrationService.getAllWithEventId(eventId);
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
-        response.setEntities(apiDomainEntityBoundary.toLocalEntities(domainEntities));
+        response.setEntities(registrationMapper.toApiEntitiesList(domainEntities));
         return response;
     }
 
@@ -116,10 +112,9 @@ public class EventRegistrationsResource {
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @Valid @ApiParam(value = "Registration", required = true) AddRegistrationRequest request
     ) throws AddEntityException, EntityNotFoundException {
-        RegistrationAddPayload addPayload = addPayloadBoundary.toRemoteEntity(request);
-        addPayload.eventId = eventId;
+        RegistrationAddPayload addPayload = registrationMapper.toAddPayload(request, eventId);
         Registration domainEntity = eventRegistrationService.add(addPayload);
-        RegistrationApiEntity registration = apiDomainEntityBoundary.toLocalEntity(domainEntity);
+        RegistrationApiEntity registration = registrationMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventRegistrationResource.class)
                 .build(eventId, registration.getId()))
                 .build();

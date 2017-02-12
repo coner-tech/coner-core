@@ -3,6 +3,7 @@ package org.coner.core.dagger;
 import javax.inject.Singleton;
 
 import org.coner.core.mapper.EventMapper;
+import org.coner.core.mapper.RegistrationMapper;
 import org.mapstruct.factory.Mappers;
 
 import dagger.Module;
@@ -15,5 +16,11 @@ public class MapStructModule {
     @Singleton
     public EventMapper eventMapper() {
         return Mappers.getMapper(EventMapper.class);
+    }
+
+    @Provides
+    @Singleton
+    public RegistrationMapper registrationMapper() {
+        return Mappers.getMapper(RegistrationMapper.class);
     }
 }

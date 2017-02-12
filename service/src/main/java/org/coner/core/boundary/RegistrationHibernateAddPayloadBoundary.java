@@ -1,37 +1,51 @@
 package org.coner.core.boundary;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
-import org.coner.core.util.merger.CompositeMerger;
-import org.coner.core.util.merger.ObjectMerger;
-import org.coner.core.util.merger.ReflectionPayloadJavaBeanMerger;
-import org.coner.core.util.merger.UnsupportedOperationMerger;
+import org.coner.core.mapper.RegistrationMapper;
 
-public class RegistrationHibernateAddPayloadBoundary extends AbstractBoundary<
+public class RegistrationHibernateAddPayloadBoundary implements Boundary<
         RegistrationHibernateEntity,
         RegistrationAddPayload> {
 
-    private final EventHibernateDomainBoundary eventHibernateDomainBoundary;
+    private final RegistrationMapper mapper;
 
     @Inject
-    public RegistrationHibernateAddPayloadBoundary(EventHibernateDomainBoundary eventHibernateDomainBoundary) {
-        this.eventHibernateDomainBoundary = eventHibernateDomainBoundary;
+    public RegistrationHibernateAddPayloadBoundary(RegistrationMapper registrationMapper) {
+        this.mapper = registrationMapper;
     }
 
     @Override
-    protected ObjectMerger<RegistrationHibernateEntity, RegistrationAddPayload> buildLocalToRemoteMerger() {
-        return new UnsupportedOperationMerger<>();
+    public RegistrationAddPayload toRemoteEntity(RegistrationHibernateEntity localEntity) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    protected ObjectMerger<RegistrationAddPayload, RegistrationHibernateEntity> buildRemoteToLocalMerger() {
-        return new CompositeMerger<>(
-                ReflectionPayloadJavaBeanMerger.payloadToJavaBean(),
-                (source, destination) -> {
-                    destination.setEvent(eventHibernateDomainBoundary.toLocalEntity(source.event));
-                }
-        );
+    public RegistrationHibernateEntity toLocalEntity(RegistrationAddPayload remoteEntity) {
+        return mapper.toHibernateEntity(remoteEntity);
+    }
+
+    @Override
+    public List<RegistrationAddPayload> toRemoteEntities(List<RegistrationHibernateEntity> localEntities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<RegistrationHibernateEntity> toLocalEntities(List<RegistrationAddPayload> remoteEntities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void mergeLocalIntoRemote(RegistrationHibernateEntity fromLocalEntity, RegistrationAddPayload intoRemoteEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void mergeRemoteIntoLocal(RegistrationAddPayload fromRemoteEntity, RegistrationHibernateEntity intoLocalEntity) {
+        throw new UnsupportedOperationException();
     }
 }
