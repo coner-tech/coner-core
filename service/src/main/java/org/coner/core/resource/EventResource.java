@@ -9,10 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.coner.core.api.entity.EventApiEntity;
-import org.coner.core.boundary.EventApiDomainBoundary;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -30,12 +30,12 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = ApiTagConstants.EVENTS)
 public class EventResource {
 
-    private final EventApiDomainBoundary eventApiDomainBoundary;
+    private final EventMapper eventMapper;
     private final EventEntityService eventEntityService;
 
     @Inject
-    public EventResource(EventApiDomainBoundary eventApiDomainBoundary, EventEntityService eventEntityService) {
-        this.eventApiDomainBoundary = eventApiDomainBoundary;
+    public EventResource(EventMapper eventMapper, EventEntityService eventEntityService) {
+        this.eventMapper = eventMapper;
         this.eventEntityService = eventEntityService;
     }
 
@@ -50,6 +50,6 @@ public class EventResource {
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String id
     ) throws EntityNotFoundException {
         Event domainEntity = eventEntityService.getById(id);
-        return eventApiDomainBoundary.toLocalEntity(domainEntity);
+        return eventMapper.toApiEntity(domainEntity);
     }
 }

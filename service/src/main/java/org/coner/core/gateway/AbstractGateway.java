@@ -2,7 +2,7 @@ package org.coner.core.gateway;
 
 import java.util.List;
 
-import org.coner.core.boundary.AbstractBoundary;
+import org.coner.core.boundary.Boundary;
 import org.coner.core.domain.entity.DomainEntity;
 import org.coner.core.domain.payload.DomainAddPayload;
 import org.coner.core.hibernate.dao.HibernateEntityDao;
@@ -15,8 +15,8 @@ public abstract class AbstractGateway<
         DE extends DomainEntity,
         HE extends HibernateEntity,
         AP extends DomainAddPayload,
-        EB extends AbstractBoundary<HE, DE>,
-        APB extends AbstractBoundary<HE, AP>,
+        EB extends Boundary<HE, DE>,
+        APB extends Boundary<HE, AP>,
         D extends HibernateEntityDao<HE>>
         implements Gateway<DE, AP> {
 

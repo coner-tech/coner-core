@@ -1,26 +1,49 @@
 package org.coner.core.boundary;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
-import org.coner.core.util.merger.ObjectMerger;
-import org.coner.core.util.merger.ReflectionPayloadJavaBeanMerger;
-import org.coner.core.util.merger.UnsupportedOperationMerger;
+import org.coner.core.mapper.EventMapper;
 
-public class EventHibernateAddPayloadBoundary extends AbstractBoundary<EventHibernateEntity, EventAddPayload> {
+public class EventHibernateAddPayloadBoundary implements Boundary<EventHibernateEntity, EventAddPayload> {
+
+    private final EventMapper eventMapper;
 
     @Inject
-    public EventHibernateAddPayloadBoundary() {
+    public EventHibernateAddPayloadBoundary(EventMapper eventMapper) {
+        this.eventMapper = eventMapper;
     }
 
     @Override
-    protected ObjectMerger<EventHibernateEntity, EventAddPayload> buildLocalToRemoteMerger() {
-        return new UnsupportedOperationMerger<>();
+    public EventAddPayload toRemoteEntity(EventHibernateEntity localEntity) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    protected ObjectMerger<EventAddPayload, EventHibernateEntity> buildRemoteToLocalMerger() {
-        return ReflectionPayloadJavaBeanMerger.payloadToJavaBean();
+    public EventHibernateEntity toLocalEntity(EventAddPayload remoteEntity) {
+        return eventMapper.toHibernateEntity(remoteEntity);
+    }
+
+    @Override
+    public List<EventAddPayload> toRemoteEntities(List<EventHibernateEntity> localEntities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<EventHibernateEntity> toLocalEntities(List<EventAddPayload> remoteEntities) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void mergeLocalIntoRemote(EventHibernateEntity fromLocalEntity, EventAddPayload intoRemoteEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void mergeRemoteIntoLocal(EventAddPayload fromRemoteEntity, EventHibernateEntity intoLocalEntity) {
+        throw new UnsupportedOperationException();
     }
 }

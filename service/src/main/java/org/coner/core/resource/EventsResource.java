@@ -16,12 +16,11 @@ import javax.ws.rs.core.UriBuilder;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
-import org.coner.core.boundary.EventApiAddPayloadBoundary;
-import org.coner.core.boundary.EventApiDomainBoundary;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -42,18 +41,15 @@ import io.swagger.annotations.ResponseHeader;
 public class EventsResource {
 
     private final EventEntityService eventEntityService;
-    private final EventApiDomainBoundary apiDomainEntityBoundary;
-    private final EventApiAddPayloadBoundary apiAddPayloadBoundary;
+    private final EventMapper eventMapper;
 
     @Inject
     public EventsResource(
             EventEntityService eventEntityService,
-            EventApiDomainBoundary eventApiDomainBoundary,
-            EventApiAddPayloadBoundary eventApiAddPayloadBoundary
+            EventMapper eventMapper
     ) {
         this.eventEntityService = eventEntityService;
-        this.apiDomainEntityBoundary = eventApiDomainBoundary;
-        this.apiAddPayloadBoundary = eventApiAddPayloadBoundary;
+        this.eventMapper = eventMapper;
     }
 
     @GET
@@ -62,7 +58,7 @@ public class EventsResource {
     public GetEventsResponse getEvents() {
         List<Event> domainEvents = eventEntityService.getAll();
         GetEventsResponse response = new GetEventsResponse();
-        response.setEntities(apiDomainEntityBoundary.toLocalEntities(domainEvents));
+        response.setEntities(eventMapper.toApiEntitiesList(domainEvents));
         return response;
     }
 
@@ -90,9 +86,9 @@ public class EventsResource {
     public Response addEvent(
             @Valid @ApiParam(value = "Event", required = true) AddEventRequest request
     ) throws AddEntityException {
-        EventAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        EventAddPayload addPayload = eventMapper.toAddPayload(request);
         Event domainEntity = eventEntityService.add(addPayload);
-        EventApiEntity eventApiEntity = apiDomainEntityBoundary.toLocalEntity(domainEntity);
+        EventApiEntity eventApiEntity = eventMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventResource.class)
                 .build(eventApiEntity.getId()))
                 .build();

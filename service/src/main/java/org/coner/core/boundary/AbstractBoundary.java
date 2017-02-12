@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
  * @param <L> the local entity type
  * @param <R> the remote entity type
  */
-public abstract class AbstractBoundary<L, R> {
+public abstract class AbstractBoundary<L, R> implements Boundary<L, R> {
 
     private final Class<L> localClass;
     private final Class<R> remoteClass;
@@ -36,13 +36,7 @@ public abstract class AbstractBoundary<L, R> {
         this.remoteClass = (Class<R>) typeParameters[1];
     }
 
-    private ObjectMerger<L, R> getLocalToRemoteMerger() {
-        if (localToRemoteMerger == null) {
-            localToRemoteMerger = buildLocalToRemoteMerger();
-        }
-        return localToRemoteMerger;
-    }
-
+    @Override
     public R toRemoteEntity(L localEntity) {
         if (localEntity == null) {
             return null;
@@ -52,13 +46,7 @@ public abstract class AbstractBoundary<L, R> {
         return remoteEntity;
     }
 
-    private ObjectMerger<R, L> getRemoteToLocalMerger() {
-        if (remoteToLocalMerger == null) {
-            remoteToLocalMerger = buildRemoteToLocalMerger();
-        }
-        return remoteToLocalMerger;
-    }
-
+    @Override
     public L toLocalEntity(R remoteEntity) {
         if (remoteEntity == null) {
             return null;
@@ -66,6 +54,54 @@ public abstract class AbstractBoundary<L, R> {
         L localEntity = instantiate(localClass);
         getRemoteToLocalMerger().merge(remoteEntity, localEntity);
         return localEntity;
+    }
+
+    @Override
+    public List<R> toRemoteEntities(List<L> localEntities) {
+        if (localEntities == null || localEntities.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<R> remoteEntities = new ArrayList<>(localEntities.size());
+        remoteEntities.addAll(localEntities.stream().map(this::toRemoteEntity).collect(Collectors.toList()));
+        return remoteEntities;
+    }
+
+    @Override
+    public List<L> toLocalEntities(List<R> remoteEntities) {
+        if (remoteEntities == null || remoteEntities.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<L> localEntities = new ArrayList<>(remoteEntities.size());
+        localEntities.addAll(remoteEntities.stream().map(this::toLocalEntity).collect(Collectors.toList()));
+        return localEntities;
+    }
+
+    @Override
+    public void mergeLocalIntoRemote(L fromLocalEntity, R intoRemoteEntity) {
+        Preconditions.checkNotNull(fromLocalEntity);
+        Preconditions.checkNotNull(intoRemoteEntity);
+        getLocalToRemoteMerger().merge(fromLocalEntity, intoRemoteEntity);
+    }
+
+    @Override
+    public void mergeRemoteIntoLocal(R fromRemoteEntity, L intoLocalEntity) {
+        Preconditions.checkNotNull(fromRemoteEntity);
+        Preconditions.checkNotNull(intoLocalEntity);
+        getRemoteToLocalMerger().merge(fromRemoteEntity, intoLocalEntity);
+    }
+
+    private ObjectMerger<L, R> getLocalToRemoteMerger() {
+        if (localToRemoteMerger == null) {
+            localToRemoteMerger = buildLocalToRemoteMerger();
+        }
+        return localToRemoteMerger;
+    }
+
+    private ObjectMerger<R, L> getRemoteToLocalMerger() {
+        if (remoteToLocalMerger == null) {
+            remoteToLocalMerger = buildRemoteToLocalMerger();
+        }
+        return remoteToLocalMerger;
     }
 
     protected <T> T instantiate(Class<T> classToInstantiate) {
@@ -80,36 +116,6 @@ public abstract class AbstractBoundary<L, R> {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-    }
-
-    public List<R> toRemoteEntities(List<L> localEntities) {
-        if (localEntities == null || localEntities.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<R> remoteEntities = new ArrayList<>(localEntities.size());
-        remoteEntities.addAll(localEntities.stream().map(this::toRemoteEntity).collect(Collectors.toList()));
-        return remoteEntities;
-    }
-
-    public List<L> toLocalEntities(List<R> remoteEntities) {
-        if (remoteEntities == null || remoteEntities.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<L> localEntities = new ArrayList<>(remoteEntities.size());
-        localEntities.addAll(remoteEntities.stream().map(this::toLocalEntity).collect(Collectors.toList()));
-        return localEntities;
-    }
-
-    public void mergeLocalIntoRemote(L fromLocalEntity, R intoRemoteEntity) {
-        Preconditions.checkNotNull(fromLocalEntity);
-        Preconditions.checkNotNull(intoRemoteEntity);
-        getLocalToRemoteMerger().merge(fromLocalEntity, intoRemoteEntity);
-    }
-
-    public void mergeRemoteIntoLocal(R fromRemoteEntity, L intoLocalEntity) {
-        Preconditions.checkNotNull(fromRemoteEntity);
-        Preconditions.checkNotNull(intoLocalEntity);
-        getRemoteToLocalMerger().merge(fromRemoteEntity, intoLocalEntity);
     }
 
     protected abstract ObjectMerger<L, R> buildLocalToRemoteMerger();

@@ -18,7 +18,7 @@ import org.coner.core.resource.HandicapGroupsResource;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ConerModule.class })
+@Component(modules = { ConerModule.class, MapStructModule.class })
 public interface JerseyRegistrationComponent {
     // Resources
     EventResource eventResource();
