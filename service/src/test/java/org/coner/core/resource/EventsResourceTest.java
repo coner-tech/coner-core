@@ -65,7 +65,7 @@ public class EventsResourceTest {
                 .get(GetEventsResponse.class);
 
         verify(conerCoreService).getAll();
-        verify(eventMapper).toApiEntitiesList(domainEvents);
+        verify(eventMapper).toApiEntityList(domainEvents);
         assertThat(response)
                 .isNotNull();
         assertThat(response.getEntities())
@@ -81,7 +81,7 @@ public class EventsResourceTest {
         );
         Entity<AddEventRequest> requestEntity = Entity.json(requestEvent);
         EventAddPayload addPayload = mock(EventAddPayload.class);
-        when(eventMapper.toAddPayload(requestEvent)).thenReturn(addPayload);
+        when(eventMapper.toDomainAddPayload(requestEvent)).thenReturn(addPayload);
         Event domainEntity = mock(Event.class);
         when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         EventApiEntity apiEntity = ApiEntityTestUtils.fullApiEvent();

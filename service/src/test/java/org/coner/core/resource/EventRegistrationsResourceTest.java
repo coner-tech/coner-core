@@ -66,7 +66,7 @@ public class EventRegistrationsResourceTest {
         List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
         when(eventRegistrationService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
-        when(registrationMapper.toApiEntitiesList(domainRegistrations)).thenReturn(apiRegistrations);
+        when(registrationMapper.toApiEntityList(domainRegistrations)).thenReturn(apiRegistrations);
 
         GetEventRegistrationsResponse response = resources.client()
                 .target("/events/" + EVENT_ID + "/registrations")
@@ -90,7 +90,7 @@ public class EventRegistrationsResourceTest {
         );
         Entity<AddRegistrationRequest> requestEntity = Entity.json(apiRequest);
         RegistrationAddPayload addPayload = mock(RegistrationAddPayload.class);
-        when(registrationMapper.toAddPayload(apiRequest, TestConstants.EVENT_ID)).thenReturn(addPayload);
+        when(registrationMapper.toDomainAddPayload(apiRequest, TestConstants.EVENT_ID)).thenReturn(addPayload);
         Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
         when(eventRegistrationService.add(addPayload)).thenReturn(domainEntity);
         RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();

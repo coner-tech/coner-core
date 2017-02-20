@@ -79,7 +79,7 @@ public class CompetitionGroupSetsResource {
     public Response add(
             @Valid @ApiParam(value = "Competition Group Set") AddCompetitionGroupSetRequest request
     ) throws AddEntityException {
-        CompetitionGroupSetAddPayload addPayload = competitionGroupSetMapper.toAddPayload(request);
+        CompetitionGroupSetAddPayload addPayload = competitionGroupSetMapper.toDomainAddPayload(request);
         CompetitionGroupSet domainEntity = competitionGroupSetService.add(addPayload);
         CompetitionGroupSetApiEntity entity = competitionGroupSetMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(CompetitionGroupSetResource.class)
@@ -93,7 +93,7 @@ public class CompetitionGroupSetsResource {
     public GetCompetitionGroupSetsResponse getCompetitionGroupSets() {
         List<CompetitionGroupSet> domainCompetitionGroupSets = competitionGroupSetService.getAll();
         GetCompetitionGroupSetsResponse response = new GetCompetitionGroupSetsResponse();
-        response.setEntities(competitionGroupSetMapper.toApiEntitiesList(domainCompetitionGroupSets));
+        response.setEntities(competitionGroupSetMapper.toApiEntityList(domainCompetitionGroupSets));
         return response;
     }
 }

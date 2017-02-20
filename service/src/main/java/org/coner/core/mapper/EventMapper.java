@@ -14,17 +14,17 @@ import org.mapstruct.Mapper;
 )
 public interface EventMapper {
 
-    EventAddPayload toAddPayload(AddEventRequest addEventRequest);
+    EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
 
-    EventApiEntity toApiEntity(Event event);
+    EventApiEntity toApiEntity(Event domainEntity);
 
-    List<EventApiEntity> toApiEntitiesList(List<Event> events);
+    List<EventApiEntity> toApiEntityList(List<Event> domainEntityList);
 
-    EventHibernateEntity toHibernateEntity(EventAddPayload eventAddPayload);
+    EventHibernateEntity toHibernateEntity(EventAddPayload domainAddPayload);
 
-    EventHibernateEntity toHibernateEntity(Event event);
+    EventHibernateEntity toHibernateEntity(Event domainEntity);
 
-    Event toDomainEntity(EventHibernateEntity eventHibernateEntity);
+    Event toDomainEntity(EventHibernateEntity hibernateEntity);
 
-    List<Event> toDomainEntities(List<EventHibernateEntity> eventHibernateEntities);
+    List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
 }

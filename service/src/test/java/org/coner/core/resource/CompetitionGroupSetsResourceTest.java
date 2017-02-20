@@ -73,7 +73,7 @@ public class CompetitionGroupSetsResourceTest {
         Entity<AddCompetitionGroupSetRequest> requestEntity = Entity.json(requestAddCompetitionGroupSet);
 
         CompetitionGroupSetAddPayload addPayload = mock(CompetitionGroupSetAddPayload.class);
-        when(competitionGroupSetMapper.toAddPayload(requestAddCompetitionGroupSet)).thenReturn(addPayload);
+        when(competitionGroupSetMapper.toDomainAddPayload(requestAddCompetitionGroupSet)).thenReturn(addPayload);
         CompetitionGroupSet domainEntity = mock(CompetitionGroupSet.class);
         when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupSetApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroupSet();

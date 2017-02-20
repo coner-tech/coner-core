@@ -22,7 +22,7 @@ public class EventGateway extends MapStructAbstractGateway<
         super(
                 eventMapper::toHibernateEntity,
                 eventMapper::toDomainEntity,
-                eventMapper::toDomainEntities,
+                eventMapper::toDomainEntityList,
                 dao
         );
     }

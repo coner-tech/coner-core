@@ -78,7 +78,7 @@ public class EventRegistrationsResource {
     ) throws EntityNotFoundException {
         List<Registration> domainEntities = eventRegistrationService.getAllWithEventId(eventId);
         GetEventRegistrationsResponse response = new GetEventRegistrationsResponse();
-        response.setEntities(registrationMapper.toApiEntitiesList(domainEntities));
+        response.setEntities(registrationMapper.toApiEntityList(domainEntities));
         return response;
     }
 
@@ -112,7 +112,7 @@ public class EventRegistrationsResource {
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @Valid @ApiParam(value = "Registration", required = true) AddRegistrationRequest request
     ) throws AddEntityException, EntityNotFoundException {
-        RegistrationAddPayload addPayload = registrationMapper.toAddPayload(request, eventId);
+        RegistrationAddPayload addPayload = registrationMapper.toDomainAddPayload(request, eventId);
         Registration domainEntity = eventRegistrationService.add(addPayload);
         RegistrationApiEntity registration = registrationMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventRegistrationResource.class)

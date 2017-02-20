@@ -22,7 +22,7 @@ public class CompetitionGroupSetGateway extends MapStructAbstractGateway<
         super(
                 competitionGroupSetMapper::toHibernateEntity,
                 competitionGroupSetMapper::toDomainEntity,
-                competitionGroupSetMapper::toDomainEntitiesList,
+                competitionGroupSetMapper::toDomainEntityList,
                 dao
         );
     }

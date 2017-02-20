@@ -16,20 +16,20 @@ import org.mapstruct.Mapper;
 
 public interface CompetitionGroupSetMapper {
 
-    CompetitionGroupSetAddPayload toAddPayload(AddCompetitionGroupSetRequest s);
+    CompetitionGroupSetAddPayload toDomainAddPayload(AddCompetitionGroupSetRequest apiAddRequest);
 
-    CompetitionGroupSetApiEntity toApiEntity(CompetitionGroupSet s);
+    CompetitionGroupSetApiEntity toApiEntity(CompetitionGroupSet domainEntity);
 
-    List<CompetitionGroupSetApiEntity> toApiEntitiesList(List<CompetitionGroupSet> s);
+    List<CompetitionGroupSetApiEntity> toApiEntityList(List<CompetitionGroupSet> domainEntityList);
 
-    CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSetAddPayload s);
+    CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSetAddPayload domainAddPayload);
 
-    CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSet s);
+    CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSet domainEntity);
 
-    CompetitionGroupSet toDomainEntity(CompetitionGroupSetHibernateEntity s);
+    CompetitionGroupSet toDomainEntity(CompetitionGroupSetHibernateEntity hibernateEntity);
 
-    List<CompetitionGroupSet> toDomainEntitiesList(
-            List<CompetitionGroupSetHibernateEntity> s
+    List<CompetitionGroupSet> toDomainEntityList(
+            List<CompetitionGroupSetHibernateEntity> hibernateEntityList
     );
 
 }

@@ -20,7 +20,7 @@ public class RegistrationMapperTest {
     private RegistrationMapper mapper = Mappers.getMapper(RegistrationMapper.class);
 
     @Test
-    public void whenToAddPayloadFromAddRegistrationRequestEventId() {
+    public void whenToDomainAddPayloadFromApiAddRequest() {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
         addRegistrationRequest.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
         addRegistrationRequest.setLastName(TestConstants.REGISTRATION_LASTNAME);
@@ -29,13 +29,13 @@ public class RegistrationMapperTest {
         expected.setLastName(TestConstants.REGISTRATION_LASTNAME);
         expected.setEventId(TestConstants.EVENT_ID);
 
-        RegistrationAddPayload actual = mapper.toAddPayload(addRegistrationRequest, TestConstants.EVENT_ID);
+        RegistrationAddPayload actual = mapper.toDomainAddPayload(addRegistrationRequest, TestConstants.EVENT_ID);
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void whenToApiEntityFromEventDomainEntity() {
+    public void whenToApiEntityFromDomainEntity() {
         Registration registration = DomainEntityTestUtils.fullDomainRegistration();
         RegistrationApiEntity expected = ApiEntityTestUtils.fullApiRegistration();
 
@@ -45,11 +45,11 @@ public class RegistrationMapperTest {
     }
 
     @Test
-    public void whenToApiEntitiesListFromDomainEntitiesList() {
+    public void whenToApiEntityListFromDomainEntityList() {
         List<Registration> events = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
 
-        List<RegistrationApiEntity> actual = mapper.toApiEntitiesList(events);
+        List<RegistrationApiEntity> actual = mapper.toApiEntityList(events);
 
         assertThat(actual).isEqualTo(expected);
     }

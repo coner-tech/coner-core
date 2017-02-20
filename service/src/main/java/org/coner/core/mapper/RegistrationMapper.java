@@ -15,17 +15,17 @@ import org.mapstruct.Mapper;
 )
 public interface RegistrationMapper {
 
-    RegistrationAddPayload toAddPayload(AddRegistrationRequest addRegistrationRequest, String eventId);
+    RegistrationAddPayload toDomainAddPayload(AddRegistrationRequest apiAddRequest, String eventId);
 
-    RegistrationApiEntity toApiEntity(Registration registration);
+    RegistrationApiEntity toApiEntity(Registration domainEntity);
 
-    List<RegistrationApiEntity> toApiEntitiesList(List<Registration> registrations);
+    List<RegistrationApiEntity> toApiEntityList(List<Registration> domainEntityList);
 
-    RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload registrationAddPayload);
+    RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload domainAddPayload);
 
-    RegistrationHibernateEntity toHibernateEntity(Registration registration);
+    RegistrationHibernateEntity toHibernateEntity(Registration domainEntity);
 
-    Registration toDomainEntity(RegistrationHibernateEntity registrationHibernateEntity);
+    Registration toDomainEntity(RegistrationHibernateEntity hibernateEntity);
 
-    List<Registration> toDomainEntities(List<RegistrationHibernateEntity> registrationHibernateEntities);
+    List<Registration> toDomainEntityList(List<RegistrationHibernateEntity> hibernateEntityList);
 }

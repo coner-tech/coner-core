@@ -149,7 +149,7 @@ public class CompetitionGroupsResourceTest {
         List<CompetitionGroup> domainEntities = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
         when(competitionGroupEntityService.getAll()).thenReturn(domainEntities);
         List<CompetitionGroupApiEntity> apiEntities = Arrays.asList(ApiEntityTestUtils.fullCompetitionGroup());
-        when(competitionGroupMapper.toApiEntitiesList(domainEntities)).thenReturn(apiEntities);
+        when(competitionGroupMapper.toApiEntityList(domainEntities)).thenReturn(apiEntities);
 
         GetCompetitionGroupsResponse response = resources.client()
                 .target("/competitionGroups")
@@ -173,7 +173,7 @@ public class CompetitionGroupsResourceTest {
         );
         Entity<AddCompetitionGroupRequest> requestEntity = Entity.json(request);
         CompetitionGroupAddPayload addPayload = mock(CompetitionGroupAddPayload.class);
-        when(competitionGroupMapper.toAddPayload(request)).thenReturn(addPayload);
+        when(competitionGroupMapper.toDomainAddPayload(request)).thenReturn(addPayload);
         CompetitionGroup domainEntity = mock(CompetitionGroup.class);
         when(competitionGroupEntityService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();

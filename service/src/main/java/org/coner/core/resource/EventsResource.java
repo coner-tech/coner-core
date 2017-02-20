@@ -58,7 +58,7 @@ public class EventsResource {
     public GetEventsResponse getEvents() {
         List<Event> domainEvents = eventEntityService.getAll();
         GetEventsResponse response = new GetEventsResponse();
-        response.setEntities(eventMapper.toApiEntitiesList(domainEvents));
+        response.setEntities(eventMapper.toApiEntityList(domainEvents));
         return response;
     }
 
@@ -86,7 +86,7 @@ public class EventsResource {
     public Response addEvent(
             @Valid @ApiParam(value = "Event", required = true) AddEventRequest request
     ) throws AddEntityException {
-        EventAddPayload addPayload = eventMapper.toAddPayload(request);
+        EventAddPayload addPayload = eventMapper.toDomainAddPayload(request);
         Event domainEntity = eventEntityService.add(addPayload);
         EventApiEntity eventApiEntity = eventMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(EventResource.class)

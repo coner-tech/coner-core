@@ -20,7 +20,7 @@ public class EventMapperTest {
     private EventMapper mapper = Mappers.getMapper(EventMapper.class);
 
     @Test
-    public void whenToAddPayloadFromAddEventRequest() {
+    public void whenToDomainAddPayloadFromApiAddRequest() {
         AddEventRequest addEventRequest = new AddEventRequest();
         addEventRequest.setName(TestConstants.EVENT_NAME);
         addEventRequest.setDate(TestConstants.EVENT_DATE);
@@ -28,7 +28,7 @@ public class EventMapperTest {
         expected.setName(TestConstants.EVENT_NAME);
         expected.setDate(TestConstants.EVENT_DATE);
 
-        EventAddPayload actual = mapper.toAddPayload(addEventRequest);
+        EventAddPayload actual = mapper.toDomainAddPayload(addEventRequest);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -48,7 +48,7 @@ public class EventMapperTest {
         List<Event> events = Arrays.asList(DomainEntityTestUtils.fullDomainEvent());
         List<EventApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiEvent());
 
-        List<EventApiEntity> actual = mapper.toApiEntitiesList(events);
+        List<EventApiEntity> actual = mapper.toApiEntityList(events);
 
         assertThat(actual).isEqualTo(expected);
     }

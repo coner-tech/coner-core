@@ -20,7 +20,7 @@ public class CompetitionGroupMapperTest {
     private CompetitionGroupMapper mapper = Mappers.getMapper(CompetitionGroupMapper.class);
 
     @Test
-    public void whenToAddPayloadFromAddEventRequest() {
+    public void whenToDomainAddPayloadFromApiAddRequest() {
         AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
         addCompetitionGroupRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
         addCompetitionGroupRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
@@ -32,13 +32,13 @@ public class CompetitionGroupMapperTest {
         expected.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
         expected.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
 
-        CompetitionGroupAddPayload actual = mapper.toAddPayload(addCompetitionGroupRequest);
+        CompetitionGroupAddPayload actual = mapper.toDomainAddPayload(addCompetitionGroupRequest);
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void whenToApiEntityFromEventDomainEntity() {
+    public void whenToApiEntityFromDomainEntity() {
         CompetitionGroup competitionGroup = DomainEntityTestUtils.fullCompetitionGroup();
         CompetitionGroupApiEntity expected = ApiEntityTestUtils.fullCompetitionGroup();
 
@@ -48,11 +48,11 @@ public class CompetitionGroupMapperTest {
     }
 
     @Test
-    public void whenToApiEntitiesListFromDomainEntitiesList() {
+    public void whenToApiEntityListFromDomainEntityList() {
         List<CompetitionGroup> events = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
         List<CompetitionGroupApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullCompetitionGroup());
 
-        List<CompetitionGroupApiEntity> actual = mapper.toApiEntitiesList(events);
+        List<CompetitionGroupApiEntity> actual = mapper.toApiEntityList(events);
 
         assertThat(actual).isEqualTo(expected);
     }

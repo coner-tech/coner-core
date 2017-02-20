@@ -29,7 +29,7 @@ public class RegistrationGateway extends MapStructAbstractGateway<
         super(
                 registrationMapper::toHibernateEntity,
                 registrationMapper::toDomainEntity,
-                registrationMapper::toDomainEntities,
+                registrationMapper::toDomainEntityList,
                 dao
         );
         this.registrationMapper = registrationMapper;
@@ -40,7 +40,7 @@ public class RegistrationGateway extends MapStructAbstractGateway<
         Preconditions.checkNotNull(event);
         EventHibernateEntity hibernateEvent = eventMapper.toHibernateEntity(event);
         List<RegistrationHibernateEntity> registrations = dao.getAllWith(hibernateEvent);
-        return registrationMapper.toDomainEntities(registrations);
+        return registrationMapper.toDomainEntityList(registrations);
     }
 
 }
