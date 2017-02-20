@@ -21,35 +21,35 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
-        addRegistrationRequest.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
-        addRegistrationRequest.setLastName(TestConstants.REGISTRATION_LASTNAME);
+        AddRegistrationRequest apiAddRequest = new AddRegistrationRequest();
+        apiAddRequest.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
+        apiAddRequest.setLastName(TestConstants.REGISTRATION_LASTNAME);
         RegistrationAddPayload expected = new RegistrationAddPayload();
         expected.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
         expected.setLastName(TestConstants.REGISTRATION_LASTNAME);
         expected.setEventId(TestConstants.EVENT_ID);
 
-        RegistrationAddPayload actual = mapper.toDomainAddPayload(addRegistrationRequest, TestConstants.EVENT_ID);
+        RegistrationAddPayload actual = mapper.toDomainAddPayload(apiAddRequest, TestConstants.EVENT_ID);
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void whenToApiEntityFromDomainEntity() {
-        Registration registration = DomainEntityTestUtils.fullDomainRegistration();
+        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
         RegistrationApiEntity expected = ApiEntityTestUtils.fullApiRegistration();
 
-        RegistrationApiEntity actual = mapper.toApiEntity(registration);
+        RegistrationApiEntity actual = mapper.toApiEntity(domainEntity);
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void whenToApiEntityListFromDomainEntityList() {
-        List<Registration> events = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
+        List<Registration> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
 
-        List<RegistrationApiEntity> actual = mapper.toApiEntityList(events);
+        List<RegistrationApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 
         assertThat(actual).isEqualTo(expected);
     }

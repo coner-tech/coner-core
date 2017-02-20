@@ -21,18 +21,18 @@ public class CompetitionGroupMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
-        addCompetitionGroupRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
-        addCompetitionGroupRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
-        addCompetitionGroupRequest.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
-        addCompetitionGroupRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
+        AddCompetitionGroupRequest apiAddRequest = new AddCompetitionGroupRequest();
+        apiAddRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
+        apiAddRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
+        apiAddRequest.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
+        apiAddRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
         CompetitionGroupAddPayload expected = new CompetitionGroupAddPayload();
         expected.setName(TestConstants.COMPETITION_GROUP_NAME);
         expected.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
         expected.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
         expected.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
 
-        CompetitionGroupAddPayload actual = mapper.toDomainAddPayload(addCompetitionGroupRequest);
+        CompetitionGroupAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -49,10 +49,10 @@ public class CompetitionGroupMapperTest {
 
     @Test
     public void whenToApiEntityListFromDomainEntityList() {
-        List<CompetitionGroup> events = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
+        List<CompetitionGroup> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
         List<CompetitionGroupApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullCompetitionGroup());
 
-        List<CompetitionGroupApiEntity> actual = mapper.toApiEntityList(events);
+        List<CompetitionGroupApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 
         assertThat(actual).isEqualTo(expected);
     }
