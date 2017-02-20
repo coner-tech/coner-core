@@ -30,13 +30,13 @@ public class CompetitionGroupSetService extends AbstractEntityService<
     public CompetitionGroupSet add(CompetitionGroupSetAddPayload addPayload) throws AddEntityException {
         ImmutableSet.Builder<CompetitionGroup> competitionGroupsBuilder = ImmutableSet.builder();
         try {
-            for (String competitionGroupId : addPayload.competitionGroupIds) {
+            for (String competitionGroupId : addPayload.getCompetitionGroupIds()) {
                 competitionGroupsBuilder.add(competitionGroupEntityService.getById(competitionGroupId));
             }
         } catch (EntityNotFoundException e) {
             throw new AddEntityException(e);
         }
-        addPayload.competitionGroups = competitionGroupsBuilder.build();
+        addPayload.setCompetitionGroups(competitionGroupsBuilder.build());
         return super.add(addPayload);
     }
 }

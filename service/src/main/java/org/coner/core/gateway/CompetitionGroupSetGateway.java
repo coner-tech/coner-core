@@ -2,27 +2,28 @@ package org.coner.core.gateway;
 
 import javax.inject.Inject;
 
-import org.coner.core.boundary.CompetitionGroupSetHibernateAddPayloadBoundary;
-import org.coner.core.boundary.CompetitionGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.hibernate.dao.CompetitionGroupSetDao;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
+import org.coner.core.mapper.CompetitionGroupSetMapper;
 
-public class CompetitionGroupSetGateway extends AbstractGateway<
+public class CompetitionGroupSetGateway extends MapStructAbstractGateway<
+        CompetitionGroupSetAddPayload,
         CompetitionGroupSet,
         CompetitionGroupSetHibernateEntity,
-        CompetitionGroupSetAddPayload,
-        CompetitionGroupSetHibernateDomainBoundary,
-        CompetitionGroupSetHibernateAddPayloadBoundary,
         CompetitionGroupSetDao> {
 
     @Inject
     public CompetitionGroupSetGateway(
-            CompetitionGroupSetHibernateDomainBoundary entityBoundary,
-            CompetitionGroupSetHibernateAddPayloadBoundary addPayloadBoundary,
+            CompetitionGroupSetMapper competitionGroupSetMapper,
             CompetitionGroupSetDao dao
     ) {
-        super(entityBoundary, addPayloadBoundary, dao);
+        super(
+                competitionGroupSetMapper::toHibernateEntity,
+                competitionGroupSetMapper::toDomainEntity,
+                competitionGroupSetMapper::toDomainEntitiesList,
+                dao
+        );
     }
 }

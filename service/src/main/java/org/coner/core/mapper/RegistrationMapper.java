@@ -9,7 +9,10 @@ import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = EventMapper.class)
+@Mapper(
+        config = ConerBaseMapStructConfig.class,
+        uses = EventMapper.class
+)
 public interface RegistrationMapper {
 
     RegistrationAddPayload toAddPayload(AddRegistrationRequest addRegistrationRequest, String eventId);

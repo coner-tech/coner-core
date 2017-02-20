@@ -9,7 +9,9 @@ import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(
+        config = ConerBaseMapStructConfig.class
+)
 public interface EventMapper {
 
     EventAddPayload toAddPayload(AddEventRequest addEventRequest);

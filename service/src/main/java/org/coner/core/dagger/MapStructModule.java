@@ -3,6 +3,7 @@ package org.coner.core.dagger;
 import javax.inject.Singleton;
 
 import org.coner.core.mapper.CompetitionGroupMapper;
+import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.mapper.EventMapper;
 import org.coner.core.mapper.RegistrationMapper;
 import org.mapstruct.factory.Mappers;
@@ -29,5 +30,11 @@ public class MapStructModule {
     @Singleton
     public CompetitionGroupMapper competitionGroupMapper() {
         return Mappers.getMapper(CompetitionGroupMapper.class);
+    }
+
+    @Provides
+    @Singleton
+    public CompetitionGroupSetMapper competitionGroupSetMapper() {
+        return Mappers.getMapper(CompetitionGroupSetMapper.class);
     }
 }

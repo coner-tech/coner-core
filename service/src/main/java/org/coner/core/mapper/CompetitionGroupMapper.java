@@ -9,7 +9,9 @@ import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(
+        config = ConerBaseMapStructConfig.class
+)
 public interface CompetitionGroupMapper {
 
     CompetitionGroupAddPayload toAddPayload(AddCompetitionGroupRequest addCompetitionGroupRequest);
