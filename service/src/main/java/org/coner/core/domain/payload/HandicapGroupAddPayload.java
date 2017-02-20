@@ -5,8 +5,24 @@ import java.util.Objects;
 
 public class HandicapGroupAddPayload extends DomainAddPayload {
 
-    public String name;
-    public BigDecimal handicapFactor;
+    private String name;
+    private BigDecimal handicapFactor;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getHandicapFactor() {
+        return handicapFactor;
+    }
+
+    public void setHandicapFactor(BigDecimal handicapFactor) {
+        this.handicapFactor = handicapFactor;
+    }
 
     @Override
     public boolean equals(Object o) {

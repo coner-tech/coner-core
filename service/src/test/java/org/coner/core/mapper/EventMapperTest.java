@@ -35,10 +35,10 @@ public class EventMapperTest {
 
     @Test
     public void whenToApiEntityFromEventDomainEntity() {
-        Event event = DomainEntityTestUtils.fullDomainEvent();
+        Event domainEntity = DomainEntityTestUtils.fullDomainEvent();
         EventApiEntity expected = ApiEntityTestUtils.fullApiEvent();
 
-        EventApiEntity actual = mapper.toApiEntity(event);
+        EventApiEntity actual = mapper.toApiEntity(domainEntity);
 
         assertThat(actual).isEqualTo(expected);
     }

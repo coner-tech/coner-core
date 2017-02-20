@@ -53,10 +53,10 @@ public class CompetitionGroupSetMapperTest {
 
     @Test
     public void whenToApiEntityFromDomainEntity() {
-        CompetitionGroupSet competitionGroupSet = DomainEntityTestUtils.fullCompetitionGroupSet();
+        CompetitionGroupSet domainEntity = DomainEntityTestUtils.fullCompetitionGroupSet();
         CompetitionGroupSetApiEntity expected = ApiEntityTestUtils.fullCompetitionGroupSet();
 
-        CompetitionGroupSetApiEntity actual = mapper.toApiEntity(competitionGroupSet);
+        CompetitionGroupSetApiEntity actual = mapper.toApiEntity(domainEntity);
 
         assertThat(actual).isEqualTo(expected);
     }

@@ -16,12 +16,11 @@ import javax.ws.rs.core.UriBuilder;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.response.GetHandicapGroupsResponse;
-import org.coner.core.boundary.HandicapGroupApiAddPayloadBoundary;
-import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -42,18 +41,15 @@ import io.swagger.annotations.ResponseHeader;
 public class HandicapGroupsResource {
 
     private final HandicapGroupEntityService handicapGroupEntityService;
-    private final HandicapGroupApiDomainBoundary apiDomainBoundary;
-    private final HandicapGroupApiAddPayloadBoundary apiAddPayloadBoundary;
+    private final HandicapGroupMapper handicapGroupMapper;
 
     @Inject
     public HandicapGroupsResource(
             HandicapGroupEntityService handicapGroupEntityService,
-            HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
-            HandicapGroupApiAddPayloadBoundary handicapGroupApiAddPayloadBoundary
+            HandicapGroupMapper handicapGroupMapper
     ) {
         this.handicapGroupEntityService = handicapGroupEntityService;
-        this.apiDomainBoundary = handicapGroupApiDomainBoundary;
-        this.apiAddPayloadBoundary = handicapGroupApiAddPayloadBoundary;
+        this.handicapGroupMapper = handicapGroupMapper;
     }
 
     @POST
@@ -80,9 +76,9 @@ public class HandicapGroupsResource {
     public Response addHandicapGroup(
             @Valid @ApiParam(value = "Handicap Group") AddHandicapGroupRequest request
     ) throws AddEntityException {
-        HandicapGroupAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        HandicapGroupAddPayload addPayload = handicapGroupMapper.toDomainAddPayload(request);
         HandicapGroup domainEntity = handicapGroupEntityService.add(addPayload);
-        HandicapGroupApiEntity entity = apiDomainBoundary.toLocalEntity(domainEntity);
+        HandicapGroupApiEntity entity = handicapGroupMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(HandicapGroupResource.class)
                 .build(entity.getId()))
                 .build();
@@ -94,7 +90,7 @@ public class HandicapGroupsResource {
     public GetHandicapGroupsResponse getHandicapGroups() {
         List<HandicapGroup> domainHandicapGroups = handicapGroupEntityService.getAll();
         GetHandicapGroupsResponse response = new GetHandicapGroupsResponse();
-        response.setEntities(apiDomainBoundary.toLocalEntities(domainHandicapGroups));
+        response.setEntities(handicapGroupMapper.toApiEntityList(domainHandicapGroups));
         return response;
     }
 }
