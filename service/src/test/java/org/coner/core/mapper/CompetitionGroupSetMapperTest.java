@@ -37,6 +37,21 @@ public class CompetitionGroupSetMapperTest {
     }
 
     @Test
+    public void whenToDomainAddPayloadFromApiAddRequestWithNullCompetitionGroupIds() {
+        AddCompetitionGroupSetRequest apiAddRequest = new AddCompetitionGroupSetRequest();
+        apiAddRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        apiAddRequest.setCompetitionGroupIds(null);
+        CompetitionGroupSetAddPayload expected = new CompetitionGroupSetAddPayload();
+        expected.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        expected.setCompetitionGroupIds(Sets.newHashSet());
+        expected.setCompetitionGroups(null);
+
+        CompetitionGroupSetAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
     public void whenToApiEntityFromDomainEntity() {
         CompetitionGroupSet competitionGroupSet = DomainEntityTestUtils.fullCompetitionGroupSet();
         CompetitionGroupSetApiEntity expected = ApiEntityTestUtils.fullCompetitionGroupSet();
