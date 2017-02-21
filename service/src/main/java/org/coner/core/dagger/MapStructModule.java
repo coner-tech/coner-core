@@ -6,6 +6,7 @@ import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.mapper.EventMapper;
 import org.coner.core.mapper.HandicapGroupMapper;
+import org.coner.core.mapper.HandicapGroupSetMapper;
 import org.coner.core.mapper.RegistrationMapper;
 import org.mapstruct.factory.Mappers;
 
@@ -43,5 +44,11 @@ public class MapStructModule {
     @Singleton
     public HandicapGroupMapper handicapGroupMapper() {
         return Mappers.getMapper(HandicapGroupMapper.class);
+    }
+
+    @Provides
+    @Singleton
+    public HandicapGroupSetMapper handicapGroupSetMapper() {
+        return Mappers.getMapper(HandicapGroupSetMapper.class);
     }
 }

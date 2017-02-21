@@ -83,7 +83,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
         addHandicapGroupSetRequest.setName(TestConstants.HANDICAP_GROUP_SET_NAME);
-        addHandicapGroupSetRequest.setHandicapGroups(null); // perfectly ok to create an empty one
+        addHandicapGroupSetRequest.setHandicapGroupIds(null); // perfectly ok to create an empty one
 
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -102,7 +102,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
         addHandicapGroupSetRequest.setName("  "); // whitespace only is not ok
-        addHandicapGroupSetRequest.setHandicapGroups(null);
+        addHandicapGroupSetRequest.setHandicapGroupIds(null);
 
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupsSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
