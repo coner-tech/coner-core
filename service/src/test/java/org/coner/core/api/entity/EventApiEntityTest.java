@@ -1,9 +1,8 @@
-package org.coner.core.domain.entity;
+package org.coner.core.api.entity;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.fest.assertions.Assertions.assertThat;
 
-import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.junit.Before;
@@ -13,37 +12,32 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
 
-public class HandicapGroupApiEntityTest {
-    private final String fixturePath = "fixtures/api/entity/handicap_group_full.json";
+public class EventApiEntityTest {
+
+    private final String fixturePath = "fixtures/api/entity/event_full.json";
 
     private ObjectMapper objectMapper;
-    private HandicapGroupApiEntity handicapGroup;
+    private EventApiEntity event;
 
     @Before
     public void setup() {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        handicapGroup = ApiEntityTestUtils.fullHandicapGroup();
+        event = ApiEntityTestUtils.fullApiEvent();
     }
 
     @Test
     public void deserializesFromJson() throws Exception {
-        HandicapGroupApiEntity actual = objectMapper.readValue(fixture(fixturePath), HandicapGroupApiEntity.class);
-        assertThat(actual).isEqualTo(handicapGroup);
+        EventApiEntity actual = objectMapper.readValue(fixture(fixturePath), EventApiEntity.class);
+        assertThat(actual).isEqualTo(event);
     }
 
     @Test
     public void serializesToJson() throws Exception {
-        String actual = objectMapper.writeValueAsString(handicapGroup);
+        String actual = objectMapper.writeValueAsString(event);
         String expected = fixture(fixturePath);
         JSONAssert.assertEquals(expected, actual, false);
     }
 
-    @Test
-    public void hashCodeTest() throws Exception {
-        HandicapGroupApiEntity otherHandicapGroup = ApiEntityTestUtils.fullHandicapGroup();
-
-        assertThat(handicapGroup.hashCode()).isEqualTo(otherHandicapGroup.hashCode());
-    }
 }
