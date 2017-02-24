@@ -1,5 +1,6 @@
 package org.coner.core.api.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class HandicapGroupSetApiEntity extends ApiEntity {
@@ -30,5 +31,20 @@ public class HandicapGroupSetApiEntity extends ApiEntity {
 
     public void setHandicapGroups(Set<HandicapGroupApiEntity> handicapGroups) {
         this.handicapGroups = handicapGroups;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HandicapGroupSetApiEntity that = (HandicapGroupSetApiEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(handicapGroups, that.handicapGroups);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, handicapGroups);
     }
 }

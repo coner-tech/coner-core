@@ -12,10 +12,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
-import org.coner.core.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -30,18 +30,18 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 @RunWith(MockitoJUnitRunner.class)
 public class CompetitionGroupSetResourceTest {
 
-    private final CompetitionGroupSetApiDomainBoundary boundary = mock(CompetitionGroupSetApiDomainBoundary.class);
     private final CompetitionGroupSetService competitionGroupSetService = mock(CompetitionGroupSetService.class);
+    private final CompetitionGroupSetMapper competitionGroupSetMapper = mock(CompetitionGroupSetMapper.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CompetitionGroupSetResource(competitionGroupSetService, boundary))
+            .addResource(new CompetitionGroupSetResource(competitionGroupSetService, competitionGroupSetMapper))
             .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(boundary, competitionGroupSetService);
+        reset(competitionGroupSetMapper, competitionGroupSetService);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class CompetitionGroupSetResourceTest {
         assertThat(apiEntity.getId()).isSameAs(COMPETITION_GROUP_SET_ID);
 
         when(competitionGroupSetService.getById(COMPETITION_GROUP_SET_ID)).thenReturn(domainEntity);
-        when(boundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(competitionGroupSetMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response responseContainer = resources.client()
                 .target("/competitionGroups/sets/" + COMPETITION_GROUP_SET_ID)
@@ -62,8 +62,8 @@ public class CompetitionGroupSetResourceTest {
                 .get();
 
         verify(competitionGroupSetService).getById(COMPETITION_GROUP_SET_ID);
-        verify(boundary).toLocalEntity(domainEntity);
-        verifyNoMoreInteractions(competitionGroupSetService, boundary);
+        verify(competitionGroupSetMapper).toApiEntity(domainEntity);
+        verifyNoMoreInteractions(competitionGroupSetService, competitionGroupSetMapper);
 
         assertThat(responseContainer).isNotNull();
         assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);

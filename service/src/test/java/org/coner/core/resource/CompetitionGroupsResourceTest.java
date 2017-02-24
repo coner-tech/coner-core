@@ -20,11 +20,10 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.response.GetCompetitionGroupsResponse;
-import org.coner.core.boundary.CompetitionGroupApiAddPayloadBoundary;
-import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
+import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
@@ -33,7 +32,6 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
@@ -42,29 +40,26 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class CompetitionGroupsResourceTest {
 
-    private CompetitionGroupEntityService competitionGroupEntityService = mock(CompetitionGroupEntityService.class);
-    private CompetitionGroupApiDomainBoundary apiDomainEntityBoundary = mock(CompetitionGroupApiDomainBoundary.class);
-    private CompetitionGroupApiAddPayloadBoundary apiAddPayloadBoundary = mock(
-            CompetitionGroupApiAddPayloadBoundary.class
+    private final CompetitionGroupEntityService competitionGroupEntityService = mock(
+            CompetitionGroupEntityService.class
     );
+    private final CompetitionGroupMapper competitionGroupMapper = mock(CompetitionGroupMapper.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(
                     new CompetitionGroupsResource(
                             competitionGroupEntityService,
-                            apiDomainEntityBoundary,
-                            apiAddPayloadBoundary
+                            competitionGroupMapper
                     )
             )
+            .addResource(new DomainServiceExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        reset(competitionGroupEntityService, apiDomainEntityBoundary, apiAddPayloadBoundary);
-
-        MockitoAnnotations.initMocks(this);
+        reset(competitionGroupEntityService, competitionGroupMapper);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -149,12 +144,12 @@ public class CompetitionGroupsResourceTest {
     public void itShouldGetPostedCompetitionGroup() throws Exception {
         postCompetitionGroup();
 
-        reset(competitionGroupEntityService, apiDomainEntityBoundary, apiAddPayloadBoundary);
+        reset(competitionGroupEntityService, competitionGroupMapper);
 
         List<CompetitionGroup> domainEntities = Arrays.asList(DomainEntityTestUtils.fullCompetitionGroup());
         when(competitionGroupEntityService.getAll()).thenReturn(domainEntities);
         List<CompetitionGroupApiEntity> apiEntities = Arrays.asList(ApiEntityTestUtils.fullCompetitionGroup());
-        when(apiDomainEntityBoundary.toLocalEntities(domainEntities)).thenReturn(apiEntities);
+        when(competitionGroupMapper.toApiEntityList(domainEntities)).thenReturn(apiEntities);
 
         GetCompetitionGroupsResponse response = resources.client()
                 .target("/competitionGroups")
@@ -178,11 +173,11 @@ public class CompetitionGroupsResourceTest {
         );
         Entity<AddCompetitionGroupRequest> requestEntity = Entity.json(request);
         CompetitionGroupAddPayload addPayload = mock(CompetitionGroupAddPayload.class);
-        when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
+        when(competitionGroupMapper.toDomainAddPayload(request)).thenReturn(addPayload);
         CompetitionGroup domainEntity = mock(CompetitionGroup.class);
         when(competitionGroupEntityService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();
-        when(apiDomainEntityBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(competitionGroupMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups")

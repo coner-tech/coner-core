@@ -1,5 +1,6 @@
 package org.coner.core.api.request;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -8,7 +9,7 @@ public class AddCompetitionGroupSetRequest {
 
     @NotBlank
     private String name;
-    private Set<CompetitionGroup> competitionGroups;
+    private Set<String> competitionGroupIds;
 
     public String getName() {
         return name;
@@ -18,68 +19,25 @@ public class AddCompetitionGroupSetRequest {
         this.name = name;
     }
 
-    public Set<CompetitionGroup> getCompetitionGroups() {
-        return competitionGroups;
+    public Set<String> getCompetitionGroupIds() {
+        return competitionGroupIds;
     }
 
-    public boolean hasCompetitionGroups() {
-        return competitionGroups != null && !competitionGroups.isEmpty();
-    }
-
-    public void setCompetitionGroups(Set<CompetitionGroup> competitionGroups) {
-        this.competitionGroups = competitionGroups;
-    }
-
-    /**
-     * Request competition groups be added by Competition Group ID.
-     */
-    public static class CompetitionGroup {
-        @NotBlank
-        private String id;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            CompetitionGroup that = (CompetitionGroup) o;
-
-            return !(id != null ? !id.equals(that.id) : that.id != null);
-
-        }
-
-        @Override
-        public int hashCode() {
-            return id != null ? id.hashCode() : 0;
-        }
+    public void setCompetitionGroupIds(Set<String> competitionGroupIds) {
+        this.competitionGroupIds = competitionGroupIds;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         AddCompetitionGroupSetRequest that = (AddCompetitionGroupSetRequest) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return !(competitionGroups != null
-                ? !competitionGroups.equals(that.competitionGroups)
-                : that.competitionGroups != null);
-
+        return Objects.equals(name, that.name) &&
+                Objects.equals(competitionGroupIds, that.competitionGroupIds);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (competitionGroups != null ? competitionGroups.hashCode() : 0);
-        return result;
+        return Objects.hash(name, competitionGroupIds);
     }
 }

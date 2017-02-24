@@ -2,26 +2,28 @@ package org.coner.core.gateway;
 
 import javax.inject.Inject;
 
-import org.coner.core.boundary.HandicapGroupSetHibernateAddPayloadBoundary;
-import org.coner.core.boundary.HandicapGroupSetHibernateDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.hibernate.dao.HandicapGroupSetDao;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
+import org.coner.core.mapper.HandicapGroupSetMapper;
 
-public class HandicapGroupSetGateway extends AbstractGateway<
+public class HandicapGroupSetGateway extends MapStructAbstractGateway<
+        HandicapGroupSetAddPayload,
         HandicapGroupSet,
         HandicapGroupSetHibernateEntity,
-        HandicapGroupSetAddPayload,
-        HandicapGroupSetHibernateDomainBoundary,
-        HandicapGroupSetHibernateAddPayloadBoundary,
         HandicapGroupSetDao> {
 
     @Inject
     public HandicapGroupSetGateway(
-            HandicapGroupSetHibernateDomainBoundary entityBoundary,
-            HandicapGroupSetHibernateAddPayloadBoundary addPayloadBoundary,
-            HandicapGroupSetDao dao) {
-        super(entityBoundary, addPayloadBoundary, dao);
+            HandicapGroupSetMapper mapper,
+            HandicapGroupSetDao dao
+    ) {
+        super(
+                mapper::toHibernateEntity,
+                mapper::toDomainEntity,
+                mapper::toDomainEntityList,
+                dao
+        );
     }
 }

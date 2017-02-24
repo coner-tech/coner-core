@@ -11,10 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
-import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.TestConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -26,20 +26,20 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class CompetitionGroupResourceTest {
 
-    private final CompetitionGroupApiDomainBoundary boundary = mock(CompetitionGroupApiDomainBoundary.class);
+    private final CompetitionGroupMapper competitionGroupMapper = mock(CompetitionGroupMapper.class);
     private final CompetitionGroupEntityService competitionGroupEntityService = mock(
             CompetitionGroupEntityService.class
     );
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new CompetitionGroupResource(boundary, competitionGroupEntityService))
+            .addResource(new CompetitionGroupResource(competitionGroupMapper, competitionGroupEntityService))
             .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(boundary, competitionGroupEntityService);
+        reset(competitionGroupMapper, competitionGroupEntityService);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CompetitionGroupResourceTest {
         CompetitionGroup domainEntity = mock(CompetitionGroup.class);
         when(competitionGroupEntityService.getById(competitionGroupId)).thenReturn(domainEntity);
         CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();
-        when(boundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(competitionGroupMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response competitionGroupResourceContainer = resources.client()
                 .target("/competitionGroups/" + competitionGroupId)

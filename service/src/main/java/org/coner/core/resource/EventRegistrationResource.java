@@ -9,11 +9,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
-import org.coner.core.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -31,16 +31,16 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = {ApiTagConstants.EVENTS, ApiTagConstants.REGISTRATIONS})
 public class EventRegistrationResource {
 
-    private final RegistrationApiDomainBoundary registrationApiDomainBoundary;
+    private final RegistrationMapper registrationMapper;
     private final EventRegistrationService eventRegistrationService;
 
     @Inject
     public EventRegistrationResource(
             EventRegistrationService eventRegistrationService,
-            RegistrationApiDomainBoundary registrationApiDomainBoundary
+            RegistrationMapper registrationMapper
     ) {
         this.eventRegistrationService = eventRegistrationService;
-        this.registrationApiDomainBoundary = registrationApiDomainBoundary;
+        this.registrationMapper = registrationMapper;
     }
 
     @GET
@@ -63,6 +63,6 @@ public class EventRegistrationResource {
                 eventId,
                 registrationId
         );
-        return registrationApiDomainBoundary.toLocalEntity(domainRegistration);
+        return registrationMapper.toApiEntity(domainRegistration);
     }
 }

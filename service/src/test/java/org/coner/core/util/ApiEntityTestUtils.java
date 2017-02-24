@@ -85,32 +85,18 @@ public final class ApiEntityTestUtils {
 
     public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest(
             String addHandicapGroupSetRequestName,
-            Set<AddHandicapGroupSetRequest.HandicapGroup> addHandicapGroupSetRequestHandicapGroups
+            Set<String> addHandicapGroupSetRequestHandicapGroupIds
     ) {
         AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
         addHandicapGroupSetRequest.setName(addHandicapGroupSetRequestName);
-        addHandicapGroupSetRequest.setHandicapGroups(addHandicapGroupSetRequestHandicapGroups);
+        addHandicapGroupSetRequest.setHandicapGroupIds(addHandicapGroupSetRequestHandicapGroupIds);
         return addHandicapGroupSetRequest;
     }
 
     public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest() {
         return fullAddHandicapGroupSetRequest(
                 TestConstants.HANDICAP_GROUP_SET_NAME,
-                Sets.newHashSet(fullAddHandicapGroupSetRequestHandicapGroup())
-        );
-    }
-
-    public static AddHandicapGroupSetRequest.HandicapGroup fullAddHandicapGroupSetRequestHandicapGroup(
-            String handicapGroupId
-    ) {
-        AddHandicapGroupSetRequest.HandicapGroup handicapGroup = new AddHandicapGroupSetRequest.HandicapGroup();
-        handicapGroup.setId(handicapGroupId);
-        return handicapGroup;
-    }
-
-    public static AddHandicapGroupSetRequest.HandicapGroup fullAddHandicapGroupSetRequestHandicapGroup() {
-        return fullAddHandicapGroupSetRequestHandicapGroup(
-                TestConstants.HANDICAP_GROUP_ID
+                Sets.newHashSet(TestConstants.HANDICAP_GROUP_ID)
         );
     }
 

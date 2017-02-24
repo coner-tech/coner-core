@@ -14,11 +14,10 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
-import org.coner.core.boundary.CompetitionGroupSetApiAddPayloadBoundary;
-import org.coner.core.boundary.CompetitionGroupSetApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.domain.service.CompetitionGroupSetService;
+import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.coner.core.util.UnitTestUtils;
@@ -34,11 +33,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class CompetitionGroupSetsResourceTest {
 
-    private CompetitionGroupSetApiDomainBoundary apiDomainBoundary = mock(
-            CompetitionGroupSetApiDomainBoundary.class
-    );
-    private CompetitionGroupSetApiAddPayloadBoundary addPayloadBoundary = mock(
-            CompetitionGroupSetApiAddPayloadBoundary.class
+    private CompetitionGroupSetMapper competitionGroupSetMapper = mock(
+            CompetitionGroupSetMapper.class
     );
     private CompetitionGroupSetService conerCoreService = mock(CompetitionGroupSetService.class);
     private ObjectMapper objectMapper;
@@ -47,14 +43,13 @@ public class CompetitionGroupSetsResourceTest {
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupSetsResource(
                     conerCoreService,
-                    apiDomainBoundary,
-                    addPayloadBoundary
+                    competitionGroupSetMapper
             ))
             .build();
 
     @Before
     public void setup() {
-        reset(apiDomainBoundary, conerCoreService);
+        reset(competitionGroupSetMapper, conerCoreService);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -78,11 +73,11 @@ public class CompetitionGroupSetsResourceTest {
         Entity<AddCompetitionGroupSetRequest> requestEntity = Entity.json(requestAddCompetitionGroupSet);
 
         CompetitionGroupSetAddPayload addPayload = mock(CompetitionGroupSetAddPayload.class);
-        when(addPayloadBoundary.toRemoteEntity(requestAddCompetitionGroupSet)).thenReturn(addPayload);
+        when(competitionGroupSetMapper.toDomainAddPayload(requestAddCompetitionGroupSet)).thenReturn(addPayload);
         CompetitionGroupSet domainEntity = mock(CompetitionGroupSet.class);
         when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         CompetitionGroupSetApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroupSet();
-        when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(competitionGroupSetMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()
                 .target("/competitionGroups/sets")

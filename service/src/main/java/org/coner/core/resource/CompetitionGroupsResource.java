@@ -16,12 +16,11 @@ import javax.ws.rs.core.UriBuilder;
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.response.GetCompetitionGroupsResponse;
-import org.coner.core.boundary.CompetitionGroupApiAddPayloadBoundary;
-import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
@@ -42,18 +41,15 @@ import io.swagger.annotations.ResponseHeader;
 public class CompetitionGroupsResource {
 
     private final CompetitionGroupEntityService competitionGroupEntityService;
-    private final CompetitionGroupApiDomainBoundary apiDomainBoundary;
-    private final CompetitionGroupApiAddPayloadBoundary apiAddPayloadBoundary;
+    private final CompetitionGroupMapper competitionGroupMapper;
 
     @Inject
     public CompetitionGroupsResource(
             CompetitionGroupEntityService competitionGroupEntityService,
-            CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
-            CompetitionGroupApiAddPayloadBoundary apiAddPayloadBoundary
+            CompetitionGroupMapper competitionGroupMapper
     ) {
         this.competitionGroupEntityService = competitionGroupEntityService;
-        this.apiDomainBoundary = competitionGroupApiDomainBoundary;
-        this.apiAddPayloadBoundary = apiAddPayloadBoundary;
+        this.competitionGroupMapper = competitionGroupMapper;
     }
 
     @POST
@@ -80,9 +76,9 @@ public class CompetitionGroupsResource {
     public Response addCompetitionGroup(
             @Valid @ApiParam(value = "Competition Group") AddCompetitionGroupRequest request
     ) throws AddEntityException {
-        CompetitionGroupAddPayload addPayload = apiAddPayloadBoundary.toRemoteEntity(request);
+        CompetitionGroupAddPayload addPayload = competitionGroupMapper.toDomainAddPayload(request);
         CompetitionGroup domainEntity = competitionGroupEntityService.add(addPayload);
-        CompetitionGroupApiEntity entity = apiDomainBoundary.toLocalEntity(domainEntity);
+        CompetitionGroupApiEntity entity = competitionGroupMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromResource(CompetitionGroupResource.class)
                 .build(entity.getId()))
                 .build();
@@ -94,7 +90,7 @@ public class CompetitionGroupsResource {
     public GetCompetitionGroupsResponse getCompetitionGroups() {
         List<CompetitionGroup> domainCompetitionGroups = competitionGroupEntityService.getAll();
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
-        response.setEntities(apiDomainBoundary.toLocalEntities(domainCompetitionGroups));
+        response.setEntities(competitionGroupMapper.toApiEntityList(domainCompetitionGroups));
         return response;
     }
 }

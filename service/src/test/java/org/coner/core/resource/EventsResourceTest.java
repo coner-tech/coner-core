@@ -18,11 +18,10 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
-import org.coner.core.boundary.EventApiAddPayloadBoundary;
-import org.coner.core.boundary.EventApiDomainBoundary;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.eclipse.jetty.http.HttpStatus;
@@ -39,18 +38,17 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class EventsResourceTest {
 
     private final EventEntityService conerCoreService = mock(EventEntityService.class);
-    private final EventApiDomainBoundary apiDomainBoundary = mock(EventApiDomainBoundary.class);
-    private final EventApiAddPayloadBoundary addPayloadBoundary = mock(EventApiAddPayloadBoundary.class);
+    private final EventMapper eventMapper = mock(EventMapper.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new EventsResource(conerCoreService, apiDomainBoundary, addPayloadBoundary))
+            .addResource(new EventsResource(conerCoreService, eventMapper))
             .build();
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        reset(apiDomainBoundary, conerCoreService);
+        reset(eventMapper, conerCoreService);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -67,7 +65,7 @@ public class EventsResourceTest {
                 .get(GetEventsResponse.class);
 
         verify(conerCoreService).getAll();
-        verify(apiDomainBoundary).toLocalEntities(domainEvents);
+        verify(eventMapper).toApiEntityList(domainEvents);
         assertThat(response)
                 .isNotNull();
         assertThat(response.getEntities())
@@ -83,11 +81,11 @@ public class EventsResourceTest {
         );
         Entity<AddEventRequest> requestEntity = Entity.json(requestEvent);
         EventAddPayload addPayload = mock(EventAddPayload.class);
-        when(addPayloadBoundary.toRemoteEntity(requestEvent)).thenReturn(addPayload);
+        when(eventMapper.toDomainAddPayload(requestEvent)).thenReturn(addPayload);
         Event domainEntity = mock(Event.class);
         when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
         EventApiEntity apiEntity = ApiEntityTestUtils.fullApiEvent();
-        when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(eventMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()
                 .target("/events")

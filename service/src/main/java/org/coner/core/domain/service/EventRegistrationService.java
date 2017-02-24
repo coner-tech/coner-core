@@ -41,7 +41,7 @@ public class EventRegistrationService {
     }
 
     public Registration add(RegistrationAddPayload addPayload) throws AddEntityException, EntityNotFoundException {
-        addPayload.event = eventEntityService.getById(addPayload.eventId);
+        addPayload.setEvent(eventEntityService.getById(addPayload.getEventId()));
         return registrationEntityService.add(addPayload);
     }
 }

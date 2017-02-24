@@ -19,15 +19,15 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
-import org.coner.core.boundary.RegistrationApiAddPayloadBoundary;
-import org.coner.core.boundary.RegistrationApiDomainBoundary;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
+import org.coner.core.util.TestConstants;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,8 +41,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class EventRegistrationsResourceTest {
 
     private final EventRegistrationService eventRegistrationService = mock(EventRegistrationService.class);
-    private final RegistrationApiDomainBoundary apiDomainBoundary = mock(RegistrationApiDomainBoundary.class);
-    private final RegistrationApiAddPayloadBoundary addPayloadBoundary = mock(RegistrationApiAddPayloadBoundary.class);
+    private final RegistrationMapper registrationMapper = mock(RegistrationMapper.class);
 
     private ObjectMapper objectMapper;
 
@@ -50,15 +49,14 @@ public class EventRegistrationsResourceTest {
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new EventRegistrationsResource(
                     eventRegistrationService,
-                    apiDomainBoundary,
-                    addPayloadBoundary
+                    registrationMapper
             ))
             .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
     public void setup() {
-        reset(apiDomainBoundary, eventRegistrationService);
+        reset(registrationMapper, eventRegistrationService);
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
     }
@@ -68,7 +66,7 @@ public class EventRegistrationsResourceTest {
         List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
         List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
         when(eventRegistrationService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
-        when(apiDomainBoundary.toLocalEntities(domainRegistrations)).thenReturn(apiRegistrations);
+        when(registrationMapper.toApiEntityList(domainRegistrations)).thenReturn(apiRegistrations);
 
         GetEventRegistrationsResponse response = resources.client()
                 .target("/events/" + EVENT_ID + "/registrations")
@@ -92,11 +90,11 @@ public class EventRegistrationsResourceTest {
         );
         Entity<AddRegistrationRequest> requestEntity = Entity.json(apiRequest);
         RegistrationAddPayload addPayload = mock(RegistrationAddPayload.class);
-        when(addPayloadBoundary.toRemoteEntity(apiRequest)).thenReturn(addPayload);
+        when(registrationMapper.toDomainAddPayload(apiRequest, TestConstants.EVENT_ID)).thenReturn(addPayload);
         Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
         when(eventRegistrationService.add(addPayload)).thenReturn(domainEntity);
         RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
-        when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(registrationMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()
                 .target("/events/" + eventId + "/registrations")

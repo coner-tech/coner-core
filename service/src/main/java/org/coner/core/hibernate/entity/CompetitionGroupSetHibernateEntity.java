@@ -26,20 +26,20 @@ public class CompetitionGroupSetHibernateEntity extends HibernateEntity {
 
     public static final String QUERY_FIND_ALL =
             "org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity.findAll";
-    private String competitionGroupSetId;
+    private String id;
     private String name;
     private Set<CompetitionGroupHibernateEntity> competitionGroups;
 
     @Id
-    @Column(name = "competitionGroupSetId")
+    @Column(name = "id")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    public String getCompetitionGroupSetId() {
-        return competitionGroupSetId;
+    public String getId() {
+        return id;
     }
 
-    public void setCompetitionGroupSetId(String competitionGroupSetId) {
-        this.competitionGroupSetId = competitionGroupSetId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Column(name = "name")

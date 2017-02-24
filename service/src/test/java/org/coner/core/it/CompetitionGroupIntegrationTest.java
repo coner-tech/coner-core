@@ -13,6 +13,7 @@ import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
+import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -59,7 +60,14 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         assertThat(getCompetitionGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         CompetitionGroupApiEntity getCompetitionGroupResponse = getCompetitionGroupResponseContainer
                 .readEntity(CompetitionGroupApiEntity.class);
-        assertThat(getCompetitionGroupResponse.getId()).isEqualTo(competitionGroupId);
+        assertThat(getCompetitionGroupResponse)
+                .isEqualTo(ApiEntityTestUtils.fullCompetitionGroup(
+                        competitionGroupId,
+                        TestConstants.COMPETITION_GROUP_NAME,
+                        TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                        TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name(),
+                        TestConstants.COMPETITION_GROUP_GROUPING
+                ));
     }
 
     @Test
@@ -88,7 +96,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
         addCompetitionGroupSetRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
-        addCompetitionGroupSetRequest.setCompetitionGroups(null); // perfectly ok to create an empty one
+        addCompetitionGroupSetRequest.setCompetitionGroupIds(null); // perfectly ok to create an empty one
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -121,7 +129,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
         addCompetitionGroupSetRequest.setName("  "); // whitespace only is not ok
-        addCompetitionGroupSetRequest.setCompetitionGroups(null);
+        addCompetitionGroupSetRequest.setCompetitionGroupIds(null);
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupsSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -138,7 +146,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
         addCompetitionGroupSetRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
-        addCompetitionGroupSetRequest.setCompetitionGroups(null);
+        addCompetitionGroupSetRequest.setCompetitionGroupIds(null);
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

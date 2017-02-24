@@ -12,11 +12,10 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
-import org.coner.core.boundary.HandicapGroupSetApiAddPayloadBoundary;
-import org.coner.core.boundary.HandicapGroupSetApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.domain.service.HandicapGroupSetService;
+import org.coner.core.mapper.HandicapGroupSetMapper;
 import org.coner.core.util.JacksonUtil;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
@@ -24,7 +23,6 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
@@ -33,13 +31,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class HandicapGroupSetsResourceTest {
 
-    @Mock
     HandicapGroupSetService handicapGroupSetService = mock(HandicapGroupSetService.class);
-
-    private HandicapGroupSetApiDomainBoundary domainEntityBoundary = mock(HandicapGroupSetApiDomainBoundary.class);
-    private HandicapGroupSetApiAddPayloadBoundary apiAddPayloadBoundary = mock(
-            HandicapGroupSetApiAddPayloadBoundary.class
-    );
+    HandicapGroupSetMapper handicapGroupSetMapper = mock(HandicapGroupSetMapper.class);
 
     private ObjectMapper objectMapper;
 
@@ -47,14 +40,13 @@ public class HandicapGroupSetsResourceTest {
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupSetsResource(
                     handicapGroupSetService,
-                    domainEntityBoundary,
-                    apiAddPayloadBoundary
+                    handicapGroupSetMapper
             ))
             .build();
 
     @Before
     public void setup() {
-        reset(domainEntityBoundary, handicapGroupSetService);
+        reset(handicapGroupSetService, handicapGroupSetMapper);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -77,11 +69,11 @@ public class HandicapGroupSetsResourceTest {
         Entity<AddHandicapGroupSetRequest> requestEntity = Entity.json(request);
 
         HandicapGroupSetAddPayload addPayload = mock(HandicapGroupSetAddPayload.class);
-        when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
+        when(handicapGroupSetMapper.toDomainAddPayload(request)).thenReturn(addPayload);
         HandicapGroupSet domainEntity = mock(HandicapGroupSet.class);
         when(handicapGroupSetService.add(addPayload)).thenReturn(domainEntity);
         HandicapGroupSetApiEntity apiEntity = mock(HandicapGroupSetApiEntity.class);
-        when(domainEntityBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(handicapGroupSetMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
         when(apiEntity.getId()).thenReturn(TestConstants.HANDICAP_GROUP_SET_ID);
 
         Response response = resources.client()

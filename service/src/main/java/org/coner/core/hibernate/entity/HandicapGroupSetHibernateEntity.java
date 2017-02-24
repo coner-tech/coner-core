@@ -16,20 +16,20 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "handicap_group_sets")
 public class HandicapGroupSetHibernateEntity extends HibernateEntity {
 
-    private String handicapGroupSetId;
+    private String id;
     private String name;
     private Set<HandicapGroupHibernateEntity> handicapGroups;
 
     @Id
-    @Column(name = "handicapGroupSetId")
+    @Column(name = "id")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    public String getHandicapGroupSetId() {
-        return handicapGroupSetId;
+    public String getId() {
+        return id;
     }
 
-    public void setHandicapGroupSetId(String handicapGroupSetId) {
-        this.handicapGroupSetId = handicapGroupSetId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Column(name = "name")

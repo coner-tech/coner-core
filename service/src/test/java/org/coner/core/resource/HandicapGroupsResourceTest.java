@@ -20,11 +20,10 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.response.GetHandicapGroupsResponse;
-import org.coner.core.boundary.HandicapGroupApiAddPayloadBoundary;
-import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
@@ -43,23 +42,20 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class HandicapGroupsResourceTest {
     private final HandicapGroupEntityService handicapGroupEntityService = mock(HandicapGroupEntityService.class);
-    private final HandicapGroupApiDomainBoundary apiDomainBoundary = mock(HandicapGroupApiDomainBoundary.class);
-    private final HandicapGroupApiAddPayloadBoundary apiAddPayloadBoundary = mock(
-            HandicapGroupApiAddPayloadBoundary.class
-    );
+    private final HandicapGroupMapper handicapGroupMapper = mock(HandicapGroupMapper.class);
+
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupsResource(
                     handicapGroupEntityService,
-                    apiDomainBoundary,
-                    apiAddPayloadBoundary
+                    handicapGroupMapper
             ))
             .build();
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        reset(handicapGroupEntityService, apiDomainBoundary, apiAddPayloadBoundary);
+        reset(handicapGroupEntityService, handicapGroupMapper);
 
         MockitoAnnotations.initMocks(this);
 
@@ -91,7 +87,7 @@ public class HandicapGroupsResourceTest {
         Entity<AddHandicapGroupRequest> requestEntity = Entity.json(requestHandicapGroup);
 
         HandicapGroupAddPayload addPayload = mock(HandicapGroupAddPayload.class);
-        when(apiAddPayloadBoundary.toRemoteEntity(requestHandicapGroup)).thenReturn(addPayload);
+        when(handicapGroupMapper.toDomainAddPayload(requestHandicapGroup)).thenReturn(addPayload);
 
         Response response = resources.client()
                 .target("/handicapGroups")
@@ -123,7 +119,7 @@ public class HandicapGroupsResourceTest {
                 .isEmpty();
 
         verify(handicapGroupEntityService).getAll();
-        verify(apiDomainBoundary).toLocalEntities(domainHandicapGroups);
+        verify(handicapGroupMapper).toApiEntityList(domainHandicapGroups);
         verifyNoMoreInteractions(handicapGroupEntityService);
     }
 
@@ -138,7 +134,7 @@ public class HandicapGroupsResourceTest {
 
         when(handicapGroupEntityService.getAll())
                 .thenReturn(domainHandicapGroups);
-        when(apiDomainBoundary.toLocalEntities(domainHandicapGroups))
+        when(handicapGroupMapper.toApiEntityList(domainHandicapGroups))
                 .thenReturn(handicapGroupApiEntities);
 
         GetHandicapGroupsResponse response = resources.client()
@@ -164,11 +160,11 @@ public class HandicapGroupsResourceTest {
         );
         Entity<AddHandicapGroupRequest> requestEntity = Entity.json(request);
         HandicapGroupAddPayload addPayload = mock(HandicapGroupAddPayload.class);
-        when(apiAddPayloadBoundary.toRemoteEntity(request)).thenReturn(addPayload);
+        when(handicapGroupMapper.toDomainAddPayload(request)).thenReturn(addPayload);
         HandicapGroup domainEntity = mock(HandicapGroup.class);
         when(handicapGroupEntityService.add(addPayload)).thenReturn(domainEntity);
         HandicapGroupApiEntity apiEntity = mock(HandicapGroupApiEntity.class);
-        when(apiDomainBoundary.toLocalEntity(domainEntity)).thenReturn(apiEntity);
+        when(handicapGroupMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
         when(apiEntity.getId()).thenReturn(HANDICAP_GROUP_ID);
 
         Response response = resources.client()

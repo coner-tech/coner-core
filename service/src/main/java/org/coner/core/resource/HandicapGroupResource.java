@@ -9,10 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.coner.core.api.entity.HandicapGroupApiEntity;
-import org.coner.core.boundary.HandicapGroupApiDomainBoundary;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -30,16 +30,16 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = ApiTagConstants.HANDICAP_GROUPS)
 public class HandicapGroupResource {
 
-    private final HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary;
     private final HandicapGroupEntityService handicapGroupEntityService;
+    private final HandicapGroupMapper handicapGroupMapper;
 
     @Inject
     public HandicapGroupResource(
-            HandicapGroupApiDomainBoundary handicapGroupApiDomainBoundary,
-            HandicapGroupEntityService handicapGroupEntityService
+            HandicapGroupEntityService handicapGroupEntityService,
+            HandicapGroupMapper handicapGroupMapper
     ) {
-        this.handicapGroupApiDomainBoundary = handicapGroupApiDomainBoundary;
         this.handicapGroupEntityService = handicapGroupEntityService;
+        this.handicapGroupMapper = handicapGroupMapper;
     }
 
     @GET
@@ -53,6 +53,6 @@ public class HandicapGroupResource {
             @PathParam("handicapGroupId") @ApiParam(value = "Handicap Group ID", required = true) String id
     ) throws EntityNotFoundException {
         HandicapGroup domainEntity = handicapGroupEntityService.getById(id);
-        return handicapGroupApiDomainBoundary.toLocalEntity(domainEntity);
+        return handicapGroupMapper.toApiEntity(domainEntity);
     }
 }

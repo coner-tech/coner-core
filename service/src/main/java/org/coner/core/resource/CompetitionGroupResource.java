@@ -9,10 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
-import org.coner.core.boundary.CompetitionGroupApiDomainBoundary;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -30,15 +30,15 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = ApiTagConstants.COMPETITION_GROUPS)
 public class CompetitionGroupResource {
 
-    private final CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary;
+    private final CompetitionGroupMapper competitionGroupMapper;
     private final CompetitionGroupEntityService competitionGroupEntityService;
 
     @Inject
     public CompetitionGroupResource(
-            CompetitionGroupApiDomainBoundary competitionGroupApiDomainBoundary,
+            CompetitionGroupMapper competitionGroupMapper,
             CompetitionGroupEntityService competitionGroupEntityService
     ) {
-        this.competitionGroupApiDomainBoundary = competitionGroupApiDomainBoundary;
+        this.competitionGroupMapper = competitionGroupMapper;
         this.competitionGroupEntityService = competitionGroupEntityService;
     }
 
@@ -53,6 +53,6 @@ public class CompetitionGroupResource {
             @PathParam("competitionGroupId") @ApiParam(value = "Competition Group ID", required = true) String id
     ) throws EntityNotFoundException {
         CompetitionGroup domainEntity = competitionGroupEntityService.getById(id);
-        return competitionGroupApiDomainBoundary.toLocalEntity(domainEntity);
+        return competitionGroupMapper.toApiEntity(domainEntity);
     }
 }
