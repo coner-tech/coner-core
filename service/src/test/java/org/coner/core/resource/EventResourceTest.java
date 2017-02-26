@@ -44,8 +44,8 @@ public class EventResourceTest {
 
     @Test
     public void itShouldGetEvent() throws EntityNotFoundException {
-        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
-        EventApiEntity apiEvent = ApiEntityTestUtils.fullApiEvent();
+        Event domainEvent = DomainEntityTestUtils.fullEvent();
+        EventApiEntity apiEvent = ApiEntityTestUtils.fullEvent();
 
         // sanity check test
         assertThat(domainEvent.getId()).isSameAs(EVENT_ID);

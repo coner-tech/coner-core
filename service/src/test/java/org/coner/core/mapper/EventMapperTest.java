@@ -35,8 +35,8 @@ public class EventMapperTest {
 
     @Test
     public void whenToApiEntityFromEventDomainEntity() {
-        Event domainEntity = DomainEntityTestUtils.fullDomainEvent();
-        EventApiEntity expected = ApiEntityTestUtils.fullApiEvent();
+        Event domainEntity = DomainEntityTestUtils.fullEvent();
+        EventApiEntity expected = ApiEntityTestUtils.fullEvent();
 
         EventApiEntity actual = mapper.toApiEntity(domainEntity);
 
@@ -45,8 +45,8 @@ public class EventMapperTest {
 
     @Test
     public void whenToApiEntitiesListFromDomainEntitiesList() {
-        List<Event> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullDomainEvent());
-        List<EventApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiEvent());
+        List<Event> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullEvent());
+        List<EventApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullEvent());
 
         List<EventApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 

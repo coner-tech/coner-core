@@ -12,15 +12,15 @@ public final class HibernateEntityUtils {
     private HibernateEntityUtils() {
     }
 
-    public static EventHibernateEntity fullHibernateEvent() {
-        return fullHibernateEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+    public static EventHibernateEntity fullEvent() {
+        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
 
-    public static EventHibernateEntity fullHibernateEvent(String eventId, String eventName, Date eventDate) {
+    public static EventHibernateEntity fullEvent(String id, String name, Date date) {
         EventHibernateEntity event = new EventHibernateEntity();
-        event.setId(eventId);
-        event.setName(eventName);
-        event.setDate(eventDate);
+        event.setId(id);
+        event.setName(name);
+        event.setDate(date);
         return event;
     }
 }

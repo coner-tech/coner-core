@@ -10,8 +10,9 @@ import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
-import org.coner.core.util.TestConstants;
+import org.coner.core.util.DomainPayloadTestUtils;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -21,16 +22,8 @@ public class CompetitionGroupMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddCompetitionGroupRequest apiAddRequest = new AddCompetitionGroupRequest();
-        apiAddRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
-        apiAddRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
-        apiAddRequest.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
-        apiAddRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
-        CompetitionGroupAddPayload expected = new CompetitionGroupAddPayload();
-        expected.setName(TestConstants.COMPETITION_GROUP_NAME);
-        expected.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
-        expected.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
-        expected.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
+        AddCompetitionGroupRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupRequest();
+        CompetitionGroupAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupAdd();
 
         CompetitionGroupAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
 

@@ -10,7 +10,6 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
-import org.coner.core.api.request.AddHandicapGroupSetRequest;
 
 import com.google.common.collect.Sets;
 
@@ -19,29 +18,39 @@ public final class ApiEntityTestUtils {
     private ApiEntityTestUtils() {
     }
 
-    public static EventApiEntity fullApiEvent() {
-        return fullApiEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+    public static EventApiEntity fullEvent() {
+        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
 
-    public static EventApiEntity fullApiEvent(String eventId, String eventName, Date eventDate) {
+    public static EventApiEntity fullEvent(
+            String id,
+            String name,
+            Date date
+    ) {
         EventApiEntity event = new EventApiEntity();
-        event.setId(eventId);
-        event.setName(eventName);
-        event.setDate(eventDate);
+        event.setId(id);
+        event.setName(name);
+        event.setDate(date);
         return event;
     }
 
-    public static RegistrationApiEntity fullApiRegistration() {
-        return fullApiRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME);
+    public static RegistrationApiEntity fullRegistration() {
+        return fullRegistration(
+                TestConstants.REGISTRATION_ID,
+                TestConstants.REGISTRATION_FIRSTNAME,
+                TestConstants.REGISTRATION_LASTNAME
+        );
     }
 
-    public static RegistrationApiEntity fullApiRegistration(String registrationId, String registrationFirstName,
-                                                   String registrationLastName) {
+    public static RegistrationApiEntity fullRegistration(
+            String id,
+            String firstName,
+            String lastName
+    ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
-        registration.setId(registrationId);
-        registration.setFirstName(registrationFirstName);
-        registration.setLastName(registrationLastName);
+        registration.setId(id);
+        registration.setFirstName(firstName);
+        registration.setLastName(lastName);
         return registration;
     }
 
@@ -49,28 +58,30 @@ public final class ApiEntityTestUtils {
         return fullHandicapGroup(
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.HANDICAP_GROUP_NAME,
-                TestConstants.HANDICAP_GROUP_FACTOR);
+                TestConstants.HANDICAP_GROUP_FACTOR
+        );
     }
 
     public static HandicapGroupApiEntity fullHandicapGroup(
-            String handicapGroupId,
-            String handicapGroupName,
-            BigDecimal handicapGroupFactor) {
+            String id,
+            String name,
+            BigDecimal factor
+    ) {
         HandicapGroupApiEntity handicapGroup = new HandicapGroupApiEntity();
-        handicapGroup.setId(handicapGroupId);
-        handicapGroup.setName(handicapGroupName);
-        handicapGroup.setHandicapFactor(handicapGroupFactor);
+        handicapGroup.setId(id);
+        handicapGroup.setName(name);
+        handicapGroup.setHandicapFactor(factor);
         return handicapGroup;
     }
 
     public static HandicapGroupSetApiEntity fullHandicapGroupSet(
-            String handicapGroupSetId,
-            String handicapGroupSetName,
+            String id,
+            String name,
             Set<HandicapGroupApiEntity> handicapGroups
     ) {
         HandicapGroupSetApiEntity handicapGroupSet = new HandicapGroupSetApiEntity();
-        handicapGroupSet.setId(handicapGroupSetId);
-        handicapGroupSet.setName(handicapGroupSetName);
+        handicapGroupSet.setId(id);
+        handicapGroupSet.setName(name);
         handicapGroupSet.setHandicapGroups(handicapGroups);
         return handicapGroupSet;
     }
@@ -80,23 +91,6 @@ public final class ApiEntityTestUtils {
                 TestConstants.HANDICAP_GROUP_SET_ID,
                 TestConstants.HANDICAP_GROUP_SET_NAME,
                 Sets.newHashSet(fullHandicapGroup())
-        );
-    }
-
-    public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest(
-            String addHandicapGroupSetRequestName,
-            Set<String> addHandicapGroupSetRequestHandicapGroupIds
-    ) {
-        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
-        addHandicapGroupSetRequest.setName(addHandicapGroupSetRequestName);
-        addHandicapGroupSetRequest.setHandicapGroupIds(addHandicapGroupSetRequestHandicapGroupIds);
-        return addHandicapGroupSetRequest;
-    }
-
-    public static AddHandicapGroupSetRequest fullAddHandicapGroupSetRequest() {
-        return fullAddHandicapGroupSetRequest(
-                TestConstants.HANDICAP_GROUP_SET_NAME,
-                Sets.newHashSet(TestConstants.HANDICAP_GROUP_ID)
         );
     }
 
@@ -111,30 +105,30 @@ public final class ApiEntityTestUtils {
     }
 
     public static CompetitionGroupApiEntity fullCompetitionGroup(
-            String competitionGroupId,
-            String competitionGroupName,
-            BigDecimal competitionGroupHandicapFactor,
-            String competitionGroupResultTimeType,
-            boolean competitionGroupGrouping
+            String id,
+            String name,
+            BigDecimal handicapFactor,
+            String resultTimeType,
+            boolean grouping
     ) {
         CompetitionGroupApiEntity competitionGroup = new CompetitionGroupApiEntity();
-        competitionGroup.setId(competitionGroupId);
-        competitionGroup.setName(competitionGroupName);
-        competitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
-        competitionGroup.setResultTimeType(competitionGroupResultTimeType);
-        competitionGroup.setGrouping(competitionGroupGrouping);
+        competitionGroup.setId(id);
+        competitionGroup.setName(name);
+        competitionGroup.setHandicapFactor(handicapFactor);
+        competitionGroup.setResultTimeType(resultTimeType);
+        competitionGroup.setGrouping(grouping);
         return competitionGroup;
     }
 
     public static CompetitionGroupSetApiEntity fullCompetitionGroupSet(
-            String competitionGroupSetId,
-            String competitionGroupSetName,
-            Set<CompetitionGroupApiEntity> competitionGroupApiEntities
+            String id,
+            String name,
+            Set<CompetitionGroupApiEntity> competitionGroups
     ) {
         CompetitionGroupSetApiEntity competitionGroupSet = new CompetitionGroupSetApiEntity();
-        competitionGroupSet.setId(competitionGroupSetId);
-        competitionGroupSet.setName(competitionGroupSetName);
-        competitionGroupSet.setCompetitionGroups(competitionGroupApiEntities);
+        competitionGroupSet.setId(id);
+        competitionGroupSet.setName(name);
+        competitionGroupSet.setCompetitionGroups(competitionGroups);
         return competitionGroupSet;
     }
 

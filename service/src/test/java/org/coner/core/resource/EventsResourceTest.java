@@ -84,7 +84,7 @@ public class EventsResourceTest {
         when(eventMapper.toDomainAddPayload(requestEvent)).thenReturn(addPayload);
         Event domainEntity = mock(Event.class);
         when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
-        EventApiEntity apiEntity = ApiEntityTestUtils.fullApiEvent();
+        EventApiEntity apiEntity = ApiEntityTestUtils.fullEvent();
         when(eventMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()

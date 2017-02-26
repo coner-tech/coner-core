@@ -14,6 +14,7 @@ import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -33,11 +34,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUPS_PATH)
                 .build();
-        AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
-        addCompetitionGroupRequest.setName(TestConstants.COMPETITION_GROUP_NAME);
-        addCompetitionGroupRequest.setHandicapFactor(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
-        addCompetitionGroupRequest.setResultTimeType(TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name());
-        addCompetitionGroupRequest.setGrouping(TestConstants.COMPETITION_GROUP_GROUPING);
+        AddCompetitionGroupRequest addCompetitionGroupRequest = ApiRequestTestUtils.fullAddCompetitionGroupRequest();
 
         Response addCompetitionGroupResponseContainer = client.target(competitionGroupsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -60,14 +57,9 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         assertThat(getCompetitionGroupResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         CompetitionGroupApiEntity getCompetitionGroupResponse = getCompetitionGroupResponseContainer
                 .readEntity(CompetitionGroupApiEntity.class);
-        assertThat(getCompetitionGroupResponse)
-                .isEqualTo(ApiEntityTestUtils.fullCompetitionGroup(
-                        competitionGroupId,
-                        TestConstants.COMPETITION_GROUP_NAME,
-                        TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
-                        TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name(),
-                        TestConstants.COMPETITION_GROUP_GROUPING
-                ));
+        CompetitionGroupApiEntity expected = ApiEntityTestUtils.fullCompetitionGroup();
+        expected.setId(competitionGroupId);
+        assertThat(getCompetitionGroupResponse);
     }
 
     @Test
@@ -94,7 +86,8 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();
-        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils
+                .fullAddCompetitionGroupSetRequest();
         addCompetitionGroupSetRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
         addCompetitionGroupSetRequest.setCompetitionGroupIds(null); // perfectly ok to create an empty one
 
@@ -144,8 +137,8 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();
-        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = new AddCompetitionGroupSetRequest();
-        addCompetitionGroupSetRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils
+                .fullAddCompetitionGroupSetRequest();
         addCompetitionGroupSetRequest.setCompetitionGroupIds(null);
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
@@ -158,10 +151,10 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .get();
-        GetCompetitionGroupSetsResponse getCompetitionGroupSetsResponse = getCompetitionGroupSetsResponseContainer
+        GetCompetitionGroupSetsResponse actual = getCompetitionGroupSetsResponseContainer
                 .readEntity(GetCompetitionGroupSetsResponse.class);
-        assertThat(getCompetitionGroupSetsResponse.getEntities()).isNotEmpty();
-        assertThat(getCompetitionGroupSetsResponse.getEntities().get(0).getId()).isNotEmpty();
+        assertThat(actual.getEntities()).isNotEmpty();
+        assertThat(actual.getEntities().get(0).getId()).isNotEmpty();
     }
 
 }

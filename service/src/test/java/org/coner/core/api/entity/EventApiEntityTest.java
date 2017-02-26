@@ -24,7 +24,7 @@ public class EventApiEntityTest {
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
 
-        event = ApiEntityTestUtils.fullApiEvent();
+        event = ApiEntityTestUtils.fullEvent();
     }
 
     @Test

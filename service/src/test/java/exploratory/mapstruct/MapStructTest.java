@@ -21,8 +21,8 @@ public class MapStructTest {
 
     @Test
     public void testEventDomainToApi() {
-        Event domainEvent = DomainEntityTestUtils.fullDomainEvent();
-        EventApiEntity expected = ApiEntityTestUtils.fullApiEvent();
+        Event domainEvent = DomainEntityTestUtils.fullEvent();
+        EventApiEntity expected = ApiEntityTestUtils.fullEvent();
 
         EventApiEntity actual = exploratoryMapper.eventToApiEntity(domainEvent);
 

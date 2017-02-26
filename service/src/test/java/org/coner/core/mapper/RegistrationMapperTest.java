@@ -36,8 +36,8 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToApiEntityFromDomainEntity() {
-        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
-        RegistrationApiEntity expected = ApiEntityTestUtils.fullApiRegistration();
+        Registration domainEntity = DomainEntityTestUtils.fullRegistration();
+        RegistrationApiEntity expected = ApiEntityTestUtils.fullRegistration();
 
         RegistrationApiEntity actual = mapper.toApiEntity(domainEntity);
 
@@ -46,8 +46,8 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToApiEntityListFromDomainEntityList() {
-        List<Registration> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
-        List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
+        List<Registration> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullRegistration());
+        List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullRegistration());
 
         List<RegistrationApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 
