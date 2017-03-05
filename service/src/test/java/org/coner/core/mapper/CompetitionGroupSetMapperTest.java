@@ -24,7 +24,7 @@ public class CompetitionGroupSetMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSetRequest();
+        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
         CompetitionGroupSetAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupSetAdd();
         expected.setCompetitionGroups(null);
 
@@ -35,7 +35,7 @@ public class CompetitionGroupSetMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequestWithNullCompetitionGroupIds() {
-        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSetRequest();
+        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
         apiAddRequest.setCompetitionGroupIds(null);
         CompetitionGroupSetAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupSetAdd();
         expected.setCompetitionGroupIds(Sets.newHashSet());

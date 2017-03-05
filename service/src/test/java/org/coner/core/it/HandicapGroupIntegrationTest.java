@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -29,7 +30,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUPS_PATH)
                 .build();
-        AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
+        AddHandicapGroupRequest addHandicapGroupRequest = ApiRequestTestUtils.fullAddHandicapGroup();
         addHandicapGroupRequest.setName(TestConstants.HANDICAP_GROUP_NAME);
         addHandicapGroupRequest.setHandicapFactor(TestConstants.HANDICAP_GROUP_FACTOR);
 
@@ -62,7 +63,9 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUPS_PATH)
                 .build();
-        AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
+        AddHandicapGroupRequest addHandicapGroupRequest = ApiRequestTestUtils.fullAddHandicapGroup();
+        addHandicapGroupRequest.setName(null);
+        addHandicapGroupRequest.setHandicapFactor(null);
 
         Response addHandicapGroupResponseContainer = client.target(handicapGroupsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -81,8 +84,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUP_SETS_PATH)
                 .build();
-        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
-        addHandicapGroupSetRequest.setName(TestConstants.HANDICAP_GROUP_SET_NAME);
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils.fullAddHandicapGroupSet();
         addHandicapGroupSetRequest.setHandicapGroupIds(null); // perfectly ok to create an empty one
 
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
@@ -100,9 +102,8 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         URI handicapGroupsSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUP_SETS_PATH)
                 .build();
-        AddHandicapGroupSetRequest addHandicapGroupSetRequest = new AddHandicapGroupSetRequest();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils.fullAddHandicapGroupSet();
         addHandicapGroupSetRequest.setName("  "); // whitespace only is not ok
-        addHandicapGroupSetRequest.setHandicapGroupIds(null);
 
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupsSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

@@ -22,7 +22,7 @@ public class CompetitionGroupMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddCompetitionGroupRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupRequest();
+        AddCompetitionGroupRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroup();
         CompetitionGroupAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupAdd();
 
         CompetitionGroupAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
