@@ -7,9 +7,9 @@ import org.coner.core.hibernate.entity.EventHibernateEntity;
 /**
  *
  */
-public final class HibernateEntityUtils {
+public final class HibernateEntityTestUtils {
 
-    private HibernateEntityUtils() {
+    private HibernateEntityTestUtils() {
     }
 
     public static EventHibernateEntity fullEvent() {
