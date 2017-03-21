@@ -10,8 +10,9 @@ import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
-import org.coner.core.util.TestConstants;
+import org.coner.core.util.DomainPayloadTestUtils;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -21,12 +22,8 @@ public class HandicapGroupMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddHandicapGroupRequest apiAddRequest = new AddHandicapGroupRequest();
-        apiAddRequest.setName(TestConstants.HANDICAP_GROUP_NAME);
-        apiAddRequest.setHandicapFactor(TestConstants.HANDICAP_GROUP_FACTOR);
-        HandicapGroupAddPayload expected = new HandicapGroupAddPayload();
-        expected.setName(TestConstants.HANDICAP_GROUP_NAME);
-        expected.setHandicapFactor(TestConstants.HANDICAP_GROUP_FACTOR);
+        AddHandicapGroupRequest apiAddRequest = ApiRequestTestUtils.fullAddHandicapGroup();
+        HandicapGroupAddPayload expected = DomainPayloadTestUtils.fullHandicapGroupAdd();
 
         HandicapGroupAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
 

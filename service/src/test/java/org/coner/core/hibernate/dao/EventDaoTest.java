@@ -2,12 +2,12 @@ package org.coner.core.hibernate.dao;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
+import org.coner.core.util.HibernateEntityTestUtils;
+import org.coner.core.util.TestConstants;
 import org.hibernate.Query;
 import org.junit.After;
 import org.junit.Before;
@@ -18,8 +18,6 @@ import io.dropwizard.testing.junit.DAOTestRule;
 
 public class EventDaoTest extends AbstractDaoTest {
 
-    private final String name = "EventDao test event";
-    private final Date date = Date.from(ZonedDateTime.parse("2014-12-26T22:12:00-05:00").toInstant());
     private EventDao eventDao;
 
     @Rule
@@ -95,10 +93,10 @@ public class EventDaoTest extends AbstractDaoTest {
     }
 
     private EventHibernateEntity buildNewEvent() {
-        EventHibernateEntity event = new EventHibernateEntity();
-        event.setName(name);
-        event.setDate(date);
-        assertThat(event.getId()).isNull();
-        return event;
+        return HibernateEntityTestUtils.fullEvent(
+                null,
+                TestConstants.EVENT_NAME,
+                TestConstants.EVENT_DATE
+        );
     }
 }

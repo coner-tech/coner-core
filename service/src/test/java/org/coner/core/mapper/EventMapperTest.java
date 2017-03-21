@@ -10,8 +10,9 @@ import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
-import org.coner.core.util.TestConstants;
+import org.coner.core.util.DomainPayloadTestUtils;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -21,12 +22,8 @@ public class EventMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddEventRequest apiAddRequest = new AddEventRequest();
-        apiAddRequest.setName(TestConstants.EVENT_NAME);
-        apiAddRequest.setDate(TestConstants.EVENT_DATE);
-        EventAddPayload expected = new EventAddPayload();
-        expected.setName(TestConstants.EVENT_NAME);
-        expected.setDate(TestConstants.EVENT_DATE);
+        AddEventRequest apiAddRequest = ApiRequestTestUtils.fullAddEvent();
+        EventAddPayload expected = DomainPayloadTestUtils.fullEventAdd();
 
         EventAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
 
@@ -35,8 +32,8 @@ public class EventMapperTest {
 
     @Test
     public void whenToApiEntityFromEventDomainEntity() {
-        Event domainEntity = DomainEntityTestUtils.fullDomainEvent();
-        EventApiEntity expected = ApiEntityTestUtils.fullApiEvent();
+        Event domainEntity = DomainEntityTestUtils.fullEvent();
+        EventApiEntity expected = ApiEntityTestUtils.fullEvent();
 
         EventApiEntity actual = mapper.toApiEntity(domainEntity);
 
@@ -45,8 +42,8 @@ public class EventMapperTest {
 
     @Test
     public void whenToApiEntitiesListFromDomainEntitiesList() {
-        List<Event> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullDomainEvent());
-        List<EventApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiEvent());
+        List<Event> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullEvent());
+        List<EventApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullEvent());
 
         List<EventApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 

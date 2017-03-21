@@ -10,7 +10,9 @@ import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
+import org.coner.core.util.DomainPayloadTestUtils;
 import org.coner.core.util.TestConstants;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
@@ -21,13 +23,9 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddRegistrationRequest apiAddRequest = new AddRegistrationRequest();
-        apiAddRequest.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
-        apiAddRequest.setLastName(TestConstants.REGISTRATION_LASTNAME);
-        RegistrationAddPayload expected = new RegistrationAddPayload();
-        expected.setFirstName(TestConstants.REGISTRATION_FIRSTNAME);
-        expected.setLastName(TestConstants.REGISTRATION_LASTNAME);
-        expected.setEventId(TestConstants.EVENT_ID);
+        AddRegistrationRequest apiAddRequest = ApiRequestTestUtils.fullAddRegistration();
+        RegistrationAddPayload expected = DomainPayloadTestUtils.fullRegistrationAdd();
+        expected.setEvent(null); // not mapper's job to resolve entities
 
         RegistrationAddPayload actual = mapper.toDomainAddPayload(apiAddRequest, TestConstants.EVENT_ID);
 
@@ -36,8 +34,8 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToApiEntityFromDomainEntity() {
-        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
-        RegistrationApiEntity expected = ApiEntityTestUtils.fullApiRegistration();
+        Registration domainEntity = DomainEntityTestUtils.fullRegistration();
+        RegistrationApiEntity expected = ApiEntityTestUtils.fullRegistration();
 
         RegistrationApiEntity actual = mapper.toApiEntity(domainEntity);
 
@@ -46,8 +44,8 @@ public class RegistrationMapperTest {
 
     @Test
     public void whenToApiEntityListFromDomainEntityList() {
-        List<Registration> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
-        List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
+        List<Registration> domainEntityList = Arrays.asList(DomainEntityTestUtils.fullRegistration());
+        List<RegistrationApiEntity> expected = Arrays.asList(ApiEntityTestUtils.fullRegistration());
 
         List<RegistrationApiEntity> actual = mapper.toApiEntityList(domainEntityList);
 

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
@@ -30,9 +31,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events")
                 .build();
-        AddEventRequest addEventRequest = new AddEventRequest();
-        addEventRequest.setName(name);
-        addEventRequest.setDate(date);
+        AddEventRequest addEventRequest = ApiRequestTestUtils.fullAddEvent();
         Response addEventResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -71,7 +70,8 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events")
                 .build();
-        AddEventRequest addEventRequest = new AddEventRequest();
+        AddEventRequest addEventRequest = ApiRequestTestUtils.fullAddEvent();
+        addEventRequest.setName(null);
 
         Response addEventResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

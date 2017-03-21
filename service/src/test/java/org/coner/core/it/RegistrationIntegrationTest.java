@@ -2,8 +2,6 @@ package org.coner.core.it;
 
 import static org.coner.core.util.TestConstants.EVENT_DATE;
 import static org.coner.core.util.TestConstants.EVENT_NAME;
-import static org.coner.core.util.TestConstants.REGISTRATION_FIRSTNAME;
-import static org.coner.core.util.TestConstants.REGISTRATION_LASTNAME;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.net.URI;
@@ -17,6 +15,7 @@ import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -71,10 +70,10 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
 
-        // Post first Registration
-        AddRegistrationRequest addRegistrationRequest0 = new AddRegistrationRequest();
-        addRegistrationRequest0.setFirstName(REGISTRATION_FIRSTNAME);
-        addRegistrationRequest0.setLastName(REGISTRATION_LASTNAME);
+        // Post Registration #0
+        AddRegistrationRequest addRegistrationRequest0 = ApiRequestTestUtils.fullAddRegistration();
+        addRegistrationRequest0.setFirstName(addRegistrationRequest0.getFirstName() + "-0");
+        addRegistrationRequest0.setLastName(addRegistrationRequest0.getLastName() + "-0");
 
         Response addRegistrationResponse0 = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -84,10 +83,10 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         assertThat(addRegistrationResponse0.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         final String registrationId0 = UnitTestUtils.getEntityIdFromResponse(addRegistrationResponse0);
 
-        // Post second Registration
+        // Post Registration #1
         AddRegistrationRequest addRegistrationRequest1 = new AddRegistrationRequest();
-        addRegistrationRequest1.setFirstName(REGISTRATION_FIRSTNAME + "-2");
-        addRegistrationRequest1.setLastName(REGISTRATION_LASTNAME + "-2");
+        addRegistrationRequest1.setFirstName(addRegistrationRequest1.getFirstName() + "-1");
+        addRegistrationRequest1.setLastName(addRegistrationRequest1.getLastName() + "-1");
 
         Response addRegistrationResponse1 = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -139,7 +138,9 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
-        AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
+        AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
+        addRegistrationRequest.setFirstName(null);
+        addRegistrationRequest.setLastName(null);
 
         Response addRegistrationResponseContainer = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -160,9 +161,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .build("987654321");
 
         // Post Registration
-        AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
-        addRegistrationRequest.setFirstName(REGISTRATION_FIRSTNAME);
-        addRegistrationRequest.setLastName(REGISTRATION_LASTNAME);
+        AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
 
         Response addRegistrationResponse = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

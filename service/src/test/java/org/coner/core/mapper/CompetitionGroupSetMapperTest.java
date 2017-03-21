@@ -10,8 +10,9 @@ import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
-import org.coner.core.util.TestConstants;
+import org.coner.core.util.DomainPayloadTestUtils;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -23,12 +24,8 @@ public class CompetitionGroupSetMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequest() {
-        AddCompetitionGroupSetRequest apiAddRequest = new AddCompetitionGroupSetRequest();
-        apiAddRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
-        apiAddRequest.setCompetitionGroupIds(Sets.newHashSet(TestConstants.COMPETITION_GROUP_ID));
-        CompetitionGroupSetAddPayload expected = new CompetitionGroupSetAddPayload();
-        expected.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
-        expected.setCompetitionGroupIds(Sets.newHashSet(TestConstants.COMPETITION_GROUP_ID));
+        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
+        CompetitionGroupSetAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupSetAdd();
         expected.setCompetitionGroups(null);
 
         CompetitionGroupSetAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
@@ -38,11 +35,9 @@ public class CompetitionGroupSetMapperTest {
 
     @Test
     public void whenToDomainAddPayloadFromApiAddRequestWithNullCompetitionGroupIds() {
-        AddCompetitionGroupSetRequest apiAddRequest = new AddCompetitionGroupSetRequest();
-        apiAddRequest.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        AddCompetitionGroupSetRequest apiAddRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
         apiAddRequest.setCompetitionGroupIds(null);
-        CompetitionGroupSetAddPayload expected = new CompetitionGroupSetAddPayload();
-        expected.setName(TestConstants.COMPETITION_GROUP_SET_NAME);
+        CompetitionGroupSetAddPayload expected = DomainPayloadTestUtils.fullCompetitionGroupSetAdd();
         expected.setCompetitionGroupIds(Sets.newHashSet());
         expected.setCompetitionGroups(null);
 

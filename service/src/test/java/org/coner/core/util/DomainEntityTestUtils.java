@@ -18,59 +18,67 @@ public final class DomainEntityTestUtils {
     private DomainEntityTestUtils() {
     }
 
-    public static Event fullDomainEvent() {
-        return fullDomainEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+    public static Event fullEvent() {
+        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
     }
 
-    public static Event fullDomainEvent(String eventId, String eventName, Date eventDate) {
-        Event domainEvent = new Event();
-        domainEvent.setId(eventId);
-        domainEvent.setName(eventName);
-        domainEvent.setDate(eventDate);
-        return domainEvent;
+    public static Event fullEvent(String id, String name, Date date) {
+        Event event = new Event();
+        event.setId(id);
+        event.setName(name);
+        event.setDate(date);
+        return event;
     }
 
-    public static Registration fullDomainRegistration() {
-        return fullDomainRegistration(TestConstants.REGISTRATION_ID, TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME);
+    public static Registration fullRegistration() {
+        return fullRegistration(
+                TestConstants.REGISTRATION_ID,
+                TestConstants.REGISTRATION_FIRSTNAME,
+                TestConstants.REGISTRATION_LASTNAME
+        );
     }
 
-    public static Registration fullDomainRegistration(String registrationId, String registrationFirstName,
-                                                      String registrationLastName) {
-        Registration domainRegistration = new Registration();
-        domainRegistration.setId(registrationId);
-        domainRegistration.setFirstName(registrationFirstName);
-        domainRegistration.setLastName(registrationLastName);
-        domainRegistration.setEvent(DomainEntityTestUtils.fullDomainEvent());
-        return domainRegistration;
+    public static Registration fullRegistration(
+            String id,
+            String firstName,
+            String lastName
+    ) {
+        Registration registration = new Registration();
+        registration.setId(id);
+        registration.setFirstName(firstName);
+        registration.setLastName(lastName);
+        registration.setEvent(DomainEntityTestUtils.fullEvent());
+        return registration;
     }
 
     public static HandicapGroup fullHandicapGroup() {
         return fullHandicapGroup(
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.HANDICAP_GROUP_NAME,
-                TestConstants.HANDICAP_GROUP_FACTOR);
+                TestConstants.HANDICAP_GROUP_FACTOR
+        );
     }
 
     public static HandicapGroup fullHandicapGroup(
-            String handicapGroupId,
-            String handicapGroupName,
-            BigDecimal handicapGroupFactor) {
-        HandicapGroup domainHandicapGroup = new HandicapGroup();
-        domainHandicapGroup.setId(handicapGroupId);
-        domainHandicapGroup.setName(handicapGroupName);
-        domainHandicapGroup.setHandicapFactor(handicapGroupFactor);
-        return domainHandicapGroup;
+            String id,
+            String name,
+            BigDecimal factor
+    ) {
+        HandicapGroup handicapGroup = new HandicapGroup();
+        handicapGroup.setId(id);
+        handicapGroup.setName(name);
+        handicapGroup.setHandicapFactor(factor);
+        return handicapGroup;
     }
 
     public static HandicapGroupSet fullHandicapGroupSet(
-            String handicapGroupSetId,
-            String handicapGroupSetName,
+            String id,
+            String name,
             Set<HandicapGroup> handicapGroups
     ) {
         HandicapGroupSet handicapGroupSet = new HandicapGroupSet();
-        handicapGroupSet.setId(handicapGroupSetId);
-        handicapGroupSet.setName(handicapGroupSetName);
+        handicapGroupSet.setId(id);
+        handicapGroupSet.setName(name);
         handicapGroupSet.setHandicapGroups(handicapGroups);
         return handicapGroupSet;
     }
@@ -94,18 +102,18 @@ public final class DomainEntityTestUtils {
     }
 
     public static CompetitionGroup fullCompetitionGroup(
-            String competitionGroupId,
-            String competitionGroupName,
-            BigDecimal competitionGroupHandicapFactor,
-            boolean competitionGroupGrouping,
-            CompetitionGroup.ResultTimeType competitionGroupResultTimeType
+            String id,
+            String name,
+            BigDecimal factor,
+            boolean grouping,
+            CompetitionGroup.ResultTimeType resultTimeType
     ) {
         CompetitionGroup domainCompetitionGroup = new CompetitionGroup();
-        domainCompetitionGroup.setId(competitionGroupId);
-        domainCompetitionGroup.setName(competitionGroupName);
-        domainCompetitionGroup.setHandicapFactor(competitionGroupHandicapFactor);
-        domainCompetitionGroup.setGrouping(competitionGroupGrouping);
-        domainCompetitionGroup.setResultTimeType(competitionGroupResultTimeType);
+        domainCompetitionGroup.setId(id);
+        domainCompetitionGroup.setName(name);
+        domainCompetitionGroup.setHandicapFactor(factor);
+        domainCompetitionGroup.setGrouping(grouping);
+        domainCompetitionGroup.setResultTimeType(resultTimeType);
         return domainCompetitionGroup;
     }
 
@@ -118,13 +126,13 @@ public final class DomainEntityTestUtils {
     }
 
     public static CompetitionGroupSet fullCompetitionGroupSet(
-            String competitionGroupSetId,
-            String competitionGroupSetName,
+            String id,
+            String name,
             Set<CompetitionGroup> competitionGroups
     ) {
         CompetitionGroupSet competitionGroupSet = new CompetitionGroupSet();
-        competitionGroupSet.setId(competitionGroupSetId);
-        competitionGroupSet.setName(competitionGroupSetName);
+        competitionGroupSet.setId(id);
+        competitionGroupSet.setName(name);
         competitionGroupSet.setCompetitionGroups(competitionGroups);
         return competitionGroupSet;
     }

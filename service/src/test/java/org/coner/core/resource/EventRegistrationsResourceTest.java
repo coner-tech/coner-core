@@ -63,8 +63,8 @@ public class EventRegistrationsResourceTest {
 
     @Test
     public void itShouldGetRegistrationsForEvent() throws Exception {
-        List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullDomainRegistration());
-        List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullApiRegistration());
+        List<Registration> domainRegistrations = Arrays.asList(DomainEntityTestUtils.fullRegistration());
+        List<RegistrationApiEntity> apiRegistrations = Arrays.asList(ApiEntityTestUtils.fullRegistration());
         when(eventRegistrationService.getAllWithEventId(EVENT_ID)).thenReturn(domainRegistrations);
         when(registrationMapper.toApiEntityList(domainRegistrations)).thenReturn(apiRegistrations);
 
@@ -91,9 +91,9 @@ public class EventRegistrationsResourceTest {
         Entity<AddRegistrationRequest> requestEntity = Entity.json(apiRequest);
         RegistrationAddPayload addPayload = mock(RegistrationAddPayload.class);
         when(registrationMapper.toDomainAddPayload(apiRequest, TestConstants.EVENT_ID)).thenReturn(addPayload);
-        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
+        Registration domainEntity = DomainEntityTestUtils.fullRegistration();
         when(eventRegistrationService.add(addPayload)).thenReturn(domainEntity);
-        RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
+        RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullRegistration();
         when(registrationMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()

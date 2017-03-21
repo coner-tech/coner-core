@@ -49,8 +49,8 @@ public class EventRegistrationResourceTest {
 
     @Test
     public void itShouldGetRegistration() throws Exception {
-        Registration domainEntity = DomainEntityTestUtils.fullDomainRegistration();
-        RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullApiRegistration();
+        Registration domainEntity = DomainEntityTestUtils.fullRegistration();
+        RegistrationApiEntity apiEntity = ApiEntityTestUtils.fullRegistration();
 
         when(eventRegistrationService.getByEventIdAndRegistrationId(EVENT_ID, REGISTRATION_ID))
                 .thenReturn(domainEntity);
