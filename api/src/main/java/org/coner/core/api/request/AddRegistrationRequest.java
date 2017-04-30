@@ -1,7 +1,7 @@
 package org.coner.core.api.request;
 
-import java.util.Objects;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddRegistrationRequest {
@@ -28,15 +28,11 @@ public class AddRegistrationRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AddRegistrationRequest that = (AddRegistrationRequest) o;
-        return Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

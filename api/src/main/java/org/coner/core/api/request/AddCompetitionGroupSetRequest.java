@@ -1,8 +1,9 @@
 package org.coner.core.api.request;
 
-import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddCompetitionGroupSetRequest {
@@ -29,15 +30,11 @@ public class AddCompetitionGroupSetRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AddCompetitionGroupSetRequest that = (AddCompetitionGroupSetRequest) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(competitionGroupIds, that.competitionGroupIds);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, competitionGroupIds);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

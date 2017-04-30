@@ -1,12 +1,13 @@
 package org.coner.core.api.entity;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class HandicapGroupApiEntity extends ApiEntity {
@@ -45,16 +46,11 @@ public class HandicapGroupApiEntity extends ApiEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HandicapGroupApiEntity apiEntity = (HandicapGroupApiEntity) o;
-        return Objects.equals(id, apiEntity.id) &&
-                Objects.equals(name, apiEntity.name) &&
-                Objects.equals(handicapFactor, apiEntity.handicapFactor);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, handicapFactor);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
