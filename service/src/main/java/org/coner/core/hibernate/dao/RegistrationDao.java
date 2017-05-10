@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -26,7 +26,7 @@ public class RegistrationDao
     }
 
     public List<RegistrationHibernateEntity> getAllWith(EventHibernateEntity event) {
-        Query query = namedQuery(RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
+        Query<RegistrationHibernateEntity> query = namedQuery(RegistrationHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
         query.setParameter(RegistrationHibernateEntity.PARAMETER_EVENT_ID, event.getId());
         return list(query);
     }
