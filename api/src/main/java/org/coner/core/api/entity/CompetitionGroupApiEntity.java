@@ -1,12 +1,13 @@
 package org.coner.core.api.entity;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class CompetitionGroupApiEntity extends ApiEntity {
@@ -65,18 +66,11 @@ public class CompetitionGroupApiEntity extends ApiEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CompetitionGroupApiEntity that = (CompetitionGroupApiEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.compare(handicapFactor, that.handicapFactor, BigDecimal::compareTo) == 0 &&
-                Objects.equals(grouping, that.grouping) &&
-                Objects.equals(resultTimeType, that.resultTimeType);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, handicapFactor, grouping, resultTimeType);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

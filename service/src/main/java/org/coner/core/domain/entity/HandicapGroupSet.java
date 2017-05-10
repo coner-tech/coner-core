@@ -2,6 +2,9 @@ package org.coner.core.domain.entity;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class HandicapGroupSet extends DomainEntity {
 
     private String id;
@@ -30,5 +33,15 @@ public class HandicapGroupSet extends DomainEntity {
 
     public void setHandicapGroups(Set<HandicapGroup> handicapGroups) {
         this.handicapGroups = handicapGroups;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

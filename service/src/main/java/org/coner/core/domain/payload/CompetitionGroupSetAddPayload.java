@@ -1,8 +1,9 @@
 package org.coner.core.domain.payload;
 
-import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.coner.core.domain.entity.CompetitionGroup;
 
 public class CompetitionGroupSetAddPayload extends DomainAddPayload {
@@ -36,16 +37,11 @@ public class CompetitionGroupSetAddPayload extends DomainAddPayload {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CompetitionGroupSetAddPayload that = (CompetitionGroupSetAddPayload) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(competitionGroupIds, that.competitionGroupIds) &&
-                Objects.equals(competitionGroups, that.competitionGroups);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, competitionGroupIds, competitionGroups);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

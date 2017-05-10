@@ -1,10 +1,11 @@
 package org.coner.core.api.request;
 
 import java.util.Date;
-import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddEventRequest {
@@ -32,15 +33,11 @@ public class AddEventRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AddEventRequest that = (AddEventRequest) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(date, that.date);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, date);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

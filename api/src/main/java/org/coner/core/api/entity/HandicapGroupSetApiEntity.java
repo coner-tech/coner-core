@@ -1,7 +1,9 @@
 package org.coner.core.api.entity;
 
-import java.util.Objects;
 import java.util.Set;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class HandicapGroupSetApiEntity extends ApiEntity {
 
@@ -35,16 +37,11 @@ public class HandicapGroupSetApiEntity extends ApiEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HandicapGroupSetApiEntity that = (HandicapGroupSetApiEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(handicapGroups, that.handicapGroups);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, handicapGroups);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

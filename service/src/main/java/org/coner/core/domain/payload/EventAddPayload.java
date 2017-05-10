@@ -1,7 +1,9 @@
 package org.coner.core.domain.payload;
 
 import java.util.Date;
-import java.util.Objects;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class EventAddPayload extends DomainAddPayload {
 
@@ -26,15 +28,11 @@ public class EventAddPayload extends DomainAddPayload {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EventAddPayload that = (EventAddPayload) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(date, that.date);
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, date);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
