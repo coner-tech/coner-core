@@ -2,6 +2,9 @@ package org.coner.core.domain.entity;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class CompetitionGroup extends DomainEntity {
 
     private String id;
@@ -48,6 +51,16 @@ public class CompetitionGroup extends DomainEntity {
 
     public void setResultTimeType(ResultTimeType resultTimeType) {
         this.resultTimeType = resultTimeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     /**
