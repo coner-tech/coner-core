@@ -79,7 +79,6 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(addRegistrationRequest0));
-
         assertThat(addRegistrationResponse0.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         final String registrationId0 = UnitTestUtils.getEntityIdFromResponse(addRegistrationResponse0);
 

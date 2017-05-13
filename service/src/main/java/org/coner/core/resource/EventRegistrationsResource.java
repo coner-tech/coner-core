@@ -21,6 +21,7 @@ import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.EventRegistrationService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
@@ -115,8 +116,33 @@ public class EventRegistrationsResource {
         RegistrationAddPayload addPayload = registrationMapper.toDomainAddPayload(request, eventId);
         Registration domainEntity = eventRegistrationService.add(addPayload);
         RegistrationApiEntity registration = registrationMapper.toApiEntity(domainEntity);
-        return Response.created(UriBuilder.fromResource(EventRegistrationResource.class)
+        return Response.created(UriBuilder.fromPath("/events/{eventId}/registrations/{registrationId}")
                 .build(eventId, registration.getId()))
                 .build();
     }
+
+    @GET
+    @Path("/{registrationId}")
+    @UnitOfWork
+    @ApiOperation(value = "Get a specific registration")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = RegistrationApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found"),
+            @ApiResponse(
+                    code = HttpStatus.CONFLICT_409,
+                    response = ErrorMessage.class,
+                    message = "Event ID and Registration ID are mismatched"
+            )
+    })
+    public RegistrationApiEntity getRegistration(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @PathParam("registrationId") @ApiParam(value = "Registration ID", required = true) String registrationId
+    ) throws EntityMismatchException, EntityNotFoundException {
+        Registration domainRegistration = eventRegistrationService.getByEventIdAndRegistrationId(
+                eventId,
+                registrationId
+        );
+        return registrationMapper.toApiEntity(domainRegistration);
+    }
+
 }

@@ -60,7 +60,6 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         initComponents();
         JerseyEnvironment jersey = environment.jersey();
         jersey.register(components.eventsResource());
-        jersey.register(components.eventRegistrationResource());
         jersey.register(components.eventRegistrationsResource());
         jersey.register(components.handicapGroupResource());
         jersey.register(components.handicapGroupsResource());
@@ -101,4 +100,3 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         return hibernateBundle;
     }
 }
-
