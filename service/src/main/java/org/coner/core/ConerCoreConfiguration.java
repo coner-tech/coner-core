@@ -18,7 +18,7 @@ public class ConerCoreConfiguration extends Configuration {
 
     @Valid
     @NotNull
-    @JsonProperty
+    @JsonProperty("httpClient")
     private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
 
     @JsonProperty("swagger")

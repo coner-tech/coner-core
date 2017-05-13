@@ -2,8 +2,8 @@ package org.coner.core;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -16,9 +16,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -59,7 +58,6 @@ public class ConerCoreApplicationTest {
 
         // run method
         when(environment.jersey()).thenReturn(jersey);
-        when(config.getDataSourceFactory()).thenReturn(dataSourceFactory);
 
         components = DaggerMockitoJerseyRegistrationComponent.builder()
                 .mockitoJerseyRegistrationModule(new MockitoJerseyRegistrationModule())
@@ -111,6 +109,6 @@ public class ConerCoreApplicationTest {
         application.run(config, environment);
 
         Arrays.stream(expectedComponents).forEach(o -> verify(jersey).register(o));
-        verify(jersey, times(expectedComponents.length)).register(Matchers.isNotNull());
+        verifyNoMoreInteractions(jersey);
     }
 }

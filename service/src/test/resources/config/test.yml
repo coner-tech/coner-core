@@ -22,3 +22,6 @@ swagger:
 logging:
     loggers:
         org.hibernate.SQL: ALL
+
+httpClient:
+    timeout: 1s
