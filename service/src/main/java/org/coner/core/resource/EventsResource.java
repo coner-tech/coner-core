@@ -92,7 +92,7 @@ public class EventsResource {
         EventAddPayload addPayload = eventMapper.toDomainAddPayload(request);
         Event domainEntity = eventEntityService.add(addPayload);
         EventApiEntity eventApiEntity = eventMapper.toApiEntity(domainEntity);
-        return Response.created(UriBuilder.fromMethod(EventsResource.class, "getEvent")
+        return Response.created(UriBuilder.fromPath("/events/{eventId}")
                 .build(eventApiEntity.getId()))
                 .build();
     }

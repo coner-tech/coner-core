@@ -28,6 +28,7 @@ import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -101,6 +102,7 @@ public class EventsResourceTest {
         verifyNoMoreInteractions(eventEntityService);
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        assertThat(response.getHeaderString(HttpHeader.LOCATION.asString())).contains("/events/");
     }
 
     @Test
