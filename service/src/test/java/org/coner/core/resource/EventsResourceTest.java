@@ -1,5 +1,6 @@
 package org.coner.core.resource;
 
+import static org.coner.core.util.TestConstants.EVENT_ID;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -15,14 +16,17 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.api.Assertions;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.ApiEntityTestUtils;
+import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -37,18 +41,19 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class EventsResourceTest {
 
-    private final EventEntityService conerCoreService = mock(EventEntityService.class);
+    private final EventEntityService eventEntityService = mock(EventEntityService.class);
     private final EventMapper eventMapper = mock(EventMapper.class);
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new EventsResource(conerCoreService, eventMapper))
+            .addResource(new EventsResource(eventEntityService, eventMapper))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        reset(eventMapper, conerCoreService);
+        reset(eventMapper, eventEntityService);
 
         objectMapper = Jackson.newObjectMapper();
         JacksonUtil.configureObjectMapper(objectMapper);
@@ -57,14 +62,14 @@ public class EventsResourceTest {
     @Test
     public void itShouldGetEvents() {
         List<Event> domainEvents = new ArrayList<>();
-        when(conerCoreService.getAll()).thenReturn(domainEvents);
+        when(eventEntityService.getAll()).thenReturn(domainEvents);
 
         GetEventsResponse response = resources.client()
                 .target("/events")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(GetEventsResponse.class);
 
-        verify(conerCoreService).getAll();
+        verify(eventEntityService).getAll();
         verify(eventMapper).toApiEntityList(domainEvents);
         assertThat(response)
                 .isNotNull();
@@ -83,7 +88,7 @@ public class EventsResourceTest {
         EventAddPayload addPayload = mock(EventAddPayload.class);
         when(eventMapper.toDomainAddPayload(requestEvent)).thenReturn(addPayload);
         Event domainEntity = mock(Event.class);
-        when(conerCoreService.add(addPayload)).thenReturn(domainEntity);
+        when(eventEntityService.add(addPayload)).thenReturn(domainEntity);
         EventApiEntity apiEntity = ApiEntityTestUtils.fullEvent();
         when(eventMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
@@ -92,8 +97,8 @@ public class EventsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(conerCoreService).add(addPayload);
-        verifyNoMoreInteractions(conerCoreService);
+        verify(eventEntityService).add(addPayload);
+        verifyNoMoreInteractions(eventEntityService);
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
     }
@@ -116,7 +121,7 @@ public class EventsResourceTest {
         assertThat(validationErrorMessage.getErrors())
                 .isNotEmpty()
                 .contains("name may not be empty");
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(eventEntityService);
     }
 
     @Test
@@ -138,6 +143,51 @@ public class EventsResourceTest {
                 .isNotEmpty()
                 .contains("date may not be null");
 
-        verifyZeroInteractions(conerCoreService);
+        verifyZeroInteractions(eventEntityService);
+    }
+
+    @Test
+    public void itShouldGetEvent() throws EntityNotFoundException {
+        Event domainEvent = DomainEntityTestUtils.fullEvent();
+        EventApiEntity apiEvent = ApiEntityTestUtils.fullEvent();
+
+        // sanity check test
+        Assertions.assertThat(domainEvent.getId()).isSameAs(EVENT_ID);
+        Assertions.assertThat(apiEvent.getId()).isSameAs(EVENT_ID);
+
+        when(eventEntityService.getById(EVENT_ID)).thenReturn(domainEvent);
+        when(eventMapper.toApiEntity(domainEvent)).thenReturn(apiEvent);
+
+        Response getEventResponseContainer = resources.client()
+                .target("/events/" + EVENT_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(eventEntityService).getById(EVENT_ID);
+        verify(eventMapper).toApiEntity(domainEvent);
+        verifyNoMoreInteractions(eventEntityService, eventMapper);
+
+        Assertions.assertThat(getEventResponseContainer).isNotNull();
+        Assertions.assertThat(getEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+
+        EventApiEntity getEventResponse = getEventResponseContainer.readEntity(EventApiEntity.class);
+        Assertions.assertThat(getEventResponse)
+                .isNotNull()
+                .isEqualTo(apiEvent);
+    }
+
+    @Test
+    public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() throws EntityNotFoundException {
+        when(eventEntityService.getById(EVENT_ID)).thenThrow(EntityNotFoundException.class);
+
+        Response response = resources.client()
+                .target("/events/" + EVENT_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(eventEntityService).getById(EVENT_ID);
+        verifyNoMoreInteractions(eventEntityService);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 }

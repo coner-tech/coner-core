@@ -59,7 +59,6 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
     ) throws Exception {
         initComponents();
         JerseyEnvironment jersey = environment.jersey();
-        jersey.register(components.eventResource());
         jersey.register(components.eventsResource());
         jersey.register(components.eventRegistrationResource());
         jersey.register(components.eventRegistrationsResource());
