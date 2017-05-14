@@ -2,7 +2,6 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
-import org.coner.core.resource.CompetitionGroupSetResource;
 import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
 import org.coner.core.resource.DomainServiceExceptionMapper;
@@ -53,12 +52,6 @@ public class MockitoJerseyRegistrationModule {
     @Singleton
     public CompetitionGroupsResource getCompetitionGroupsResource() {
         return Mockito.mock(CompetitionGroupsResource.class);
-    }
-
-    @Provides
-    @Singleton
-    public CompetitionGroupSetResource getCompetitionGroupSetResource() {
-        return Mockito.mock(CompetitionGroupSetResource.class);
     }
 
     @Provides

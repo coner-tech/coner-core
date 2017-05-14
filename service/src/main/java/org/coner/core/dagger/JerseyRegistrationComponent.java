@@ -2,7 +2,6 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
-import org.coner.core.resource.CompetitionGroupSetResource;
 import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
 import org.coner.core.resource.DomainServiceExceptionMapper;
@@ -24,7 +23,6 @@ public interface JerseyRegistrationComponent {
     HandicapGroupsResource handicapGroupsResource();
     HandicapGroupSetsResource handicapGroupSetsResource();
     CompetitionGroupsResource competitionGroupsResource();
-    CompetitionGroupSetResource competitionGroupSetResource();
     CompetitionGroupSetsResource competitionGroupSetsResource();
 
     // Exception Mappers

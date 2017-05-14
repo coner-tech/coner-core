@@ -98,7 +98,6 @@ public class ConerCoreApplicationTest {
                 components.handicapGroupsResource(),
                 components.handicapGroupSetsResource(),
                 components.competitionGroupsResource(),
-                components.competitionGroupSetResource(),
                 components.competitionGroupSetsResource(),
                 components.domainServiceExceptionMapper()
         };
