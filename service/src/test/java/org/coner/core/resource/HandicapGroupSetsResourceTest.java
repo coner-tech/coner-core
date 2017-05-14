@@ -19,6 +19,7 @@ import org.coner.core.mapper.HandicapGroupSetMapper;
 import org.coner.core.util.JacksonUtil;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,6 +43,7 @@ public class HandicapGroupSetsResourceTest {
                     handicapGroupSetService,
                     handicapGroupSetMapper
             ))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
 
     @Before
@@ -57,7 +59,8 @@ public class HandicapGroupSetsResourceTest {
         Response response = postHandicapGroupSet();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
-        assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
+        assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
+                .containsSequence("/handicapGroups/sets/", TestConstants.HANDICAP_GROUP_SET_ID);
         assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(TestConstants.HANDICAP_GROUP_SET_ID);
     }
 
