@@ -97,7 +97,6 @@ public class ConerCoreApplicationTest {
                 components.handicapGroupResource(),
                 components.handicapGroupsResource(),
                 components.handicapGroupSetsResource(),
-                components.competitionGroupResource(),
                 components.competitionGroupsResource(),
                 components.competitionGroupSetResource(),
                 components.competitionGroupSetsResource(),

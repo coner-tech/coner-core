@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,12 +21,14 @@ import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,7 +82,7 @@ public class CompetitionGroupsResource {
         CompetitionGroupAddPayload addPayload = competitionGroupMapper.toDomainAddPayload(request);
         CompetitionGroup domainEntity = competitionGroupEntityService.add(addPayload);
         CompetitionGroupApiEntity entity = competitionGroupMapper.toApiEntity(domainEntity);
-        return Response.created(UriBuilder.fromResource(CompetitionGroupResource.class)
+        return Response.created(UriBuilder.fromPath("/competitionGroups/{competitionGroupId}")
                 .build(entity.getId()))
                 .build();
     }
@@ -92,5 +95,21 @@ public class CompetitionGroupsResource {
         GetCompetitionGroupsResponse response = new GetCompetitionGroupsResponse();
         response.setEntities(competitionGroupMapper.toApiEntityList(domainCompetitionGroups));
         return response;
+    }
+
+
+    @GET
+    @Path("/{competitionGroupId}")
+    @UnitOfWork
+    @ApiOperation(value = "Get a Competition Group", response = CompetitionGroupApiEntity.class)
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroupApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found")
+    })
+    public CompetitionGroupApiEntity getCompetitionGroup(
+            @PathParam("competitionGroupId") @ApiParam(value = "Competition Group ID", required = true) String id
+    ) throws EntityNotFoundException {
+        CompetitionGroup domainEntity = competitionGroupEntityService.getById(id);
+        return competitionGroupMapper.toApiEntity(domainEntity);
     }
 }

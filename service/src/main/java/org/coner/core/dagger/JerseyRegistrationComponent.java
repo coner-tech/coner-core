@@ -2,7 +2,6 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
-import org.coner.core.resource.CompetitionGroupResource;
 import org.coner.core.resource.CompetitionGroupSetResource;
 import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
@@ -24,7 +23,6 @@ public interface JerseyRegistrationComponent {
     HandicapGroupResource handicapGroupResource();
     HandicapGroupsResource handicapGroupsResource();
     HandicapGroupSetsResource handicapGroupSetsResource();
-    CompetitionGroupResource competitionGroupResource();
     CompetitionGroupsResource competitionGroupsResource();
     CompetitionGroupSetResource competitionGroupSetResource();
     CompetitionGroupSetsResource competitionGroupSetsResource();

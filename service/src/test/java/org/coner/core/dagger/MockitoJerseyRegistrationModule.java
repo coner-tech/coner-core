@@ -2,7 +2,6 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
-import org.coner.core.resource.CompetitionGroupResource;
 import org.coner.core.resource.CompetitionGroupSetResource;
 import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
@@ -48,12 +47,6 @@ public class MockitoJerseyRegistrationModule {
     @Singleton
     public HandicapGroupSetsResource getHandicapGroupSetsResource() {
         return Mockito.mock(HandicapGroupSetsResource.class);
-    }
-
-    @Provides
-    @Singleton
-    public CompetitionGroupResource getCompetitionGroupResource() {
-        return Mockito.mock(CompetitionGroupResource.class);
     }
 
     @Provides
