@@ -94,7 +94,6 @@ public class ConerCoreApplicationTest {
         Object[] expectedComponents = {
                 components.eventsResource(),
                 components.eventRegistrationsResource(),
-                components.handicapGroupResource(),
                 components.handicapGroupsResource(),
                 components.handicapGroupSetsResource(),
                 components.competitionGroupsResource(),

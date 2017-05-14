@@ -17,17 +17,20 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.api.Assertions;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.response.GetHandicapGroupsResponse;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.payload.HandicapGroupAddPayload;
 import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
 import org.coner.core.util.UnitTestUtils;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,6 +53,7 @@ public class HandicapGroupsResourceTest {
                     handicapGroupEntityService,
                     handicapGroupMapper
             ))
+            .addResource(new DomainServiceExceptionMapper())
             .build();
     private ObjectMapper objectMapper;
 
@@ -71,7 +75,8 @@ public class HandicapGroupsResourceTest {
                 .isNotNull();
         assertThat(response.getStatus())
                 .isEqualTo(HttpStatus.CREATED_201);
-        assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
+        Assertions.assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
+                .containsSequence("/handicapGroups/", HANDICAP_GROUP_ID);
         assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(HANDICAP_GROUP_ID);
 
         verify(handicapGroupEntityService).add(any(HandicapGroupAddPayload.class));
@@ -176,6 +181,52 @@ public class HandicapGroupsResourceTest {
         verifyNoMoreInteractions(handicapGroupEntityService);
 
         return response;
+    }
+
+    @Test
+    public void itShouldGetHandicapGroup() throws EntityNotFoundException {
+        HandicapGroup domainHandicapGroup = DomainEntityTestUtils.fullHandicapGroup();
+        HandicapGroupApiEntity handicapGroupApiEntity = ApiEntityTestUtils.fullHandicapGroup();
+
+        // sanity check test
+        Assertions.assertThat(domainHandicapGroup.getId()).isSameAs(HANDICAP_GROUP_ID);
+        Assertions.assertThat(handicapGroupApiEntity.getId()).isSameAs(HANDICAP_GROUP_ID);
+
+        when(handicapGroupEntityService.getById(HANDICAP_GROUP_ID)).thenReturn(domainHandicapGroup);
+        when(handicapGroupMapper.toApiEntity(domainHandicapGroup)).thenReturn(handicapGroupApiEntity);
+
+        Response responseContainer = resources.client()
+                .target("/handicapGroups/" + HANDICAP_GROUP_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(handicapGroupEntityService).getById(HANDICAP_GROUP_ID);
+        verify(handicapGroupMapper).toApiEntity(domainHandicapGroup);
+        verifyNoMoreInteractions(handicapGroupEntityService, handicapGroupMapper);
+
+        Assertions.assertThat(responseContainer).isNotNull();
+        Assertions.assertThat(responseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+
+        HandicapGroupApiEntity getHandicapGroupResponse = responseContainer.readEntity(HandicapGroupApiEntity.class);
+        Assertions.assertThat(getHandicapGroupResponse)
+                .isNotNull()
+                .isEqualTo(handicapGroupApiEntity);
+    }
+
+    @Test
+    public void itShouldRespondWithNotFoundWhenHandicapGroupNotFound() throws EntityNotFoundException {
+        when(handicapGroupEntityService.getById(HANDICAP_GROUP_ID)).thenThrow(EntityNotFoundException.class);
+
+        Response response = resources.client()
+                .target("/handicapGroups/" + HANDICAP_GROUP_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(handicapGroupEntityService).getById(HANDICAP_GROUP_ID);
+        verifyNoMoreInteractions(handicapGroupEntityService);
+        verifyZeroInteractions(handicapGroupMapper);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 
 }

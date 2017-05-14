@@ -7,7 +7,6 @@ import org.coner.core.resource.CompetitionGroupsResource;
 import org.coner.core.resource.DomainServiceExceptionMapper;
 import org.coner.core.resource.EventRegistrationsResource;
 import org.coner.core.resource.EventsResource;
-import org.coner.core.resource.HandicapGroupResource;
 import org.coner.core.resource.HandicapGroupSetsResource;
 import org.coner.core.resource.HandicapGroupsResource;
 
@@ -19,7 +18,6 @@ public interface JerseyRegistrationComponent {
     // Resources
     EventsResource eventsResource();
     EventRegistrationsResource eventRegistrationsResource();
-    HandicapGroupResource handicapGroupResource();
     HandicapGroupsResource handicapGroupsResource();
     HandicapGroupSetsResource handicapGroupSetsResource();
     CompetitionGroupsResource competitionGroupsResource();
