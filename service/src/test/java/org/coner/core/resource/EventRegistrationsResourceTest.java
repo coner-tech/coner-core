@@ -110,8 +110,7 @@ public class EventRegistrationsResourceTest {
                 .isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
-                .containsSequence("/events/", eventId, "/registrations/")
-                .doesNotEndWith("registrations");
+                .containsSequence("/events/", eventId, "/registrations/", TestConstants.REGISTRATION_ID);
     }
 
     @Test

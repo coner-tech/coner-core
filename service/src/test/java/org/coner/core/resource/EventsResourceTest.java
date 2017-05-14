@@ -1,7 +1,7 @@
 package org.coner.core.resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.coner.core.util.TestConstants.EVENT_ID;
-import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -16,7 +16,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.assertj.core.api.Assertions;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
@@ -28,6 +27,7 @@ import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
+import org.coner.core.util.TestConstants;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -102,7 +102,8 @@ public class EventsResourceTest {
         verifyNoMoreInteractions(eventEntityService);
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
-        assertThat(response.getHeaderString(HttpHeader.LOCATION.asString())).contains("/events/");
+        assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
+                .containsSequence("/events/", TestConstants.EVENT_ID);
     }
 
     @Test
@@ -154,8 +155,8 @@ public class EventsResourceTest {
         EventApiEntity apiEvent = ApiEntityTestUtils.fullEvent();
 
         // sanity check test
-        Assertions.assertThat(domainEvent.getId()).isSameAs(EVENT_ID);
-        Assertions.assertThat(apiEvent.getId()).isSameAs(EVENT_ID);
+        assertThat(domainEvent.getId()).isSameAs(EVENT_ID);
+        assertThat(apiEvent.getId()).isSameAs(EVENT_ID);
 
         when(eventEntityService.getById(EVENT_ID)).thenReturn(domainEvent);
         when(eventMapper.toApiEntity(domainEvent)).thenReturn(apiEvent);
@@ -169,11 +170,11 @@ public class EventsResourceTest {
         verify(eventMapper).toApiEntity(domainEvent);
         verifyNoMoreInteractions(eventEntityService, eventMapper);
 
-        Assertions.assertThat(getEventResponseContainer).isNotNull();
-        Assertions.assertThat(getEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        assertThat(getEventResponseContainer).isNotNull();
+        assertThat(getEventResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
 
         EventApiEntity getEventResponse = getEventResponseContainer.readEntity(EventApiEntity.class);
-        Assertions.assertThat(getEventResponse)
+        assertThat(getEventResponse)
                 .isNotNull()
                 .isEqualTo(apiEvent);
     }
@@ -190,6 +191,6 @@ public class EventsResourceTest {
         verify(eventEntityService).getById(EVENT_ID);
         verifyNoMoreInteractions(eventEntityService);
 
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 }
