@@ -1,9 +1,12 @@
 package org.coner.core.resource;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,6 +16,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
+import org.coner.core.api.response.GetHandicapGroupSetsResponse;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.domain.service.HandicapGroupSetService;
@@ -82,5 +86,15 @@ public class HandicapGroupSetsResource {
         return Response.created(UriBuilder.fromPath("/handicapGroups/sets/{handicapGroupSetId}")
                 .build(entity.getId()))
                 .build();
+    }
+
+    @GET
+    @UnitOfWork
+    @ApiOperation(value = "Get all Handicap Group Sets", response = GetHandicapGroupSetsResponse.class)
+    public GetHandicapGroupSetsResponse getHandicapGroupSets() {
+        List<HandicapGroupSet> domainHandicapGroupSets = handicapGroupSetService.getAll();
+        GetHandicapGroupSetsResponse response = new GetHandicapGroupSetsResponse();
+        response.setEntities(handicapGroupSetMapper.toApiEntityList(domainHandicapGroupSets));
+        return response;
     }
 }

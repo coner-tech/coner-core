@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,7 +18,16 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "handicap_group_sets")
+@NamedQueries(
+    @NamedQuery(
+            name = HandicapGroupSetHibernateEntity.QUERY_FIND_ALL,
+            query = "from HandicapGroupSetHibernateEntity"
+    )
+)
 public class HandicapGroupSetHibernateEntity extends HibernateEntity {
+
+    public static final String QUERY_FIND_ALL =
+            "org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity.findAll";
 
     private String id;
     private String name;

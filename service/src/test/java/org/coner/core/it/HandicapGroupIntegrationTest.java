@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
+import org.coner.core.api.response.GetHandicapGroupSetsResponse;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
@@ -111,6 +112,31 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addHandicapGroupSetRequest));
 
         assertThat(addHandicapGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+    }
+
+    @Test
+    public void whenGetAllCompetitionGroupSetsItShouldReturnIt() {
+        URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUP_SETS_PATH)
+                .build();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils
+                .fullAddHandicapGroupSet();
+        addHandicapGroupSetRequest.setHandicapGroupIds(null);
+
+        Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addHandicapGroupSetRequest));
+        assertThat(addHandicapGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+
+        Response getHandicapGroupSetsResponseContainer = client.target(handicapGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+        GetHandicapGroupSetsResponse actual = getHandicapGroupSetsResponseContainer
+                .readEntity(GetHandicapGroupSetsResponse.class);
+        assertThat(actual.getEntities()).isNotEmpty();
+        assertThat(actual.getEntities().get(0).getId()).isNotEmpty();
     }
 
 }
