@@ -115,7 +115,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenGetAllCompetitionGroupSetsItShouldReturnIt() {
+    public void whenGetAllHandicapGroupSetsItShouldReturnIt() {
         URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUP_SETS_PATH)
                 .build();
