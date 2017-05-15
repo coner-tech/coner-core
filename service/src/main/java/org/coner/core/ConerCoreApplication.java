@@ -59,16 +59,11 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
     ) throws Exception {
         initComponents();
         JerseyEnvironment jersey = environment.jersey();
-        jersey.register(components.eventResource());
         jersey.register(components.eventsResource());
-        jersey.register(components.eventRegistrationResource());
         jersey.register(components.eventRegistrationsResource());
-        jersey.register(components.handicapGroupResource());
         jersey.register(components.handicapGroupsResource());
         jersey.register(components.handicapGroupSetsResource());
-        jersey.register(components.competitionGroupResource());
         jersey.register(components.competitionGroupsResource());
-        jersey.register(components.competitionGroupSetResource());
         jersey.register(components.competitionGroupSetsResource());
         jersey.register(components.domainServiceExceptionMapper());
     }
@@ -102,4 +97,3 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         return hibernateBundle;
     }
 }
-

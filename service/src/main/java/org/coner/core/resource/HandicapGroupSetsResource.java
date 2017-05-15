@@ -79,7 +79,7 @@ public class HandicapGroupSetsResource {
         HandicapGroupSetAddPayload addPayload = handicapGroupSetMapper.toDomainAddPayload(request);
         HandicapGroupSet domainEntity = handicapGroupSetService.add(addPayload);
         HandicapGroupSetApiEntity entity = handicapGroupSetMapper.toApiEntity(domainEntity);
-        return Response.created(UriBuilder.fromResource(HandicapGroupSetResource.class)
+        return Response.created(UriBuilder.fromPath("/handicapGroups/sets/{handicapGroupSetId}")
                 .build(entity.getId()))
                 .build();
     }

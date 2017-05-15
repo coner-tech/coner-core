@@ -23,11 +23,14 @@ import org.coner.core.api.response.GetCompetitionGroupsResponse;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.JacksonUtil;
+import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Rule;
@@ -73,7 +76,8 @@ public class CompetitionGroupsResourceTest {
                 .isNotNull();
         assertThat(response.getStatus())
                 .isEqualTo(HttpStatus.CREATED_201);
-        assertThat(response.getHeaders().get("Location").get(0)).isNotNull();
+        assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
+                .containsSequence("/competitionGroups/", COMPETITION_GROUP_ID);
         assertThat(UnitTestUtils.getEntityIdFromResponse(response)).isEqualTo(COMPETITION_GROUP_ID);
     }
 
@@ -188,5 +192,43 @@ public class CompetitionGroupsResourceTest {
         verifyNoMoreInteractions(competitionGroupEntityService);
 
         return response;
+    }
+
+    @Test
+    public void itShouldGetCompetitionGroup() throws Exception {
+        final String competitionGroupId = TestConstants.COMPETITION_GROUP_ID;
+        CompetitionGroup domainEntity = mock(CompetitionGroup.class);
+        when(competitionGroupEntityService.getById(competitionGroupId)).thenReturn(domainEntity);
+        CompetitionGroupApiEntity apiEntity = ApiEntityTestUtils.fullCompetitionGroup();
+        when(competitionGroupMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
+
+        Response competitionGroupResourceContainer = resources.client()
+                .target("/competitionGroups/" + competitionGroupId)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(competitionGroupEntityService).getById(competitionGroupId);
+        verifyNoMoreInteractions(competitionGroupEntityService);
+
+        assertThat(competitionGroupResourceContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        CompetitionGroupApiEntity getCompetitionGroupResponse = competitionGroupResourceContainer.readEntity(
+                CompetitionGroupApiEntity.class
+        );
+        assertThat(getCompetitionGroupResponse).isEqualTo(apiEntity);
+    }
+
+    @Test
+    public void itShouldRespondWithNotFoundWhenCompetitionGroupNotFound() throws Exception {
+        final String competitionGroupId = TestConstants.COMPETITION_GROUP_ID;
+        when(competitionGroupEntityService.getById(competitionGroupId)).thenThrow(EntityNotFoundException.class);
+
+        Response response = resources.client()
+                .target("/competitionGroups/" + competitionGroupId)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .get();
+
+        verify(competitionGroupEntityService).getById(competitionGroupId);
+        verifyNoMoreInteractions(competitionGroupEntityService);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
 }

@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,12 +21,14 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.EventMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
 import org.coner.core.util.swagger.ApiTagConstants;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.errors.ErrorMessage;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -89,8 +92,23 @@ public class EventsResource {
         EventAddPayload addPayload = eventMapper.toDomainAddPayload(request);
         Event domainEntity = eventEntityService.add(addPayload);
         EventApiEntity eventApiEntity = eventMapper.toApiEntity(domainEntity);
-        return Response.created(UriBuilder.fromResource(EventResource.class)
+        return Response.created(UriBuilder.fromPath("/events/{eventId}")
                 .build(eventApiEntity.getId()))
                 .build();
+    }
+
+    @GET
+    @Path("/{eventId}")
+    @UnitOfWork
+    @ApiOperation(value = "Get an Event")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = EventApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found")
+    })
+    public EventApiEntity getEvent(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String id
+    ) throws EntityNotFoundException {
+        Event domainEntity = eventEntityService.getById(id);
+        return eventMapper.toApiEntity(domainEntity);
     }
 }

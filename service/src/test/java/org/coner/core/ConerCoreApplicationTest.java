@@ -92,16 +92,11 @@ public class ConerCoreApplicationTest {
     @Test
     public void itShouldRegisterComponents() throws Exception {
         Object[] expectedComponents = {
-                components.eventResource(),
                 components.eventsResource(),
-                components.eventRegistrationResource(),
                 components.eventRegistrationsResource(),
-                components.handicapGroupResource(),
                 components.handicapGroupsResource(),
                 components.handicapGroupSetsResource(),
-                components.competitionGroupResource(),
                 components.competitionGroupsResource(),
-                components.competitionGroupSetResource(),
                 components.competitionGroupSetsResource(),
                 components.domainServiceExceptionMapper()
         };
