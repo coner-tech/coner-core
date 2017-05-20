@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
@@ -107,7 +106,7 @@ public class CompetitionGroupSetsResource {
     @UnitOfWork
     @ApiOperation(value = "Get a Competition Group Set", response = CompetitionGroupSetApiEntity.class)
     @ApiResponses({
-            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroupApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.OK_200, response = CompetitionGroupSetApiEntity.class, message = "OK"),
             @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found")
     })
     public CompetitionGroupSetApiEntity getCompetitionGroupSet(
