@@ -1,12 +1,13 @@
 # Coner Core
 
-Coner Core is a REST API for autocross event operations.
+Coner Core is a REST API service for autocross event operations.
 
 ## Development Status
 
-As of Q1 2017, Coner Core is undergoing some [refactoring](https://github.com/caeos/coner-core/milestone/1) to simplify some of the original architecture which turned out to be too heavy-handed.
+Coner Core resumed scaffolding in 2017 Q2. The remaining scaffolding work is split into two phases:
 
-The next step will be to resume [scaffolding](https://github.com/caeos/coner-core/milestone/2).
+* [Phase 1](https://github.com/caeos/coner-core/milestone/2) aims to deliver the implement the bare minimum level of functionality in the core service such that UI development can begin
+* [Phase 2](https://github.com/caeos/coner-core/milestone/3) aims to fill in the gaps left in phase 1 such that the UI can reach a bare minimum level of functionality
 
 ## Build, Test, and Run
 
