@@ -25,7 +25,7 @@ public class HandicapGroupSetDao
 
     @Override
     public List<HandicapGroupSetHibernateEntity> findAll() {
-        throw new UnsupportedOperationException();
+        return list(namedQuery(HandicapGroupSetHibernateEntity.QUERY_FIND_ALL));
     }
 
     @Override
