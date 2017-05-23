@@ -30,7 +30,7 @@ public class HsqlDatabaseManagerSwingTask extends Task {
 
     public boolean shouldRegister(Map<String, String> properties) {
         String propertyName = HsqlDatabaseManagerSwingTask.class.getCanonicalName();
-        ok = url.contains(":hsqldb:")
+        ok = url.contains(":hsqldb:mem:")
                 && properties.containsKey(propertyName)
                 && "true".equals(properties.get(propertyName));
         return ok;
