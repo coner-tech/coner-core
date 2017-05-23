@@ -1,7 +1,9 @@
 package org.coner.core;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.setup.AdminEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -47,6 +50,8 @@ public class ConerCoreApplicationTest {
     private Environment environment;
     @Mock
     private JerseyEnvironment jersey;
+    @Mock
+    private AdminEnvironment adminEnvironment;
 
     @InjectMocks
     private ConerCoreApplication application;
@@ -55,9 +60,10 @@ public class ConerCoreApplicationTest {
     public void setup() {
         // initialize method
         when(bootstrap.getObjectMapper()).thenReturn(objectMapper);
-
+        when(config.getDataSourceFactory()).thenReturn(dataSourceFactory);
         // run method
         when(environment.jersey()).thenReturn(jersey);
+        when(environment.admin()).thenReturn(adminEnvironment);
 
         components = DaggerMockitoJerseyRegistrationComponent.builder()
                 .mockitoJerseyRegistrationModule(new MockitoJerseyRegistrationModule())
@@ -105,5 +111,30 @@ public class ConerCoreApplicationTest {
 
         Arrays.stream(expectedComponents).forEach(o -> verify(jersey).register(o));
         verifyNoMoreInteractions(jersey);
+    }
+
+    @Test
+    public void itShouldConsultHsqlDatabaseManagerTaskForRegistration() throws Exception {
+        application.run(config, environment);
+
+        verify(components.hsqlDatabaseManagerSwingTask()).shouldRegister(anyMap());
+    }
+
+    @Test
+    public void whenHsqlDatabaseManagerTaskDeclinesItShouldNeverRegister() throws Exception {
+        when(components.hsqlDatabaseManagerSwingTask().shouldRegister(anyMap())).thenReturn(false);
+
+        application.run(config, environment);
+
+        verify(environment.admin(), never()).addTask(components.hsqlDatabaseManagerSwingTask());
+    }
+
+    @Test
+    public void whenHsqlDatabaseManagerTaskAcceptsItShouldRegister() throws Exception {
+        when(components.hsqlDatabaseManagerSwingTask().shouldRegister(anyMap())).thenReturn(true);
+
+        application.run(config, environment);
+
+        verify(environment.admin()).addTask(components.hsqlDatabaseManagerSwingTask());
     }
 }

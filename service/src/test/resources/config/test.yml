@@ -12,6 +12,7 @@ database:
     properties:
         hibernate.dialect: org.hibernate.dialect.HSQLDialect
         hibernate.hbm2ddl.auto: create
+        org.coner.core.task.HsqlDatabaseManagerSwingTask: false
 
 # Swagger settings
 swagger:
