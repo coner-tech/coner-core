@@ -6,10 +6,12 @@ import org.coner.core.dagger.ConerModule;
 import org.coner.core.dagger.DaggerJerseyRegistrationComponent;
 import org.coner.core.dagger.JerseyRegistrationComponent;
 import org.coner.core.hibernate.entity.HibernateEntity;
+import org.coner.core.task.HsqlDatabaseManagerSwingTask;
 import org.coner.core.util.JacksonUtil;
 import org.reflections.Reflections;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -57,7 +59,7 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
             ConerCoreConfiguration conerCoreConfiguration,
             Environment environment
     ) throws Exception {
-        initComponents();
+        initComponents(conerCoreConfiguration);
         JerseyEnvironment jersey = environment.jersey();
         jersey.register(components.eventsResource());
         jersey.register(components.eventRegistrationsResource());
@@ -66,13 +68,18 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         jersey.register(components.competitionGroupsResource());
         jersey.register(components.competitionGroupSetsResource());
         jersey.register(components.domainServiceExceptionMapper());
+
+        optionallyRegisterHsqlDatabaseManagerSwingTask(environment, conerCoreConfiguration);
     }
 
-    private void initComponents() {
+    private void initComponents(ConerCoreConfiguration conerCoreConfiguration) {
         if (components != null) {
             return;
         }
-        ConerModule conerModule = new ConerModule(getHibernateBundle().getSessionFactory());
+        ConerModule conerModule = new ConerModule(
+                conerCoreConfiguration,
+                getHibernateBundle().getSessionFactory()
+        );
         components = DaggerJerseyRegistrationComponent.builder()
                 .conerModule(conerModule)
                 .build();
@@ -96,4 +103,17 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         }
         return hibernateBundle;
     }
+
+    private void optionallyRegisterHsqlDatabaseManagerSwingTask(
+            Environment environment,
+            ConerCoreConfiguration conerCoreConfiguration
+    ) {
+        HsqlDatabaseManagerSwingTask task = components.hsqlDatabaseManagerSwingTask();
+        if (task.shouldRegister(
+                ImmutableMap.copyOf(conerCoreConfiguration.getDataSourceFactory().getProperties())
+        )) {
+            environment.admin().addTask(task);
+        }
+    }
+
 }
