@@ -98,7 +98,7 @@ public final class ApiEntityTestUtils {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
-                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name(),
                 TestConstants.COMPETITION_GROUP_GROUPING
         );
@@ -114,7 +114,7 @@ public final class ApiEntityTestUtils {
         CompetitionGroupApiEntity competitionGroup = new CompetitionGroupApiEntity();
         competitionGroup.setId(id);
         competitionGroup.setName(name);
-        competitionGroup.setHandicapFactor(handicapFactor);
+        competitionGroup.setFactor(handicapFactor);
         competitionGroup.setResultTimeType(resultTimeType);
         competitionGroup.setGrouping(grouping);
         return competitionGroup;

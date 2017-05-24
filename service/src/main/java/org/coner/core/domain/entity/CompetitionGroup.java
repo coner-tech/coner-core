@@ -9,7 +9,7 @@ public class CompetitionGroup extends DomainEntity {
 
     private String id;
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
     private boolean grouping;
     private ResultTimeType resultTimeType;
 
@@ -29,12 +29,12 @@ public class CompetitionGroup extends DomainEntity {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     public boolean isGrouping() {

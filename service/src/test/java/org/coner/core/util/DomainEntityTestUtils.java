@@ -95,7 +95,7 @@ public final class DomainEntityTestUtils {
         return fullCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
-                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_GROUPING,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE
         );
@@ -111,7 +111,7 @@ public final class DomainEntityTestUtils {
         CompetitionGroup domainCompetitionGroup = new CompetitionGroup();
         domainCompetitionGroup.setId(id);
         domainCompetitionGroup.setName(name);
-        domainCompetitionGroup.setHandicapFactor(factor);
+        domainCompetitionGroup.setFactor(factor);
         domainCompetitionGroup.setGrouping(grouping);
         domainCompetitionGroup.setResultTimeType(resultTimeType);
         return domainCompetitionGroup;
