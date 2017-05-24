@@ -33,7 +33,7 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
 
     private String id;
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
     private Set<HandicapGroupSetHibernateEntity> handicapGroupSets;
 
     @Id
@@ -56,13 +56,13 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
         this.name = name;
     }
 
-    @Column(name = "handicap_factor")
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    @Column(name = "factor", precision = 4, scale = 3)
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

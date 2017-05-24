@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class HandicapGroupAddPayload extends DomainAddPayload {
 
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
 
     public String getName() {
         return name;
@@ -18,12 +18,12 @@ public class HandicapGroupAddPayload extends DomainAddPayload {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     @Override

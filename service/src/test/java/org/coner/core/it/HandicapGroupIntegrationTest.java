@@ -33,7 +33,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddHandicapGroupRequest addHandicapGroupRequest = ApiRequestTestUtils.fullAddHandicapGroup();
         addHandicapGroupRequest.setName(TestConstants.HANDICAP_GROUP_NAME);
-        addHandicapGroupRequest.setHandicapFactor(TestConstants.HANDICAP_GROUP_FACTOR);
+        addHandicapGroupRequest.setFactor(TestConstants.HANDICAP_GROUP_FACTOR);
 
         Response addHandicapGroupResponseContainer = client.target(handicapGroupsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -66,7 +66,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddHandicapGroupRequest addHandicapGroupRequest = ApiRequestTestUtils.fullAddHandicapGroup();
         addHandicapGroupRequest.setName(null);
-        addHandicapGroupRequest.setHandicapFactor(null);
+        addHandicapGroupRequest.setFactor(null);
 
         Response addHandicapGroupResponseContainer = client.target(handicapGroupsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

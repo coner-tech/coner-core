@@ -87,7 +87,7 @@ public final class ApiRequestTestUtils {
     ) {
         AddHandicapGroupRequest addHandicapGroupRequest = new AddHandicapGroupRequest();
         addHandicapGroupRequest.setName(name);
-        addHandicapGroupRequest.setHandicapFactor(factor);
+        addHandicapGroupRequest.setFactor(factor);
         return addHandicapGroupRequest;
     }
 
