@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class HandicapGroup extends DomainEntity {
     private String id;
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
 
     public String getId() {
         return id;
@@ -26,12 +26,12 @@ public class HandicapGroup extends DomainEntity {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     @Override

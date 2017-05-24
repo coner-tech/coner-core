@@ -17,7 +17,7 @@ public class AddHandicapGroupRequest {
     @NotNull
     @DecimalMin("0.000")
     @DecimalMax("1.000")
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
 
     public String getName() {
         return name;
@@ -27,12 +27,12 @@ public class AddHandicapGroupRequest {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     @Override

@@ -67,7 +67,7 @@ public final class DomainEntityTestUtils {
         HandicapGroup handicapGroup = new HandicapGroup();
         handicapGroup.setId(id);
         handicapGroup.setName(name);
-        handicapGroup.setHandicapFactor(factor);
+        handicapGroup.setFactor(factor);
         return handicapGroup;
     }
 

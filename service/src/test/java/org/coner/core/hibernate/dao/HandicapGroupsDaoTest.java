@@ -44,6 +44,6 @@ public class HandicapGroupsDaoTest extends AbstractDaoTest {
 
         // assert
         assertThat(outEntity).isNotSameAs(inEntity);
-        assertThat(outEntity.getHandicapFactor()).isEqualTo(TestConstants.HANDICAP_GROUP_FACTOR);
+        assertThat(outEntity.getFactor()).isEqualTo(TestConstants.HANDICAP_GROUP_FACTOR);
     }
 }

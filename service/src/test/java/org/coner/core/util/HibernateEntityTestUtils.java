@@ -46,7 +46,7 @@ public final class HibernateEntityTestUtils {
         HandicapGroupHibernateEntity handicapGroup = new HandicapGroupHibernateEntity();
         handicapGroup.setId(id);
         handicapGroup.setName(name);
-        handicapGroup.setHandicapFactor(factor);
+        handicapGroup.setFactor(factor);
         return handicapGroup;
     }
 

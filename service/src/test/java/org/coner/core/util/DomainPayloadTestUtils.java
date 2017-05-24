@@ -52,7 +52,7 @@ public final class DomainPayloadTestUtils {
     ) {
         HandicapGroupAddPayload handicapGroupAddPayload = new HandicapGroupAddPayload();
         handicapGroupAddPayload.setName(name);
-        handicapGroupAddPayload.setHandicapFactor(handicapFactor);
+        handicapGroupAddPayload.setFactor(handicapFactor);
         return handicapGroupAddPayload;
     }
 

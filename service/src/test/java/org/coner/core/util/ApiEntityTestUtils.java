@@ -70,7 +70,7 @@ public final class ApiEntityTestUtils {
         HandicapGroupApiEntity handicapGroup = new HandicapGroupApiEntity();
         handicapGroup.setId(id);
         handicapGroup.setName(name);
-        handicapGroup.setHandicapFactor(factor);
+        handicapGroup.setFactor(factor);
         return handicapGroup;
     }
 
