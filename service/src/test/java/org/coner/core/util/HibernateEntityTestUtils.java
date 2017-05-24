@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
+import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
@@ -69,4 +70,32 @@ public final class HibernateEntityTestUtils {
         handicapGroupSet.setHandicapGroups(handicapGroups);
         return handicapGroupSet;
     }
+
+    public static CompetitionGroupHibernateEntity fullCompetitionGroup() {
+        return fullCompetitionGroup(
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.COMPETITION_GROUP_NAME,
+                TestConstants.COMPETITION_GROUP_GROUPING,
+                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name()
+        );
+
+    }
+
+    public static CompetitionGroupHibernateEntity fullCompetitionGroup(
+            String id,
+            String name,
+            boolean grouping,
+            BigDecimal handicapFactor,
+            String resultTimeType
+    ) {
+        CompetitionGroupHibernateEntity competitionGroup = new CompetitionGroupHibernateEntity();
+        competitionGroup.setId(id);
+        competitionGroup.setName(name);
+        competitionGroup.setGrouping(grouping);
+        competitionGroup.setHandicapFactor(handicapFactor);
+        competitionGroup.setResultTimeType(resultTimeType);
+        return competitionGroup;
+    }
+
 }
