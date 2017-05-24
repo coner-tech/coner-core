@@ -3,6 +3,7 @@ package org.coner.core.hibernate.entity;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -55,6 +56,7 @@ public class HandicapGroupSetHibernateEntity extends HibernateEntity {
     }
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "handicapGroupSets")
+    @ElementCollection(targetClass = HandicapGroupHibernateEntity.class)
     public Set<HandicapGroupHibernateEntity> getHandicapGroups() {
         return handicapGroups;
     }

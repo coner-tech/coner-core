@@ -30,6 +30,6 @@ public class HandicapGroupSetDao
 
     @Override
     public HandicapGroupSetHibernateEntity findById(String id) {
-        throw new UnsupportedOperationException();
+        return get(id);
     }
 }

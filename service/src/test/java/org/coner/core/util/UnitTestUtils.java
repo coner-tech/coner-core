@@ -16,4 +16,5 @@ public final class UnitTestUtils {
         String location = (String) response.getHeaders().get("Location").get(0);
         return StringUtils.substringAfterLast(location, "/");
     }
+
 }
