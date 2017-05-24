@@ -33,7 +33,7 @@ public final class TestConstants {
     // CompetitionGroup
     public static final String COMPETITION_GROUP_ID = "competition-group-test-id";
     public static final String COMPETITION_GROUP_NAME = "competition-group-name";
-    public static final BigDecimal COMPETITION_GROUP_HANDICAP_FACTOR = BigDecimal.valueOf(0.876d);
+    public static final BigDecimal COMPETITION_GROUP_FACTOR = BigDecimal.valueOf(0.876d);
     public static final CompetitionGroup.ResultTimeType COMPETITION_GROUP_RESULT_TIME_TYPE =
             CompetitionGroup.ResultTimeType.RAW;
     public static final boolean COMPETITION_GROUP_GROUPING = true;

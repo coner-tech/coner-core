@@ -38,7 +38,7 @@ public final class ApiRequestTestUtils {
         return fullAddCompetitionGroup(
                 TestConstants.COMPETITION_GROUP_NAME,
                 TestConstants.COMPETITION_GROUP_GROUPING,
-                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE
         );
     }
@@ -52,7 +52,7 @@ public final class ApiRequestTestUtils {
         AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
         addCompetitionGroupRequest.setName(name);
         addCompetitionGroupRequest.setGrouping(grouping);
-        addCompetitionGroupRequest.setHandicapFactor(handicapFactor);
+        addCompetitionGroupRequest.setFactor(handicapFactor);
         addCompetitionGroupRequest.setResultTimeType(resultTimeType.name());
         return addCompetitionGroupRequest;
     }

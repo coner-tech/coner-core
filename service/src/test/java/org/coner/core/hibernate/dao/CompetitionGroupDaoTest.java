@@ -44,6 +44,6 @@ public class CompetitionGroupDaoTest extends AbstractDaoTest {
 
         // assert
         assertThat(outEntity).isNotSameAs(inEntity);
-        assertThat(outEntity.getHandicapFactor()).isEqualTo(TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR);
+        assertThat(outEntity.getFactor()).isEqualTo(TestConstants.COMPETITION_GROUP_FACTOR);
     }
 }

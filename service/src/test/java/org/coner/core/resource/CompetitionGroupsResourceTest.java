@@ -98,7 +98,7 @@ public class CompetitionGroupsResourceTest {
         ValidationErrorMessage errorsResponse = response.readEntity(ValidationErrorMessage.class);
         assertThat(errorsResponse.getErrors())
                 .isNotEmpty()
-                .contains("handicapFactor must be less than or equal to 1.000");
+                .contains("factor must be less than or equal to 1.000");
         verifyZeroInteractions(competitionGroupEntityService);
     }
 

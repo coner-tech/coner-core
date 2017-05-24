@@ -16,7 +16,7 @@ public class AddCompetitionGroupRequest {
     @NotNull
     @DecimalMin("0.000")
     @DecimalMax("1.000")
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
     @NotNull
     private Boolean grouping;
     @NotBlank
@@ -30,12 +30,12 @@ public class AddCompetitionGroupRequest {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     public Boolean getGrouping() {

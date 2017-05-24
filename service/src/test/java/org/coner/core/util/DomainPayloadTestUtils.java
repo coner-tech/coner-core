@@ -80,7 +80,7 @@ public final class DomainPayloadTestUtils {
         return fullCompetitionGroupAdd(
                 TestConstants.COMPETITION_GROUP_NAME,
                 TestConstants.COMPETITION_GROUP_GROUPING,
-                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name()
         );
     }
@@ -94,7 +94,7 @@ public final class DomainPayloadTestUtils {
         CompetitionGroupAddPayload competitionGroupAddPayload = new CompetitionGroupAddPayload();
         competitionGroupAddPayload.setName(name);
         competitionGroupAddPayload.setGrouping(grouping);
-        competitionGroupAddPayload.setHandicapFactor(handicapFactor);
+        competitionGroupAddPayload.setFactor(handicapFactor);
         competitionGroupAddPayload.setResultTimeType(resultTimeType);
         return competitionGroupAddPayload;
     }

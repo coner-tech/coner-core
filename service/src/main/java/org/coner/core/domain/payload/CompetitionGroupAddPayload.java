@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class CompetitionGroupAddPayload extends DomainAddPayload {
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
     private Boolean grouping;
     private String resultTimeType;
 
@@ -19,12 +19,12 @@ public class CompetitionGroupAddPayload extends DomainAddPayload {
         this.name = name;
     }
 
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     public Boolean getGrouping() {

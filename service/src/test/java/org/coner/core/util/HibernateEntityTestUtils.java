@@ -76,7 +76,7 @@ public final class HibernateEntityTestUtils {
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_NAME,
                 TestConstants.COMPETITION_GROUP_GROUPING,
-                TestConstants.COMPETITION_GROUP_HANDICAP_FACTOR,
+                TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name()
         );
 
@@ -93,7 +93,7 @@ public final class HibernateEntityTestUtils {
         competitionGroup.setId(id);
         competitionGroup.setName(name);
         competitionGroup.setGrouping(grouping);
-        competitionGroup.setHandicapFactor(handicapFactor);
+        competitionGroup.setFactor(handicapFactor);
         competitionGroup.setResultTimeType(resultTimeType);
         return competitionGroup;
     }

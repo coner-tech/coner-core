@@ -35,7 +35,7 @@ public class CompetitionGroupHibernateEntity extends HibernateEntity {
 
     private String id;
     private String name;
-    private BigDecimal handicapFactor;
+    private BigDecimal factor;
     private boolean grouping;
     private String resultTimeType;
     private Set<CompetitionGroupSetHibernateEntity> competitionGroupSets;
@@ -62,12 +62,12 @@ public class CompetitionGroupHibernateEntity extends HibernateEntity {
     }
 
     @Column(name = "handicap_factor", precision = 4, scale = 3)
-    public BigDecimal getHandicapFactor() {
-        return handicapFactor;
+    public BigDecimal getFactor() {
+        return factor;
     }
 
-    public void setHandicapFactor(BigDecimal handicapFactor) {
-        this.handicapFactor = handicapFactor;
+    public void setFactor(BigDecimal factor) {
+        this.factor = factor;
     }
 
     @Column(name = "grouping")
