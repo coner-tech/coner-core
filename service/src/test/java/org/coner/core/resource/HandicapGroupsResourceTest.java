@@ -102,7 +102,7 @@ public class HandicapGroupsResourceTest {
         ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
         assertThat(validationErrorMessage.getErrors())
                 .isNotEmpty()
-                .contains("handicapFactor must be less than or equal to 1.0000");
+                .contains("handicapFactor must be less than or equal to 1.000");
 
         verifyZeroInteractions(handicapGroupEntityService);
     }

@@ -1,7 +1,7 @@
 {
   "id": "competition-group-test-id",
   "name": "competition-group-name",
-  "handicapFactor": 1,
+  "handicapFactor": 0.876,
   "resultTimeType": "RAW",
   "grouping": true
 }

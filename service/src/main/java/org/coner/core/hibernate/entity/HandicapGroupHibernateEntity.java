@@ -56,7 +56,7 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
         this.name = name;
     }
 
-    @Column(name = "handicap_factor")
+    @Column(name = "handicap_factor", precision = 4, scale = 3)
     public BigDecimal getHandicapFactor() {
         return handicapFactor;
     }

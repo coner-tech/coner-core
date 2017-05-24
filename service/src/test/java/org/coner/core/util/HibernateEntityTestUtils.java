@@ -1,8 +1,14 @@
 package org.coner.core.util;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 import org.coner.core.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
+import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
+
+import com.google.common.collect.Sets;
 
 /**
  *
@@ -22,5 +28,45 @@ public final class HibernateEntityTestUtils {
         event.setName(name);
         event.setDate(date);
         return event;
+    }
+
+    public static HandicapGroupHibernateEntity fullHandicapGroup() {
+        return fullHandicapGroup(
+                TestConstants.HANDICAP_GROUP_ID,
+                TestConstants.HANDICAP_GROUP_NAME,
+                TestConstants.HANDICAP_GROUP_FACTOR
+        );
+    }
+
+    public static HandicapGroupHibernateEntity fullHandicapGroup(
+            String id,
+            String name,
+            BigDecimal factor
+    ) {
+        HandicapGroupHibernateEntity handicapGroup = new HandicapGroupHibernateEntity();
+        handicapGroup.setId(id);
+        handicapGroup.setName(name);
+        handicapGroup.setHandicapFactor(factor);
+        return handicapGroup;
+    }
+
+    public static HandicapGroupSetHibernateEntity fullHandicapGroupSet() {
+        return fullHandicapGroupSet(
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.HANDICAP_GROUP_SET_NAME,
+                Sets.newHashSet(fullHandicapGroup())
+        );
+    }
+
+    public static HandicapGroupSetHibernateEntity fullHandicapGroupSet(
+            String id,
+            String name,
+            Set<HandicapGroupHibernateEntity> handicapGroups
+    )  {
+        HandicapGroupSetHibernateEntity handicapGroupSet = new HandicapGroupSetHibernateEntity();
+        handicapGroupSet.setId(id);
+        handicapGroupSet.setName(name);
+        handicapGroupSet.setHandicapGroups(handicapGroups);
+        return handicapGroupSet;
     }
 }
