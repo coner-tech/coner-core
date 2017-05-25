@@ -3,6 +3,7 @@ package org.coner.core.hibernate.entity;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,7 @@ public class CompetitionGroupSetHibernateEntity extends HibernateEntity {
     }
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "competitionGroupSets")
+    @ElementCollection(targetClass = CompetitionGroupHibernateEntity.class)
     public Set<CompetitionGroupHibernateEntity> getCompetitionGroups() {
         return competitionGroups;
     }

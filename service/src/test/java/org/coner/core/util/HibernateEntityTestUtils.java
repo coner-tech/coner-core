@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
+import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
@@ -96,6 +97,26 @@ public final class HibernateEntityTestUtils {
         competitionGroup.setFactor(handicapFactor);
         competitionGroup.setResultTimeType(resultTimeType);
         return competitionGroup;
+    }
+
+    public static CompetitionGroupSetHibernateEntity fullCompetitionGroupSet() {
+        return fullCompetitionGroupSet(
+                TestConstants.COMPETITION_GROUP_SET_ID,
+                TestConstants.COMPETITION_GROUP_SET_NAME,
+                Sets.newHashSet(fullCompetitionGroup())
+        );
+    }
+
+    public static CompetitionGroupSetHibernateEntity fullCompetitionGroupSet(
+            String id,
+            String name,
+            Set<CompetitionGroupHibernateEntity> competitionGroups
+    ) {
+        CompetitionGroupSetHibernateEntity competitionGroupSet = new CompetitionGroupSetHibernateEntity();
+        competitionGroupSet.setId(id);
+        competitionGroupSet.setName(name);
+        competitionGroupSet.setCompetitionGroups(competitionGroups);
+        return competitionGroupSet;
     }
 
 }
