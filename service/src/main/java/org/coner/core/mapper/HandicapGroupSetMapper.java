@@ -8,6 +8,7 @@ import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         uses = {HandicapGroupMapper.class},
@@ -25,6 +26,11 @@ public interface HandicapGroupSetMapper {
     HandicapGroupSetHibernateEntity toHibernateEntity(HandicapGroupSetAddPayload domainAddPayload);
 
     HandicapGroupSetHibernateEntity toHibernateEntity(HandicapGroupSet domainEntity);
+
+    void updateHibernateEntity(
+            HandicapGroupSet domainEntity,
+            @MappingTarget HandicapGroupSetHibernateEntity hibernateEntity
+    );
 
     HandicapGroupSet toDomainEntity(HandicapGroupSetHibernateEntity hibernateEntity);
 

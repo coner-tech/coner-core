@@ -21,6 +21,7 @@ public class HandicapGroupGateway extends MapStructAbstractGateway<
     ) {
         super(
                 mapper::toHibernateEntity,
+                mapper::updateHibernateEntity,
                 mapper::toDomainEntity,
                 mapper::toDomainEntityList,
                 dao

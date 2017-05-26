@@ -18,8 +18,10 @@ import javax.ws.rs.core.UriBuilder;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.api.response.GetHandicapGroupSetsResponse;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
+import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
@@ -46,14 +48,16 @@ public class HandicapGroupSetsResource {
 
     private final HandicapGroupSetService handicapGroupSetService;
     private final HandicapGroupSetMapper handicapGroupSetMapper;
+    private final HandicapGroupEntityService handicapGroupEntityService;
 
     @Inject
     public HandicapGroupSetsResource(
             HandicapGroupSetService handicapGroupSetService,
-            HandicapGroupSetMapper handicapGroupSetMapper
-    ) {
+            HandicapGroupSetMapper handicapGroupSetMapper,
+            HandicapGroupEntityService handicapGroupEntityService) {
         this.handicapGroupSetService = handicapGroupSetService;
         this.handicapGroupSetMapper = handicapGroupSetMapper;
+        this.handicapGroupEntityService = handicapGroupEntityService;
     }
 
     @POST
@@ -115,5 +119,25 @@ public class HandicapGroupSetsResource {
     ) throws EntityNotFoundException {
         HandicapGroupSet domainEntity = handicapGroupSetService.getById(id);
         return handicapGroupSetMapper.toApiEntity(domainEntity);
+    }
+
+    @POST
+    @Path("/{handicapGroupSetId}/handicapGroups/{handicapGroupId}")
+    @UnitOfWork
+    @ApiOperation(value = "Add a Handicap Group to a Handicap Group Set", response = HandicapGroupSetApiEntity.class)
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = HandicapGroupSetApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found"),
+    })
+    public HandicapGroupSetApiEntity addHandicapGroupToHandicapGroupSet(
+            @PathParam("handicapGroupSetId") @ApiParam(value = "Handicap Group Set ID", required = true)
+                    String handicapGroupSetId,
+            @PathParam("handicapGroupId") @ApiParam(value = "Handicap Group ID", required = true)
+                    String handicapGroupId
+    ) throws EntityNotFoundException {
+        HandicapGroupSet domainSetEntity = handicapGroupSetService.getById(handicapGroupSetId);
+        HandicapGroup domainEntity = handicapGroupEntityService.getById(handicapGroupId);
+        handicapGroupSetService.addToHandicapGroups(domainSetEntity, domainEntity);
+        return handicapGroupSetMapper.toApiEntity(domainSetEntity);
     }
 }

@@ -7,11 +7,8 @@ import javax.inject.Inject;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.hibernate.SessionFactory;
 
-import io.dropwizard.hibernate.AbstractDAO;
-
 public class EventDao
-        extends AbstractDAO<EventHibernateEntity>
-        implements HibernateEntityDao<EventHibernateEntity> {
+        extends BaseHibernateEntityDao<EventHibernateEntity> {
 
     @Inject
     public EventDao(SessionFactory sessionFactory) {
@@ -32,4 +29,5 @@ public class EventDao
     public void create(EventHibernateEntity event) {
         persist(event);
     }
+
 }

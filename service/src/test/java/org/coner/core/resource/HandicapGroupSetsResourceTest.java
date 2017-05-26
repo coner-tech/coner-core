@@ -1,6 +1,7 @@
 package org.coner.core.resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.coner.core.util.TestConstants.HANDICAP_GROUP_ID;
 import static org.coner.core.util.TestConstants.HANDICAP_GROUP_SET_ID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -14,8 +15,10 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.HandicapGroupSetAddPayload;
+import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.HandicapGroupSetMapper;
@@ -38,6 +41,7 @@ public class HandicapGroupSetsResourceTest {
 
     HandicapGroupSetService handicapGroupSetService = mock(HandicapGroupSetService.class);
     HandicapGroupSetMapper handicapGroupSetMapper = mock(HandicapGroupSetMapper.class);
+    HandicapGroupEntityService handicapGroupEntityService = mock(HandicapGroupEntityService.class);
 
     private ObjectMapper objectMapper;
 
@@ -45,7 +49,8 @@ public class HandicapGroupSetsResourceTest {
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new HandicapGroupSetsResource(
                     handicapGroupSetService,
-                    handicapGroupSetMapper
+                    handicapGroupSetMapper,
+                    handicapGroupEntityService
             ))
             .addResource(new DomainServiceExceptionMapper())
             .build();
@@ -140,4 +145,25 @@ public class HandicapGroupSetsResourceTest {
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
     }
+
+    @Test
+    public void itShouldAddHandicapGroupToSet() throws EntityNotFoundException {
+        HandicapGroupSet domainSetEntity = DomainEntityTestUtils.fullHandicapGroupSet();
+        HandicapGroup domainEntity = DomainEntityTestUtils.fullHandicapGroup();
+        when(handicapGroupSetService.getById(HANDICAP_GROUP_SET_ID)).thenReturn(domainSetEntity);
+        when(handicapGroupEntityService.getById(HANDICAP_GROUP_ID)).thenReturn(domainEntity);
+        HandicapGroupSetApiEntity apiSetEntity = ApiEntityTestUtils.fullHandicapGroupSet();
+        when(handicapGroupSetMapper.toApiEntity(domainSetEntity)).thenReturn(apiSetEntity);
+
+        Response response = resources.client()
+                .target("/handicapGroups/sets/" + HANDICAP_GROUP_SET_ID + "/handicapGroups/" + HANDICAP_GROUP_ID)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(null);
+
+        verify(handicapGroupSetService).addToHandicapGroups(domainSetEntity, domainEntity);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
+    }
+
 }

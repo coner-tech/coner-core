@@ -8,6 +8,7 @@ import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         config = ConerBaseMapStructConfig.class,
@@ -24,6 +25,11 @@ public interface RegistrationMapper {
     RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload domainAddPayload);
 
     RegistrationHibernateEntity toHibernateEntity(Registration domainEntity);
+
+    void updateHibernateEntity(
+            Registration domainEntity,
+            @MappingTarget RegistrationHibernateEntity hibernateEntity
+    );
 
     Registration toDomainEntity(RegistrationHibernateEntity hibernateEntity);
 

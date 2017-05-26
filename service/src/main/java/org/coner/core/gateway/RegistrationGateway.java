@@ -28,6 +28,7 @@ public class RegistrationGateway extends MapStructAbstractGateway<
     public RegistrationGateway(RegistrationMapper registrationMapper, EventMapper eventMapper, RegistrationDao dao) {
         super(
                 registrationMapper::toHibernateEntity,
+                registrationMapper::updateHibernateEntity,
                 registrationMapper::toDomainEntity,
                 registrationMapper::toDomainEntityList,
                 dao

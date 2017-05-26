@@ -1,5 +1,7 @@
 package org.coner.core.domain.service;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.coner.core.domain.entity.HandicapGroup;
@@ -42,4 +44,12 @@ public class HandicapGroupSetService extends AbstractEntityService<
     }
 
 
+    public HandicapGroupSet addToHandicapGroups(HandicapGroupSet handicapGroupSet, HandicapGroup handicapGroup) {
+        Set<HandicapGroup> handicapGroups = handicapGroupSet.getHandicapGroups();
+        if (handicapGroups.contains(handicapGroup)) {
+            return handicapGroupSet;
+        }
+        handicapGroups.add(handicapGroup);
+        return gateway.save(handicapGroupSet.getId(), handicapGroupSet);
+    }
 }

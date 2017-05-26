@@ -9,11 +9,8 @@ import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import io.dropwizard.hibernate.AbstractDAO;
-
 public class RegistrationDao
-        extends AbstractDAO<RegistrationHibernateEntity>
-        implements HibernateEntityDao<RegistrationHibernateEntity> {
+        extends BaseHibernateEntityDao<RegistrationHibernateEntity> {
 
     @Inject
     public RegistrationDao(SessionFactory sessionFactory) {
@@ -40,4 +37,5 @@ public class RegistrationDao
     public List<RegistrationHibernateEntity> findAll() {
         throw new UnsupportedOperationException();
     }
+
 }
