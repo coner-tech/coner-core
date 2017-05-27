@@ -9,5 +9,5 @@ public interface HibernateEntityDao<HE> {
 
     HE findById(String id);
 
-    void save(HE hibernateEntity);
+    void update(HE entity);
 }

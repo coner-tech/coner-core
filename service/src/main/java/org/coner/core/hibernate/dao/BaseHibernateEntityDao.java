@@ -1,5 +1,7 @@
 package org.coner.core.hibernate.dao;
 
+import java.util.Objects;
+
 import org.hibernate.SessionFactory;
 
 import io.dropwizard.hibernate.AbstractDAO;
@@ -15,7 +17,7 @@ public abstract class BaseHibernateEntityDao<E> extends AbstractDAO<E> implement
     }
 
     @Override
-    public void save(E hibernateEntity) {
-        currentSession().saveOrUpdate(hibernateEntity);
+    public void update(E entity) {
+        currentSession().update(Objects.requireNonNull(entity));
     }
 }

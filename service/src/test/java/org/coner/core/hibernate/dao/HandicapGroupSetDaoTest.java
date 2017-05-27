@@ -78,14 +78,15 @@ public class HandicapGroupSetDaoTest extends AbstractDaoTest {
             HandicapGroupSetHibernateEntity setEntity2 = HibernateEntityTestUtils.fullHandicapGroupSet();
             setEntity2.setId(null);
             setEntity2.setHandicapGroups(Sets.newHashSet());
+            setDao.create(setEntity2);
 
             assertThat(setEntity1.getId()).isNotEqualTo(setEntity2.getId()); // sanity check
 
-            // add entity to both saves and save
+            // add entity to both sets and update
             setEntity1.getHandicapGroups().add(entity);
             setEntity2.getHandicapGroups().add(entity);
-            setDao.save(setEntity1);
-            setDao.save(setEntity2);
+            setDao.update(setEntity1);
+            setDao.update(setEntity2);
         });
     }
 
@@ -104,11 +105,11 @@ public class HandicapGroupSetDaoTest extends AbstractDaoTest {
 
             assertThat(entity1.getId()).isNotEqualTo(entity2.getId()); // sanity check
 
-            // add both entities to set and save
+            // add both entities to set and update
             HandicapGroupSetHibernateEntity setEntity = HibernateEntityTestUtils.fullHandicapGroupSet();
             setEntity.setId(null);
             setEntity.setHandicapGroups(Sets.newHashSet(entity1, entity2));
-            setDao.save(setEntity);
+            setDao.create(setEntity);
         });
     }
 

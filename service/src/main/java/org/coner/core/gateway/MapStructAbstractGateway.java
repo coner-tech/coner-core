@@ -62,7 +62,7 @@ public abstract class MapStructAbstractGateway<
         Preconditions.checkArgument(entity != null, "entity must not be null");
         HE hibernateEntity = dao.findById(id);
         domainEntityToHibernateEntityMerger.merge(entity, hibernateEntity);
-        dao.save(hibernateEntity);
+        dao.update(hibernateEntity);
         return hibernateEntityToDomainEntityConverter.map(hibernateEntity);
     }
 
