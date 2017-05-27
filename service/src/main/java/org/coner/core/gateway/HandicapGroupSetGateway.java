@@ -36,13 +36,13 @@ public class HandicapGroupSetGateway extends MapStructAbstractGateway<
 
     @Override
     public HandicapGroupSet add(HandicapGroupSetAddPayload payload) {
-        HandicapGroupSetHibernateEntity setEntity = domainAddPayloadToHibernateEntityConverter.map(payload);
+        HandicapGroupSetHibernateEntity setEntity = domainAddPayloadToHibernateEntityConverter.convert(payload);
         setEntity.setHandicapGroups(
                 payload.getHandicapGroupIds()
                         .stream()
                         .map(handicapGroupDao::findById)
                         .collect(Collectors.toSet()));
         dao.create(setEntity);
-        return hibernateEntityToDomainEntityConverter.map(setEntity);
+        return hibernateEntityToDomainEntityConverter.convert(setEntity);
     }
 }

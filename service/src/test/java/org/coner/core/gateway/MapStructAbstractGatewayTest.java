@@ -55,9 +55,9 @@ public class MapStructAbstractGatewayTest {
     public void whenAdd() {
         TestDomainAddPayload domainAddPayload = mock(TestDomainAddPayload.class);
         TestHibernateEntity hibernateEntity = mock(TestHibernateEntity.class);
-        when(domainAddPayloadToHibernateEntityConverter.map(domainAddPayload)).thenReturn(hibernateEntity);
+        when(domainAddPayloadToHibernateEntityConverter.convert(domainAddPayload)).thenReturn(hibernateEntity);
         TestDomainEntity domainEntity = mock(TestDomainEntity.class);
-        when(hibernateEntityToDomainEntityConverter.map(hibernateEntity)).thenReturn(domainEntity);
+        when(hibernateEntityToDomainEntityConverter.convert(hibernateEntity)).thenReturn(domainEntity);
 
         TestDomainEntity actual = gateway.add(domainAddPayload);
 
@@ -81,7 +81,7 @@ public class MapStructAbstractGatewayTest {
         List<TestHibernateEntity> hibernateEntities = mock(List.class);
         when(dao.findAll()).thenReturn(hibernateEntities);
         List<TestDomainEntity> domainEntities = mock(List.class);
-        when(hibernateEntitiesToDomainEntitiesConverter.map(hibernateEntities)).thenReturn(domainEntities);
+        when(hibernateEntitiesToDomainEntitiesConverter.convert(hibernateEntities)).thenReturn(domainEntities);
 
         List<TestDomainEntity> actual = gateway.getAll();
 
@@ -96,7 +96,7 @@ public class MapStructAbstractGatewayTest {
         TestHibernateEntity hibernateEntity = mock(TestHibernateEntity.class);
         when(dao.findById(testId)).thenReturn(hibernateEntity);
         TestDomainEntity domainEntity = mock(TestDomainEntity.class);
-        when(hibernateEntityToDomainEntityConverter.map(hibernateEntity)).thenReturn(domainEntity);
+        when(hibernateEntityToDomainEntityConverter.convert(hibernateEntity)).thenReturn(domainEntity);
 
         TestDomainEntity actual = gateway.findById(testId);
 

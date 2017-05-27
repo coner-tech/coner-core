@@ -39,22 +39,22 @@ public abstract class MapStructAbstractGateway<
 
     public DE add(AP payload) {
         Preconditions.checkNotNull(payload);
-        HE hibernateEntity = domainAddPayloadToHibernateEntityConverter.map(payload);
+        HE hibernateEntity = domainAddPayloadToHibernateEntityConverter.convert(payload);
         dao.create(hibernateEntity);
-        return hibernateEntityToDomainEntityConverter.map(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
     }
 
     @Override
     public List<DE> getAll() {
         List<HE> hibernateEntities = dao.findAll();
-        return hibernateEntitiesToDomainEntitiesConverter.map(hibernateEntities);
+        return hibernateEntitiesToDomainEntitiesConverter.convert(hibernateEntities);
     }
 
     @Override
     public DE findById(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id), "id must not be null or empty");
         HE hibernateEntity = dao.findById(id);
-        return hibernateEntityToDomainEntityConverter.map(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
     }
 
     @Override
@@ -63,11 +63,11 @@ public abstract class MapStructAbstractGateway<
         HE hibernateEntity = dao.findById(id);
         domainEntityToHibernateEntityMerger.merge(entity, hibernateEntity);
         dao.update(hibernateEntity);
-        return hibernateEntityToDomainEntityConverter.map(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
     }
 
     public interface Converter<S, T> {
-        T map(S s);
+        T convert(S s);
     }
 
     public interface Merger<S, T> {
