@@ -8,6 +8,7 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         config = ConerBaseMapStructConfig.class
@@ -23,6 +24,11 @@ public interface EventMapper {
     EventHibernateEntity toHibernateEntity(EventAddPayload domainAddPayload);
 
     EventHibernateEntity toHibernateEntity(Event domainEntity);
+
+    void updateHibernateEntity(
+            Event domainEntity,
+            @MappingTarget EventHibernateEntity hibernateEntity
+    );
 
     Event toDomainEntity(EventHibernateEntity hibernateEntity);
 

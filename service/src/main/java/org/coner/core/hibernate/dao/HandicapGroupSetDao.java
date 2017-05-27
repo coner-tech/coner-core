@@ -7,11 +7,8 @@ import javax.inject.Inject;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.hibernate.SessionFactory;
 
-import io.dropwizard.hibernate.AbstractDAO;
-
 public class HandicapGroupSetDao
-        extends AbstractDAO<HandicapGroupSetHibernateEntity>
-        implements HibernateEntityDao<HandicapGroupSetHibernateEntity> {
+        extends BaseHibernateEntityDao<HandicapGroupSetHibernateEntity> {
 
     @Inject
     public HandicapGroupSetDao(SessionFactory sessionFactory) {
@@ -32,4 +29,5 @@ public class HandicapGroupSetDao
     public HandicapGroupSetHibernateEntity findById(String id) {
         return get(id);
     }
+
 }

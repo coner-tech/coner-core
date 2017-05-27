@@ -26,23 +26,27 @@ public class MapStructAbstractGatewayTest {
     @Mock
     HibernateEntityDao<TestHibernateEntity> dao;
     @Mock
-    MapStructAbstractGateway.Mapper<TestDomainAddPayload, TestHibernateEntity>
-            domainAddPayloadToHibernateEntityMapper;
+    MapStructAbstractGateway.Converter<TestDomainAddPayload, TestHibernateEntity>
+            domainAddPayloadToHibernateEntityConverter;
     @Mock
-    MapStructAbstractGateway.Mapper<TestHibernateEntity, TestDomainEntity>
-            hibernateEntityToDomainEntityMapper;
+    MapStructAbstractGateway.Merger<TestDomainEntity, TestHibernateEntity>
+            domainEntityToHibernateEntityMerger;
     @Mock
-    MapStructAbstractGateway.Mapper<List<TestHibernateEntity>, List<TestDomainEntity>>
-            hibernateEntitiesToDomainEntitiesMapper;
+    MapStructAbstractGateway.Converter<TestHibernateEntity, TestDomainEntity>
+            hibernateEntityToDomainEntityConverter;
+    @Mock
+    MapStructAbstractGateway.Converter<List<TestHibernateEntity>, List<TestDomainEntity>>
+            hibernateEntitiesToDomainEntitiesConverter;
 
     private TestMapStructAbstractGateway gateway;
 
     @Before
     public void setup() {
         gateway = new TestMapStructAbstractGateway(
-                domainAddPayloadToHibernateEntityMapper,
-                hibernateEntityToDomainEntityMapper,
-                hibernateEntitiesToDomainEntitiesMapper,
+                domainAddPayloadToHibernateEntityConverter,
+                domainEntityToHibernateEntityMerger,
+                hibernateEntityToDomainEntityConverter,
+                hibernateEntitiesToDomainEntitiesConverter,
                 dao
         );
     }
@@ -51,9 +55,9 @@ public class MapStructAbstractGatewayTest {
     public void whenAdd() {
         TestDomainAddPayload domainAddPayload = mock(TestDomainAddPayload.class);
         TestHibernateEntity hibernateEntity = mock(TestHibernateEntity.class);
-        when(domainAddPayloadToHibernateEntityMapper.map(domainAddPayload)).thenReturn(hibernateEntity);
+        when(domainAddPayloadToHibernateEntityConverter.convert(domainAddPayload)).thenReturn(hibernateEntity);
         TestDomainEntity domainEntity = mock(TestDomainEntity.class);
-        when(hibernateEntityToDomainEntityMapper.map(hibernateEntity)).thenReturn(domainEntity);
+        when(hibernateEntityToDomainEntityConverter.convert(hibernateEntity)).thenReturn(domainEntity);
 
         TestDomainEntity actual = gateway.add(domainAddPayload);
 
@@ -77,7 +81,7 @@ public class MapStructAbstractGatewayTest {
         List<TestHibernateEntity> hibernateEntities = mock(List.class);
         when(dao.findAll()).thenReturn(hibernateEntities);
         List<TestDomainEntity> domainEntities = mock(List.class);
-        when(hibernateEntitiesToDomainEntitiesMapper.map(hibernateEntities)).thenReturn(domainEntities);
+        when(hibernateEntitiesToDomainEntitiesConverter.convert(hibernateEntities)).thenReturn(domainEntities);
 
         List<TestDomainEntity> actual = gateway.getAll();
 
@@ -92,7 +96,7 @@ public class MapStructAbstractGatewayTest {
         TestHibernateEntity hibernateEntity = mock(TestHibernateEntity.class);
         when(dao.findById(testId)).thenReturn(hibernateEntity);
         TestDomainEntity domainEntity = mock(TestDomainEntity.class);
-        when(hibernateEntityToDomainEntityMapper.map(hibernateEntity)).thenReturn(domainEntity);
+        when(hibernateEntityToDomainEntityConverter.convert(hibernateEntity)).thenReturn(domainEntity);
 
         TestDomainEntity actual = gateway.findById(testId);
 
@@ -108,18 +112,21 @@ public class MapStructAbstractGatewayTest {
             > {
 
         protected TestMapStructAbstractGateway(
-                Mapper<TestDomainAddPayload, TestHibernateEntity> domainAddPayloadToHibernateEntityMapper,
-                Mapper<TestHibernateEntity, TestDomainEntity> hibernateEntityToDomainEntityMapper,
-                Mapper<List<TestHibernateEntity>, List<TestDomainEntity>> hibernateEntitiesToDomainEntitiesMapper,
+                Converter<TestDomainAddPayload, TestHibernateEntity> domainAddPayloadToHibernateEntityConverter,
+                Merger<TestDomainEntity, TestHibernateEntity> domainEntityToHibernateEntityMerger,
+                Converter<TestHibernateEntity, TestDomainEntity> hibernateEntityToDomainEntityConverter,
+                Converter<List<TestHibernateEntity>, List<TestDomainEntity>> hibernateEntitiesToDomainEntitiesConverter,
                 HibernateEntityDao<TestHibernateEntity> dao
         ) {
             super(
-                    domainAddPayloadToHibernateEntityMapper,
-                    hibernateEntityToDomainEntityMapper,
-                    hibernateEntitiesToDomainEntitiesMapper,
+                    domainAddPayloadToHibernateEntityConverter,
+                    domainEntityToHibernateEntityMerger,
+                    hibernateEntityToDomainEntityConverter,
+                    hibernateEntitiesToDomainEntitiesConverter,
                     dao
             );
         }
+
     }
 
     private static class TestDomainAddPayload extends DomainAddPayload {

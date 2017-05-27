@@ -8,6 +8,7 @@ import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         uses = {CompetitionGroupMapper.class},
@@ -25,6 +26,11 @@ public interface CompetitionGroupSetMapper {
     CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSetAddPayload domainAddPayload);
 
     CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSet domainEntity);
+
+    void updateHibernateEntity(
+            CompetitionGroupSet domainEntity,
+            @MappingTarget CompetitionGroupSetHibernateEntity hibernateEntity
+    );
 
     CompetitionGroupSet toDomainEntity(CompetitionGroupSetHibernateEntity hibernateEntity);
 

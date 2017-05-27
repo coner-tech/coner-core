@@ -36,4 +36,5 @@ public abstract class AbstractEntityService<
     public List<DE> getAll() {
         return gateway.getAll();
     }
+
 }

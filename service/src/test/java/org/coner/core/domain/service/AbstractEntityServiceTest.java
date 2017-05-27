@@ -88,6 +88,11 @@ public class AbstractEntityServiceTest {
         public TestEntity findById(String id) {
             return null;
         }
+
+        @Override
+        public TestEntity save(String id, TestEntity entity) {
+            return null;
+        }
     }
 
     private static class TestEntity extends DomainEntity {

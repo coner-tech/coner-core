@@ -7,11 +7,8 @@ import javax.inject.Inject;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.hibernate.SessionFactory;
 
-import io.dropwizard.hibernate.AbstractDAO;
-
 public class CompetitionGroupSetDao
-        extends AbstractDAO<CompetitionGroupSetHibernateEntity>
-        implements HibernateEntityDao<CompetitionGroupSetHibernateEntity> {
+        extends BaseHibernateEntityDao<CompetitionGroupSetHibernateEntity> {
 
     @Inject
     public CompetitionGroupSetDao(SessionFactory sessionFactory) {
@@ -32,4 +29,5 @@ public class CompetitionGroupSetDao
     public CompetitionGroupSetHibernateEntity findById(String id) {
         return get(id);
     }
+
 }

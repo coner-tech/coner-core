@@ -2,6 +2,7 @@ package org.coner.core.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.net.URI;
 
 import javax.ws.rs.client.Entity;
@@ -18,6 +19,7 @@ import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
@@ -81,13 +83,52 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenCreateHandicapGroupSetItShouldPersist() {
+    public void whenCreateHandicapGroupSetWithEmptyIdsItShouldPersist() {
         URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUP_SETS_PATH)
                 .build();
         AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils.fullAddHandicapGroupSet();
         addHandicapGroupSetRequest.setHandicapGroupIds(null); // perfectly ok to create an empty one
 
+        Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addHandicapGroupSetRequest));
+
+        assertThat(addHandicapGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        String handicapGroupSetId = UnitTestUtils.getEntityIdFromResponse(addHandicapGroupSetResponseContainer);
+        assertThat(handicapGroupSetId).isNotEmpty();
+    }
+
+    @Test
+    public void whenCreateHandicapGroupSetWithMultipleIdsItShouldPersist() {
+        // add some initial handicap group IDs
+        URI handicapGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUPS_PATH)
+                .build();
+        Response addSsResponse = client.target(handicapGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddHandicapGroup("SS", BigDecimal.valueOf(0.826d))));
+        String ssId = UnitTestUtils.getEntityIdFromResponse(addSsResponse);
+        Response addAsResponse = client.target(handicapGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddHandicapGroup("AS", BigDecimal.valueOf(0.819d))));
+        String asId = UnitTestUtils.getEntityIdFromResponse(addAsResponse);
+        Response addBsResponse = client.target(handicapGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddHandicapGroup("BS", BigDecimal.valueOf(0.813d))));
+        String bsId = UnitTestUtils.getEntityIdFromResponse(addBsResponse);
+
+        URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(HANDICAP_GROUP_SETS_PATH)
+                .build();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils.fullAddHandicapGroupSet(
+                "2017 PAX/RTP INDEX",
+                Sets.newHashSet(ssId, asId, bsId)
+        );
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)

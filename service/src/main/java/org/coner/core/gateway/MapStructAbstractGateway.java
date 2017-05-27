@@ -18,43 +18,59 @@ public abstract class MapStructAbstractGateway<
         implements Gateway<DE, AP> {
 
     protected final D dao;
-    protected final Mapper<AP, HE> domainAddPayloadToHibernateEntityMapper;
-    protected final Mapper<HE, DE> hibernateEntityToDomainEntityMapper;
-    protected final Mapper<List<HE>, List<DE>> hibernateEntitiesToDomainEntitiesMapper;
+    protected final Converter<AP, HE> domainAddPayloadToHibernateEntityConverter;
+    protected final Merger<DE, HE> domainEntityToHibernateEntityMerger;
+    protected final Converter<HE, DE> hibernateEntityToDomainEntityConverter;
+    protected final Converter<List<HE>, List<DE>> hibernateEntitiesToDomainEntitiesConverter;
 
     protected MapStructAbstractGateway(
-            Mapper<AP, HE> domainAddPayloadToHibernateEntityMapper,
-            Mapper<HE, DE> hibernateEntityToDomainEntityMapper,
-            Mapper<List<HE>, List<DE>> hibernateEntitiesToDomainEntitiesMapper,
+            Converter<AP, HE> domainAddPayloadToHibernateEntityConverter,
+            Merger<DE, HE> domainEntityToHibernateEntityMerger,
+            Converter<HE, DE> hibernateEntityToDomainEntityConverter,
+            Converter<List<HE>, List<DE>> hibernateEntitiesToDomainEntitiesConverter,
             D dao
     ) {
-        this.domainAddPayloadToHibernateEntityMapper = domainAddPayloadToHibernateEntityMapper;
-        this.hibernateEntityToDomainEntityMapper = hibernateEntityToDomainEntityMapper;
-        this.hibernateEntitiesToDomainEntitiesMapper = hibernateEntitiesToDomainEntitiesMapper;
+        this.domainAddPayloadToHibernateEntityConverter = domainAddPayloadToHibernateEntityConverter;
+        this.domainEntityToHibernateEntityMerger = domainEntityToHibernateEntityMerger;
+        this.hibernateEntityToDomainEntityConverter = hibernateEntityToDomainEntityConverter;
+        this.hibernateEntitiesToDomainEntitiesConverter = hibernateEntitiesToDomainEntitiesConverter;
         this.dao = dao;
     }
 
     public DE add(AP payload) {
         Preconditions.checkNotNull(payload);
-        HE hibernateEntity = domainAddPayloadToHibernateEntityMapper.map(payload);
+        HE hibernateEntity = domainAddPayloadToHibernateEntityConverter.convert(payload);
         dao.create(hibernateEntity);
-        return hibernateEntityToDomainEntityMapper.map(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
     }
 
     @Override
     public List<DE> getAll() {
         List<HE> hibernateEntities = dao.findAll();
-        return hibernateEntitiesToDomainEntitiesMapper.map(hibernateEntities);
+        return hibernateEntitiesToDomainEntitiesConverter.convert(hibernateEntities);
     }
 
     @Override
     public DE findById(String id) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(id), "id must not be null or empty");
         HE hibernateEntity = dao.findById(id);
-        return hibernateEntityToDomainEntityMapper.map(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
     }
 
-    public interface Mapper<S, T> {
-        T map(S s);
+    @Override
+    public DE save(String id, DE entity) {
+        Preconditions.checkArgument(entity != null, "entity must not be null");
+        HE hibernateEntity = dao.findById(id);
+        domainEntityToHibernateEntityMerger.merge(entity, hibernateEntity);
+        dao.update(hibernateEntity);
+        return hibernateEntityToDomainEntityConverter.convert(hibernateEntity);
+    }
+
+    public interface Converter<S, T> {
+        T convert(S s);
+    }
+
+    public interface Merger<S, T> {
+        void merge(S s, T t);
     }
 }
