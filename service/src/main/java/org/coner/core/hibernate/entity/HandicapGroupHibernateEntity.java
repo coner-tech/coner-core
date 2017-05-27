@@ -3,14 +3,12 @@ package org.coner.core.hibernate.entity;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -65,16 +63,9 @@ public class HandicapGroupHibernateEntity extends HibernateEntity {
         this.factor = factor;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "handicap_group_handicap_group_sets",
-            joinColumns = {
-                    @JoinColumn(name = "handicapGroupId", nullable = false, updatable = false)
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "handicapGroupSetId", nullable = false, updatable = false)
-            }
-    )
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "handicapGroups")
+    @ElementCollection(targetClass = HandicapGroupSetHibernateEntity.class)
     public Set<HandicapGroupSetHibernateEntity> getHandicapGroupSets() {
         return handicapGroupSets;
     }
