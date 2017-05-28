@@ -2,6 +2,8 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
+import org.coner.core.hibernate.dao.CompetitionGroupDao;
+import org.coner.core.hibernate.dao.CompetitionGroupSetDao;
 import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.mapper.EventMapper;
@@ -30,14 +32,22 @@ public class MapStructModule {
 
     @Provides
     @Singleton
-    public CompetitionGroupMapper competitionGroupMapper() {
-        return Mappers.getMapper(CompetitionGroupMapper.class);
+    public CompetitionGroupMapper competitionGroupMapper(CompetitionGroupDao dao) {
+        CompetitionGroupMapper mapper = Mappers.getMapper(CompetitionGroupMapper.class);
+        mapper.setDao(dao);
+        return mapper;
     }
 
     @Provides
     @Singleton
-    public CompetitionGroupSetMapper competitionGroupSetMapper() {
-        return Mappers.getMapper(CompetitionGroupSetMapper.class);
+    public CompetitionGroupSetMapper competitionGroupSetMapper(
+            CompetitionGroupSetDao dao,
+            CompetitionGroupMapper competitionGroupMapper
+    ) {
+        CompetitionGroupSetMapper mapper = Mappers.getMapper(CompetitionGroupSetMapper.class);
+        mapper.setDao(dao);
+        mapper.setCompetitionGroupMapper(competitionGroupMapper);
+        return mapper;
     }
 
     @Provides

@@ -29,7 +29,9 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
     private static final String COMPETITION_GROUPS_PATH = "/competitionGroups";
     private static final String COMPETITION_GROUP_PATH = "/competitionGroups/{competitionGroupId}";
     private static final String COMPETITION_GROUP_SETS_PATH = "/competitionGroups/sets";
-    private static final String COMPETITION_GROUP_SET_PATH = "/competitionGroups/sets/{competitionGroupId}";
+    private static final String COMPETITION_GROUP_SET_PATH = "/competitionGroups/sets/{competitionGroupSetId}";
+    private static final String COMPETITION_GROUP_SET_ADD_COMPETITION_GROUP_PATH =
+            "/competitionGroups/sets/{competitionGroupSetId}/competitionGroups/{competitionGroupId}";
 
     @Test
     public void whenCreateCompetitionGroupItShouldPersist() {
@@ -159,7 +161,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();
         AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet(
-                "2017 PAX/RTP INDEX",
+                "2017 Competition Groups",
                 Sets.newHashSet(openId, addNoviceId, proId)
         );
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
@@ -170,6 +172,59 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         String competitionGroupSetId = UnitTestUtils.getEntityIdFromResponse(addCompetitionGroupSetResponseContainer);
         assertThat(competitionGroupSetId).isNotEmpty();
+    }
+
+    @Test
+    public void whenAddCompetitionGroupToCompetitionGroupSetWithExistingCompetitionGroupsItShouldOk() {
+        // add some initial competition groups
+        URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUPS_PATH)
+                .build();
+        Response addOpenResponse = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddCompetitionGroup(
+                        "Open",
+                        false,
+                        BigDecimal.ONE,
+                        CompetitionGroup.ResultTimeType.RAW.toString()
+                )));
+        String openId = UnitTestUtils.getEntityIdFromResponse(addOpenResponse);
+        Response addNoviceResponse = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddCompetitionGroup(
+                        "Novice",
+                        true,
+                        BigDecimal.ONE,
+                        CompetitionGroup.ResultTimeType.HANDICAP.toString()
+                )));
+        String addNoviceId = UnitTestUtils.getEntityIdFromResponse(addNoviceResponse);
+        URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_SETS_PATH)
+                .build();
+
+        // add a competition group set with only "Open"
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet(
+                "2017 Competition Groups",
+                Sets.newHashSet(openId)
+        );
+        Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addCompetitionGroupSetRequest));
+        assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        String competitionGroupSetId = UnitTestUtils.getEntityIdFromResponse(addCompetitionGroupSetResponseContainer);
+
+        // add "Novice" to the competition group set
+        URI addCompetitionGroupToSetUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_SET_ADD_COMPETITION_GROUP_PATH)
+                .build(competitionGroupSetId, addNoviceId);
+        Response addCompetitionGroupToSetResponseContainer = client.target(addCompetitionGroupToSetUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(null);
+        assertThat(addCompetitionGroupToSetResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
     }
 
     @Test
