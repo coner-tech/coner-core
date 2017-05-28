@@ -2,6 +2,7 @@ package org.coner.core.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.net.URI;
 
 import javax.ws.rs.client.Entity;
@@ -13,12 +14,14 @@ import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
@@ -112,6 +115,61 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         CompetitionGroupSetApiEntity getCompetitionGroupResponse = getCompetitionGroupSetResponseContainer
                 .readEntity(CompetitionGroupSetApiEntity.class);
         assertThat(getCompetitionGroupResponse.getId()).isEqualTo(competitionGroupSetId);
+    }
+
+
+    @Test
+    public void whenCreateCompetitionGroupSetWithMultipleIdsItShouldPersist() {
+        // add some initial competition group IDs
+        URI competitionGroupsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUPS_PATH)
+                .build();
+        Response addOpenResponse = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddCompetitionGroup(
+                        "Open",
+                        false,
+                        BigDecimal.ONE,
+                        CompetitionGroup.ResultTimeType.RAW.toString()
+                )));
+        String openId = UnitTestUtils.getEntityIdFromResponse(addOpenResponse);
+        Response addNoviceResponse = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddCompetitionGroup(
+                        "Novice",
+                        true,
+                        BigDecimal.ONE,
+                        CompetitionGroup.ResultTimeType.HANDICAP.toString()
+                )));
+        String addNoviceId = UnitTestUtils.getEntityIdFromResponse(addNoviceResponse);
+        Response addProResponse = client.target(competitionGroupsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(ApiRequestTestUtils.fullAddCompetitionGroup(
+                        "Pro",
+                        true,
+                        BigDecimal.ONE,
+                        CompetitionGroup.ResultTimeType.HANDICAP.toString()
+                )));
+        String proId = UnitTestUtils.getEntityIdFromResponse(addProResponse);
+
+        URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path(COMPETITION_GROUP_SETS_PATH)
+                .build();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet(
+                "2017 PAX/RTP INDEX",
+                Sets.newHashSet(openId, addNoviceId, proId)
+        );
+        Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addCompetitionGroupSetRequest));
+
+        assertThat(addCompetitionGroupSetResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        String competitionGroupSetId = UnitTestUtils.getEntityIdFromResponse(addCompetitionGroupSetResponseContainer);
+        assertThat(competitionGroupSetId).isNotEmpty();
     }
 
     @Test

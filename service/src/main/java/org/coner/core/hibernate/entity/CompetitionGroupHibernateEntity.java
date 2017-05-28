@@ -3,14 +3,12 @@ package org.coner.core.hibernate.entity;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -88,16 +86,8 @@ public class CompetitionGroupHibernateEntity extends HibernateEntity {
         this.resultTimeType = resultTimeType;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "competition_group_competition_group_sets",
-            joinColumns = {
-                    @JoinColumn(name = "competitionGroupId", nullable = false, updatable = false)
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "competitionGroupSetId", nullable = false, updatable = false)
-            }
-    )
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "competitionGroups")
+    @ElementCollection(targetClass = CompetitionGroupSetHibernateEntity.class)
     public Set<CompetitionGroupSetHibernateEntity> getCompetitionGroupSets() {
         return this.competitionGroupSets;
     }
