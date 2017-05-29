@@ -15,6 +15,7 @@ import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.api.response.GetHandicapGroupSetsResponse;
 import org.coner.core.util.ApiRequestTestUtils;
+import org.coner.core.util.IntegrationTestUtils;
 import org.coner.core.util.TestConstants;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;

@@ -1,4 +1,4 @@
-package org.coner.core.it;
+package org.coner.core.util;
 
 import javax.ws.rs.client.Client;
 

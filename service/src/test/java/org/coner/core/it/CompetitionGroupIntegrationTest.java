@@ -17,6 +17,7 @@ import org.coner.core.api.response.GetCompetitionGroupSetsResponse;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
+import org.coner.core.util.IntegrationTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
