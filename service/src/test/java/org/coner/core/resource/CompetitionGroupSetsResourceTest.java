@@ -1,6 +1,7 @@
 package org.coner.core.resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.coner.core.util.TestConstants.COMPETITION_GROUP_ID;
 import static org.coner.core.util.TestConstants.COMPETITION_GROUP_SET_ID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -14,8 +15,10 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.CompetitionGroupSetMapper;
@@ -40,14 +43,15 @@ public class CompetitionGroupSetsResourceTest {
             CompetitionGroupSetMapper.class
     );
     private CompetitionGroupSetService competitionGroupSetService = mock(CompetitionGroupSetService.class);
+    private CompetitionGroupEntityService competitionGroupEntityService = mock(CompetitionGroupEntityService.class);
     private ObjectMapper objectMapper;
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
             .addResource(new CompetitionGroupSetsResource(
                     competitionGroupSetService,
-                    competitionGroupSetMapper
-            ))
+                    competitionGroupSetMapper,
+                    competitionGroupEntityService))
             .addResource(new DomainServiceExceptionMapper())
             .build();
 
@@ -141,5 +145,28 @@ public class CompetitionGroupSetsResourceTest {
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
+    }
+
+    @Test
+    public void itShouldAddCompetitionGroupToSet() throws EntityNotFoundException {
+        CompetitionGroupSet domainSetEntity = DomainEntityTestUtils.fullCompetitionGroupSet();
+        CompetitionGroup domainEntity = DomainEntityTestUtils.fullCompetitionGroup();
+        when(competitionGroupSetService.getById(COMPETITION_GROUP_SET_ID)).thenReturn(domainSetEntity);
+        when(competitionGroupEntityService.getById(COMPETITION_GROUP_ID)).thenReturn(domainEntity);
+        CompetitionGroupSetApiEntity apiSetEntity = ApiEntityTestUtils.fullCompetitionGroupSet();
+        when(competitionGroupSetMapper.toApiEntity(domainSetEntity)).thenReturn(apiSetEntity);
+
+        Response response = resources.client()
+                .target(
+                        "/competitionGroups/sets/" + COMPETITION_GROUP_SET_ID
+                                + "/competitionGroups/" + COMPETITION_GROUP_ID
+                )
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(null);
+
+        verify(competitionGroupSetService).addToCompetitionGroups(domainSetEntity, domainEntity);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
     }
 }

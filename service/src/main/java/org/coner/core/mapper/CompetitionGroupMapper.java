@@ -6,6 +6,7 @@ import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
+import org.coner.core.hibernate.dao.CompetitionGroupDao;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,24 +14,34 @@ import org.mapstruct.MappingTarget;
 @Mapper(
         config = ConerBaseMapStructConfig.class
 )
-public interface CompetitionGroupMapper {
+public abstract class CompetitionGroupMapper {
 
-    CompetitionGroupAddPayload toDomainAddPayload(AddCompetitionGroupRequest apiAddRequest);
+    private CompetitionGroupDao dao;
 
-    CompetitionGroupApiEntity toApiEntity(CompetitionGroup domainEntity);
+    public abstract CompetitionGroupAddPayload toDomainAddPayload(AddCompetitionGroupRequest apiAddRequest);
 
-    List<CompetitionGroupApiEntity> toApiEntityList(List<CompetitionGroup> domainEntityList);
+    public abstract CompetitionGroupApiEntity toApiEntity(CompetitionGroup domainEntity);
 
-    CompetitionGroupHibernateEntity toHibernateEntity(CompetitionGroupAddPayload domainAddPayload);
+    public abstract List<CompetitionGroupApiEntity> toApiEntityList(List<CompetitionGroup> domainEntityList);
 
-    CompetitionGroupHibernateEntity toHibernateEntity(CompetitionGroup domainEntity);
+    public abstract CompetitionGroupHibernateEntity toHibernateEntity(CompetitionGroupAddPayload domainAddPayload);
 
-    void updateHibernateEntity(
+    public CompetitionGroupHibernateEntity toHibernateEntity(CompetitionGroup domainEntity) {
+        return dao.findById(domainEntity.getId());
+    }
+
+    public abstract void updateHibernateEntity(
             CompetitionGroup domainEntity,
             @MappingTarget CompetitionGroupHibernateEntity hibernateEntity
     );
 
-    CompetitionGroup toDomainEntity(CompetitionGroupHibernateEntity hibernateEntity);
+    public abstract CompetitionGroup toDomainEntity(CompetitionGroupHibernateEntity hibernateEntity);
 
-    List<CompetitionGroup> toDomainEntityList(List<CompetitionGroupHibernateEntity> hibernateEntityList);
+    public abstract List<CompetitionGroup> toDomainEntityList(
+            List<CompetitionGroupHibernateEntity> hibernateEntityList
+    );
+
+    public void setDao(CompetitionGroupDao dao) {
+        this.dao = dao;
+    }
 }

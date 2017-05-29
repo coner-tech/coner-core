@@ -10,6 +10,7 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
+import org.coner.core.api.request.AddCompetitionGroupRequest;
 
 import com.google.common.collect.Sets;
 
@@ -101,6 +102,16 @@ public final class ApiEntityTestUtils {
                 TestConstants.COMPETITION_GROUP_FACTOR,
                 TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.name(),
                 TestConstants.COMPETITION_GROUP_GROUPING
+        );
+    }
+
+    public static CompetitionGroupApiEntity fullCompetitionGroup(String id, AddCompetitionGroupRequest addRequest) {
+        return fullCompetitionGroup(
+                id,
+                addRequest.getName(),
+                addRequest.getFactor(),
+                addRequest.getResultTimeType(),
+                addRequest.getGrouping()
         );
     }
 

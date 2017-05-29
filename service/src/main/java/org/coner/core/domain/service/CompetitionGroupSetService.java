@@ -1,5 +1,7 @@
 package org.coner.core.domain.service;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.coner.core.domain.entity.CompetitionGroup;
@@ -37,6 +39,18 @@ public class CompetitionGroupSetService extends AbstractEntityService<
             throw new AddEntityException(e);
         }
         addPayload.setCompetitionGroups(competitionGroupsBuilder.build());
-        return super.add(addPayload);
+        return gateway.add(addPayload);
+    }
+
+    public CompetitionGroupSet addToCompetitionGroups(
+            CompetitionGroupSet competitionGroupSet,
+            CompetitionGroup competitionGroup
+    ) {
+        Set<CompetitionGroup> competitionGroups = competitionGroupSet.getCompetitionGroups();
+        if (competitionGroups.contains(competitionGroup)) {
+            return competitionGroupSet;
+        }
+        competitionGroups.add(competitionGroup);
+        return gateway.save(competitionGroupSet.getId(), competitionGroupSet);
     }
 }

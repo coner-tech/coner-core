@@ -16,14 +16,14 @@ public class CompetitionGroupSetGateway extends MapStructAbstractGateway<
 
     @Inject
     public CompetitionGroupSetGateway(
-            CompetitionGroupSetMapper competitionGroupSetMapper,
+            CompetitionGroupSetMapper mapper,
             CompetitionGroupSetDao dao
     ) {
         super(
-                competitionGroupSetMapper::toHibernateEntity,
-                competitionGroupSetMapper::updateHibernateEntity,
-                competitionGroupSetMapper::toDomainEntity,
-                competitionGroupSetMapper::toDomainEntityList,
+                mapper::toHibernateEntity,
+                mapper::updateHibernateEntity,
+                mapper::toDomainEntity,
+                mapper::toDomainEntityList,
                 dao
         );
     }

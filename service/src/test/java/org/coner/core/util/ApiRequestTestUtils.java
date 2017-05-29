@@ -10,7 +10,6 @@ import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
-import org.coner.core.domain.entity.CompetitionGroup;
 
 import com.google.common.collect.Sets;
 
@@ -39,7 +38,7 @@ public final class ApiRequestTestUtils {
                 TestConstants.COMPETITION_GROUP_NAME,
                 TestConstants.COMPETITION_GROUP_GROUPING,
                 TestConstants.COMPETITION_GROUP_FACTOR,
-                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE
+                TestConstants.COMPETITION_GROUP_RESULT_TIME_TYPE.toString()
         );
     }
 
@@ -47,13 +46,13 @@ public final class ApiRequestTestUtils {
             String name,
             boolean grouping,
             BigDecimal handicapFactor,
-            CompetitionGroup.ResultTimeType resultTimeType
+            String resultTimeType
     ) {
         AddCompetitionGroupRequest addCompetitionGroupRequest = new AddCompetitionGroupRequest();
         addCompetitionGroupRequest.setName(name);
         addCompetitionGroupRequest.setGrouping(grouping);
         addCompetitionGroupRequest.setFactor(handicapFactor);
-        addCompetitionGroupRequest.setResultTimeType(resultTimeType.name());
+        addCompetitionGroupRequest.setResultTimeType(resultTimeType);
         return addCompetitionGroupRequest;
     }
 
