@@ -11,6 +11,8 @@ import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.CompetitionGroupSetGateway;
 
+import com.google.common.collect.ImmutableSet;
+
 public class CompetitionGroupSetService extends AbstractEntityService<
         CompetitionGroupSet,
         CompetitionGroupSetAddPayload,
@@ -28,14 +30,16 @@ public class CompetitionGroupSetService extends AbstractEntityService<
 
     @Override
     public CompetitionGroupSet add(CompetitionGroupSetAddPayload addPayload) throws AddEntityException {
+        ImmutableSet.Builder<CompetitionGroup> competitionGroupsBuilder = ImmutableSet.builder();
         try {
             for (String competitionGroupId : addPayload.getCompetitionGroupIds()) {
-                competitionGroupEntityService.getById(competitionGroupId);
+                competitionGroupsBuilder.add(competitionGroupEntityService.getById(competitionGroupId));
             }
         } catch (EntityNotFoundException e) {
             throw new AddEntityException(e);
         }
-        return super.add(addPayload);
+        addPayload.setCompetitionGroups(competitionGroupsBuilder.build());
+        return gateway.add(addPayload);
     }
 
     public CompetitionGroupSet addToCompetitionGroups(
