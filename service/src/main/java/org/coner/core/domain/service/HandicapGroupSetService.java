@@ -11,6 +11,8 @@ import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.HandicapGroupSetGateway;
 
+import com.google.common.collect.ImmutableSet;
+
 public class HandicapGroupSetService extends AbstractEntityService<
         HandicapGroupSet,
         HandicapGroupSetAddPayload,
@@ -29,14 +31,16 @@ public class HandicapGroupSetService extends AbstractEntityService<
 
     @Override
     public HandicapGroupSet add(HandicapGroupSetAddPayload addPayload) throws AddEntityException {
+        ImmutableSet.Builder<HandicapGroup> handicapGroupBuilder = ImmutableSet.builder();
         try {
             for (String handicapGroupId : addPayload.getHandicapGroupIds()) {
-                handicapGroupEntityService.getById(handicapGroupId);
+                handicapGroupBuilder.add(handicapGroupEntityService.getById(handicapGroupId));
             }
         } catch (EntityNotFoundException e) {
             throw new AddEntityException(e);
         }
-        return super.add(addPayload);
+        addPayload.setHandicapGroups(handicapGroupBuilder.build());
+        return gateway.add(addPayload);
     }
 
 
