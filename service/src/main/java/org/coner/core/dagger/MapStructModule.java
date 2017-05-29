@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import org.coner.core.hibernate.dao.CompetitionGroupDao;
 import org.coner.core.hibernate.dao.CompetitionGroupSetDao;
+import org.coner.core.hibernate.dao.HandicapGroupDao;
+import org.coner.core.hibernate.dao.HandicapGroupSetDao;
 import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.mapper.EventMapper;
@@ -52,13 +54,21 @@ public class MapStructModule {
 
     @Provides
     @Singleton
-    public HandicapGroupMapper handicapGroupMapper() {
-        return Mappers.getMapper(HandicapGroupMapper.class);
+    public HandicapGroupMapper handicapGroupMapper(HandicapGroupDao dao) {
+        HandicapGroupMapper mapper = Mappers.getMapper(HandicapGroupMapper.class);
+        mapper.setDao(dao);
+        return mapper;
     }
 
     @Provides
     @Singleton
-    public HandicapGroupSetMapper handicapGroupSetMapper() {
-        return Mappers.getMapper(HandicapGroupSetMapper.class);
+    public HandicapGroupSetMapper handicapGroupSetMapper(
+            HandicapGroupSetDao dao,
+            HandicapGroupMapper handicapGroupMapper
+    ) {
+        HandicapGroupSetMapper mapper = Mappers.getMapper(HandicapGroupSetMapper.class);
+        mapper.setDao(dao);
+        mapper.setHandicapGroupMapper(handicapGroupMapper);
+        return mapper;
     }
 }
