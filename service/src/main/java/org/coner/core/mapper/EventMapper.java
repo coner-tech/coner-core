@@ -6,6 +6,7 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.core.hibernate.dao.EventDao;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,24 +14,32 @@ import org.mapstruct.MappingTarget;
 @Mapper(
         config = ConerBaseMapStructConfig.class
 )
-public interface EventMapper {
+public abstract class EventMapper {
 
-    EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
+    private EventDao dao;
 
-    EventApiEntity toApiEntity(Event domainEntity);
+    public abstract EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
 
-    List<EventApiEntity> toApiEntityList(List<Event> domainEntityList);
+    public abstract EventApiEntity toApiEntity(Event domainEntity);
 
-    EventHibernateEntity toHibernateEntity(EventAddPayload domainAddPayload);
+    public abstract List<EventApiEntity> toApiEntityList(List<Event> domainEntityList);
 
-    EventHibernateEntity toHibernateEntity(Event domainEntity);
+    public abstract EventHibernateEntity toHibernateEntity(EventAddPayload domainAddPayload);
 
-    void updateHibernateEntity(
+    public EventHibernateEntity toHibernateEntity(Event domainEntity) {
+        return dao.findById(domainEntity.getId());
+    }
+
+    public abstract void updateHibernateEntity(
             Event domainEntity,
             @MappingTarget EventHibernateEntity hibernateEntity
     );
 
-    Event toDomainEntity(EventHibernateEntity hibernateEntity);
+    public abstract Event toDomainEntity(EventHibernateEntity hibernateEntity);
 
-    List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
+    public abstract List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
+
+    public void setDao(EventDao dao) {
+        this.dao = dao;
+    }
 }

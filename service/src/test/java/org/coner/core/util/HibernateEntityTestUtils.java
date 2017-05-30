@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -9,6 +10,8 @@ import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
+import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
+import org.coner.core.hibernate.entity.RunHibernateEntity;
 
 import com.google.common.collect.Sets;
 
@@ -30,6 +33,29 @@ public final class HibernateEntityTestUtils {
         event.setName(name);
         event.setDate(date);
         return event;
+    }
+
+    public static RegistrationHibernateEntity fullRegistration() {
+        return fullRegistration(
+                TestConstants.REGISTRATION_ID,
+                TestConstants.REGISTRATION_FIRSTNAME,
+                TestConstants.REGISTRATION_LASTNAME,
+                fullEvent()
+        );
+    }
+
+    public static RegistrationHibernateEntity fullRegistration(
+            String id,
+            String firstName,
+            String lastName,
+            EventHibernateEntity event
+    ) {
+        RegistrationHibernateEntity registration = new RegistrationHibernateEntity();
+        registration.setId(id);
+        registration.setFirstName(firstName);
+        registration.setLastName(lastName);
+        registration.setEvent(event);
+        return registration;
     }
 
     public static HandicapGroupHibernateEntity fullHandicapGroup() {
@@ -117,6 +143,47 @@ public final class HibernateEntityTestUtils {
         competitionGroupSet.setName(name);
         competitionGroupSet.setCompetitionGroups(competitionGroups);
         return competitionGroupSet;
+    }
+
+    public static RunHibernateEntity fullRun() {
+        return fullRun(
+                TestConstants.RUN_ID,
+                fullEvent(),
+                fullRegistration(),
+                TestConstants.RUN_SEQUENCE,
+                TestConstants.RUN_TIMESTAMP,
+                TestConstants.RUN_RAW_TIME,
+                TestConstants.RUN_CONES,
+                TestConstants.RUN_PENALTY,
+                TestConstants.RUN_RERUN,
+                TestConstants.RUN_COMPETITIVE
+        );
+    }
+
+    public static RunHibernateEntity fullRun(
+            String id,
+            EventHibernateEntity event,
+            RegistrationHibernateEntity registration,
+            int sequence,
+            Instant timestamp,
+            BigDecimal rawTime,
+            int cones,
+            String penalty,
+            boolean rerun,
+            boolean competitive
+    ) {
+        RunHibernateEntity run = new RunHibernateEntity();
+        run.setId(id);
+        run.setEvent(event);
+        run.setRegistration(registration);
+        run.setSequence(sequence);
+        run.setTimestamp(timestamp);
+        run.setRawTime(rawTime);
+        run.setCones(cones);
+        run.setPenalty(penalty);
+        run.setRerun(rerun);
+        run.setCompetitive(competitive);
+        return run;
     }
 
 }
