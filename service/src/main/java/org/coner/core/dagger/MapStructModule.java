@@ -2,6 +2,8 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.hibernate.dao.CompetitionGroupDao;
 import org.coner.core.hibernate.dao.CompetitionGroupSetDao;
 import org.coner.core.hibernate.dao.EventDao;
@@ -86,12 +88,16 @@ public class MapStructModule {
     public RunMapper runMapper(
             RunDao dao,
             EventMapper eventMapper,
-            RegistrationMapper registrationMapper
+            EventEntityService eventEntityService,
+            RegistrationMapper registrationMapper,
+            RegistrationEntityService registrationEntityService
     ) {
         RunMapper mapper = Mappers.getMapper(RunMapper.class);
         mapper.setDao(dao);
         mapper.setEventMapper(eventMapper);
+        mapper.setEventEntityService(eventEntityService);
         mapper.setRegistrationMapper(registrationMapper);
+        mapper.setRegistrationEntityService(registrationEntityService);
         return mapper;
     }
 }

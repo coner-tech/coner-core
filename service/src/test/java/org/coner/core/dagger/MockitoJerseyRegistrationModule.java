@@ -6,6 +6,7 @@ import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
 import org.coner.core.resource.DomainServiceExceptionMapper;
 import org.coner.core.resource.EventRegistrationsResource;
+import org.coner.core.resource.EventRunsResource;
 import org.coner.core.resource.EventsResource;
 import org.coner.core.resource.HandicapGroupSetsResource;
 import org.coner.core.resource.HandicapGroupsResource;
@@ -28,6 +29,12 @@ public class MockitoJerseyRegistrationModule {
     @Singleton
     public EventRegistrationsResource getEventRegistrationsResource() {
         return Mockito.mock(EventRegistrationsResource.class);
+    }
+
+    @Provides
+    @Singleton
+    public EventRunsResource getEventRunsResource() {
+        return Mockito.mock((EventRunsResource.class));
     }
 
     @Provides

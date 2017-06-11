@@ -8,12 +8,17 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.RegistrationEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.hibernate.dao.RunDao;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.core.hibernate.entity.RunHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 
 @Mapper(
         config = ConerBaseMapStructConfig.class
@@ -22,9 +27,23 @@ public abstract class RunMapper {
 
     private RunDao dao;
     private EventMapper eventMapper;
+    private EventEntityService eventEntityService;
     private RegistrationMapper registrationMapper;
+    private RegistrationEntityService registrationEntityService;
 
+    @Mappings({
+            @Mapping(source = "eventId", target = "event"),
+            @Mapping(source = "apiAddRequest.registrationId", target = "registration")
+    })
     public abstract RunAddPayload toDomainAddPayload(AddRunRequest apiAddRequest, String eventId);
+
+    public Event toDomainEvent(String eventId) throws EntityNotFoundException {
+        return eventEntityService.getById(eventId);
+    }
+
+    public Registration toDomainRegistration(String registrationId) throws EntityNotFoundException {
+        return registrationEntityService.getById(registrationId);
+    }
 
     public abstract RunApiEntity toApiEntity(Run domainEntity);
 
@@ -69,7 +88,15 @@ public abstract class RunMapper {
         this.eventMapper = eventMapper;
     }
 
+    public void setEventEntityService(EventEntityService eventEntityService) {
+        this.eventEntityService = eventEntityService;
+    }
+
     public void setRegistrationMapper(RegistrationMapper registrationMapper) {
         this.registrationMapper = registrationMapper;
+    }
+
+    public void setRegistrationEntityService(RegistrationEntityService registrationEntityService) {
+        this.registrationEntityService = registrationEntityService;
     }
 }
