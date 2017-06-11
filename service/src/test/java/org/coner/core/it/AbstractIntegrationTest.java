@@ -3,6 +3,7 @@ package org.coner.core.it;
 import javax.ws.rs.client.Client;
 
 import org.coner.core.ConerCoreConfiguration;
+import org.coner.core.util.IntegrationTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;

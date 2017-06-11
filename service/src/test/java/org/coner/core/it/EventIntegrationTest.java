@@ -14,6 +14,7 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.util.ApiRequestTestUtils;
+import org.coner.core.util.IntegrationTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;

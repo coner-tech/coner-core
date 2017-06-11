@@ -4,34 +4,57 @@ import java.util.List;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.hibernate.dao.RegistrationDao;
+import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(
-        config = ConerBaseMapStructConfig.class,
-        uses = EventMapper.class
+        config = ConerBaseMapStructConfig.class
 )
-public interface RegistrationMapper {
+public abstract class RegistrationMapper {
 
-    RegistrationAddPayload toDomainAddPayload(AddRegistrationRequest apiAddRequest, String eventId);
+    private RegistrationDao dao;
+    private EventMapper eventMapper;
 
-    RegistrationApiEntity toApiEntity(Registration domainEntity);
+    public abstract RegistrationAddPayload toDomainAddPayload(AddRegistrationRequest apiAddRequest, String eventId);
 
-    List<RegistrationApiEntity> toApiEntityList(List<Registration> domainEntityList);
+    public abstract RegistrationApiEntity toApiEntity(Registration domainEntity);
 
-    RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload domainAddPayload);
+    public abstract List<RegistrationApiEntity> toApiEntityList(List<Registration> domainEntityList);
 
-    RegistrationHibernateEntity toHibernateEntity(Registration domainEntity);
+    public abstract RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload domainAddPayload);
 
-    void updateHibernateEntity(
+    public RegistrationHibernateEntity toHibernateEntity(Registration domainEntity) {
+        return dao.findById(domainEntity.getId());
+    }
+
+    public EventHibernateEntity toHibernateEntity(Event event) {
+        return eventMapper.toHibernateEntity(event);
+    }
+
+    public abstract void updateHibernateEntity(
             Registration domainEntity,
             @MappingTarget RegistrationHibernateEntity hibernateEntity
     );
 
-    Registration toDomainEntity(RegistrationHibernateEntity hibernateEntity);
+    public abstract Registration toDomainEntity(RegistrationHibernateEntity hibernateEntity);
 
-    List<Registration> toDomainEntityList(List<RegistrationHibernateEntity> hibernateEntityList);
+    public Event toDomainEntity(EventHibernateEntity eventHibernateEntity) {
+        return eventMapper.toDomainEntity(eventHibernateEntity);
+    }
+
+    public abstract List<Registration> toDomainEntityList(List<RegistrationHibernateEntity> hibernateEntityList);
+
+    public void setDao(RegistrationDao dao) {
+        this.dao = dao;
+    }
+
+    public void setEventMapper(EventMapper eventMapper) {
+        this.eventMapper = eventMapper;
+    }
 }

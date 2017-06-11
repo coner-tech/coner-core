@@ -2,16 +2,22 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
+import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.hibernate.dao.CompetitionGroupDao;
 import org.coner.core.hibernate.dao.CompetitionGroupSetDao;
+import org.coner.core.hibernate.dao.EventDao;
 import org.coner.core.hibernate.dao.HandicapGroupDao;
 import org.coner.core.hibernate.dao.HandicapGroupSetDao;
+import org.coner.core.hibernate.dao.RegistrationDao;
+import org.coner.core.hibernate.dao.RunDao;
 import org.coner.core.mapper.CompetitionGroupMapper;
 import org.coner.core.mapper.CompetitionGroupSetMapper;
 import org.coner.core.mapper.EventMapper;
 import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.mapper.HandicapGroupSetMapper;
 import org.coner.core.mapper.RegistrationMapper;
+import org.coner.core.mapper.RunMapper;
 import org.mapstruct.factory.Mappers;
 
 import dagger.Module;
@@ -22,14 +28,19 @@ public class MapStructModule {
 
     @Provides
     @Singleton
-    public EventMapper eventMapper() {
-        return Mappers.getMapper(EventMapper.class);
+    public EventMapper eventMapper(EventDao dao) {
+        EventMapper mapper = Mappers.getMapper(EventMapper.class);
+        mapper.setDao(dao);
+        return mapper;
     }
 
     @Provides
     @Singleton
-    public RegistrationMapper registrationMapper() {
-        return Mappers.getMapper(RegistrationMapper.class);
+    public RegistrationMapper registrationMapper(RegistrationDao dao, EventMapper eventMapper) {
+        RegistrationMapper mapper = Mappers.getMapper(RegistrationMapper.class);
+        mapper.setDao(dao);
+        mapper.setEventMapper(eventMapper);
+        return mapper;
     }
 
     @Provides
@@ -69,6 +80,24 @@ public class MapStructModule {
         HandicapGroupSetMapper mapper = Mappers.getMapper(HandicapGroupSetMapper.class);
         mapper.setDao(dao);
         mapper.setHandicapGroupMapper(handicapGroupMapper);
+        return mapper;
+    }
+
+    @Provides
+    @Singleton
+    public RunMapper runMapper(
+            RunDao dao,
+            EventMapper eventMapper,
+            EventEntityService eventEntityService,
+            RegistrationMapper registrationMapper,
+            RegistrationEntityService registrationEntityService
+    ) {
+        RunMapper mapper = Mappers.getMapper(RunMapper.class);
+        mapper.setDao(dao);
+        mapper.setEventMapper(eventMapper);
+        mapper.setEventEntityService(eventEntityService);
+        mapper.setRegistrationMapper(registrationMapper);
+        mapper.setRegistrationEntityService(registrationEntityService);
         return mapper;
     }
 }

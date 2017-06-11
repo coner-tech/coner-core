@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
+import org.coner.core.api.request.AddRunRequest;
 
 import com.google.common.collect.Sets;
 
@@ -122,5 +124,37 @@ public final class ApiRequestTestUtils {
         addRegistrationRequest.setFirstName(firstName);
         addRegistrationRequest.setLastName(lastName);
         return addRegistrationRequest;
+    }
+
+    public static AddRunRequest fullAddRun() {
+        return fullAddRun(
+                TestConstants.REGISTRATION_ID,
+                TestConstants.RUN_TIMESTAMP,
+                TestConstants.RUN_RAW_TIME,
+                TestConstants.RUN_CONES,
+                TestConstants.RUN_PENALTY,
+                TestConstants.RUN_RERUN,
+                TestConstants.RUN_COMPETITIVE
+        );
+    }
+
+    public static AddRunRequest fullAddRun(
+            String registrationId,
+            Instant timestamp,
+            BigDecimal rawTime,
+            int cones,
+            String penalty,
+            boolean rerun,
+            boolean competitive
+    ) {
+        AddRunRequest addRunRequest = new AddRunRequest();
+        addRunRequest.setRegistrationId(registrationId);
+        addRunRequest.setTimestamp(timestamp);
+        addRunRequest.setRawTime(rawTime);
+        addRunRequest.setCones(cones);
+        addRunRequest.setPenalty(penalty);
+        addRunRequest.setRerun(rerun);
+        addRunRequest.setCompetitive(competitive);
+        return addRunRequest;
     }
 }
