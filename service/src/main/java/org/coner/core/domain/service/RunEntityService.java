@@ -5,6 +5,8 @@ import javax.inject.Inject;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityMismatchException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.RunGateway;
 
 public class RunEntityService extends AbstractEntityService<
@@ -24,5 +26,14 @@ public class RunEntityService extends AbstractEntityService<
                 1 + (lastInSequenceForEvent != null ? lastInSequenceForEvent.getSequence() : 0)
         );
         return gateway.add(addPayload);
+    }
+
+    public Run getByEventIdAndRunId(String eventId, String runId)
+            throws EntityMismatchException, EntityNotFoundException {
+        Run run = gateway.findById(runId);
+        if (!run.getEvent().getId().equals(eventId)) {
+            throw new EntityMismatchException();
+        }
+        return run;
     }
 }

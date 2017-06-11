@@ -8,7 +8,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddRunRequest;
+import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.IntegrationTestStandardRequestDelegate;
 import org.coner.core.util.IntegrationTestUtils;
@@ -45,5 +47,26 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addRequest));
 
         assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+    }
+
+    @Test
+    public void itShouldGetRun() {
+        String runId = standardRequests.addRun(eventId, registrationId);
+        RunApiEntity expected = ApiEntityTestUtils.fullRun();
+        expected.setId(runId);
+        expected.setEventId(eventId);
+        expected.setRegistrationId(registrationId);
+
+        URI eventRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path("/events/{eventId}/runs/{runId}")
+                .build(eventId, runId);
+        Response getResponseContainer = client.target(eventRunUri)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+        RunApiEntity actual = getResponseContainer.readEntity(RunApiEntity.class);
+
+        assertThat(getResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -3,6 +3,7 @@ package org.coner.core.resource;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,6 +18,7 @@ import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.service.RunEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.mapper.RunMapper;
 import org.coner.core.util.swagger.ApiResponseConstants;
@@ -82,7 +84,28 @@ public class EventRunsResource {
         Run domainEntity = runEntityService.add(addPayload);
         RunApiEntity run = runMapper.toApiEntity(domainEntity);
         return Response.created(UriBuilder.fromPath("/events/{eventId}/runs/{runId}")
-                .build(eventId, run.getId()))
+                                        .build(eventId, run.getId()))
                 .build();
+    }
+
+    @GET
+    @Path("/{runId}")
+    @UnitOfWork
+    @ApiOperation(value = "Get a specific run")
+    @ApiResponses({
+            @ApiResponse(code = HttpStatus.OK_200, response = RunApiEntity.class, message = "OK"),
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, response = ErrorMessage.class, message = "Not found"),
+            @ApiResponse(
+                    code = HttpStatus.CONFLICT_409,
+                    response = ErrorMessage.class,
+                    message = "Event ID and Run ID are mismatched"
+            )
+    })
+    public RunApiEntity getRun(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @PathParam("runId") @ApiParam(value = "Run ID", required = true) String runId
+    ) throws EntityMismatchException, EntityNotFoundException {
+        Run domainRun = runEntityService.getByEventIdAndRunId(eventId, runId);
+        return runMapper.toApiEntity(domainRun);
     }
 }

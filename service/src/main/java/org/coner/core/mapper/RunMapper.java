@@ -45,6 +45,10 @@ public abstract class RunMapper {
         return registrationEntityService.getById(registrationId);
     }
 
+    @Mappings({
+            @Mapping(source = "domainEntity.event.id", target = "eventId"),
+            @Mapping(source = "domainEntity.registration.id", target = "registrationId")
+    })
     public abstract RunApiEntity toApiEntity(Run domainEntity);
 
     public abstract List<RunApiEntity> toApiEntityList(List<Run> domainEntityList);
