@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
+import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 
 import com.google.common.collect.Sets;
@@ -149,5 +151,46 @@ public final class ApiEntityTestUtils {
                 TestConstants.COMPETITION_GROUP_SET_NAME,
                 Sets.newHashSet(fullCompetitionGroup())
         );
+    }
+
+    public static RunApiEntity fullRun() {
+        return fullRun(
+                TestConstants.RUN_ID,
+                TestConstants.EVENT_ID,
+                TestConstants.REGISTRATION_ID,
+                TestConstants.RUN_SEQUENCE,
+                TestConstants.RUN_TIMESTAMP,
+                TestConstants.RUN_RAW_TIME,
+                TestConstants.RUN_CONES,
+                TestConstants.RUN_PENALTY,
+                TestConstants.RUN_RERUN,
+                TestConstants.RUN_COMPETITIVE
+        );
+    }
+
+    public static RunApiEntity fullRun(
+            String id,
+            String eventId,
+            String registrationId,
+            int sequence,
+            Instant timestamp,
+            BigDecimal rawTime,
+            int cones,
+            String penalty,
+            boolean rerun,
+            boolean competitive
+    ) {
+        RunApiEntity run = new RunApiEntity();
+        run.setId(id);
+        run.setEventId(eventId);
+        run.setRegistrationId(registrationId);
+        run.setSequence(sequence);
+        run.setTimestamp(timestamp);
+        run.setRawTime(rawTime);
+        run.setCones(cones);
+        run.setPenalty(penalty);
+        run.setRerun(rerun);
+        run.setCompetitive(competitive);
+        return run;
     }
 }

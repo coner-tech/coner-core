@@ -9,11 +9,13 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.api.Assertions;
 import org.coner.core.ConerCoreConfiguration;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
+import org.coner.core.api.request.AddRunRequest;
 import org.eclipse.jetty.http.HttpStatus;
 
 import io.dropwizard.testing.junit.DropwizardAppRule;
@@ -80,6 +82,20 @@ public final class IntegrationTestStandardRequestDelegate {
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(addRequest));
         assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
+    }
+
+    public String addRun(String eventId, String registrationId) {
+        URI eventRunsUri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
+                .path("/events/{eventId}/runs")
+                .build(eventId);
+        AddRunRequest addRequest = ApiRequestTestUtils.fullAddRun();
+        addRequest.setRegistrationId(registrationId);
+        Response addResponseContainer = client.target(eventRunsUri)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(addRequest));
+        Assertions.assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
     }
 }
