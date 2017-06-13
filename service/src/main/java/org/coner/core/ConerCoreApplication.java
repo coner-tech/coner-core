@@ -69,6 +69,7 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         jersey.register(components.competitionGroupsResource());
         jersey.register(components.competitionGroupSetsResource());
         jersey.register(components.domainServiceExceptionMapper());
+        jersey.register(components.runtimeExceptionUnwrappingMapper());
 
         optionallyRegisterHsqlDatabaseManagerSwingTask(environment, conerCoreConfiguration);
     }
