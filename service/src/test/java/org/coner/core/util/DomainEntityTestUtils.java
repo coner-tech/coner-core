@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.entity.Registration;
+import org.coner.core.domain.entity.Run;
 
 import com.google.common.collect.Sets;
 
@@ -135,6 +137,47 @@ public final class DomainEntityTestUtils {
         competitionGroupSet.setName(name);
         competitionGroupSet.setCompetitionGroups(competitionGroups);
         return competitionGroupSet;
+    }
+
+    public static Run fullRun() {
+        return fullRun(
+                TestConstants.RUN_ID,
+                fullEvent(),
+                fullRegistration(),
+                TestConstants.RUN_SEQUENCE,
+                TestConstants.RUN_TIMESTAMP,
+                TestConstants.RUN_RAW_TIME,
+                TestConstants.RUN_CONES,
+                TestConstants.RUN_PENALTY,
+                TestConstants.RUN_RERUN,
+                TestConstants.RUN_COMPETITIVE
+        );
+    }
+
+    public static Run fullRun(
+            String id,
+            Event event,
+            Registration registration,
+            int sequence,
+            Instant timestamp,
+            BigDecimal rawTime,
+            int cones,
+            String penalty,
+            boolean rerun,
+            boolean competitive
+    ) {
+        Run run = new Run();
+        run.setId(id);
+        run.setEvent(event);
+        run.setRegistration(registration);
+        run.setSequence(sequence);
+        run.setTimestamp(timestamp);
+        run.setRawTime(rawTime);
+        run.setCones(cones);
+        run.setPenalty(penalty);
+        run.setRerun(rerun);
+        run.setCompetitive(competitive);
+        return run;
     }
 
 }

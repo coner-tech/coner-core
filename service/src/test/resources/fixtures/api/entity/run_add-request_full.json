@@ -1,0 +1,9 @@
+{
+  "registrationId": "registration-test-id",
+  "timestamp": "2017-05-29T23:50:00.00Z",
+  "rawTime": 123.456,
+  "cones": 0,
+  "penalty": null,
+  "rerun": false,
+  "competitive": true
+}

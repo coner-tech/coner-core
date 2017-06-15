@@ -105,7 +105,8 @@ public class ConerCoreApplicationTest {
                 components.handicapGroupSetsResource(),
                 components.competitionGroupsResource(),
                 components.competitionGroupSetsResource(),
-                components.domainServiceExceptionMapper()
+                components.domainServiceExceptionMapper(),
+                components.runtimeExceptionUnwrappingMapper()
         };
 
         application.run(config, environment);
