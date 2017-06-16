@@ -1,7 +1,10 @@
 package org.coner.core.domain.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
@@ -14,9 +17,12 @@ public class RunEntityService extends AbstractEntityService<
         RunAddPayload,
         RunGateway> {
 
+    private final EventEntityService eventEntityService;
+
     @Inject
-    public RunEntityService(RunGateway gateway) {
+    public RunEntityService(RunGateway gateway, EventEntityService eventEntityService) {
         super(Run.class, gateway);
+        this.eventEntityService = eventEntityService;
     }
 
     @Override
@@ -35,5 +41,10 @@ public class RunEntityService extends AbstractEntityService<
             throw new EntityMismatchException();
         }
         return run;
+    }
+
+    public List<Run> getAllWithEventId(String eventId) throws EntityNotFoundException {
+        Event event = eventEntityService.getById(eventId);
+        return gateway.getAllWith(event);
     }
 }

@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -21,10 +23,22 @@ import org.hibernate.validator.constraints.Range;
 @Table(
         name = "runs",
         uniqueConstraints = {
-                @UniqueConstraint(name = "events_sequences", columnNames = { "event_id", "sequence" })
+                @UniqueConstraint(name = "events_sequences", columnNames = {"event_id", "sequence"})
         }
 )
+@NamedQueries(
+        @NamedQuery(
+                name = RunHibernateEntity.QUERY_FIND_ALL_WITH_EVENT,
+                query = "FROM RunHibernateEntity r "
+                        + "WHERE r.event.id = :" + RunHibernateEntity.PARAMETER_EVENT_ID + " "
+                        + "ORDER BY r.sequence ASC"
+        )
+)
 public class RunHibernateEntity extends HibernateEntity {
+
+    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.core.hibernate.entity.RunHibernateEntity"
+            + ".findAllWithEvent";
+    public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;
     private EventHibernateEntity event;

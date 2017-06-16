@@ -51,4 +51,10 @@ public class RunDao extends BaseHibernateEntityDao<RunHibernateEntity> {
             return null;
         }
     }
+
+    public List<RunHibernateEntity> getAllWith(EventHibernateEntity event) {
+        Query<RunHibernateEntity> query = namedQuery(RunHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
+        query.setParameter(RunHibernateEntity.PARAMETER_EVENT_ID, event.getId());
+        return list(query);
+    }
 }

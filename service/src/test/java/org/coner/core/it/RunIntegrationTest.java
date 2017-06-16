@@ -3,6 +3,8 @@ package org.coner.core.it;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -10,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddRunRequest;
+import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.IntegrationTestStandardRequestDelegate;
@@ -68,5 +71,36 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(getResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void itShouldGetAllRunsForEvent() {
+        // add expected runs
+        List<String> runsForEventIdProperty = Arrays.asList(
+                standardRequests.addRun(eventId, registrationId),
+                standardRequests.addRun(eventId, registrationId),
+                standardRequests.addRun(eventId, registrationId)
+        );
+
+        // add a run for a different event
+        String anotherEventId = standardRequests.addEvent();
+        String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(anotherEventId);
+        standardRequests.addRun(anotherEventId, anotherRegistrationIdAtAnotherEventId);
+
+        URI allRunsForEventUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path("/events/{eventId}/runs")
+                .build(eventId);
+        Response getResponseContainer = client.target(allRunsForEventUri)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+        GetEventRunsResponse actual = getResponseContainer.readEntity(GetEventRunsResponse.class);
+
+        assertThat(getResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
+        assertThat(actual.getEntities())
+                .hasSize(runsForEventIdProperty.size())
+                .flatExtracting(RunApiEntity::getId).containsExactlyElementsOf(runsForEventIdProperty);
+        assertThat(actual.getEntities())
+                .flatExtracting(RunApiEntity::getSequence).containsExactly(1, 2, 3);
     }
 }
