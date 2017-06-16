@@ -50,7 +50,7 @@ public class RunEntityService extends AbstractEntityService<
         return gateway.getAllWith(event);
     }
 
-    public Run addTimeToFirstRunInSequenceWithoutTime(RunAddTimePayload addTimePayload)
+    public Run addTimeToFirstRunInSequenceWithoutRawTime(RunAddTimePayload addTimePayload)
             throws EntityNotFoundException, AddEntityException {
         Run firstRunInSequenceWithoutTime = gateway.findFirstInSequenceWithoutTime(addTimePayload.getEvent());
         if (firstRunInSequenceWithoutTime == null) {

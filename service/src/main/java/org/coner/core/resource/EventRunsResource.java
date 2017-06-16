@@ -122,7 +122,7 @@ public class EventRunsResource {
             @Valid @ApiParam(value = "Time", required = true) AddTimeToFirstRunLackingTimeRequest request
     ) throws AddEntityException, EntityNotFoundException {
         RunAddTimePayload addTimePayload = runMapper.toDomainAddTimePayload(request, eventId);
-        Run domainEntity = runEntityService.addTimeToFirstRunInSequenceWithoutTime(addTimePayload);
+        Run domainEntity = runEntityService.addTimeToFirstRunInSequenceWithoutRawTime(addTimePayload);
         RunApiEntity run = runMapper.toApiEntity(domainEntity);
         return run;
     }
