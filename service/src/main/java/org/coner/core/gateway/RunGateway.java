@@ -40,7 +40,7 @@ public class RunGateway extends MapStructAbstractGateway<
 
     public Run findFirstInSequenceWithoutTime(Event event) {
         return hibernateEntityToDomainEntityConverter.convert(
-                dao.findFirstInSequenceWithoutTime(eventMapper.toHibernateEntity(event))
+                dao.findFirstInSequenceWithoutRawTime(eventMapper.toHibernateEntity(event))
         );
     }
 

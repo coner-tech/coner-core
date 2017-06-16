@@ -38,7 +38,7 @@ import org.hibernate.validator.constraints.Range;
                 query = "FROM RunHibernateEntity r "
                         + "WHERE r.event.id = :" + RunHibernateEntity.PARAMETER_EVENT_ID + " "
                         + "AND r.rawTime IS NULL "
-                        + "ORDER BY r.sequence ASC"
+                        + "ORDER BY r.sequence ASC "
         )
 })
 public class RunHibernateEntity extends HibernateEntity {

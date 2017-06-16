@@ -208,6 +208,52 @@ public class RunDaoTest extends AbstractDaoTest {
         });
     }
 
+    @Test
+    public void itShouldFindFirstInSequenceWithoutRawTimeWhenExists() {
+        daoTestRule.inTransaction(() -> {
+            // setup three runs, only the first of which has a raw time
+            RunHibernateEntity runWithTime = buildUnsavedRun();
+            runWithTime.setSequence(1);
+            RunHibernateEntity runWithoutTime1 = buildUnsavedRun();
+            runWithoutTime1.setRawTime(null);
+            runWithoutTime1.setSequence(2);
+            RunHibernateEntity runWithoutTime2 = buildUnsavedRun();
+            runWithoutTime2.setRawTime(null);
+            runWithoutTime2.setSequence(3);
+            dao.create(runWithTime);
+            dao.create(runWithoutTime1);
+            dao.create(runWithoutTime2);
+
+            RunHibernateEntity actual = dao.findFirstInSequenceWithoutRawTime(prerequisites.event);
+
+            assertThat(actual).isSameAs(runWithoutTime1);
+        });
+    }
+
+    @Test
+    public void whenAllRunsHaveRawTimesThenFirstInSequenceWithoutRawTimeShouldBeNull() {
+        daoTestRule.inTransaction(() -> {
+            // setup one run with a time
+            RunHibernateEntity run = buildUnsavedRun();
+            dao.create(run);
+
+            RunHibernateEntity actual = dao.findFirstInSequenceWithoutRawTime(prerequisites.event);
+
+            assertThat(actual).isNull();
+        });
+    }
+
+    @Test
+    public void whenNoRunsThenFirstInSequenceWithoutRawTimeShouldBeNull() {
+        daoTestRule.inTransaction(() -> {
+            // no runs
+
+            RunHibernateEntity actual = dao.findFirstInSequenceWithoutRawTime(prerequisites.event);
+
+            assertThat(actual).isNull();
+        });
+    }
+
     private Prerequisites setupPrerequisites() {
         Prerequisites prerequisites = new Prerequisites();
         prerequisites.event = HibernateEntityTestUtils.fullEvent();

@@ -52,10 +52,15 @@ public class RunDao extends BaseHibernateEntityDao<RunHibernateEntity> {
         }
     }
 
-    public RunHibernateEntity findFirstInSequenceWithoutTime(EventHibernateEntity event) {
+    public RunHibernateEntity findFirstInSequenceWithoutRawTime(EventHibernateEntity event) {
         Query query = namedQuery(RunHibernateEntity.QUERY_FIND_FIRST_WITHOUT_TIME_AT_EVENT);
         query.setParameter(RunHibernateEntity.PARAMETER_EVENT_ID, event.getId());
-        return uniqueResult(query);
+        List<RunHibernateEntity> runsWithoutRawTimes = list(query);
+        if (runsWithoutRawTimes != null && !runsWithoutRawTimes.isEmpty()) {
+            return runsWithoutRawTimes.get(0);
+        } else {
+            return null;
+        }
     }
 
     public List<RunHibernateEntity> getAllWith(EventHibernateEntity event) {
