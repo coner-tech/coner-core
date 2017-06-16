@@ -1,5 +1,7 @@
 package org.coner.core.resource;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddRunRequest;
+import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.service.RunEntityService;
@@ -108,4 +111,32 @@ public class EventRunsResource {
         Run domainRun = runEntityService.getByEventIdAndRunId(eventId, runId);
         return runMapper.toApiEntity(domainRun);
     }
+
+    @GET
+    @UnitOfWork
+    @ApiOperation(
+            value = "Get a list of all runs at an event",
+            response = GetEventRunsResponse.class
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.OK_200,
+                    message = "Success",
+                    response = GetEventRunsResponse.class
+            ),
+            @ApiResponse(
+                    code = HttpStatus.NOT_FOUND_404,
+                    message = "No event with given ID",
+                    response = ErrorMessage.class
+            )
+    })
+    public GetEventRunsResponse getEventRuns(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId
+    ) throws EntityNotFoundException {
+        List<Run> domainEntities = runEntityService.getAllWithEventId(eventId);
+        GetEventRunsResponse response = new GetEventRunsResponse();
+        response.setEntities(runMapper.toApiEntityList(domainEntities));
+        return response;
+    }
+
 }
