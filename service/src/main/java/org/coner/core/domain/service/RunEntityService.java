@@ -1,5 +1,6 @@
 package org.coner.core.domain.service;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.payload.RunAddTimePayload;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityMismatchException;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
@@ -46,5 +48,20 @@ public class RunEntityService extends AbstractEntityService<
     public List<Run> getAllWithEventId(String eventId) throws EntityNotFoundException {
         Event event = eventEntityService.getById(eventId);
         return gateway.getAllWith(event);
+    }
+
+    public Run addTimeToFirstRunInSequenceWithoutTime(RunAddTimePayload addTimePayload)
+            throws EntityNotFoundException, AddEntityException {
+        Run firstRunInSequenceWithoutTime = gateway.findFirstInSequenceWithoutTime(addTimePayload.getEvent());
+        if (firstRunInSequenceWithoutTime == null) {
+            RunAddPayload addPayload = new RunAddPayload();
+            addPayload.setEvent(addTimePayload.getEvent());
+            addPayload.setTimestamp(Instant.now());
+            addPayload.setRawTime(addTimePayload.getRawTime());
+            return add(addPayload);
+        } else {
+            firstRunInSequenceWithoutTime.setRawTime(addTimePayload.getRawTime());
+            return gateway.save(firstRunInSequenceWithoutTime.getId(), firstRunInSequenceWithoutTime);
+        }
     }
 }

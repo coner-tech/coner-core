@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddRunRequest;
+import org.coner.core.api.request.AddTimeToFirstRunLackingTimeRequest;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.payload.RunAddTimePayload;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
@@ -36,6 +38,15 @@ public abstract class RunMapper {
             @Mapping(source = "apiAddRequest.registrationId", target = "registration")
     })
     public abstract RunAddPayload toDomainAddPayload(AddRunRequest apiAddRequest, String eventId);
+
+    @Mappings({
+            @Mapping(source = "eventId", target = "event"),
+            @Mapping(source = "addTimeToFirstRunLackingTimeRequest.rawTime", target = "rawTime")
+    })
+    public abstract RunAddTimePayload toDomainAddTimePayload(
+            AddTimeToFirstRunLackingTimeRequest addTimeToFirstRunLackingTimeRequest,
+            String eventId
+    );
 
     public Event toDomainEvent(String eventId) throws EntityNotFoundException {
         return eventEntityService.getById(eventId);

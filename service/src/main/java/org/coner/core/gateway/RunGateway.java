@@ -38,6 +38,12 @@ public class RunGateway extends MapStructAbstractGateway<
         this.eventMapper = eventMapper;
     }
 
+    public Run findFirstInSequenceWithoutTime(Event event) {
+        return hibernateEntityToDomainEntityConverter.convert(
+                dao.findFirstInSequenceWithoutTime(eventMapper.toHibernateEntity(event))
+        );
+    }
+
     public Run findLastInSequenceForEvent(Event event) {
         return hibernateEntityToDomainEntityConverter.convert(
                 dao.findLastInSequenceFor(eventMapper.toHibernateEntity(event))

@@ -16,9 +16,11 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddRunRequest;
+import org.coner.core.api.request.AddTimeToFirstRunLackingTimeRequest;
 import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.payload.RunAddTimePayload;
 import org.coner.core.domain.service.RunEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityMismatchException;
@@ -89,6 +91,40 @@ public class EventRunsResource {
         return Response.created(UriBuilder.fromPath("/events/{eventId}/runs/{runId}")
                                         .build(eventId, run.getId()))
                 .build();
+    }
+
+    @POST
+    @Path("/times")
+    @UnitOfWork
+    @ApiOperation(
+            value = "Add a time to the first run in sequence lacking a time, "
+            + "or to a new run created on-the-fly if no runs lack a time"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.OK_200,
+                    message = "Added a time to an existing run or created a new run with the given time",
+                    response = RunApiEntity.class
+            ),
+            @ApiResponse(
+                    code = HttpStatus.NOT_FOUND_404,
+                    response = ErrorMessage.class,
+                    message = "No event with given ID"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    response = ValidationErrorMessage.class,
+                    message = "Failed validation"
+            )
+    })
+    public RunApiEntity addTimeToFirstRunLackingTime(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @Valid @ApiParam(value = "Time", required = true) AddTimeToFirstRunLackingTimeRequest request
+    ) throws AddEntityException, EntityNotFoundException {
+        RunAddTimePayload addTimePayload = runMapper.toDomainAddTimePayload(request, eventId);
+        Run domainEntity = runEntityService.addTimeToFirstRunInSequenceWithoutTime(addTimePayload);
+        RunApiEntity run = runMapper.toApiEntity(domainEntity);
+        return run;
     }
 
     @GET
