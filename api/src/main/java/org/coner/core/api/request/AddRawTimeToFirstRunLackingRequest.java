@@ -2,7 +2,7 @@ package org.coner.core.api.request;
 
 import java.math.BigDecimal;
 
-public class AddTimeToFirstRunLackingTimeRequest {
+public class AddRawTimeToFirstRunLackingRequest {
 
     private BigDecimal rawTime;
 

@@ -15,8 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.RunApiEntity;
+import org.coner.core.api.request.AddRawTimeToFirstRunLackingRequest;
 import org.coner.core.api.request.AddRunRequest;
-import org.coner.core.api.request.AddTimeToFirstRunLackingTimeRequest;
 import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
@@ -97,8 +97,8 @@ public class EventRunsResource {
     @Path("/rawTimes")
     @UnitOfWork
     @ApiOperation(
-            value = "Add a time to the first run in sequence lacking a time, "
-                    + "or to a new run created on-the-fly if no runs lack a time"
+            value = "Add a raw time to the first run in sequence lacking one, "
+                    + "or to a new run created on-the-fly if no runs lack a raw time"
     )
     @ApiResponses({
             @ApiResponse(
@@ -117,9 +117,9 @@ public class EventRunsResource {
                     message = "Failed validation"
             )
     })
-    public RunApiEntity addTimeToFirstRunLackingTime(
+    public RunApiEntity addRawTimeToFirstRunInSequenceLackingOne(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
-            @Valid @ApiParam(value = "Time", required = true) AddTimeToFirstRunLackingTimeRequest request
+            @Valid @ApiParam(value = "Time", required = true) AddRawTimeToFirstRunLackingRequest request
     ) throws AddEntityException, EntityNotFoundException {
         RunAddTimePayload addTimePayload = runMapper.toDomainAddTimePayload(request, eventId);
         Run domainEntity = runEntityService.addTimeToFirstRunInSequenceWithoutRawTime(addTimePayload);
