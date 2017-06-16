@@ -94,11 +94,11 @@ public class EventRunsResource {
     }
 
     @POST
-    @Path("/times")
+    @Path("/rawTimes")
     @UnitOfWork
     @ApiOperation(
             value = "Add a time to the first run in sequence lacking a time, "
-            + "or to a new run created on-the-fly if no runs lack a time"
+                    + "or to a new run created on-the-fly if no runs lack a time"
     )
     @ApiResponses({
             @ApiResponse(
