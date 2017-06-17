@@ -21,6 +21,7 @@ import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.payload.RunAddTimePayload;
+import org.coner.core.domain.payload.RunTimeAddedPayload;
 import org.coner.core.domain.service.RunEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityMismatchException;
@@ -117,14 +118,25 @@ public class EventRunsResource {
                     message = "Failed validation"
             )
     })
-    public RunApiEntity addRawTimeToFirstRunInSequenceLackingOne(
+    public Response addRawTimeToFirstRunInSequenceLackingOne(
             @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
             @Valid @ApiParam(value = "Time", required = true) AddRawTimeToFirstRunLackingRequest request
     ) throws AddEntityException, EntityNotFoundException {
-        RunAddTimePayload addTimePayload = runMapper.toDomainAddTimePayload(request, eventId);
-        Run domainEntity = runEntityService.addTimeToFirstRunInSequenceWithoutRawTime(addTimePayload);
-        RunApiEntity run = runMapper.toApiEntity(domainEntity);
-        return run;
+        RunAddTimePayload inPayload = runMapper.toDomainAddTimePayload(request, eventId);
+        RunTimeAddedPayload outPayload = runEntityService.addTimeToFirstRunInSequenceWithoutRawTime(inPayload);
+        RunApiEntity run = runMapper.toApiEntity(outPayload.getRun());
+        switch (outPayload.getOutcome()) {
+            case RUN_RAWTIME_ASSIGNED_TO_EXISTING:
+                return Response.ok(run, MediaType.APPLICATION_JSON).build();
+            case RUN_ADDED_WITH_RAWTIME:
+                return Response.created(UriBuilder.fromPath("/events/{eventId}/runs/{runId}")
+                                                .build(eventId, run.getId()))
+                        .entity(run)
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            default:
+                throw new RuntimeException("Unknown outcome: " + outPayload.getOutcome());
+        }
     }
 
     @GET

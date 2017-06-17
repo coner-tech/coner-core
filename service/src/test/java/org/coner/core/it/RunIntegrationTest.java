@@ -140,4 +140,38 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 .extracting(RunApiEntity::getId, RunApiEntity::getRawTime)
                 .containsExactly(runId, TestConstants.RUN_RAW_TIME);
     }
+
+    @Test
+    public void itShouldCreateRunIfAddRawTimeToFirstRunInSequenceFindsNonePriorLackingRawTime() {
+        // add a full run
+        AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
+        addRunRequest.setRegistrationId(registrationId);
+        URI addRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path("/events/{eventId}/runs")
+                .build(eventId);
+        Response addRunResponseContainer = client.target(addRunUri)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(addRunRequest));
+        String originalFullRunId = UnitTestUtils.getEntityIdFromResponse(addRunResponseContainer);
+
+        // add raw time (perhaps there was a false start/finish trip, or car launched unknown to T&S workers)
+        AddRawTimeToFirstRunLackingRequest addRawTimeRequest = new AddRawTimeToFirstRunLackingRequest();
+        addRawTimeRequest.setRawTime(TestConstants.RUN_RAW_TIME);
+        URI addRawTimeUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path("/events/{eventId}/runs/rawTimes")
+                .build(eventId);
+        Response addRawTimeResponse = client.target(addRawTimeUri)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(addRawTimeRequest));
+
+        // assert
+        assertThat(addRawTimeResponse.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        RunApiEntity addRawTimeRun = addRawTimeResponse.readEntity(RunApiEntity.class);
+        assertThat(addRawTimeRun.getId())
+                .isEqualTo(UnitTestUtils.getEntityIdFromResponse(addRawTimeResponse))
+                .isNotEqualTo(originalFullRunId);
+        assertThat(addRawTimeRun.getRawTime()).isEqualTo(TestConstants.RUN_RAW_TIME);
+    }
 }
