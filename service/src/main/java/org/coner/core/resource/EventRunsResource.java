@@ -114,8 +114,7 @@ public class EventRunsResource {
                     message = "Created a new run entity with the given raw time. From the perspective of this "
                             + "service, this isn't strictly an error, but would probably only come about due to an "
                             + "exceptional circumstance which may spell trouble for event operations, such as a "
-                            + "false start/stop trip, a driver starting without the knowledge of the workers, etc."
-                    ,
+                            + "false start/stop trip, a driver starting without the knowledge of the workers, etc.",
                     responseHeaders = {
                             @ResponseHeader(
                                     name = ApiResponseConstants.Created.Headers.NAME,
@@ -123,7 +122,7 @@ public class EventRunsResource {
                             )
                     },
                     response = RunApiEntity.class
-            )
+            ),
             @ApiResponse(
                     code = HttpStatus.NOT_FOUND_404,
                     response = ErrorMessage.class,
