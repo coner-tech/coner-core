@@ -26,18 +26,25 @@ import org.hibernate.validator.constraints.Range;
                 @UniqueConstraint(name = "events_sequences", columnNames = {"event_id", "sequence"})
         }
 )
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(
                 name = RunHibernateEntity.QUERY_FIND_ALL_WITH_EVENT,
                 query = "FROM RunHibernateEntity r "
                         + "WHERE r.event.id = :" + RunHibernateEntity.PARAMETER_EVENT_ID + " "
                         + "ORDER BY r.sequence ASC"
+        ),
+        @NamedQuery(
+                name = RunHibernateEntity.QUERY_FIND_FIRST_WITHOUT_TIME_AT_EVENT,
+                query = "FROM RunHibernateEntity r "
+                        + "WHERE r.event.id = :" + RunHibernateEntity.PARAMETER_EVENT_ID + " "
+                        + "AND r.rawTime IS NULL "
+                        + "ORDER BY r.sequence ASC "
         )
-)
+})
 public class RunHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL_WITH_EVENT = "org.coner.core.hibernate.entity.RunHibernateEntity"
-            + ".findAllWithEvent";
+    public static final String QUERY_FIND_ALL_WITH_EVENT = "Run.findAllWithEvent";
+    public static final String QUERY_FIND_FIRST_WITHOUT_TIME_AT_EVENT = "Run.findFirstWithoutTimeAtEvent";
     public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;

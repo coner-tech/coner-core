@@ -1,18 +1,27 @@
 package org.coner.core.domain.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.payload.RunAddTimePayload;
+import org.coner.core.domain.payload.RunTimeAddedPayload;
 import org.coner.core.domain.service.exception.AddEntityException;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.gateway.RunGateway;
+import org.coner.core.util.TestConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -33,9 +42,18 @@ public class RunEntityServiceTest {
     @Mock
     Run addedRun;
 
+    @Mock
+    RunAddTimePayload runAddRawTimePayload;
+    @Mock
+    Event runAddRawTimePayloadEvent;
+    @Mock
+    BigDecimal runAddRawTimePayloadRawTime;
+
     @Before
     public void setup() {
         when(addPayload.getEvent()).thenReturn(addPayloadEvent);
+        when(runAddRawTimePayload.getEvent()).thenReturn(runAddRawTimePayloadEvent);
+        when(runAddRawTimePayload.getRawTime()).thenReturn(runAddRawTimePayloadRawTime);
     }
 
     @Test
@@ -62,6 +80,43 @@ public class RunEntityServiceTest {
         verify(addPayload).setSequence(601);
         verify(gateway).add(addPayload);
         assertThat(actual).isSameAs(addedRun);
+    }
+
+    @Test
+    public void whenAddToFirstRunInSequenceWithoutRawTimeWithRunLackingTime()
+            throws AddEntityException, EntityNotFoundException {
+        Run firstRunInSequenceWithoutRawTime = mock(Run.class);
+        when(firstRunInSequenceWithoutRawTime.getId()).thenReturn(TestConstants.RUN_ID);
+        when(gateway.findFirstInSequenceWithoutTime(runAddRawTimePayloadEvent))
+                .thenReturn(firstRunInSequenceWithoutRawTime);
+        Run runWithRawTimeAssigned = mock(Run.class);
+        when(gateway.save(TestConstants.RUN_ID, firstRunInSequenceWithoutRawTime)).thenReturn(runWithRawTimeAssigned);
+
+        RunTimeAddedPayload actual = service.addTimeToFirstRunInSequenceWithoutRawTime(runAddRawTimePayload);
+
+        verify(firstRunInSequenceWithoutRawTime).setRawTime(runAddRawTimePayloadRawTime);
+        verify(gateway).save(TestConstants.RUN_ID, firstRunInSequenceWithoutRawTime);
+        assertThat(actual.getOutcome()).isEqualTo(RunTimeAddedPayload.Outcome.RUN_RAWTIME_ASSIGNED_TO_EXISTING);
+        assertThat(actual.getRun()).isSameAs(runWithRawTimeAssigned);
+    }
+
+    @Test
+    public void whenAddToFirstRunInSequenceWithoutRawTimeButNoRunsLackRawTime()
+            throws AddEntityException, EntityNotFoundException {
+        when(gateway.findFirstInSequenceWithoutTime(runAddRawTimePayloadEvent)).thenReturn(null);
+        ArgumentCaptor<RunAddPayload> runAddPayloadCaptor = ArgumentCaptor.forClass(RunAddPayload.class);
+        Run addedRun = mock(Run.class);
+        when(gateway.add(any(RunAddPayload.class))).thenReturn(addedRun);
+
+        RunTimeAddedPayload actual = service.addTimeToFirstRunInSequenceWithoutRawTime(runAddRawTimePayload);
+
+        verify(gateway).add(runAddPayloadCaptor.capture());
+        RunAddPayload runAddPayload = runAddPayloadCaptor.getValue();
+        assertThat(runAddPayload.getEvent()).isSameAs(runAddRawTimePayloadEvent);
+        assertThat(runAddPayload.getRawTime()).isSameAs(runAddRawTimePayloadRawTime);
+        assertThat(runAddPayload.getTimestamp()).isBetween(Instant.now().minusSeconds(1), Instant.now());
+        assertThat(actual.getOutcome()).isEqualTo(RunTimeAddedPayload.Outcome.RUN_ADDED_WITH_RAWTIME);
+        assertThat(actual.getRun()).isSameAs(addedRun);
     }
 
 }

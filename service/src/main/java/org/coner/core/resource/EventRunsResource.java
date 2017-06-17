@@ -15,10 +15,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import org.coner.core.api.entity.RunApiEntity;
+import org.coner.core.api.request.AddRawTimeToFirstRunLackingRequest;
 import org.coner.core.api.request.AddRunRequest;
 import org.coner.core.api.response.GetEventRunsResponse;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
+import org.coner.core.domain.payload.RunAddTimePayload;
+import org.coner.core.domain.payload.RunTimeAddedPayload;
 import org.coner.core.domain.service.RunEntityService;
 import org.coner.core.domain.service.exception.AddEntityException;
 import org.coner.core.domain.service.exception.EntityMismatchException;
@@ -89,6 +92,67 @@ public class EventRunsResource {
         return Response.created(UriBuilder.fromPath("/events/{eventId}/runs/{runId}")
                                         .build(eventId, run.getId()))
                 .build();
+    }
+
+    @POST
+    @Path("/rawTimes")
+    @UnitOfWork
+    @ApiOperation(
+            value = "Add a raw time to the first run in sequence lacking one, "
+                    + "or to a new run created on-the-fly if no runs lack a raw time"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    code = HttpStatus.OK_200,
+                    message = "Assigned the given raw time to an existing run which was the first in sequence "
+                            + "lacking one already",
+
+                    response = RunApiEntity.class
+            ),
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    message = "Created a new run entity with the given raw time. From the perspective of this "
+                            + "service, this isn't strictly an error, but would probably only come about due to an "
+                            + "exceptional circumstance which may spell trouble for event operations, such as a "
+                            + "false start/stop trip, a driver starting without the knowledge of the workers, etc.",
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION
+                            )
+                    },
+                    response = RunApiEntity.class
+            ),
+            @ApiResponse(
+                    code = HttpStatus.NOT_FOUND_404,
+                    response = ErrorMessage.class,
+                    message = "No event with given ID"
+            ),
+            @ApiResponse(
+                    code = HttpStatus.UNPROCESSABLE_ENTITY_422,
+                    response = ValidationErrorMessage.class,
+                    message = "Failed validation"
+            )
+    })
+    public Response addRawTimeToFirstRunInSequenceLackingOne(
+            @PathParam("eventId") @ApiParam(value = "Event ID", required = true) String eventId,
+            @Valid @ApiParam(value = "Time", required = true) AddRawTimeToFirstRunLackingRequest request
+    ) throws AddEntityException, EntityNotFoundException {
+        RunAddTimePayload inPayload = runMapper.toDomainAddTimePayload(request, eventId);
+        RunTimeAddedPayload outPayload = runEntityService.addTimeToFirstRunInSequenceWithoutRawTime(inPayload);
+        RunApiEntity run = runMapper.toApiEntity(outPayload.getRun());
+        switch (outPayload.getOutcome()) {
+            case RUN_RAWTIME_ASSIGNED_TO_EXISTING:
+                return Response.ok(run, MediaType.APPLICATION_JSON).build();
+            case RUN_ADDED_WITH_RAWTIME:
+                return Response.created(UriBuilder.fromPath("/events/{eventId}/runs/{runId}")
+                                                .build(eventId, run.getId()))
+                        .entity(run)
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            default:
+                throw new RuntimeException("Unknown outcome: " + outPayload.getOutcome());
+        }
     }
 
     @GET

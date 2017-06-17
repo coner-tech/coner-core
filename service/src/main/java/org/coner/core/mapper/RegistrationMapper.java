@@ -30,6 +30,9 @@ public abstract class RegistrationMapper {
     public abstract RegistrationHibernateEntity toHibernateEntity(RegistrationAddPayload domainAddPayload);
 
     public RegistrationHibernateEntity toHibernateEntity(Registration domainEntity) {
+        if (domainEntity == null) {
+            return null;
+        }
         return dao.findById(domainEntity.getId());
     }
 
