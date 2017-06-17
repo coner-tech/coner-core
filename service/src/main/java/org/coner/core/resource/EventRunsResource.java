@@ -104,9 +104,26 @@ public class EventRunsResource {
     @ApiResponses({
             @ApiResponse(
                     code = HttpStatus.OK_200,
-                    message = "Added a time to an existing run or created a new run with the given time",
+                    message = "Assigned the given raw time to an existing run which was the first in sequence "
+                            + "lacking one already",
+
                     response = RunApiEntity.class
             ),
+            @ApiResponse(
+                    code = HttpStatus.CREATED_201,
+                    message = "Created a new run entity with the given raw time. From the perspective of this "
+                            + "service, this isn't strictly an error, but would probably only come about due to an "
+                            + "exceptional circumstance which may spell trouble for event operations, such as a "
+                            + "false start/stop trip, a driver starting without the knowledge of the workers, etc."
+                    ,
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = ApiResponseConstants.Created.Headers.NAME,
+                                    description = ApiResponseConstants.Created.Headers.DESCRIPTION
+                            )
+                    },
+                    response = RunApiEntity.class
+            )
             @ApiResponse(
                     code = HttpStatus.NOT_FOUND_404,
                     response = ErrorMessage.class,
