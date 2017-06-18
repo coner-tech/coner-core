@@ -5,9 +5,11 @@ import java.util.List;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.EventAddPayload;
 import org.coner.core.hibernate.dao.EventDao;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
@@ -31,12 +33,20 @@ public abstract class EventMapper {
         return dao.findById(domainEntity.getId());
     }
 
+    public HandicapGroupSetHibernateEntity toHibernateEntity(HandicapGroupSet domainEntity) {
+        return handicapGroupSetMapper.toHibernateEntity(domainEntity);
+    }
+
     public abstract void updateHibernateEntity(
             Event domainEntity,
             @MappingTarget EventHibernateEntity hibernateEntity
     );
 
     public abstract Event toDomainEntity(EventHibernateEntity hibernateEntity);
+
+    public HandicapGroupSet toDomainEntity(HandicapGroupSetHibernateEntity hibernateEntity) {
+        return handicapGroupSetMapper.toDomainEntity(hibernateEntity);
+    }
 
     public abstract List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
 

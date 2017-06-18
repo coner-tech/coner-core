@@ -7,6 +7,7 @@ import java.util.Set;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.domain.payload.EventAddPayload;
@@ -25,17 +26,19 @@ public final class DomainPayloadTestUtils {
     public static EventAddPayload fullEventAdd() {
         return fullEventAdd(
                 TestConstants.EVENT_NAME,
-                TestConstants.EVENT_DATE
+                TestConstants.EVENT_DATE,
+                DomainEntityTestUtils.fullHandicapGroupSet()
         );
     }
 
     public static EventAddPayload fullEventAdd(
             String name,
-            Date date
-    ) {
+            Date date,
+            HandicapGroupSet handicapGroupSet) {
         EventAddPayload eventAddPayload = new EventAddPayload();
         eventAddPayload.setName(name);
         eventAddPayload.setDate(date);
+        eventAddPayload.setHandicapGroupSet(handicapGroupSet);
         return eventAddPayload;
     }
 

@@ -10,6 +10,7 @@ public class Event extends DomainEntity {
     private String id;
     private String name;
     private Date date;
+    private HandicapGroupSet handicapGroupSet;
 
     public String getId() {
         return id;
@@ -37,6 +38,14 @@ public class Event extends DomainEntity {
 
     public boolean hasDate() {
         return date != null;
+    }
+
+    public HandicapGroupSet getHandicapGroupSet() {
+        return handicapGroupSet;
+    }
+
+    public void setHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
+        this.handicapGroupSet = handicapGroupSet;
     }
 
     @Override

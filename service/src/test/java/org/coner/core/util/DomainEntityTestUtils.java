@@ -21,14 +21,20 @@ public final class DomainEntityTestUtils {
     }
 
     public static Event fullEvent() {
-        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+        return fullEvent(
+                TestConstants.EVENT_ID,
+                TestConstants.EVENT_NAME,
+                TestConstants.EVENT_DATE,
+                fullHandicapGroupSet()
+        );
     }
 
-    public static Event fullEvent(String id, String name, Date date) {
+    public static Event fullEvent(String id, String name, Date date, HandicapGroupSet handicapGroupSet) {
         Event event = new Event();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
+        event.setHandicapGroupSet(handicapGroupSet);
         return event;
     }
 
