@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -30,6 +32,7 @@ public class EventHibernateEntity extends HibernateEntity {
     private String id;
     private String name;
     private Date date;
+    private HandicapGroupSetHibernateEntity handicapGroupSet;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -59,6 +62,16 @@ public class EventHibernateEntity extends HibernateEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @ManyToOne
+    @NotNull
+    public HandicapGroupSetHibernateEntity getHandicapGroupSet() {
+        return handicapGroupSet;
+    }
+
+    public void setHandicapGroupSet(HandicapGroupSetHibernateEntity handicapGroupSet) {
+        this.handicapGroupSet = handicapGroupSet;
     }
 
     @Override

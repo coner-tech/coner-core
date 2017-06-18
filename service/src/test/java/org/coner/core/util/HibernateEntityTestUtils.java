@@ -15,23 +15,31 @@ import org.coner.core.hibernate.entity.RunHibernateEntity;
 
 import com.google.common.collect.Sets;
 
-/**
- *
- */
 public final class HibernateEntityTestUtils {
 
     private HibernateEntityTestUtils() {
     }
 
     public static EventHibernateEntity fullEvent() {
-        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+        return fullEvent(
+                TestConstants.EVENT_ID,
+                TestConstants.EVENT_NAME,
+                TestConstants.EVENT_DATE,
+                fullHandicapGroupSet()
+        );
     }
 
-    public static EventHibernateEntity fullEvent(String id, String name, Date date) {
+    public static EventHibernateEntity fullEvent(
+            String id,
+            String name,
+            Date date,
+            HandicapGroupSetHibernateEntity handicapGroupSet
+    ) {
         EventHibernateEntity event = new EventHibernateEntity();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
+        event.setHandicapGroupSet(handicapGroupSet);
         return event;
     }
 

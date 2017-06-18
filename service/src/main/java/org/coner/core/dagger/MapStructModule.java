@@ -28,9 +28,10 @@ public class MapStructModule {
 
     @Provides
     @Singleton
-    public EventMapper eventMapper(EventDao dao) {
+    public EventMapper eventMapper(EventDao dao, HandicapGroupSetMapper handicapGroupSetMapper) {
         EventMapper mapper = Mappers.getMapper(EventMapper.class);
         mapper.setDao(dao);
+        mapper.setHandicapGroupSetMapper(handicapGroupSetMapper);
         return mapper;
     }
 

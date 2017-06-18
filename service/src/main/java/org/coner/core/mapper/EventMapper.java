@@ -17,6 +17,7 @@ import org.mapstruct.MappingTarget;
 public abstract class EventMapper {
 
     private EventDao dao;
+    private HandicapGroupSetMapper handicapGroupSetMapper;
 
     public abstract EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
 
@@ -41,5 +42,9 @@ public abstract class EventMapper {
 
     public void setDao(EventDao dao) {
         this.dao = dao;
+    }
+
+    public void setHandicapGroupSetMapper(HandicapGroupSetMapper handicapGroupSetMapper) {
+        this.handicapGroupSetMapper = handicapGroupSetMapper;
     }
 }
