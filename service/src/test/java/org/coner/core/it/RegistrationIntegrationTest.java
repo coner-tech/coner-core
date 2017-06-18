@@ -1,7 +1,5 @@
 package org.coner.core.it;
 
-import static org.coner.core.util.TestConstants.EVENT_DATE;
-import static org.coner.core.util.TestConstants.EVENT_NAME;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.net.URI;
@@ -12,45 +10,35 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
-import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.api.response.GetEventRegistrationsResponse;
 import org.coner.core.util.ApiRequestTestUtils;
+import org.coner.core.util.IntegrationTestStandardRequestDelegate;
 import org.coner.core.util.IntegrationTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
-    private String eventId;
+    private IntegrationTestStandardRequestDelegate standardRequests;
+    private Prerequisites prerequisites;
 
     @Before
     public void setup() {
-        // Create Event to which a Registration will be added
-        URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
-                .path("/events")
-                .build();
-        AddEventRequest addEventRequest = new AddEventRequest();
-        addEventRequest.setName(EVENT_NAME);
-        addEventRequest.setDate(EVENT_DATE);
-        Response addEventResponseContainer = client.target(eventsUri)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .accept(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(addEventRequest));
-
-        assertThat(addEventResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
-        eventId = UnitTestUtils.getEntityIdFromResponse(addEventResponseContainer);
+        standardRequests = new IntegrationTestStandardRequestDelegate(RULE, client);
+        prerequisites = setupPrerequisites();
     }
 
     @Test
     public void testGetZeroRegistrationsForValidEvent() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
-                .build(eventId);
+                .build(prerequisites.eventId);
 
         Response getRegistrationsResponseContainer = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -69,7 +57,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     public void whenCreateRegistrationsItShouldPersist() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
-                .build(eventId);
+                .build(prerequisites.eventId);
 
         // Post Registration #0
         AddRegistrationRequest addRegistrationRequest0 = ApiRequestTestUtils.fullAddRegistration();
@@ -117,7 +105,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 
         URI eventRegistrationUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations/{registrationId}")
-                .build(eventId, registrationId0);
+                .build(prerequisites.eventId, registrationId0);
 
         // Get Registration
         Response getRegistrationResponse = client.target(eventRegistrationUri)
@@ -137,7 +125,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     public void whenCreateInvalidRegistrationItShouldReject() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
-                .build(eventId);
+                .build(prerequisites.eventId);
         AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
         addRegistrationRequest.setFirstName(null);
         addRegistrationRequest.setLastName(null);
@@ -169,6 +157,22 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addRegistrationRequest));
 
         assertThat(addRegistrationResponse.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);
+    }
+
+    private Prerequisites setupPrerequisites() {
+        prerequisites = new Prerequisites();
+        prerequisites.handicapGroupId = standardRequests.addHandicapGroup();
+        prerequisites.handicapGroupSetId = standardRequests.addHandicapGroupSet(
+                Sets.newHashSet(prerequisites.handicapGroupId)
+        );
+        prerequisites.eventId = standardRequests.addEvent(prerequisites.handicapGroupSetId);
+        return prerequisites;
+    }
+
+    private static class Prerequisites {
+        private String eventId;
+        private String handicapGroupId;
+        private String handicapGroupSetId;
     }
 
 }

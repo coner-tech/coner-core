@@ -7,11 +7,15 @@ import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.core.domain.service.HandicapGroupSetService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.hibernate.dao.EventDao;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 
 @Mapper(
         config = ConerBaseMapStructConfig.class
@@ -20,8 +24,16 @@ public abstract class EventMapper {
 
     private EventDao dao;
     private HandicapGroupSetMapper handicapGroupSetMapper;
+    private HandicapGroupSetService handicapGroupSetService;
 
+    @Mappings({
+            @Mapping(source = "apiAddRequest.handicapGroupSetId", target = "handicapGroupSet")
+    })
     public abstract EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
+
+    public HandicapGroupSet toDomainHandicapGroupSet(String handicapGroupSetId) throws EntityNotFoundException {
+        return handicapGroupSetService.getById(handicapGroupSetId);
+    }
 
     public abstract EventApiEntity toApiEntity(Event domainEntity);
 
@@ -56,5 +68,9 @@ public abstract class EventMapper {
 
     public void setHandicapGroupSetMapper(HandicapGroupSetMapper handicapGroupSetMapper) {
         this.handicapGroupSetMapper = handicapGroupSetMapper;
+    }
+
+    public void setHandicapGroupSetService(HandicapGroupSetService handicapGroupSetService) {
+        this.handicapGroupSetService = handicapGroupSetService;
     }
 }

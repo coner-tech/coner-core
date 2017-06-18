@@ -3,8 +3,6 @@ package org.coner.core.it;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -14,25 +12,36 @@ import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
 import org.coner.core.util.ApiRequestTestUtils;
+import org.coner.core.util.IntegrationTestStandardRequestDelegate;
 import org.coner.core.util.IntegrationTestUtils;
 import org.coner.core.util.UnitTestUtils;
 import org.eclipse.jetty.http.HttpStatus;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import io.dropwizard.jersey.validation.ValidationErrorMessage;
 
 
 public class EventIntegrationTest extends AbstractIntegrationTest {
 
-    private final String name = "name";
-    private final Date date = Date.from(ZonedDateTime.parse("2014-12-27T18:28:00-05:00").toInstant());
+    private IntegrationTestStandardRequestDelegate standardRequests;
+
+    private Prerequisites prerequisites;
+
+    @Before
+    public void setup() {
+        standardRequests = new IntegrationTestStandardRequestDelegate(RULE, client);
+        prerequisites = setupPrerequisites();
+    }
 
     @Test
-    public void whenCreateEventItShouldPersist() {
+    public void itShouldRoundTrip() {
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events")
                 .build();
         AddEventRequest addEventRequest = ApiRequestTestUtils.fullAddEvent();
+        addEventRequest.setHandicapGroupSetId(prerequisites.handicapGroupSetId);
         Response addEventResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -84,6 +93,20 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
                 ValidationErrorMessage.class
         );
         assertThat(validationErrorMessage.getErrors()).isNotEmpty();
+    }
+
+    private Prerequisites setupPrerequisites() {
+        Prerequisites prerequisites = new Prerequisites();
+        prerequisites.handicapGroupId = standardRequests.addHandicapGroup();
+        prerequisites.handicapGroupSetId = standardRequests.addHandicapGroupSet(
+                Sets.newHashSet(prerequisites.handicapGroupId)
+        );
+        return prerequisites;
+    }
+
+    private static class Prerequisites {
+        private String handicapGroupId;
+        private String handicapGroupSetId;
     }
 
 }

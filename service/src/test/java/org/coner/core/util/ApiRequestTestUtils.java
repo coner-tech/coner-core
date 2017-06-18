@@ -24,14 +24,16 @@ public final class ApiRequestTestUtils {
     public static AddEventRequest fullAddEvent() {
         return fullAddEvent(
                 TestConstants.EVENT_NAME,
-                TestConstants.EVENT_DATE
+                TestConstants.EVENT_DATE,
+                TestConstants.HANDICAP_GROUP_SET_ID
         );
     }
 
-    public static AddEventRequest fullAddEvent(String name, Date date) {
+    public static AddEventRequest fullAddEvent(String name, Date date, String handicapGroupSetId) {
         AddEventRequest request = new AddEventRequest();
         request.setName(name);
         request.setDate(date);
+        request.setHandicapGroupSetId(handicapGroupSetId);
         return request;
     }
 

@@ -14,6 +14,8 @@ public class AddEventRequest {
     private String name;
     @NotNull
     private Date date;
+    @NotBlank
+    private String handicapGroupSetId;
 
     public String getName() {
         return name;
@@ -29,6 +31,14 @@ public class AddEventRequest {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getHandicapGroupSetId() {
+        return handicapGroupSetId;
+    }
+
+    public void setHandicapGroupSetId(String handicapGroupSetId) {
+        this.handicapGroupSetId = handicapGroupSetId;
     }
 
     @Override
