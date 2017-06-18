@@ -165,7 +165,14 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         prerequisites.handicapGroupSetId = standardRequests.addHandicapGroupSet(
                 Sets.newHashSet(prerequisites.handicapGroupId)
         );
-        prerequisites.eventId = standardRequests.addEvent(prerequisites.handicapGroupSetId);
+        prerequisites.competitionGroupId = standardRequests.addCompetitionGroup();
+        prerequisites.competitionGroupSetId = standardRequests.addCompetitionGroupSet(
+                Sets.newHashSet(prerequisites.competitionGroupId)
+        );
+        prerequisites.eventId = standardRequests.addEvent(
+                prerequisites.handicapGroupSetId,
+                prerequisites.competitionGroupSetId
+        );
         return prerequisites;
     }
 
@@ -173,6 +180,8 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         private String eventId;
         private String handicapGroupId;
         private String handicapGroupSetId;
+        private String competitionGroupId;
+        private String competitionGroupSetId;
     }
 
 }

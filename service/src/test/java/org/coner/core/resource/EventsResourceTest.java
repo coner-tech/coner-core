@@ -172,6 +172,28 @@ public class EventsResourceTest {
     }
 
     @Test
+    public void whenAddEventWithoutCompetitionGroupSetIdItShouldFailValidation() throws Exception {
+        AddEventRequest request = objectMapper.readValue(
+                FixtureHelpers.fixture("fixtures/api/entity/event_add-request-without-competition-group-set-id.json"),
+                AddEventRequest.class
+        );
+        Entity<AddEventRequest> requestEntity = Entity.json(request);
+
+        Response response = resources.client()
+                .target("/events")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .post(requestEntity);
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ValidationErrorMessage validationErrorMessage = response.readEntity(ValidationErrorMessage.class);
+        assertThat(validationErrorMessage.getErrors())
+                .isNotEmpty()
+                .contains("competitionGroupSetId may not be empty");
+
+        verifyZeroInteractions(eventEntityService);
+    }
+
+    @Test
     public void itShouldGetEvent() throws EntityNotFoundException {
         Event domainEvent = DomainEntityTestUtils.fullEvent();
         EventApiEntity apiEvent = ApiEntityTestUtils.fullEvent();

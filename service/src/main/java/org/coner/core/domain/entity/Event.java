@@ -11,6 +11,7 @@ public class Event extends DomainEntity {
     private String name;
     private Date date;
     private HandicapGroupSet handicapGroupSet;
+    private CompetitionGroupSet competitionGroupSet;
 
     public String getId() {
         return id;
@@ -46,6 +47,14 @@ public class Event extends DomainEntity {
 
     public void setHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
         this.handicapGroupSet = handicapGroupSet;
+    }
+
+    public CompetitionGroupSet getCompetitionGroupSet() {
+        return competitionGroupSet;
+    }
+
+    public void setCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
+        this.competitionGroupSet = competitionGroupSet;
     }
 
     @Override

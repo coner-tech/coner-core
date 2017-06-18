@@ -42,6 +42,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
                 .build();
         AddEventRequest addEventRequest = ApiRequestTestUtils.fullAddEvent();
         addEventRequest.setHandicapGroupSetId(prerequisites.handicapGroupSetId);
+        addEventRequest.setCompetitionGroupSetId(prerequisites.competitionGroupSetId);
         Response addEventResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -101,12 +102,18 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
         prerequisites.handicapGroupSetId = standardRequests.addHandicapGroupSet(
                 Sets.newHashSet(prerequisites.handicapGroupId)
         );
+        prerequisites.competitionGroupId = standardRequests.addCompetitionGroup();
+        prerequisites.competitionGroupSetId = standardRequests.addCompetitionGroupSet(
+                Sets.newHashSet(prerequisites.competitionGroupId)
+        );
         return prerequisites;
     }
 
     private static class Prerequisites {
         private String handicapGroupId;
         private String handicapGroupSetId;
+        private String competitionGroupId;
+        private String competitionGroupSetId;
     }
 
 }

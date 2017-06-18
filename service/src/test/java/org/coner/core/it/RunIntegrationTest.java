@@ -84,7 +84,10 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         );
 
         // add a run for a different event
-        String anotherEventId = standardRequests.addEvent(prerequisites.handicapGroupSetId);
+        String anotherEventId = standardRequests.addEvent(
+                prerequisites.handicapGroupSetId,
+                prerequisites.competitionGroupSetId
+        );
         String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(anotherEventId);
         standardRequests.addRun(anotherEventId, anotherRegistrationIdAtAnotherEventId);
 
@@ -180,8 +183,12 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 Sets.newHashSet(prerequisites.handicapGroupId)
         );
         prerequisites.competitionGroupId = standardRequests.addCompetitionGroup();
+        prerequisites.competitionGroupSetId = standardRequests.addCompetitionGroupSet(
+                Sets.newHashSet(prerequisites.competitionGroupId)
+        );
         prerequisites.eventId = standardRequests.addEvent(
-                prerequisites.handicapGroupSetId
+                prerequisites.handicapGroupSetId,
+                prerequisites.competitionGroupSetId
         );
         prerequisites.registrationId = standardRequests.addRegistration(prerequisites.eventId);
         return prerequisites;

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.assertj.core.api.Assertions;
 import org.coner.core.ConerCoreConfiguration;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
+import org.coner.core.api.request.AddCompetitionGroupSetRequest;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.request.AddHandicapGroupRequest;
 import org.coner.core.api.request.AddHandicapGroupSetRequest;
@@ -35,12 +36,13 @@ public final class IntegrationTestStandardRequestDelegate {
         this.client = client;
     }
 
-    public String addEvent(String handicapGroupSetId) {
+    public String addEvent(String handicapGroupSetId, String competitionGroupSetId) {
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
                 .path("/events")
                 .build();
         AddEventRequest addRequest = ApiRequestTestUtils.fullAddEvent();
         addRequest.setHandicapGroupSetId(handicapGroupSetId);
+        addRequest.setCompetitionGroupSetId(competitionGroupSetId);
         Response addResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -88,6 +90,20 @@ public final class IntegrationTestStandardRequestDelegate {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(addRequest));
+        assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
+        return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
+    }
+
+    public String addCompetitionGroupSet(Set<String> competitionGroupIds) {
+        URI uri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
+                .path("/competitionGroups/sets")
+                .build();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
+        addCompetitionGroupSetRequest.setCompetitionGroupIds(competitionGroupIds);
+        Response addResponseContainer = client.target(uri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addCompetitionGroupSetRequest));
         assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
     }

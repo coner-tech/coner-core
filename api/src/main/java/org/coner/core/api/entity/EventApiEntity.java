@@ -19,6 +19,8 @@ public class EventApiEntity extends ApiEntity {
     private Date date;
     @NotBlank
     private String handicapGroupSetId;
+    @NotBlank
+    private String competitionGroupSetId;
 
     public String getId() {
         return id;
@@ -50,6 +52,14 @@ public class EventApiEntity extends ApiEntity {
 
     public void setHandicapGroupSetId(String handicapGroupSetId) {
         this.handicapGroupSetId = handicapGroupSetId;
+    }
+
+    public String getCompetitionGroupSetId() {
+        return competitionGroupSetId;
+    }
+
+    public void setCompetitionGroupSetId(String competitionGroupSetId) {
+        this.competitionGroupSetId = competitionGroupSetId;
     }
 
     @Override

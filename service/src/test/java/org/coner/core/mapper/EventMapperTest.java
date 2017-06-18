@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.EventAddPayload;
+import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.util.ApiEntityTestUtils;
@@ -34,15 +36,23 @@ public class EventMapperTest {
     HandicapGroupSetMapper handicapGroupSetMapper;
     @Mock
     HandicapGroupSetService handicapGroupSetService;
+    @Mock
+    CompetitionGroupSetMapper competitionGroupSetMapper;
+    @Mock
+    CompetitionGroupSetService competitionGroupSetService;
 
     @Mock
     HandicapGroupSet handicapGroupSetDomainEntity;
+    @Mock
+    CompetitionGroupSet competitionGroupSetDomainEntity;
 
     @Before
     public void setup() {
         mapper = Mappers.getMapper(EventMapper.class);
         mapper.setHandicapGroupSetMapper(handicapGroupSetMapper);
         mapper.setHandicapGroupSetService(handicapGroupSetService);
+        mapper.setCompetitionGroupSetMapper(competitionGroupSetMapper);
+        mapper.setCompetitionGroupSetService(competitionGroupSetService);
     }
 
     @Test
@@ -50,8 +60,11 @@ public class EventMapperTest {
         AddEventRequest apiAddRequest = ApiRequestTestUtils.fullAddEvent();
         EventAddPayload expected = DomainPayloadTestUtils.fullEventAdd();
         expected.setHandicapGroupSet(handicapGroupSetDomainEntity);
+        expected.setCompetitionGroupSet(competitionGroupSetDomainEntity);
         when(handicapGroupSetService.getById(TestConstants.HANDICAP_GROUP_SET_ID))
                 .thenReturn(handicapGroupSetDomainEntity);
+        when(competitionGroupSetService.getById(TestConstants.COMPETITION_GROUP_SET_ID))
+                .thenReturn(competitionGroupSetDomainEntity);
 
         EventAddPayload actual = mapper.toDomainAddPayload(apiAddRequest);
 

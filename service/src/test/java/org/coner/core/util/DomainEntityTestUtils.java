@@ -25,16 +25,24 @@ public final class DomainEntityTestUtils {
                 TestConstants.EVENT_ID,
                 TestConstants.EVENT_NAME,
                 TestConstants.EVENT_DATE,
-                fullHandicapGroupSet()
+                fullHandicapGroupSet(),
+                fullCompetitionGroupSet()
         );
     }
 
-    public static Event fullEvent(String id, String name, Date date, HandicapGroupSet handicapGroupSet) {
+    public static Event fullEvent(
+            String id,
+            String name,
+            Date date,
+            HandicapGroupSet handicapGroupSet,
+            CompetitionGroupSet competitionGroupSet
+    ) {
         Event event = new Event();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
         event.setHandicapGroupSet(handicapGroupSet);
+        event.setCompetitionGroupSet(competitionGroupSet);
         return event;
     }
 

@@ -16,6 +16,8 @@ public class AddEventRequest {
     private Date date;
     @NotBlank
     private String handicapGroupSetId;
+    @NotBlank
+    private String competitionGroupSetId;
 
     public String getName() {
         return name;
@@ -39,6 +41,14 @@ public class AddEventRequest {
 
     public void setHandicapGroupSetId(String handicapGroupSetId) {
         this.handicapGroupSetId = handicapGroupSetId;
+    }
+
+    public String getCompetitionGroupSetId() {
+        return competitionGroupSetId;
+    }
+
+    public void setCompetitionGroupSetId(String competitionGroupSetId) {
+        this.competitionGroupSetId = competitionGroupSetId;
     }
 
     @Override

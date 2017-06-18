@@ -2,6 +2,7 @@ package org.coner.core.dagger;
 
 import javax.inject.Singleton;
 
+import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.EventEntityService;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.RegistrationEntityService;
@@ -32,12 +33,16 @@ public class MapStructModule {
     public EventMapper eventMapper(
             EventDao dao,
             HandicapGroupSetMapper handicapGroupSetMapper,
-            HandicapGroupSetService handicapGroupSetService
+            HandicapGroupSetService handicapGroupSetService,
+            CompetitionGroupSetMapper competitionGroupSetMapper,
+            CompetitionGroupSetService competitionGroupSetService
     ) {
         EventMapper mapper = Mappers.getMapper(EventMapper.class);
         mapper.setDao(dao);
         mapper.setHandicapGroupSetMapper(handicapGroupSetMapper);
         mapper.setHandicapGroupSetService(handicapGroupSetService);
+        mapper.setCompetitionGroupSetMapper(competitionGroupSetMapper);
+        mapper.setCompetitionGroupSetService(competitionGroupSetService);
         return mapper;
     }
 

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.entity.HandicapGroupSet;
 
 public class EventAddPayload extends DomainAddPayload {
@@ -11,6 +12,7 @@ public class EventAddPayload extends DomainAddPayload {
     private String name;
     private Date date;
     private HandicapGroupSet handicapGroupSet;
+    private CompetitionGroupSet competitionGroupSet;
 
     public String getName() {
         return name;
@@ -34,6 +36,14 @@ public class EventAddPayload extends DomainAddPayload {
 
     public void setHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
         this.handicapGroupSet = handicapGroupSet;
+    }
+
+    public CompetitionGroupSet getCompetitionGroupSet() {
+        return competitionGroupSet;
+    }
+
+    public void setCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
+        this.competitionGroupSet = competitionGroupSet;
     }
 
     @Override
