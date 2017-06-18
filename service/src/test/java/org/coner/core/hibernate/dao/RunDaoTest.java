@@ -268,6 +268,7 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.competitionGroupSet.setCompetitionGroups(Sets.newHashSet(prerequisites.competitionGroup));
         prerequisites.event = HibernateEntityTestUtils.fullEvent();
         prerequisites.event.setHandicapGroupSet(prerequisites.handicapGroupSet);
+        prerequisites.event.setCompetitionGroupSet(prerequisites.competitionGroupSet);
         prerequisites.event.setId(null);
         prerequisites.registration = HibernateEntityTestUtils.fullRegistration();
         prerequisites.registration.setId(null);

@@ -25,7 +25,8 @@ public final class HibernateEntityTestUtils {
                 TestConstants.EVENT_ID,
                 TestConstants.EVENT_NAME,
                 TestConstants.EVENT_DATE,
-                fullHandicapGroupSet()
+                fullHandicapGroupSet(),
+                fullCompetitionGroupSet()
         );
     }
 
@@ -33,13 +34,15 @@ public final class HibernateEntityTestUtils {
             String id,
             String name,
             Date date,
-            HandicapGroupSetHibernateEntity handicapGroupSet
+            HandicapGroupSetHibernateEntity handicapGroupSet,
+            CompetitionGroupSetHibernateEntity competitionGroupSet
     ) {
         EventHibernateEntity event = new EventHibernateEntity();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
         event.setHandicapGroupSet(handicapGroupSet);
+        event.setCompetitionGroupSet(competitionGroupSet);
         return event;
     }
 

@@ -33,6 +33,7 @@ public class EventHibernateEntity extends HibernateEntity {
     private String name;
     private Date date;
     private HandicapGroupSetHibernateEntity handicapGroupSet;
+    private CompetitionGroupSetHibernateEntity competitionGroupSet;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -72,6 +73,16 @@ public class EventHibernateEntity extends HibernateEntity {
 
     public void setHandicapGroupSet(HandicapGroupSetHibernateEntity handicapGroupSet) {
         this.handicapGroupSet = handicapGroupSet;
+    }
+
+    @ManyToOne
+    @NotNull
+    public CompetitionGroupSetHibernateEntity getCompetitionGroupSet() {
+        return competitionGroupSet;
+    }
+
+    public void setCompetitionGroupSet(CompetitionGroupSetHibernateEntity competitionGroupSet) {
+        this.competitionGroupSet = competitionGroupSet;
     }
 
     @Override
