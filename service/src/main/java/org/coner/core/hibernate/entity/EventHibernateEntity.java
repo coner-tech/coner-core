@@ -21,12 +21,12 @@ import org.hibernate.annotations.GenericGenerator;
 @NamedQueries({
         @NamedQuery(
                 name = EventHibernateEntity.QUERY_FIND_ALL,
-                query = "from EventHibernateEntity"
+                query = "from EventHibernateEntity e"
         )
 })
 public class EventHibernateEntity extends HibernateEntity {
 
-    public static final String QUERY_FIND_ALL = "org.coner.core.hibernate.entity.EventHibernateEntity.findAll";
+    public static final String QUERY_FIND_ALL = "EventHibernateEntity.findAll";
     private String id;
     private String name;
     private Date date;
