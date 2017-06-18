@@ -12,6 +12,7 @@ public class Event extends DomainEntity {
     private Date date;
     private HandicapGroupSet handicapGroupSet;
     private CompetitionGroupSet competitionGroupSet;
+    private int maxRunsPerRegistration;
 
     public String getId() {
         return id;
@@ -55,6 +56,14 @@ public class Event extends DomainEntity {
 
     public void setCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
         this.competitionGroupSet = competitionGroupSet;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
     @Override

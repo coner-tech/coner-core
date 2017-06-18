@@ -26,7 +26,8 @@ public final class ApiRequestTestUtils {
                 TestConstants.EVENT_NAME,
                 TestConstants.EVENT_DATE,
                 TestConstants.HANDICAP_GROUP_SET_ID,
-                TestConstants.COMPETITION_GROUP_SET_ID
+                TestConstants.COMPETITION_GROUP_SET_ID,
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
         );
     }
 
@@ -34,13 +35,15 @@ public final class ApiRequestTestUtils {
             String name,
             Date date,
             String handicapGroupSetId,
-            String competitionGroupSetId
+            String competitionGroupSetId,
+            int maxRunsPerRegistration
     ) {
         AddEventRequest request = new AddEventRequest();
         request.setName(name);
         request.setDate(date);
         request.setHandicapGroupSetId(handicapGroupSetId);
         request.setCompetitionGroupSetId(competitionGroupSetId);
+        request.setMaxRunsPerRegistration(maxRunsPerRegistration);
         return request;
     }
 

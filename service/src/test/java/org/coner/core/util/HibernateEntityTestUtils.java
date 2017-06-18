@@ -26,7 +26,8 @@ public final class HibernateEntityTestUtils {
                 TestConstants.EVENT_NAME,
                 TestConstants.EVENT_DATE,
                 fullHandicapGroupSet(),
-                fullCompetitionGroupSet()
+                fullCompetitionGroupSet(),
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
         );
     }
 
@@ -35,7 +36,8 @@ public final class HibernateEntityTestUtils {
             String name,
             Date date,
             HandicapGroupSetHibernateEntity handicapGroupSet,
-            CompetitionGroupSetHibernateEntity competitionGroupSet
+            CompetitionGroupSetHibernateEntity competitionGroupSet,
+            int maxRunsPerRegistration
     ) {
         EventHibernateEntity event = new EventHibernateEntity();
         event.setId(id);
@@ -43,6 +45,7 @@ public final class HibernateEntityTestUtils {
         event.setDate(date);
         event.setHandicapGroupSet(handicapGroupSet);
         event.setCompetitionGroupSet(competitionGroupSet);
+        event.setMaxRunsPerRegistration(maxRunsPerRegistration);
         return event;
     }
 

@@ -21,6 +21,8 @@ public class EventApiEntity extends ApiEntity {
     private String handicapGroupSetId;
     @NotBlank
     private String competitionGroupSetId;
+    @NotNull
+    private int maxRunsPerRegistration;
 
     public String getId() {
         return id;
@@ -60,6 +62,14 @@ public class EventApiEntity extends ApiEntity {
 
     public void setCompetitionGroupSetId(String competitionGroupSetId) {
         this.competitionGroupSetId = competitionGroupSetId;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
     @Override

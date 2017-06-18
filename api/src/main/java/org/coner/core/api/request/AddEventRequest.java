@@ -18,6 +18,8 @@ public class AddEventRequest {
     private String handicapGroupSetId;
     @NotBlank
     private String competitionGroupSetId;
+    @NotNull
+    private int maxRunsPerRegistration;
 
     public String getName() {
         return name;
@@ -49,6 +51,14 @@ public class AddEventRequest {
 
     public void setCompetitionGroupSetId(String competitionGroupSetId) {
         this.competitionGroupSetId = competitionGroupSetId;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
     @Override

@@ -29,7 +29,8 @@ public final class DomainPayloadTestUtils {
                 TestConstants.EVENT_NAME,
                 TestConstants.EVENT_DATE,
                 DomainEntityTestUtils.fullHandicapGroupSet(),
-                DomainEntityTestUtils.fullCompetitionGroupSet()
+                DomainEntityTestUtils.fullCompetitionGroupSet(),
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
         );
     }
 
@@ -37,13 +38,15 @@ public final class DomainPayloadTestUtils {
             String name,
             Date date,
             HandicapGroupSet handicapGroupSet,
-            CompetitionGroupSet competitionGroupSet
+            CompetitionGroupSet competitionGroupSet,
+            int maxRunsPerRegistration
     ) {
         EventAddPayload eventAddPayload = new EventAddPayload();
         eventAddPayload.setName(name);
         eventAddPayload.setDate(date);
         eventAddPayload.setHandicapGroupSet(handicapGroupSet);
         eventAddPayload.setCompetitionGroupSet(competitionGroupSet);
+        eventAddPayload.setMaxRunsPerRegistration(maxRunsPerRegistration);
         return eventAddPayload;
     }
 

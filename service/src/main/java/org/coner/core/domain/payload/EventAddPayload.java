@@ -13,6 +13,7 @@ public class EventAddPayload extends DomainAddPayload {
     private Date date;
     private HandicapGroupSet handicapGroupSet;
     private CompetitionGroupSet competitionGroupSet;
+    private int maxRunsPerRegistration;
 
     public String getName() {
         return name;
@@ -44,6 +45,14 @@ public class EventAddPayload extends DomainAddPayload {
 
     public void setCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
         this.competitionGroupSet = competitionGroupSet;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
     @Override
