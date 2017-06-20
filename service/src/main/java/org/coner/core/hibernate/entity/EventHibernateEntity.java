@@ -35,6 +35,7 @@ public class EventHibernateEntity extends HibernateEntity {
     private HandicapGroupSetHibernateEntity handicapGroupSet;
     private CompetitionGroupSetHibernateEntity competitionGroupSet;
     private int maxRunsPerRegistration;
+    private boolean running;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -93,6 +94,15 @@ public class EventHibernateEntity extends HibernateEntity {
 
     public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
         this.maxRunsPerRegistration = maxRunsPerRegistration;
+    }
+
+    @Column(name = "running")
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     @Override

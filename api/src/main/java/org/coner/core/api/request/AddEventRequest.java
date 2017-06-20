@@ -20,6 +20,7 @@ public class AddEventRequest {
     private String competitionGroupSetId;
     @NotNull
     private int maxRunsPerRegistration;
+    // intentionally omitting api entity property: running
 
     public String getName() {
         return name;

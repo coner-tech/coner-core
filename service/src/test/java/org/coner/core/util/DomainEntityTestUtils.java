@@ -27,7 +27,8 @@ public final class DomainEntityTestUtils {
                 TestConstants.EVENT_DATE,
                 fullHandicapGroupSet(),
                 fullCompetitionGroupSet(),
-                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION,
+                TestConstants.EVENT_RUNNING
         );
     }
 
@@ -37,7 +38,8 @@ public final class DomainEntityTestUtils {
             Date date,
             HandicapGroupSet handicapGroupSet,
             CompetitionGroupSet competitionGroupSet,
-            int maxRunsPerRegistration
+            int maxRunsPerRegistration,
+            boolean running
     ) {
         Event event = new Event();
         event.setId(id);
@@ -46,6 +48,7 @@ public final class DomainEntityTestUtils {
         event.setHandicapGroupSet(handicapGroupSet);
         event.setCompetitionGroupSet(competitionGroupSet);
         event.setMaxRunsPerRegistration(maxRunsPerRegistration);
+        event.setRunning(running);
         return event;
     }
 

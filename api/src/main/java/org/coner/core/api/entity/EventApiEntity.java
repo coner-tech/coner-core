@@ -23,6 +23,7 @@ public class EventApiEntity extends ApiEntity {
     private String competitionGroupSetId;
     @NotNull
     private int maxRunsPerRegistration;
+    private boolean running;
 
     public String getId() {
         return id;
@@ -70,6 +71,14 @@ public class EventApiEntity extends ApiEntity {
 
     public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
         this.maxRunsPerRegistration = maxRunsPerRegistration;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     @Override

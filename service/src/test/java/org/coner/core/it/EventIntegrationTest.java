@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.request.AddEventRequest;
 import org.coner.core.api.response.GetEventsResponse;
+import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.IntegrationTestStandardRequestDelegate;
 import org.coner.core.util.IntegrationTestUtils;
@@ -37,6 +38,9 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void itShouldRoundTrip() {
+        EventApiEntity expected = ApiEntityTestUtils.fullEvent();
+        expected.setHandicapGroupSetId(prerequisites.handicapGroupSetId);
+        expected.setCompetitionGroupSetId(prerequisites.competitionGroupSetId);
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events")
                 .build();
@@ -49,7 +53,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
                 .post(Entity.json(addEventRequest));
 
         assertThat(addEventResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
-        final String eventId = UnitTestUtils.getEntityIdFromResponse(addEventResponseContainer);
+        expected.setId(UnitTestUtils.getEntityIdFromResponse(addEventResponseContainer));
 
         Response getEventsResponseContainer = client.target(eventsUri)
                 .request()
@@ -59,12 +63,12 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
         assertThat(getEventsResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         GetEventsResponse getEventsResponse = getEventsResponseContainer.readEntity(GetEventsResponse.class);
         assertThat(getEventsResponse.getEntities()).hasSize(1);
-        EventApiEntity event = getEventsResponse.getEntities().get(0);
-        assertThat(event.getId()).isEqualTo(eventId);
+        EventApiEntity eventInList = getEventsResponse.getEntities().get(0);
+        assertThat(eventInList).isEqualTo(expected);
 
         URI getEventByIdUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{id}")
-                .build(eventId);
+                .build(expected.getId());
 
         Response getEventByIdResponseContainer = client.target(getEventByIdUri)
                 .request()
@@ -73,7 +77,7 @@ public class EventIntegrationTest extends AbstractIntegrationTest {
 
         assertThat(getEventByIdResponseContainer.getStatus()).isEqualTo(HttpStatus.OK_200);
         EventApiEntity getEventByIdResponse = getEventByIdResponseContainer.readEntity(EventApiEntity.class);
-        assertThat(getEventByIdResponse.getId()).isEqualTo(eventId);
+        assertThat(getEventByIdResponse).isEqualTo(expected);
     }
 
     @Test
