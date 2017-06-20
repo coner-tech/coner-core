@@ -23,7 +23,7 @@ public class EventApiEntity extends ApiEntity {
     private String competitionGroupSetId;
     @NotNull
     private int maxRunsPerRegistration;
-    private boolean running;
+    private boolean current;
 
     public String getId() {
         return id;
@@ -73,12 +73,12 @@ public class EventApiEntity extends ApiEntity {
         this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
-    public boolean isRunning() {
-        return running;
+    public boolean isCurrent() {
+        return current;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
     @Override

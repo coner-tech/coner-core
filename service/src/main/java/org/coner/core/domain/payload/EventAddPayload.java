@@ -14,7 +14,7 @@ public class EventAddPayload extends DomainAddPayload {
     private HandicapGroupSet handicapGroupSet;
     private CompetitionGroupSet competitionGroupSet;
     private int maxRunsPerRegistration;
-    // intentionally omitting domain entity property: running
+    // intentionally omitting domain entity property: current
 
     public String getName() {
         return name;

@@ -29,7 +29,7 @@ public final class ApiEntityTestUtils {
                 TestConstants.HANDICAP_GROUP_SET_ID,
                 TestConstants.COMPETITION_GROUP_SET_ID,
                 TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION,
-                TestConstants.EVENT_RUNNING
+                TestConstants.EVENT_CURRENT
         );
     }
 
@@ -40,7 +40,7 @@ public final class ApiEntityTestUtils {
             String handicapGroupSetId,
             String competitionGroupSetId,
             int maxRunsPerRegistration,
-            boolean running
+            boolean current
     ) {
         EventApiEntity event = new EventApiEntity();
         event.setId(id);
@@ -49,7 +49,7 @@ public final class ApiEntityTestUtils {
         event.setHandicapGroupSetId(handicapGroupSetId);
         event.setCompetitionGroupSetId(competitionGroupSetId);
         event.setMaxRunsPerRegistration(maxRunsPerRegistration);
-        event.setRunning(running);
+        event.setCurrent(current);
         return event;
     }
 

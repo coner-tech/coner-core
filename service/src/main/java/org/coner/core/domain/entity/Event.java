@@ -13,7 +13,7 @@ public class Event extends DomainEntity {
     private HandicapGroupSet handicapGroupSet;
     private CompetitionGroupSet competitionGroupSet;
     private int maxRunsPerRegistration;
-    private boolean running;
+    private boolean current;
 
     public String getId() {
         return id;
@@ -67,12 +67,12 @@ public class Event extends DomainEntity {
         this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
-    public boolean isRunning() {
-        return running;
+    public boolean isCurrent() {
+        return current;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
     @Override
