@@ -14,6 +14,13 @@ public class AddEventRequest {
     private String name;
     @NotNull
     private Date date;
+    @NotBlank
+    private String handicapGroupSetId;
+    @NotBlank
+    private String competitionGroupSetId;
+    @NotNull
+    private int maxRunsPerRegistration;
+    // intentionally omitting api entity property: current
 
     public String getName() {
         return name;
@@ -29,6 +36,30 @@ public class AddEventRequest {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getHandicapGroupSetId() {
+        return handicapGroupSetId;
+    }
+
+    public void setHandicapGroupSetId(String handicapGroupSetId) {
+        this.handicapGroupSetId = handicapGroupSetId;
+    }
+
+    public String getCompetitionGroupSetId() {
+        return competitionGroupSetId;
+    }
+
+    public void setCompetitionGroupSetId(String competitionGroupSetId) {
+        this.competitionGroupSetId = competitionGroupSetId;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
     }
 
     @Override

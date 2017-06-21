@@ -1,1 +1,6 @@
-{"name": "add this event","date": "2014-12-25T09:15:00-05:00"}
+{
+  "name": "add this event",
+  "date": "2014-12-25T09:15:00-05:00",
+  "handicapGroupSetId": "handicap-group-set-test-id",
+  "competitionGroupSetId": "competition-group-set-test-id"
+}

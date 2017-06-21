@@ -10,6 +10,10 @@ public class Event extends DomainEntity {
     private String id;
     private String name;
     private Date date;
+    private HandicapGroupSet handicapGroupSet;
+    private CompetitionGroupSet competitionGroupSet;
+    private int maxRunsPerRegistration;
+    private boolean current;
 
     public String getId() {
         return id;
@@ -37,6 +41,38 @@ public class Event extends DomainEntity {
 
     public boolean hasDate() {
         return date != null;
+    }
+
+    public HandicapGroupSet getHandicapGroupSet() {
+        return handicapGroupSet;
+    }
+
+    public void setHandicapGroupSet(HandicapGroupSet handicapGroupSet) {
+        this.handicapGroupSet = handicapGroupSet;
+    }
+
+    public CompetitionGroupSet getCompetitionGroupSet() {
+        return competitionGroupSet;
+    }
+
+    public void setCompetitionGroupSet(CompetitionGroupSet competitionGroupSet) {
+        this.competitionGroupSet = competitionGroupSet;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
     @Override

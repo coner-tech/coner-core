@@ -256,8 +256,6 @@ public class RunDaoTest extends AbstractDaoTest {
 
     private Prerequisites setupPrerequisites() {
         Prerequisites prerequisites = new Prerequisites();
-        prerequisites.event = HibernateEntityTestUtils.fullEvent();
-        prerequisites.event.setId(null);
         prerequisites.handicapGroup = HibernateEntityTestUtils.fullHandicapGroup();
         prerequisites.handicapGroup.setId(null);
         prerequisites.handicapGroupSet = HibernateEntityTestUtils.fullHandicapGroupSet();
@@ -268,17 +266,21 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.competitionGroupSet = HibernateEntityTestUtils.fullCompetitionGroupSet();
         prerequisites.competitionGroupSet.setId(null);
         prerequisites.competitionGroupSet.setCompetitionGroups(Sets.newHashSet(prerequisites.competitionGroup));
+        prerequisites.event = HibernateEntityTestUtils.fullEvent();
+        prerequisites.event.setHandicapGroupSet(prerequisites.handicapGroupSet);
+        prerequisites.event.setCompetitionGroupSet(prerequisites.competitionGroupSet);
+        prerequisites.event.setId(null);
         prerequisites.registration = HibernateEntityTestUtils.fullRegistration();
         prerequisites.registration.setId(null);
         prerequisites.registration.setEvent(prerequisites.event);
 
 
         daoTestRule.inTransaction(() -> {
-            eventDao.create(prerequisites.event);
             handicapGroupDao.create(prerequisites.handicapGroup);
             handicapGroupSetDao.create(prerequisites.handicapGroupSet);
             competitionGroupDao.create(prerequisites.competitionGroup);
             competitionGroupSetDao.create(prerequisites.competitionGroupSet);
+            eventDao.create(prerequisites.event);
             registrationDao.create(prerequisites.registration);
             // intentionally does not create prerequisites.unsavedRun
         });

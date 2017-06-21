@@ -22,18 +22,34 @@ public final class ApiEntityTestUtils {
     }
 
     public static EventApiEntity fullEvent() {
-        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+        return fullEvent(
+                TestConstants.EVENT_ID,
+                TestConstants.EVENT_NAME,
+                TestConstants.EVENT_DATE,
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.COMPETITION_GROUP_SET_ID,
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION,
+                TestConstants.EVENT_CURRENT
+        );
     }
 
     public static EventApiEntity fullEvent(
             String id,
             String name,
-            Date date
+            Date date,
+            String handicapGroupSetId,
+            String competitionGroupSetId,
+            int maxRunsPerRegistration,
+            boolean current
     ) {
         EventApiEntity event = new EventApiEntity();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
+        event.setHandicapGroupSetId(handicapGroupSetId);
+        event.setCompetitionGroupSetId(competitionGroupSetId);
+        event.setMaxRunsPerRegistration(maxRunsPerRegistration);
+        event.setCurrent(current);
         return event;
     }
 

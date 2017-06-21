@@ -15,23 +15,40 @@ import org.coner.core.hibernate.entity.RunHibernateEntity;
 
 import com.google.common.collect.Sets;
 
-/**
- *
- */
 public final class HibernateEntityTestUtils {
 
     private HibernateEntityTestUtils() {
     }
 
     public static EventHibernateEntity fullEvent() {
-        return fullEvent(TestConstants.EVENT_ID, TestConstants.EVENT_NAME, TestConstants.EVENT_DATE);
+        return fullEvent(
+                TestConstants.EVENT_ID,
+                TestConstants.EVENT_NAME,
+                TestConstants.EVENT_DATE,
+                fullHandicapGroupSet(),
+                fullCompetitionGroupSet(),
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION,
+                TestConstants.EVENT_CURRENT
+        );
     }
 
-    public static EventHibernateEntity fullEvent(String id, String name, Date date) {
+    public static EventHibernateEntity fullEvent(
+            String id,
+            String name,
+            Date date,
+            HandicapGroupSetHibernateEntity handicapGroupSet,
+            CompetitionGroupSetHibernateEntity competitionGroupSet,
+            int maxRunsPerRegistration,
+            boolean current
+    ) {
         EventHibernateEntity event = new EventHibernateEntity();
         event.setId(id);
         event.setName(name);
         event.setDate(date);
+        event.setHandicapGroupSet(handicapGroupSet);
+        event.setCompetitionGroupSet(competitionGroupSet);
+        event.setMaxRunsPerRegistration(maxRunsPerRegistration);
+        event.setCurrent(current);
         return event;
     }
 

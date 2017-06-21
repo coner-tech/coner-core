@@ -17,6 +17,13 @@ public class EventApiEntity extends ApiEntity {
     private String name;
     @NotNull
     private Date date;
+    @NotBlank
+    private String handicapGroupSetId;
+    @NotBlank
+    private String competitionGroupSetId;
+    @NotNull
+    private int maxRunsPerRegistration;
+    private boolean current;
 
     public String getId() {
         return id;
@@ -40,6 +47,38 @@ public class EventApiEntity extends ApiEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getHandicapGroupSetId() {
+        return handicapGroupSetId;
+    }
+
+    public void setHandicapGroupSetId(String handicapGroupSetId) {
+        this.handicapGroupSetId = handicapGroupSetId;
+    }
+
+    public String getCompetitionGroupSetId() {
+        return competitionGroupSetId;
+    }
+
+    public void setCompetitionGroupSetId(String competitionGroupSetId) {
+        this.competitionGroupSetId = competitionGroupSetId;
+    }
+
+    public int getMaxRunsPerRegistration() {
+        return maxRunsPerRegistration;
+    }
+
+    public void setMaxRunsPerRegistration(int maxRunsPerRegistration) {
+        this.maxRunsPerRegistration = maxRunsPerRegistration;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 
     @Override

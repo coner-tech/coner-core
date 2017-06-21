@@ -24,14 +24,26 @@ public final class ApiRequestTestUtils {
     public static AddEventRequest fullAddEvent() {
         return fullAddEvent(
                 TestConstants.EVENT_NAME,
-                TestConstants.EVENT_DATE
+                TestConstants.EVENT_DATE,
+                TestConstants.HANDICAP_GROUP_SET_ID,
+                TestConstants.COMPETITION_GROUP_SET_ID,
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
         );
     }
 
-    public static AddEventRequest fullAddEvent(String name, Date date) {
+    public static AddEventRequest fullAddEvent(
+            String name,
+            Date date,
+            String handicapGroupSetId,
+            String competitionGroupSetId,
+            int maxRunsPerRegistration
+    ) {
         AddEventRequest request = new AddEventRequest();
         request.setName(name);
         request.setDate(date);
+        request.setHandicapGroupSetId(handicapGroupSetId);
+        request.setCompetitionGroupSetId(competitionGroupSetId);
+        request.setMaxRunsPerRegistration(maxRunsPerRegistration);
         return request;
     }
 

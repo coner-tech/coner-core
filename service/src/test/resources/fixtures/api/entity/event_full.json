@@ -1,1 +1,8 @@
-{"id":"event-test-id","name":"event-test-name","date":"2014-12-27T00:44:00.000+0000"}
+{
+  "id":"event-test-id",
+  "name":"event-test-name",
+  "date":"2014-12-27T00:44:00.000+0000",
+  "handicapGroupSetId": "handicap-group-set-test-id",
+  "competitionGroupSetId": "competition-group-set-test-id",
+  "maxRunsPerRegistration": 4
+}

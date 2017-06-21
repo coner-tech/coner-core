@@ -24,28 +24,26 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
+
 public class RunIntegrationTest extends AbstractIntegrationTest {
 
     private IntegrationTestStandardRequestDelegate standardRequests;
-    private String eventId;
-    private String registrationId;
+    private Prerequisites prerequisites;
 
     @Before
     public void setup() {
         standardRequests = new IntegrationTestStandardRequestDelegate(RULE, client);
-        eventId = standardRequests.addEvent();
-        String handicapGroupId = standardRequests.addHandicapGroup();
-        String competitionGroupId = standardRequests.addCompetitionGroup();
-        registrationId = standardRequests.addRegistration(eventId);
+        prerequisites = setupPrerequisites();
     }
 
     @Test
     public void itShouldAddRun() {
         URI eventRunsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")
-                .build(eventId);
+                .build(prerequisites.eventId);
         AddRunRequest addRequest = ApiRequestTestUtils.fullAddRun();
-        addRequest.setRegistrationId(registrationId);
+        addRequest.setRegistrationId(prerequisites.registrationId);
 
         Response addResponseContainer = client.target(eventRunsUri)
                 .request(MediaType.APPLICATION_JSON)
@@ -57,15 +55,15 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void itShouldGetRun() {
-        String runId = standardRequests.addRun(eventId, registrationId);
+        String runId = standardRequests.addRun(prerequisites.eventId, prerequisites.registrationId);
         RunApiEntity expected = ApiEntityTestUtils.fullRun();
         expected.setId(runId);
-        expected.setEventId(eventId);
-        expected.setRegistrationId(registrationId);
+        expected.setEventId(prerequisites.eventId);
+        expected.setRegistrationId(prerequisites.registrationId);
 
         URI eventRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs/{runId}")
-                .build(eventId, runId);
+                .build(prerequisites.eventId, runId);
         Response getResponseContainer = client.target(eventRunUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -80,19 +78,22 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
     public void itShouldGetAllRunsForEvent() {
         // add expected runs
         List<String> runsForEventIdProperty = Arrays.asList(
-                standardRequests.addRun(eventId, registrationId),
-                standardRequests.addRun(eventId, registrationId),
-                standardRequests.addRun(eventId, registrationId)
+                standardRequests.addRun(prerequisites.eventId, prerequisites.registrationId),
+                standardRequests.addRun(prerequisites.eventId, prerequisites.registrationId),
+                standardRequests.addRun(prerequisites.eventId, prerequisites.registrationId)
         );
 
         // add a run for a different event
-        String anotherEventId = standardRequests.addEvent();
+        String anotherEventId = standardRequests.addEvent(
+                prerequisites.handicapGroupSetId,
+                prerequisites.competitionGroupSetId
+        );
         String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(anotherEventId);
         standardRequests.addRun(anotherEventId, anotherRegistrationIdAtAnotherEventId);
 
         URI allRunsForEventUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")
-                .build(eventId);
+                .build(prerequisites.eventId);
         Response getResponseContainer = client.target(allRunsForEventUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -115,7 +116,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         addRunRequest.setRawTime(null);
         URI addRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")
-                .build(eventId);
+                .build(prerequisites.eventId);
         Response addRunResponseContainer = client.target(addRunUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -127,7 +128,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         addRawTimeRequest.setRawTime(TestConstants.RUN_RAW_TIME);
         URI addRawTimeUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs/rawTimes")
-                .build(eventId);
+                .build(prerequisites.eventId);
         Response addRawTimeResponse = client.target(addRawTimeUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -145,10 +146,10 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
     public void itShouldCreateRunIfAddRawTimeToFirstRunInSequenceFindsNonePriorLackingRawTime() {
         // add a full run
         AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
-        addRunRequest.setRegistrationId(registrationId);
+        addRunRequest.setRegistrationId(prerequisites.registrationId);
         URI addRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")
-                .build(eventId);
+                .build(prerequisites.eventId);
         Response addRunResponseContainer = client.target(addRunUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -160,7 +161,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         addRawTimeRequest.setRawTime(TestConstants.RUN_RAW_TIME);
         URI addRawTimeUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs/rawTimes")
-                .build(eventId);
+                .build(prerequisites.eventId);
         Response addRawTimeResponse = client.target(addRawTimeUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -173,5 +174,32 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 .isEqualTo(UnitTestUtils.getEntityIdFromResponse(addRawTimeResponse))
                 .isNotEqualTo(originalFullRunId);
         assertThat(addRawTimeRun.getRawTime()).isEqualTo(TestConstants.RUN_RAW_TIME);
+    }
+
+    private Prerequisites setupPrerequisites() {
+        Prerequisites prerequisites = new Prerequisites();
+        prerequisites.handicapGroupId = standardRequests.addHandicapGroup();
+        prerequisites.handicapGroupSetId = standardRequests.addHandicapGroupSet(
+                Sets.newHashSet(prerequisites.handicapGroupId)
+        );
+        prerequisites.competitionGroupId = standardRequests.addCompetitionGroup();
+        prerequisites.competitionGroupSetId = standardRequests.addCompetitionGroupSet(
+                Sets.newHashSet(prerequisites.competitionGroupId)
+        );
+        prerequisites.eventId = standardRequests.addEvent(
+                prerequisites.handicapGroupSetId,
+                prerequisites.competitionGroupSetId
+        );
+        prerequisites.registrationId = standardRequests.addRegistration(prerequisites.eventId);
+        return prerequisites;
+    }
+
+    private static class Prerequisites {
+        private String eventId;
+        private String registrationId;
+        private String handicapGroupId;
+        private String handicapGroupSetId;
+        private String competitionGroupId;
+        private String competitionGroupSetId;
     }
 }

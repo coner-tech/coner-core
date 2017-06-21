@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.Set;
 
 import org.coner.core.domain.entity.CompetitionGroup;
+import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.payload.CompetitionGroupAddPayload;
 import org.coner.core.domain.payload.CompetitionGroupSetAddPayload;
 import org.coner.core.domain.payload.EventAddPayload;
@@ -25,17 +27,26 @@ public final class DomainPayloadTestUtils {
     public static EventAddPayload fullEventAdd() {
         return fullEventAdd(
                 TestConstants.EVENT_NAME,
-                TestConstants.EVENT_DATE
+                TestConstants.EVENT_DATE,
+                DomainEntityTestUtils.fullHandicapGroupSet(),
+                DomainEntityTestUtils.fullCompetitionGroupSet(),
+                TestConstants.EVENT_MAX_RUNS_PER_REGISTRATION
         );
     }
 
     public static EventAddPayload fullEventAdd(
             String name,
-            Date date
+            Date date,
+            HandicapGroupSet handicapGroupSet,
+            CompetitionGroupSet competitionGroupSet,
+            int maxRunsPerRegistration
     ) {
         EventAddPayload eventAddPayload = new EventAddPayload();
         eventAddPayload.setName(name);
         eventAddPayload.setDate(date);
+        eventAddPayload.setHandicapGroupSet(handicapGroupSet);
+        eventAddPayload.setCompetitionGroupSet(competitionGroupSet);
+        eventAddPayload.setMaxRunsPerRegistration(maxRunsPerRegistration);
         return eventAddPayload;
     }
 
