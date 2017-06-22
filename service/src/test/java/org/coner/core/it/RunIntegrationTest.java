@@ -88,7 +88,9 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 prerequisites.handicapGroupSetId,
                 prerequisites.competitionGroupSetId
         );
-        String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(anotherEventId);
+        String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(
+                anotherEventId, prerequisites.handicapGroupId
+        );
         standardRequests.addRun(anotherEventId, anotherRegistrationIdAtAnotherEventId);
 
         URI allRunsForEventUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
@@ -190,7 +192,10 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 prerequisites.handicapGroupSetId,
                 prerequisites.competitionGroupSetId
         );
-        prerequisites.registrationId = standardRequests.addRegistration(prerequisites.eventId);
+        prerequisites.registrationId = standardRequests.addRegistration(
+                prerequisites.eventId,
+                prerequisites.handicapGroupId
+        );
         return prerequisites;
     }
 

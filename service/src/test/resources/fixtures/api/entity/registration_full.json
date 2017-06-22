@@ -1,5 +1,6 @@
 {
   "id": "registration-test-id",
   "firstName": "registration-firstname",
-  "lastName": "registration-lastname"
+  "lastName": "registration-lastname",
+  "handicapGroupId": "handicap-group-test-id"
 }

@@ -5,13 +5,19 @@ import java.util.List;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.hibernate.dao.RegistrationDao;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 
 @Mapper(
         config = ConerBaseMapStructConfig.class
@@ -20,9 +26,19 @@ public abstract class RegistrationMapper {
 
     private RegistrationDao dao;
     private EventMapper eventMapper;
+    private HandicapGroupMapper handicapGroupMapper;
+    private HandicapGroupEntityService handicapGroupEntityService;
 
+    // primary mappings
+
+    @Mappings({
+            @Mapping(source = "apiAddRequest.handicapGroupId", target = "handicapGroup")
+    })
     public abstract RegistrationAddPayload toDomainAddPayload(AddRegistrationRequest apiAddRequest, String eventId);
 
+    @Mappings({
+            @Mapping(source = "domainEntity.handicapGroup.id", target = "handicapGroupId")
+    })
     public abstract RegistrationApiEntity toApiEntity(Registration domainEntity);
 
     public abstract List<RegistrationApiEntity> toApiEntityList(List<Registration> domainEntityList);
@@ -53,11 +69,35 @@ public abstract class RegistrationMapper {
 
     public abstract List<Registration> toDomainEntityList(List<RegistrationHibernateEntity> hibernateEntityList);
 
+    // secondary mappings
+
+    public HandicapGroup toHandicapGroupDomainEntity(String handicapGroupId) throws EntityNotFoundException {
+        return handicapGroupEntityService.getById(handicapGroupId);
+    }
+
+    public HandicapGroupHibernateEntity toHibernateEntity(HandicapGroup domainEntity) {
+        return handicapGroupMapper.toHibernateEntity(domainEntity);
+    }
+
+    public HandicapGroup toDomainEntity(HandicapGroupHibernateEntity hibernateEntity) {
+        return handicapGroupMapper.toDomainEntity(hibernateEntity);
+    }
+
+    // setters
+
     public void setDao(RegistrationDao dao) {
         this.dao = dao;
     }
 
     public void setEventMapper(EventMapper eventMapper) {
         this.eventMapper = eventMapper;
+    }
+
+    public void setHandicapGroupMapper(HandicapGroupMapper handicapGroupMapper) {
+        this.handicapGroupMapper = handicapGroupMapper;
+    }
+
+    public void setHandicapGroupEntityService(HandicapGroupEntityService handicapGroupEntityService) {
+        this.handicapGroupEntityService = handicapGroupEntityService;
     }
 }

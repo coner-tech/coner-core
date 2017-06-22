@@ -57,7 +57,8 @@ public final class HibernateEntityTestUtils {
                 TestConstants.REGISTRATION_ID,
                 TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME,
-                fullEvent()
+                fullEvent(),
+                fullHandicapGroup()
         );
     }
 
@@ -65,13 +66,14 @@ public final class HibernateEntityTestUtils {
             String id,
             String firstName,
             String lastName,
-            EventHibernateEntity event
-    ) {
+            EventHibernateEntity event,
+            HandicapGroupHibernateEntity handicapGroup) {
         RegistrationHibernateEntity registration = new RegistrationHibernateEntity();
         registration.setId(id);
         registration.setFirstName(firstName);
         registration.setLastName(lastName);
         registration.setEvent(event);
+        registration.setHandicapGroup(handicapGroup);
         return registration;
     }
 

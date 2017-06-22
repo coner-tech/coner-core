@@ -273,7 +273,7 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.registration = HibernateEntityTestUtils.fullRegistration();
         prerequisites.registration.setId(null);
         prerequisites.registration.setEvent(prerequisites.event);
-
+        prerequisites.registration.setHandicapGroup(prerequisites.handicapGroup);
 
         daoTestRule.inTransaction(() -> {
             handicapGroupDao.create(prerequisites.handicapGroup);

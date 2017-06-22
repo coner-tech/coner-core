@@ -3,12 +3,14 @@ package org.coner.core.domain.payload;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.HandicapGroup;
 
 public class RegistrationAddPayload extends DomainAddPayload {
     private String eventId;
     private Event event;
     private String firstName;
     private String lastName;
+    private HandicapGroup handicapGroup;
 
     public String getEventId() {
         return eventId;
@@ -40,6 +42,14 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public HandicapGroup getHandicapGroup() {
+        return handicapGroup;
+    }
+
+    public void setHandicapGroup(HandicapGroup handicapGroup) {
+        this.handicapGroup = handicapGroup;
     }
 
     @Override

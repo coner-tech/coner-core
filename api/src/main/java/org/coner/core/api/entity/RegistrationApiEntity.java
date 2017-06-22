@@ -15,6 +15,8 @@ public class RegistrationApiEntity extends ApiEntity {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String handicapGroupId;
 
     public String getId() {
         return id;
@@ -38,6 +40,14 @@ public class RegistrationApiEntity extends ApiEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getHandicapGroupId() {
+        return handicapGroupId;
+    }
+
+    public void setHandicapGroupId(String handicapGroupId) {
+        this.handicapGroupId = handicapGroupId;
     }
 
     @Override

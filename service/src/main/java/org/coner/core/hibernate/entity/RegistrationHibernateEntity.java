@@ -32,6 +32,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     private String firstName;
     private String lastName;
     private EventHibernateEntity event;
+    private HandicapGroupHibernateEntity handicapGroup;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -69,6 +70,15 @@ public class RegistrationHibernateEntity extends HibernateEntity {
 
     public void setEvent(EventHibernateEntity event) {
         this.event = event;
+    }
+
+    @ManyToOne(optional = false)
+    public HandicapGroupHibernateEntity getHandicapGroup() {
+        return handicapGroup;
+    }
+
+    public void setHandicapGroup(HandicapGroupHibernateEntity handicapGroup) {
+        this.handicapGroup = handicapGroup;
     }
 
     @Override

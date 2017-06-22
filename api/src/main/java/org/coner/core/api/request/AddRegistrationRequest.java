@@ -9,6 +9,8 @@ public class AddRegistrationRequest {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String handicapGroupId;
 
     public String getFirstName() {
         return firstName;
@@ -24,6 +26,14 @@ public class AddRegistrationRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getHandicapGroupId() {
+        return handicapGroupId;
+    }
+
+    public void setHandicapGroupId(String handicapGroupId) {
+        this.handicapGroupId = handicapGroupId;
     }
 
     @Override

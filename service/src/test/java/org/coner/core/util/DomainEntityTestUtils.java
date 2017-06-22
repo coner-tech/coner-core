@@ -56,20 +56,25 @@ public final class DomainEntityTestUtils {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
                 TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                TestConstants.REGISTRATION_LASTNAME,
+                fullEvent(),
+                fullHandicapGroup()
         );
     }
 
     public static Registration fullRegistration(
             String id,
             String firstName,
-            String lastName
+            String lastName,
+            Event event,
+            HandicapGroup handicapGroup
     ) {
         Registration registration = new Registration();
         registration.setId(id);
         registration.setFirstName(firstName);
         registration.setLastName(lastName);
-        registration.setEvent(DomainEntityTestUtils.fullEvent());
+        registration.setEvent(event);
+        registration.setHandicapGroup(handicapGroup);
         return registration;
     }
 

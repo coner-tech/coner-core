@@ -57,19 +57,22 @@ public final class ApiEntityTestUtils {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
                 TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                TestConstants.REGISTRATION_LASTNAME,
+                TestConstants.HANDICAP_GROUP_ID
         );
     }
 
     public static RegistrationApiEntity fullRegistration(
             String id,
             String firstName,
-            String lastName
+            String lastName,
+            String handicapGroupId
     ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
         registration.setFirstName(firstName);
         registration.setLastName(lastName);
+        registration.setHandicapGroupId(handicapGroupId);
         return registration;
     }
 

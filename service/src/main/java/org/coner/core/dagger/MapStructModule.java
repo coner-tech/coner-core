@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import org.coner.core.domain.service.CompetitionGroupSetService;
 import org.coner.core.domain.service.EventEntityService;
+import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.HandicapGroupSetService;
 import org.coner.core.domain.service.RegistrationEntityService;
 import org.coner.core.hibernate.dao.CompetitionGroupDao;
@@ -48,10 +49,17 @@ public class MapStructModule {
 
     @Provides
     @Singleton
-    public RegistrationMapper registrationMapper(RegistrationDao dao, EventMapper eventMapper) {
+    public RegistrationMapper registrationMapper(
+            RegistrationDao dao,
+            EventMapper eventMapper,
+            HandicapGroupMapper handicapGroupMapper,
+            HandicapGroupEntityService handicapGroupEntityService
+    ) {
         RegistrationMapper mapper = Mappers.getMapper(RegistrationMapper.class);
         mapper.setDao(dao);
         mapper.setEventMapper(eventMapper);
+        mapper.setHandicapGroupMapper(handicapGroupMapper);
+        mapper.setHandicapGroupEntityService(handicapGroupEntityService);
         return mapper;
     }
 
