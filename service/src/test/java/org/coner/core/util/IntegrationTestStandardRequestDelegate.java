@@ -108,12 +108,13 @@ public final class IntegrationTestStandardRequestDelegate {
         return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
     }
 
-    public String addRegistration(String eventId, String handicapGroupId) {
+    public String addRegistration(String eventId, String handicapGroupId, String competitionGroupId) {
         URI eventsRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
                 .path("/events/{eventId}/registrations")
                 .build(eventId);
         AddRegistrationRequest addRequest = ApiRequestTestUtils.fullAddRegistration();
         addRequest.setHandicapGroupId(handicapGroupId);
+        addRequest.setCompetitionGroupId(competitionGroupId);
         Response addResponseContainer = client.target(eventsRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)

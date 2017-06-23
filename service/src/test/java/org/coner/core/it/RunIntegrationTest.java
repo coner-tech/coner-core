@@ -89,7 +89,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
                 prerequisites.competitionGroupSetId
         );
         String anotherRegistrationIdAtAnotherEventId = standardRequests.addRegistration(
-                anotherEventId, prerequisites.handicapGroupId
+                anotherEventId, prerequisites.handicapGroupId, prerequisites.competitionGroupId
         );
         standardRequests.addRun(anotherEventId, anotherRegistrationIdAtAnotherEventId);
 
@@ -194,7 +194,8 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         );
         prerequisites.registrationId = standardRequests.addRegistration(
                 prerequisites.eventId,
-                prerequisites.handicapGroupId
+                prerequisites.handicapGroupId,
+                prerequisites.competitionGroupId
         );
         return prerequisites;
     }

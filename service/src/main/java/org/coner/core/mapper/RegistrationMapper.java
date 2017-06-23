@@ -4,13 +4,16 @@ import java.util.List;
 
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.hibernate.dao.RegistrationDao;
+import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
@@ -28,16 +31,20 @@ public abstract class RegistrationMapper {
     private EventMapper eventMapper;
     private HandicapGroupMapper handicapGroupMapper;
     private HandicapGroupEntityService handicapGroupEntityService;
+    private CompetitionGroupMapper competitionGroupMapper;
+    private CompetitionGroupEntityService competitionGroupEntityService;
 
     // primary mappings
 
     @Mappings({
-            @Mapping(source = "apiAddRequest.handicapGroupId", target = "handicapGroup")
+            @Mapping(source = "apiAddRequest.handicapGroupId", target = "handicapGroup"),
+            @Mapping(source = "apiAddRequest.competitionGroupId", target = "competitionGroup")
     })
     public abstract RegistrationAddPayload toDomainAddPayload(AddRegistrationRequest apiAddRequest, String eventId);
 
     @Mappings({
-            @Mapping(source = "domainEntity.handicapGroup.id", target = "handicapGroupId")
+            @Mapping(source = "domainEntity.handicapGroup.id", target = "handicapGroupId"),
+            @Mapping(source = "domainEntity.competitionGroup.id", target = "competitionGroupId")
     })
     public abstract RegistrationApiEntity toApiEntity(Registration domainEntity);
 
@@ -75,12 +82,24 @@ public abstract class RegistrationMapper {
         return handicapGroupEntityService.getById(handicapGroupId);
     }
 
+    public CompetitionGroup toCompetitionGroupDomainEntity(String competitionGroupId) throws EntityNotFoundException {
+        return competitionGroupEntityService.getById(competitionGroupId);
+    }
+
     public HandicapGroupHibernateEntity toHibernateEntity(HandicapGroup domainEntity) {
         return handicapGroupMapper.toHibernateEntity(domainEntity);
     }
 
+    public CompetitionGroupHibernateEntity toHibernateEntity(CompetitionGroup domainEntity) {
+        return competitionGroupMapper.toHibernateEntity(domainEntity);
+    }
+
     public HandicapGroup toDomainEntity(HandicapGroupHibernateEntity hibernateEntity) {
         return handicapGroupMapper.toDomainEntity(hibernateEntity);
+    }
+
+    public CompetitionGroup toDomainEntity(CompetitionGroupHibernateEntity hibernateEntity) {
+        return competitionGroupMapper.toDomainEntity(hibernateEntity);
     }
 
     // setters
@@ -99,5 +118,13 @@ public abstract class RegistrationMapper {
 
     public void setHandicapGroupEntityService(HandicapGroupEntityService handicapGroupEntityService) {
         this.handicapGroupEntityService = handicapGroupEntityService;
+    }
+
+    public void setCompetitionGroupMapper(CompetitionGroupMapper competitionGroupMapper) {
+        this.competitionGroupMapper = competitionGroupMapper;
+    }
+
+    public void setCompetitionGroupEntityService(CompetitionGroupEntityService competitionGroupEntityService) {
+        this.competitionGroupEntityService = competitionGroupEntityService;
     }
 }

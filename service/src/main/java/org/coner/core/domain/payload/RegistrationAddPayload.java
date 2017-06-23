@@ -2,6 +2,7 @@ package org.coner.core.domain.payload;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
 
@@ -11,6 +12,7 @@ public class RegistrationAddPayload extends DomainAddPayload {
     private String firstName;
     private String lastName;
     private HandicapGroup handicapGroup;
+    private CompetitionGroup competitionGroup;
 
     public String getEventId() {
         return eventId;
@@ -50,6 +52,14 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
     public void setHandicapGroup(HandicapGroup handicapGroup) {
         this.handicapGroup = handicapGroup;
+    }
+
+    public CompetitionGroup getCompetitionGroup() {
+        return competitionGroup;
+    }
+
+    public void setCompetitionGroup(CompetitionGroup competitionGroup) {
+        this.competitionGroup = competitionGroup;
     }
 
     @Override

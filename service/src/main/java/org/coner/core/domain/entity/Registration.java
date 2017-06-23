@@ -10,6 +10,7 @@ public class Registration extends DomainEntity {
     private String firstName;
     private String lastName;
     private HandicapGroup handicapGroup;
+    private CompetitionGroup competitionGroup;
 
     public String getId() {
         return id;
@@ -49,6 +50,14 @@ public class Registration extends DomainEntity {
 
     public void setHandicapGroup(HandicapGroup handicapGroup) {
         this.handicapGroup = handicapGroup;
+    }
+
+    public CompetitionGroup getCompetitionGroup() {
+        return competitionGroup;
+    }
+
+    public void setCompetitionGroup(CompetitionGroup competitionGroup) {
+        this.competitionGroup = competitionGroup;
     }
 
     @Override

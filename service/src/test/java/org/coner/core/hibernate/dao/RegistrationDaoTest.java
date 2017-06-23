@@ -77,12 +77,14 @@ public class RegistrationDaoTest extends AbstractDaoTest {
                 .extracting(
                         it -> it.getId(),
                         it -> it.getEvent().getId(),
-                        it -> it.getHandicapGroup().getId()
+                        it -> it.getHandicapGroup().getId(),
+                        it -> it.getCompetitionGroup().getId()
                 )
                 .containsExactly(
                         inEntity.getId(),
                         prerequisites.event.getId(),
-                        prerequisites.handicapGroup.getId()
+                        prerequisites.handicapGroup.getId(),
+                        prerequisites.competitionGroup.getId()
                 );
     }
 
@@ -153,6 +155,7 @@ public class RegistrationDaoTest extends AbstractDaoTest {
         registration.setId(null);
         registration.setEvent(prerequisites.event);
         registration.setHandicapGroup(prerequisites.handicapGroup);
+        registration.setCompetitionGroup(prerequisites.competitionGroup);
         return registration;
     }
 }

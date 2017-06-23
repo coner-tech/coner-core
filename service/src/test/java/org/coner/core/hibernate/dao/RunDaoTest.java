@@ -274,6 +274,7 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.registration.setId(null);
         prerequisites.registration.setEvent(prerequisites.event);
         prerequisites.registration.setHandicapGroup(prerequisites.handicapGroup);
+        prerequisites.registration.setCompetitionGroup(prerequisites.competitionGroup);
 
         daoTestRule.inTransaction(() -> {
             handicapGroupDao.create(prerequisites.handicapGroup);

@@ -10,6 +10,7 @@ import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
 import org.coner.core.domain.service.HandicapGroupEntityService;
 import org.coner.core.domain.service.exception.EntityNotFoundException;
 import org.coner.core.hibernate.dao.RegistrationDao;
@@ -38,6 +39,10 @@ public class RegistrationMapperTest {
     HandicapGroupMapper handicapGroupMapper;
     @Mock
     HandicapGroupEntityService handicapGroupEntityService;
+    @Mock
+    CompetitionGroupMapper competitionGroupMapper;
+    @Mock
+    CompetitionGroupEntityService competitionGroupEntityService;
 
     @Before
     public void setup() throws EntityNotFoundException {
@@ -45,9 +50,13 @@ public class RegistrationMapperTest {
         mapper.setEventMapper(eventMapper);
         mapper.setHandicapGroupMapper(handicapGroupMapper);
         mapper.setHandicapGroupEntityService(handicapGroupEntityService);
+        mapper.setCompetitionGroupMapper(competitionGroupMapper);
+        mapper.setCompetitionGroupEntityService(competitionGroupEntityService);
 
         when(handicapGroupEntityService.getById(TestConstants.HANDICAP_GROUP_ID))
                 .thenReturn(DomainEntityTestUtils.fullHandicapGroup());
+        when(competitionGroupEntityService.getById(TestConstants.COMPETITION_GROUP_ID))
+                .thenReturn(DomainEntityTestUtils.fullCompetitionGroup());
     }
 
     @Test

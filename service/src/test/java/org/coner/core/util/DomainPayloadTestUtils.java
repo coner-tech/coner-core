@@ -136,7 +136,8 @@ public final class DomainPayloadTestUtils {
                 DomainEntityTestUtils.fullEvent(),
                 TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME,
-                DomainEntityTestUtils.fullHandicapGroup()
+                DomainEntityTestUtils.fullHandicapGroup(),
+                DomainEntityTestUtils.fullCompetitionGroup()
         );
     }
 
@@ -145,7 +146,8 @@ public final class DomainPayloadTestUtils {
             Event event,
             String firstname,
             String lastname,
-            HandicapGroup handicapGroup
+            HandicapGroup handicapGroup,
+            CompetitionGroup competitionGroup
     ) {
         RegistrationAddPayload registrationAddPayload = new RegistrationAddPayload();
         registrationAddPayload.setEventId(eventId);
@@ -153,6 +155,7 @@ public final class DomainPayloadTestUtils {
         registrationAddPayload.setFirstName(firstname);
         registrationAddPayload.setLastName(lastname);
         registrationAddPayload.setHandicapGroup(handicapGroup);
+        registrationAddPayload.setCompetitionGroup(competitionGroup);
         return registrationAddPayload;
     }
 

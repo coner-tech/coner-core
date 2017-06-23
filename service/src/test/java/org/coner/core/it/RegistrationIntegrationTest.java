@@ -95,10 +95,14 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
         List<RegistrationApiEntity> registrationList = getEventRegistrationsResponse.getEntities();
         assertThat(registrationList).hasSize(2);
         assertThat(registrationList)
-                .extracting(RegistrationApiEntity::getId, RegistrationApiEntity::getHandicapGroupId)
+                .extracting(
+                        RegistrationApiEntity::getId,
+                        RegistrationApiEntity::getHandicapGroupId,
+                        RegistrationApiEntity::getCompetitionGroupId
+                )
                 .containsExactly(
-                        tuple(registrationId0, prerequisites.handicapGroupId),
-                        tuple(registrationId1, prerequisites.handicapGroupId)
+                        tuple(registrationId0, prerequisites.handicapGroupId, prerequisites.competitionGroupId),
+                        tuple(registrationId1, prerequisites.handicapGroupId, prerequisites.competitionGroupId)
                 );
 
         URI eventRegistration0Uri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
@@ -158,6 +162,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     private AddRegistrationRequest buildAddRegistrationRequest() {
         AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
         addRegistrationRequest.setHandicapGroupId(prerequisites.handicapGroupId);
+        addRegistrationRequest.setCompetitionGroupId(prerequisites.competitionGroupId);
         return addRegistrationRequest;
     }
 

@@ -58,7 +58,8 @@ public final class DomainEntityTestUtils {
                 TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME,
                 fullEvent(),
-                fullHandicapGroup()
+                fullHandicapGroup(),
+                fullCompetitionGroup()
         );
     }
 
@@ -67,7 +68,8 @@ public final class DomainEntityTestUtils {
             String firstName,
             String lastName,
             Event event,
-            HandicapGroup handicapGroup
+            HandicapGroup handicapGroup,
+            CompetitionGroup competitionGroup
     ) {
         Registration registration = new Registration();
         registration.setId(id);
@@ -75,6 +77,7 @@ public final class DomainEntityTestUtils {
         registration.setLastName(lastName);
         registration.setEvent(event);
         registration.setHandicapGroup(handicapGroup);
+        registration.setCompetitionGroup(competitionGroup);
         return registration;
     }
 
