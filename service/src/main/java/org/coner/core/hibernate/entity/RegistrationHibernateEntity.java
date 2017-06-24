@@ -34,6 +34,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     private EventHibernateEntity event;
     private HandicapGroupHibernateEntity handicapGroup;
     private CompetitionGroupHibernateEntity competitionGroup;
+    private String number;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -89,6 +90,14 @@ public class RegistrationHibernateEntity extends HibernateEntity {
 
     public void setCompetitionGroup(CompetitionGroupHibernateEntity competitionGroup) {
         this.competitionGroup = competitionGroup;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override

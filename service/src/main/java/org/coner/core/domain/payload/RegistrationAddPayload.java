@@ -13,6 +13,7 @@ public class RegistrationAddPayload extends DomainAddPayload {
     private String lastName;
     private HandicapGroup handicapGroup;
     private CompetitionGroup competitionGroup;
+    private String number;
 
     public String getEventId() {
         return eventId;
@@ -60,6 +61,14 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
     public void setCompetitionGroup(CompetitionGroup competitionGroup) {
         this.competitionGroup = competitionGroup;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override

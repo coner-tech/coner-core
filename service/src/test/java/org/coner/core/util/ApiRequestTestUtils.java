@@ -126,7 +126,8 @@ public final class ApiRequestTestUtils {
                 TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME,
                 TestConstants.HANDICAP_GROUP_ID,
-                TestConstants.COMPETITION_GROUP_ID
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.REGISTRATION_NUMBER
         );
     }
 
@@ -134,12 +135,15 @@ public final class ApiRequestTestUtils {
             String firstName,
             String lastName,
             String handicapGroupId,
-            String competitionGroupId) {
+            String competitionGroupId,
+            String number
+    ) {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
         addRegistrationRequest.setFirstName(firstName);
         addRegistrationRequest.setLastName(lastName);
         addRegistrationRequest.setHandicapGroupId(handicapGroupId);
         addRegistrationRequest.setCompetitionGroupId(competitionGroupId);
+        addRegistrationRequest.setNumber(number);
         return addRegistrationRequest;
     }
 

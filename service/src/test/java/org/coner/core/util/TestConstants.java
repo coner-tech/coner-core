@@ -23,6 +23,7 @@ public final class TestConstants {
     public static final String REGISTRATION_ID = "registration-test-id";
     public static final String REGISTRATION_FIRSTNAME = "registration-firstname";
     public static final String REGISTRATION_LASTNAME = "registration-lastname";
+    public static final String REGISTRATION_NUMBER = "098";
 
     //HandicapGroup
     public static final String HANDICAP_GROUP_ID = "handicap-group-test-id";

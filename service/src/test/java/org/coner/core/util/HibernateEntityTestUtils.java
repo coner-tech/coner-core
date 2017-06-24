@@ -59,7 +59,8 @@ public final class HibernateEntityTestUtils {
                 TestConstants.REGISTRATION_LASTNAME,
                 fullEvent(),
                 fullHandicapGroup(),
-                fullCompetitionGroup()
+                fullCompetitionGroup(),
+                TestConstants.REGISTRATION_NUMBER
         );
     }
 
@@ -69,7 +70,8 @@ public final class HibernateEntityTestUtils {
             String lastName,
             EventHibernateEntity event,
             HandicapGroupHibernateEntity handicapGroup,
-            CompetitionGroupHibernateEntity competitionGroup
+            CompetitionGroupHibernateEntity competitionGroup,
+            String number
     ) {
         RegistrationHibernateEntity registration = new RegistrationHibernateEntity();
         registration.setId(id);
@@ -78,6 +80,7 @@ public final class HibernateEntityTestUtils {
         registration.setEvent(event);
         registration.setHandicapGroup(handicapGroup);
         registration.setCompetitionGroup(competitionGroup);
+        registration.setNumber(number);
         return registration;
     }
 

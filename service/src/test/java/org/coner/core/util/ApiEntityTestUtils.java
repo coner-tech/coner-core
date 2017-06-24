@@ -59,7 +59,8 @@ public final class ApiEntityTestUtils {
                 TestConstants.REGISTRATION_FIRSTNAME,
                 TestConstants.REGISTRATION_LASTNAME,
                 TestConstants.HANDICAP_GROUP_ID,
-                TestConstants.COMPETITION_GROUP_ID
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.REGISTRATION_NUMBER
         );
     }
 
@@ -68,7 +69,8 @@ public final class ApiEntityTestUtils {
             String firstName,
             String lastName,
             String handicapGroupId,
-            String competitionGroupId
+            String competitionGroupId,
+            String number
     ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
@@ -76,6 +78,7 @@ public final class ApiEntityTestUtils {
         registration.setLastName(lastName);
         registration.setHandicapGroupId(handicapGroupId);
         registration.setCompetitionGroupId(competitionGroupId);
+        registration.setNumber(number);
         return registration;
     }
 

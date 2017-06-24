@@ -13,6 +13,8 @@ public class AddRegistrationRequest {
     private String handicapGroupId;
     @NotBlank
     private String competitionGroupId;
+    @NotBlank
+    private String number;
 
     public String getFirstName() {
         return firstName;
@@ -44,6 +46,14 @@ public class AddRegistrationRequest {
 
     public void setCompetitionGroupId(String competitionGroupId) {
         this.competitionGroupId = competitionGroupId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override

@@ -3,5 +3,6 @@
   "firstName": "registration-firstname",
   "lastName": "registration-lastname",
   "handicapGroupId": "handicap-group-test-id",
-  "competitionGroupId": "competition-group-test-id"
+  "competitionGroupId": "competition-group-test-id",
+  "number": "098"
 }
