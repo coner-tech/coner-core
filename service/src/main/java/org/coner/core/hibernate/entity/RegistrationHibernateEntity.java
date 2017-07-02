@@ -30,6 +30,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
 
     private String id;
     private PersonHibernateEntity person;
+    private CarHibernateEntity car;
     private EventHibernateEntity event;
     private HandicapGroupHibernateEntity handicapGroup;
     private CompetitionGroupHibernateEntity competitionGroup;
@@ -54,6 +55,15 @@ public class RegistrationHibernateEntity extends HibernateEntity {
 
     public void setPerson(PersonHibernateEntity person) {
         this.person = person;
+    }
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    public CarHibernateEntity getCar() {
+        return car;
+    }
+
+    public void setCar(CarHibernateEntity car) {
+        this.car = car;
     }
 
     @ManyToOne(optional = false)

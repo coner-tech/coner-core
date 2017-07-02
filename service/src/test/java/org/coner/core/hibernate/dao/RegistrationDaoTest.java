@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.coner.core.hibernate.entity.CarHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
@@ -39,6 +40,7 @@ public class RegistrationDaoTest extends AbstractDaoTest {
     @Rule
     public DAOTestRule daoTestRule = getDaoTestRuleBuilder()
             .addEntityClass(PersonHibernateEntity.class)
+            .addEntityClass(CarHibernateEntity.class)
             .addEntityClass(RegistrationHibernateEntity.class)
             .addEntityClass(EventHibernateEntity.class)
             .addEntityClass(HandicapGroupHibernateEntity.class)
@@ -134,6 +136,36 @@ public class RegistrationDaoTest extends AbstractDaoTest {
         });
     }
 
+    @Test
+    public void itShouldAddAddRegistrationsForSameCarAtDifferentEvents() {
+        RegistrationHibernateEntity registrationAtEvent1 = buildUnsavedRegistration();
+        EventHibernateEntity event2 = HibernateEntityTestUtils.fullEvent();
+        event2.setId(null);
+        event2.setHandicapGroupSet(prerequisites.handicapGroupSet);
+        event2.setCompetitionGroupSet(prerequisites.competitionGroupSet);
+        RegistrationHibernateEntity registrationAtEvent2 = buildUnsavedRegistration();
+        registrationAtEvent2.setEvent(event2);
+        registrationAtEvent2.setCar(registrationAtEvent1.getCar());
+
+        daoTestRule.inTransaction(() -> {
+            dao.create(registrationAtEvent1);
+            eventDao.create(event2);
+            dao.create(registrationAtEvent2);
+        });
+    }
+
+    @Test
+    public void itShouldAddAddRegistrationsForSameCarAtSameEvents() {
+        RegistrationHibernateEntity registrationOfCarOwner = buildUnsavedRegistration();
+        RegistrationHibernateEntity registrationOfCoDriver = buildUnsavedRegistration();
+        registrationOfCoDriver.setCar(registrationOfCarOwner.getCar());
+
+        daoTestRule.inTransaction(() -> {
+            dao.create(registrationOfCarOwner);
+            dao.create(registrationOfCoDriver);
+        });
+    }
+
     private Prerequisites setupPrerequisites() {
         Prerequisites prerequisites = new Prerequisites();
         prerequisites.handicapGroup = HibernateEntityTestUtils.fullHandicapGroup();
@@ -174,6 +206,7 @@ public class RegistrationDaoTest extends AbstractDaoTest {
         RegistrationHibernateEntity registration = HibernateEntityTestUtils.fullRegistration();
         registration.setId(null);
         registration.getPerson().setId(null);
+        registration.getCar().setId(null);
         registration.setEvent(prerequisites.event);
         registration.setHandicapGroup(prerequisites.handicapGroup);
         registration.setCompetitionGroup(prerequisites.competitionGroup);

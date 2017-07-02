@@ -1,5 +1,7 @@
 package org.coner.core.domain.payload;
 
+import java.time.Year;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.coner.core.domain.entity.CompetitionGroup;
@@ -8,6 +10,7 @@ import org.coner.core.domain.entity.HandicapGroup;
 
 public class RegistrationAddPayload extends DomainAddPayload {
     private PersonAddPayload person;
+    private CarAddPayload car;
     private String eventId;
     private Event event;
     private HandicapGroup handicapGroup;
@@ -21,6 +24,14 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
     public void setPerson(PersonAddPayload person) {
         this.person = person;
+    }
+
+    public CarAddPayload getCar() {
+        return car;
+    }
+
+    public void setCar(CarAddPayload car) {
+        this.car = car;
     }
 
     public String getEventId() {
@@ -109,6 +120,65 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
         public void setLastName(String lastName) {
             this.lastName = lastName;
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return EqualsBuilder.reflectionEquals(this, o);
+        }
+    }
+
+    public static class CarAddPayload {
+
+        private Year year;
+        private String make;
+        private String model;
+        private String trim;
+        private String color;
+
+        public Year getYear() {
+            return year;
+        }
+
+        public void setYear(Year year) {
+            this.year = year;
+        }
+
+        public String getMake() {
+            return make;
+        }
+
+        public void setMake(String make) {
+            this.make = make;
+        }
+
+        public String getModel() {
+            return model;
+        }
+
+        public void setModel(String model) {
+            this.model = model;
+        }
+
+        public String getTrim() {
+            return trim;
+        }
+
+        public void setTrim(String trim) {
+            this.trim = trim;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
         }
 
         @Override

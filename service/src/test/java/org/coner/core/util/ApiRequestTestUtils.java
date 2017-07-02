@@ -2,6 +2,7 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
@@ -124,6 +125,7 @@ public final class ApiRequestTestUtils {
     public static AddRegistrationRequest fullAddRegistration() {
         return fullAddRegistration(
                 fullAddPerson(),
+                fullAddCar(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.REGISTRATION_NUMBER,
@@ -132,12 +134,14 @@ public final class ApiRequestTestUtils {
     }
 
     public static AddRegistrationRequest fullAddRegistration(
-            AddRegistrationRequest.AddPerson person, String handicapGroupId,
+            AddRegistrationRequest.AddPerson person, AddRegistrationRequest.AddCar car, String handicapGroupId,
             String competitionGroupId,
             String number,
-            boolean checkedIn) {
+            boolean checkedIn
+    ) {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
         addRegistrationRequest.setPerson(person);
+        addRegistrationRequest.setCar(car);
         addRegistrationRequest.setHandicapGroupId(handicapGroupId);
         addRegistrationRequest.setCompetitionGroupId(competitionGroupId);
         addRegistrationRequest.setNumber(number);
@@ -163,6 +167,32 @@ public final class ApiRequestTestUtils {
         addPerson.setMiddleName(middleName);
         addPerson.setLastName(lastName);
         return addPerson;
+    }
+
+    public static AddRegistrationRequest.AddCar fullAddCar() {
+        return fullAddCar(
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static AddRegistrationRequest.AddCar fullAddCar(
+            Year year,
+            String make,
+            String model,
+            String trim,
+            String color
+    ) {
+        AddRegistrationRequest.AddCar addCar = new AddRegistrationRequest.AddCar();
+        addCar.setYear(year);
+        addCar.setMake(make);
+        addCar.setModel(model);
+        addCar.setTrim(trim);
+        addCar.setColor(color);
+        return addCar;
     }
 
     public static AddRunRequest fullAddRun() {

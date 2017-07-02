@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
@@ -133,6 +134,7 @@ public final class DomainPayloadTestUtils {
     public static RegistrationAddPayload fullRegistrationAdd() {
         return fullRegistrationAdd(
                 fullPersonAdd(),
+                fullCarAdd(),
                 TestConstants.EVENT_ID,
                 DomainEntityTestUtils.fullEvent(),
                 DomainEntityTestUtils.fullHandicapGroup(),
@@ -144,6 +146,7 @@ public final class DomainPayloadTestUtils {
 
     public static RegistrationAddPayload fullRegistrationAdd(
             RegistrationAddPayload.PersonAddPayload person,
+            RegistrationAddPayload.CarAddPayload car,
             String eventId,
             Event event,
             HandicapGroup handicapGroup,
@@ -155,6 +158,7 @@ public final class DomainPayloadTestUtils {
         registrationAddPayload.setEventId(eventId);
         registrationAddPayload.setEvent(event);
         registrationAddPayload.setPerson(person);
+        registrationAddPayload.setCar(car);
         registrationAddPayload.setHandicapGroup(handicapGroup);
         registrationAddPayload.setCompetitionGroup(competitionGroup);
         registrationAddPayload.setNumber(number);
@@ -180,6 +184,32 @@ public final class DomainPayloadTestUtils {
         personAddPayload.setMiddleName(middleName);
         personAddPayload.setLastName(lastName);
         return personAddPayload;
+    }
+
+    public static RegistrationAddPayload.CarAddPayload fullCarAdd() {
+        return fullCarAdd(
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static RegistrationAddPayload.CarAddPayload fullCarAdd(
+            Year year,
+            String make,
+            String model,
+            String trim,
+            String color
+    ) {
+        RegistrationAddPayload.CarAddPayload carAddPayload = new RegistrationAddPayload.CarAddPayload();
+        carAddPayload.setYear(year);
+        carAddPayload.setMake(make);
+        carAddPayload.setModel(model);
+        carAddPayload.setTrim(trim);
+        carAddPayload.setColor(color);
+        return carAddPayload;
     }
 
 }

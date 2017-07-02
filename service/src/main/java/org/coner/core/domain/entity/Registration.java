@@ -7,6 +7,7 @@ public class Registration extends DomainEntity {
 
     private String id;
     private Person person;
+    private Car car;
     private Event event;
     private HandicapGroup handicapGroup;
     private CompetitionGroup competitionGroup;
@@ -35,6 +36,14 @@ public class Registration extends DomainEntity {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     public HandicapGroup getHandicapGroup() {

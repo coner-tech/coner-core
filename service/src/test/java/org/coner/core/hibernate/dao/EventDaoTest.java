@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolationException;
 
+import org.coner.core.hibernate.entity.CarHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
@@ -40,6 +41,7 @@ public class EventDaoTest extends AbstractDaoTest {
     public DAOTestRule daoTestRule = getDaoTestRuleBuilder()
             .addEntityClass(EventHibernateEntity.class)
             .addEntityClass(PersonHibernateEntity.class)
+            .addEntityClass(CarHibernateEntity.class)
             .addEntityClass(RegistrationHibernateEntity.class)
             .addEntityClass(HandicapGroupHibernateEntity.class)
             .addEntityClass(HandicapGroupSetHibernateEntity.class)

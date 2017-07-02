@@ -2,9 +2,11 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
+import org.coner.core.api.entity.CarApiEntity;
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.entity.EventApiEntity;
@@ -38,6 +40,28 @@ public final class ApiEntityTestUtils {
         person.setMiddleName(middleName);
         person.setLastName(lastName);
         return person;
+    }
+
+    public static CarApiEntity fullCar() {
+        return fullCar(
+                TestConstants.CAR_ID,
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static CarApiEntity fullCar(String id, Year year, String make, String model, String trim, String color) {
+        CarApiEntity car = new CarApiEntity();
+        car.setId(id);
+        car.setYear(year);
+        car.setMake(make);
+        car.setModel(model);
+        car.setTrim(trim);
+        car.setColor(color);
+        return car;
     }
 
     public static EventApiEntity fullEvent() {
@@ -76,6 +100,7 @@ public final class ApiEntityTestUtils {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
                 fullPerson(),
+                fullCar(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.REGISTRATION_NUMBER,
@@ -86,6 +111,7 @@ public final class ApiEntityTestUtils {
     public static RegistrationApiEntity fullRegistration(
             String id,
             PersonApiEntity person,
+            CarApiEntity car,
             String handicapGroupId,
             String competitionGroupId,
             String number,
@@ -94,6 +120,7 @@ public final class ApiEntityTestUtils {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
         registration.setPerson(person);
+        registration.setCar(car);
         registration.setHandicapGroupId(handicapGroupId);
         registration.setCompetitionGroupId(competitionGroupId);
         registration.setNumber(number);

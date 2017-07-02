@@ -2,6 +2,7 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -17,6 +18,14 @@ public final class TestConstants {
     public static final String PERSON_FIRST_NAME = "person-first-name";
     public static final String PERSON_MIDDLE_NAME = "person-middle-name";
     public static final String PERSON_LAST_NAME = "person-last-name";
+
+    // Car
+    public static final String CAR_ID = "car-test-id";
+    public static final Year CAR_YEAR = Year.of(2017);
+    public static final String CAR_MAKE = "car-make";
+    public static final String CAR_MODEL = "car-model";
+    public static final String CAR_TRIM = "car-trim";
+    public static final String CAR_COLOR = "car-color";
 
     // Event
     public static final String EVENT_ID = "event-test-id";

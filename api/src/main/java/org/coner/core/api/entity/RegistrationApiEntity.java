@@ -13,6 +13,8 @@ public class RegistrationApiEntity extends ApiEntity {
     private String id;
     @NotNull
     private PersonApiEntity person;
+    @NotNull
+    private CarApiEntity car;
     @NotBlank
     private String handicapGroupId;
     @NotBlank
@@ -35,6 +37,14 @@ public class RegistrationApiEntity extends ApiEntity {
 
     public void setPerson(PersonApiEntity person) {
         this.person = person;
+    }
+
+    public CarApiEntity getCar() {
+        return car;
+    }
+
+    public void setCar(CarApiEntity car) {
+        this.car = car;
     }
 
     public String getHandicapGroupId() {

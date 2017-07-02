@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 
 import javax.persistence.PersistenceException;
 
+import org.coner.core.hibernate.entity.CarHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
@@ -46,6 +47,7 @@ public class RunDaoTest extends AbstractDaoTest {
     public DAOTestRule daoTestRule = getDaoTestRuleBuilder()
             .addEntityClass(RunHibernateEntity.class)
             .addEntityClass(PersonHibernateEntity.class)
+            .addEntityClass(CarHibernateEntity.class)
             .addEntityClass(EventHibernateEntity.class)
             .addEntityClass(RegistrationHibernateEntity.class)
             .addEntityClass(HandicapGroupHibernateEntity.class)
@@ -275,6 +277,7 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.registration = HibernateEntityTestUtils.fullRegistration();
         prerequisites.registration.setId(null);
         prerequisites.registration.getPerson().setId(null);
+        prerequisites.registration.getCar().setId(null);
         prerequisites.registration.setEvent(prerequisites.event);
         prerequisites.registration.setHandicapGroup(prerequisites.handicapGroup);
         prerequisites.registration.setCompetitionGroup(prerequisites.competitionGroup);

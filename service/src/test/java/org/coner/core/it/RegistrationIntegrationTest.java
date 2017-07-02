@@ -142,6 +142,26 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void whenCreateRegistrationWithoutCarItShouldReject() {
+        URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
+                .path("/events/{eventId}/registrations")
+                .build(prerequisites.eventId);
+        AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
+        addRegistrationRequest.setCar(null);
+
+        Response addRegistrationResponseContainer = client.target(eventRegistrationsUri)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .post(Entity.json(addRegistrationRequest));
+
+        assertThat(addRegistrationResponseContainer.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY_422);
+        ValidationErrorMessage validationErrorMessage = addRegistrationResponseContainer.readEntity(
+                ValidationErrorMessage.class
+        );
+        assertThat(validationErrorMessage.getErrors()).isNotEmpty();
+    }
+
+    @Test
     public void whenInvalidEventItShouldRespondNotFound() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
