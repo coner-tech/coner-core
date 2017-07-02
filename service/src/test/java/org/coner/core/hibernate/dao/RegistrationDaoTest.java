@@ -116,6 +116,24 @@ public class RegistrationDaoTest extends AbstractDaoTest {
         }
     }
 
+    @Test
+    public void itShouldAddAddRegistrationsForSamePersonAtDifferentEvents() {
+        RegistrationHibernateEntity registrationAtEvent1 = buildUnsavedRegistration();
+        EventHibernateEntity event2 = HibernateEntityTestUtils.fullEvent();
+        event2.setId(null);
+        event2.setHandicapGroupSet(prerequisites.handicapGroupSet);
+        event2.setCompetitionGroupSet(prerequisites.competitionGroupSet);
+        RegistrationHibernateEntity registrationAtEvent2 = buildUnsavedRegistration();
+        registrationAtEvent2.setEvent(event2);
+        registrationAtEvent2.setPerson(registrationAtEvent1.getPerson());
+
+        daoTestRule.inTransaction(() -> {
+            dao.create(registrationAtEvent1);
+            eventDao.create(event2);
+            dao.create(registrationAtEvent2);
+        });
+    }
+
     private Prerequisites setupPrerequisites() {
         Prerequisites prerequisites = new Prerequisites();
         prerequisites.handicapGroup = HibernateEntityTestUtils.fullHandicapGroup();

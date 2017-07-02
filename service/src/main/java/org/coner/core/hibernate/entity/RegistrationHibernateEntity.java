@@ -56,7 +56,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
         this.person = person;
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     public EventHibernateEntity getEvent() {
         return event;
     }
