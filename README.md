@@ -2,6 +2,9 @@
 
 Coner Core is a REST API service for autocross event operations.
 
+![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/caeos/coner-core/badge.svg?branch=master)](https://coveralls.io/github/caeos/coner-core?branch=master)
+
 ## Development Status
 
 Coner Core resumed scaffolding in 2017 Q2. The remaining scaffolding work is split into two phases:
@@ -10,8 +13,6 @@ Coner Core resumed scaffolding in 2017 Q2. The remaining scaffolding work is spl
 * [Phase 2](https://github.com/caeos/coner-core/milestone/3) aims to fill in the gaps left in phase 1 such that the UI can reach a bare minimum level of functionality
 
 ## Build, Test, and Run
-
-![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
 
 These steps assume you've cloned this repo, and have installed Maven and JDK 8 already.
 
