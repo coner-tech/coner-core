@@ -12,9 +12,16 @@ public class RegistrationApiEntity extends ApiEntity {
     @Null(message = "registration.id may only be assigned by the system")
     private String id;
     @NotNull
-    private String firstName;
+    private PersonApiEntity person;
+    @NotNull
+    private CarApiEntity car;
     @NotBlank
-    private String lastName;
+    private String handicapGroupId;
+    @NotBlank
+    private String competitionGroupId;
+    @NotBlank
+    private String number;
+    private boolean checkedIn;
 
     public String getId() {
         return id;
@@ -24,20 +31,52 @@ public class RegistrationApiEntity extends ApiEntity {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public PersonApiEntity getPerson() {
+        return person;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPerson(PersonApiEntity person) {
+        this.person = person;
     }
 
-    public String getLastName() {
-        return lastName;
+    public CarApiEntity getCar() {
+        return car;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setCar(CarApiEntity car) {
+        this.car = car;
+    }
+
+    public String getHandicapGroupId() {
+        return handicapGroupId;
+    }
+
+    public void setHandicapGroupId(String handicapGroupId) {
+        this.handicapGroupId = handicapGroupId;
+    }
+
+    public String getCompetitionGroupId() {
+        return competitionGroupId;
+    }
+
+    public void setCompetitionGroupId(String competitionGroupId) {
+        this.competitionGroupId = competitionGroupId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 
     @Override
@@ -49,4 +88,5 @@ public class RegistrationApiEntity extends ApiEntity {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
 }

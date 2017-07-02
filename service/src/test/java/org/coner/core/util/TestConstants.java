@@ -2,6 +2,7 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -12,6 +13,20 @@ public final class TestConstants {
     private TestConstants() {
     }
 
+    // Person
+    public static final String PERSON_ID = "person-test-id";
+    public static final String PERSON_FIRST_NAME = "person-first-name";
+    public static final String PERSON_MIDDLE_NAME = "person-middle-name";
+    public static final String PERSON_LAST_NAME = "person-last-name";
+
+    // Car
+    public static final String CAR_ID = "car-test-id";
+    public static final Year CAR_YEAR = Year.of(2017);
+    public static final String CAR_MAKE = "car-make";
+    public static final String CAR_MODEL = "car-model";
+    public static final String CAR_TRIM = "car-trim";
+    public static final String CAR_COLOR = "car-color";
+
     // Event
     public static final String EVENT_ID = "event-test-id";
     public static final String EVENT_NAME = "event-test-name";
@@ -21,8 +36,8 @@ public final class TestConstants {
 
     //Registration
     public static final String REGISTRATION_ID = "registration-test-id";
-    public static final String REGISTRATION_FIRSTNAME = "registration-firstname";
-    public static final String REGISTRATION_LASTNAME = "registration-lastname";
+    public static final String REGISTRATION_NUMBER = "098";
+    public static final boolean REGISTRATION_CHECKED_IN = false;
 
     //HandicapGroup
     public static final String HANDICAP_GROUP_ID = "handicap-group-test-id";

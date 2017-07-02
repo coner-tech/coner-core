@@ -1,6 +1,7 @@
 package org.coner.core.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,23 +10,60 @@ import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
+import org.coner.core.domain.service.CompetitionGroupEntityService;
+import org.coner.core.domain.service.HandicapGroupEntityService;
+import org.coner.core.domain.service.exception.EntityNotFoundException;
+import org.coner.core.hibernate.dao.RegistrationDao;
 import org.coner.core.util.ApiEntityTestUtils;
 import org.coner.core.util.ApiRequestTestUtils;
 import org.coner.core.util.DomainEntityTestUtils;
 import org.coner.core.util.DomainPayloadTestUtils;
 import org.coner.core.util.TestConstants;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RegistrationMapperTest {
 
     private RegistrationMapper mapper = Mappers.getMapper(RegistrationMapper.class);
 
+    @Mock
+    RegistrationDao dao;
+    @Mock
+    EventMapper eventMapper;
+    @Mock
+    HandicapGroupMapper handicapGroupMapper;
+    @Mock
+    HandicapGroupEntityService handicapGroupEntityService;
+    @Mock
+    CompetitionGroupMapper competitionGroupMapper;
+    @Mock
+    CompetitionGroupEntityService competitionGroupEntityService;
+
+    @Before
+    public void setup() throws EntityNotFoundException {
+        mapper.setDao(dao);
+        mapper.setEventMapper(eventMapper);
+        mapper.setHandicapGroupMapper(handicapGroupMapper);
+        mapper.setHandicapGroupEntityService(handicapGroupEntityService);
+        mapper.setCompetitionGroupMapper(competitionGroupMapper);
+        mapper.setCompetitionGroupEntityService(competitionGroupEntityService);
+
+        when(handicapGroupEntityService.getById(TestConstants.HANDICAP_GROUP_ID))
+                .thenReturn(DomainEntityTestUtils.fullHandicapGroup());
+        when(competitionGroupEntityService.getById(TestConstants.COMPETITION_GROUP_ID))
+                .thenReturn(DomainEntityTestUtils.fullCompetitionGroup());
+    }
+
     @Test
-    public void whenToDomainAddPayloadFromApiAddRequest() {
+    public void whenToDomainAddPayloadFromApiAddRequest() throws EntityNotFoundException {
         AddRegistrationRequest apiAddRequest = ApiRequestTestUtils.fullAddRegistration();
         RegistrationAddPayload expected = DomainPayloadTestUtils.fullRegistrationAdd();
-        expected.setEvent(null); // not mapper's job to resolve entities
+        expected.setEvent(null);
 
         RegistrationAddPayload actual = mapper.toDomainAddPayload(apiAddRequest, TestConstants.EVENT_ID);
 

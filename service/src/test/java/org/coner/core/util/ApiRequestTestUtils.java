@@ -2,6 +2,7 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
@@ -123,19 +124,75 @@ public final class ApiRequestTestUtils {
 
     public static AddRegistrationRequest fullAddRegistration() {
         return fullAddRegistration(
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                fullAddPerson(),
+                fullAddCar(),
+                TestConstants.HANDICAP_GROUP_ID,
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
     public static AddRegistrationRequest fullAddRegistration(
-            String firstName,
-            String lastName
+            AddRegistrationRequest.AddPerson person, AddRegistrationRequest.AddCar car, String handicapGroupId,
+            String competitionGroupId,
+            String number,
+            boolean checkedIn
     ) {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
-        addRegistrationRequest.setFirstName(firstName);
-        addRegistrationRequest.setLastName(lastName);
+        addRegistrationRequest.setPerson(person);
+        addRegistrationRequest.setCar(car);
+        addRegistrationRequest.setHandicapGroupId(handicapGroupId);
+        addRegistrationRequest.setCompetitionGroupId(competitionGroupId);
+        addRegistrationRequest.setNumber(number);
+        addRegistrationRequest.setCheckedIn(checkedIn);
         return addRegistrationRequest;
+    }
+
+    public static AddRegistrationRequest.AddPerson fullAddPerson() {
+        return fullAddPerson(
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static AddRegistrationRequest.AddPerson fullAddPerson(
+            String firstName,
+            String middleName,
+            String lastName
+    ) {
+        AddRegistrationRequest.AddPerson addPerson = new AddRegistrationRequest.AddPerson();
+        addPerson.setFirstName(firstName);
+        addPerson.setMiddleName(middleName);
+        addPerson.setLastName(lastName);
+        return addPerson;
+    }
+
+    public static AddRegistrationRequest.AddCar fullAddCar() {
+        return fullAddCar(
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static AddRegistrationRequest.AddCar fullAddCar(
+            Year year,
+            String make,
+            String model,
+            String trim,
+            String color
+    ) {
+        AddRegistrationRequest.AddCar addCar = new AddRegistrationRequest.AddCar();
+        addCar.setYear(year);
+        addCar.setMake(make);
+        addCar.setModel(model);
+        addCar.setTrim(trim);
+        addCar.setColor(color);
+        return addCar;
     }
 
     public static AddRunRequest fullAddRun() {

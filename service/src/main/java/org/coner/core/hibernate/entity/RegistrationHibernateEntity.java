@@ -1,6 +1,6 @@
 package org.coner.core.hibernate.entity;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,9 +29,13 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;
-    private String firstName;
-    private String lastName;
+    private PersonHibernateEntity person;
+    private CarHibernateEntity car;
     private EventHibernateEntity event;
+    private HandicapGroupHibernateEntity handicapGroup;
+    private CompetitionGroupHibernateEntity competitionGroup;
+    private String number;
+    private boolean checkedIn;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -44,31 +48,65 @@ public class RegistrationHibernateEntity extends HibernateEntity {
         this.id = id;
     }
 
-    @Column(name = "first_name")
-    public String getFirstName() {
-        return firstName;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    public PersonHibernateEntity getPerson() {
+        return person;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPerson(PersonHibernateEntity person) {
+        this.person = person;
     }
 
-    @Column(name = "last_name")
-    public String getLastName() {
-        return lastName;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    public CarHibernateEntity getCar() {
+        return car;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setCar(CarHibernateEntity car) {
+        this.car = car;
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     public EventHibernateEntity getEvent() {
         return event;
     }
 
     public void setEvent(EventHibernateEntity event) {
         this.event = event;
+    }
+
+    @ManyToOne(optional = false)
+    public HandicapGroupHibernateEntity getHandicapGroup() {
+        return handicapGroup;
+    }
+
+    public void setHandicapGroup(HandicapGroupHibernateEntity handicapGroup) {
+        this.handicapGroup = handicapGroup;
+    }
+
+    @ManyToOne(optional = false)
+    public CompetitionGroupHibernateEntity getCompetitionGroup() {
+        return competitionGroup;
+    }
+
+    public void setCompetitionGroup(CompetitionGroupHibernateEntity competitionGroup) {
+        this.competitionGroup = competitionGroup;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override

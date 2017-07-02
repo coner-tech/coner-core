@@ -1,4 +1,18 @@
 {
-  "firstName": "registration-firstname",
-  "lastName": "registration-lastname"
+  "person": {
+    "firstName": "person-first-name",
+    "middleName": "person-middle-name",
+    "lastName": "person-last-name"
+  },
+  "car": {
+    "year": 2017,
+    "make": "car-make",
+    "model": "car-model",
+    "trim": "car-trim",
+    "color": "car-color"
+  },
+  "handicapGroupId": "handicap-group-test-id",
+  "competitionGroupId": "competition-group-test-id",
+  "number": "098",
+  "checkedIn": true
 }

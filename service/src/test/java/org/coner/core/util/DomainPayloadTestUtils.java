@@ -1,6 +1,7 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
@@ -132,25 +133,83 @@ public final class DomainPayloadTestUtils {
 
     public static RegistrationAddPayload fullRegistrationAdd() {
         return fullRegistrationAdd(
+                fullPersonAdd(),
+                fullCarAdd(),
                 TestConstants.EVENT_ID,
                 DomainEntityTestUtils.fullEvent(),
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                DomainEntityTestUtils.fullHandicapGroup(),
+                DomainEntityTestUtils.fullCompetitionGroup(),
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
     public static RegistrationAddPayload fullRegistrationAdd(
+            RegistrationAddPayload.PersonAddPayload person,
+            RegistrationAddPayload.CarAddPayload car,
             String eventId,
             Event event,
-            String firstname,
-            String lastname
+            HandicapGroup handicapGroup,
+            CompetitionGroup competitionGroup,
+            String number,
+            boolean checkedIn
     ) {
         RegistrationAddPayload registrationAddPayload = new RegistrationAddPayload();
         registrationAddPayload.setEventId(eventId);
         registrationAddPayload.setEvent(event);
-        registrationAddPayload.setFirstName(firstname);
-        registrationAddPayload.setLastName(lastname);
+        registrationAddPayload.setPerson(person);
+        registrationAddPayload.setCar(car);
+        registrationAddPayload.setHandicapGroup(handicapGroup);
+        registrationAddPayload.setCompetitionGroup(competitionGroup);
+        registrationAddPayload.setNumber(number);
+        registrationAddPayload.setCheckedIn(checkedIn);
         return registrationAddPayload;
+    }
+
+    public static RegistrationAddPayload.PersonAddPayload fullPersonAdd() {
+        return fullPersonAdd(
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static RegistrationAddPayload.PersonAddPayload fullPersonAdd(
+            String firstName,
+            String middleName,
+            String lastName
+    ) {
+        RegistrationAddPayload.PersonAddPayload personAddPayload = new RegistrationAddPayload.PersonAddPayload();
+        personAddPayload.setFirstName(firstName);
+        personAddPayload.setMiddleName(middleName);
+        personAddPayload.setLastName(lastName);
+        return personAddPayload;
+    }
+
+    public static RegistrationAddPayload.CarAddPayload fullCarAdd() {
+        return fullCarAdd(
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static RegistrationAddPayload.CarAddPayload fullCarAdd(
+            Year year,
+            String make,
+            String model,
+            String trim,
+            String color
+    ) {
+        RegistrationAddPayload.CarAddPayload carAddPayload = new RegistrationAddPayload.CarAddPayload();
+        carAddPayload.setYear(year);
+        carAddPayload.setMake(make);
+        carAddPayload.setModel(model);
+        carAddPayload.setTrim(trim);
+        carAddPayload.setColor(color);
+        return carAddPayload;
     }
 
 }

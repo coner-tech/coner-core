@@ -104,13 +104,13 @@ public class EventRegistrationsResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(requestEntity);
 
-        verify(eventRegistrationService).add(addPayload);
-        verifyNoMoreInteractions(eventRegistrationService);
         assertThat(response)
                 .isNotNull();
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         assertThat(response.getHeaderString(HttpHeader.LOCATION.asString()))
                 .containsSequence("/events/", eventId, "/registrations/", TestConstants.REGISTRATION_ID);
+        verify(eventRegistrationService).add(addPayload);
+        verifyNoMoreInteractions(eventRegistrationService);
     }
 
     @Test

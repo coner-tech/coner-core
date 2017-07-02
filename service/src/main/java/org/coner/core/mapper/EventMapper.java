@@ -31,20 +31,13 @@ public abstract class EventMapper {
     private CompetitionGroupSetMapper competitionGroupSetMapper;
     private CompetitionGroupSetService competitionGroupSetService;
 
+    // primary mappings
+
     @Mappings({
             @Mapping(source = "apiAddRequest.handicapGroupSetId", target = "handicapGroupSet"),
             @Mapping(source = "apiAddRequest.competitionGroupSetId", target = "competitionGroupSet")
     })
     public abstract EventAddPayload toDomainAddPayload(AddEventRequest apiAddRequest);
-
-    public HandicapGroupSet toDomainHandicapGroupSet(String handicapGroupSetId) throws EntityNotFoundException {
-        return handicapGroupSetService.getById(handicapGroupSetId);
-    }
-
-    public CompetitionGroupSet toDomainCompetitionGroupSet(String competitionGroupSetId)
-            throws EntityNotFoundException {
-        return competitionGroupSetService.getById(competitionGroupSetId);
-    }
 
     @Mappings({
             @Mapping(source = "domainEntity.handicapGroupSet.id", target = "handicapGroupSetId"),
@@ -60,6 +53,26 @@ public abstract class EventMapper {
         return dao.findById(domainEntity.getId());
     }
 
+    public abstract void updateHibernateEntity(
+            Event domainEntity,
+            @MappingTarget EventHibernateEntity hibernateEntity
+    );
+
+    public abstract Event toDomainEntity(EventHibernateEntity hibernateEntity);
+
+    public abstract List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
+
+    // secondary mappings
+
+    public HandicapGroupSet toDomainHandicapGroupSet(String handicapGroupSetId) throws EntityNotFoundException {
+        return handicapGroupSetService.getById(handicapGroupSetId);
+    }
+
+    public CompetitionGroupSet toDomainCompetitionGroupSet(String competitionGroupSetId)
+            throws EntityNotFoundException {
+        return competitionGroupSetService.getById(competitionGroupSetId);
+    }
+
     public HandicapGroupSetHibernateEntity toHibernateEntity(HandicapGroupSet domainEntity) {
         return handicapGroupSetMapper.toHibernateEntity(domainEntity);
     }
@@ -67,13 +80,6 @@ public abstract class EventMapper {
     public CompetitionGroupSetHibernateEntity toHibernateEntity(CompetitionGroupSet domainEntity) {
         return competitionGroupSetMapper.toHibernateEntity(domainEntity);
     }
-
-    public abstract void updateHibernateEntity(
-            Event domainEntity,
-            @MappingTarget EventHibernateEntity hibernateEntity
-    );
-
-    public abstract Event toDomainEntity(EventHibernateEntity hibernateEntity);
 
     public HandicapGroupSet toDomainEntity(HandicapGroupSetHibernateEntity hibernateEntity) {
         return handicapGroupSetMapper.toDomainEntity(hibernateEntity);
@@ -83,7 +89,8 @@ public abstract class EventMapper {
         return competitionGroupSetMapper.toDomainEntity(hibernateEntity);
     }
 
-    public abstract List<Event> toDomainEntityList(List<EventHibernateEntity> hibernateEntityList);
+
+    // setters
 
     public void setDao(EventDao dao) {
         this.dao = dao;

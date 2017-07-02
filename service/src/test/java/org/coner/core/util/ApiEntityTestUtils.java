@@ -2,14 +2,17 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
+import org.coner.core.api.entity.CarApiEntity;
 import org.coner.core.api.entity.CompetitionGroupApiEntity;
 import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
+import org.coner.core.api.entity.PersonApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
@@ -19,6 +22,46 @@ import com.google.common.collect.Sets;
 public final class ApiEntityTestUtils {
 
     private ApiEntityTestUtils() {
+    }
+
+    public static PersonApiEntity fullPerson() {
+        return fullPerson(
+                TestConstants.PERSON_ID,
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static PersonApiEntity fullPerson(String id, String firstName, String middleName, String lastName) {
+        PersonApiEntity person = new PersonApiEntity();
+        person.setId(id);
+        person.setFirstName(firstName);
+        person.setMiddleName(middleName);
+        person.setLastName(lastName);
+        return person;
+    }
+
+    public static CarApiEntity fullCar() {
+        return fullCar(
+                TestConstants.CAR_ID,
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static CarApiEntity fullCar(String id, Year year, String make, String model, String trim, String color) {
+        CarApiEntity car = new CarApiEntity();
+        car.setId(id);
+        car.setYear(year);
+        car.setMake(make);
+        car.setModel(model);
+        car.setTrim(trim);
+        car.setColor(color);
+        return car;
     }
 
     public static EventApiEntity fullEvent() {
@@ -56,20 +99,32 @@ public final class ApiEntityTestUtils {
     public static RegistrationApiEntity fullRegistration() {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                fullPerson(),
+                fullCar(),
+                TestConstants.HANDICAP_GROUP_ID,
+                TestConstants.COMPETITION_GROUP_ID,
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
     public static RegistrationApiEntity fullRegistration(
             String id,
-            String firstName,
-            String lastName
+            PersonApiEntity person,
+            CarApiEntity car,
+            String handicapGroupId,
+            String competitionGroupId,
+            String number,
+            boolean checkedIn
     ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
-        registration.setFirstName(firstName);
-        registration.setLastName(lastName);
+        registration.setPerson(person);
+        registration.setCar(car);
+        registration.setHandicapGroupId(handicapGroupId);
+        registration.setCompetitionGroupId(competitionGroupId);
+        registration.setNumber(number);
+        registration.setCheckedIn(checkedIn);
         return registration;
     }
 

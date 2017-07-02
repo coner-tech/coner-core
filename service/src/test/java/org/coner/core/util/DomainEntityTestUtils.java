@@ -2,14 +2,17 @@ package org.coner.core.util;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.Year;
 import java.util.Date;
 import java.util.Set;
 
+import org.coner.core.domain.entity.Car;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.CompetitionGroupSet;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.HandicapGroupSet;
+import org.coner.core.domain.entity.Person;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 
@@ -18,6 +21,46 @@ import com.google.common.collect.Sets;
 public final class DomainEntityTestUtils {
 
     private DomainEntityTestUtils() {
+    }
+
+    public static Person fullPerson() {
+        return fullPerson(
+                TestConstants.PERSON_ID,
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static Person fullPerson(String id, String firstName, String middleName, String lastName) {
+        Person person = new Person();
+        person.setId(id);
+        person.setFirstName(firstName);
+        person.setMiddleName(middleName);
+        person.setLastName(lastName);
+        return person;
+    }
+
+    public static Car fullCar() {
+        return fullCar(
+                TestConstants.CAR_ID,
+                TestConstants.CAR_YEAR,
+                TestConstants.CAR_MAKE,
+                TestConstants.CAR_MODEL,
+                TestConstants.CAR_TRIM,
+                TestConstants.CAR_COLOR
+        );
+    }
+
+    public static Car fullCar(String id, Year year, String make, String model, String trim, String color) {
+        Car car = new Car();
+        car.setId(id);
+        car.setYear(year);
+        car.setMake(make);
+        car.setModel(model);
+        car.setTrim(trim);
+        car.setColor(color);
+        return car;
     }
 
     public static Event fullEvent() {
@@ -55,21 +98,35 @@ public final class DomainEntityTestUtils {
     public static Registration fullRegistration() {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME
+                fullPerson(),
+                fullCar(),
+                fullEvent(),
+                fullHandicapGroup(),
+                fullCompetitionGroup(),
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
     public static Registration fullRegistration(
             String id,
-            String firstName,
-            String lastName
+            Person person,
+            Car car,
+            Event event,
+            HandicapGroup handicapGroup,
+            CompetitionGroup competitionGroup,
+            String number,
+            boolean checkedIn
     ) {
         Registration registration = new Registration();
         registration.setId(id);
-        registration.setFirstName(firstName);
-        registration.setLastName(lastName);
-        registration.setEvent(DomainEntityTestUtils.fullEvent());
+        registration.setPerson(person);
+        registration.setCar(car);
+        registration.setEvent(event);
+        registration.setHandicapGroup(handicapGroup);
+        registration.setCompetitionGroup(competitionGroup);
+        registration.setNumber(number);
+        registration.setCheckedIn(checkedIn);
         return registration;
     }
 
