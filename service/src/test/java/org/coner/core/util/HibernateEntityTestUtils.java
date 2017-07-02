@@ -10,6 +10,7 @@ import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
+import org.coner.core.hibernate.entity.PersonHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.core.hibernate.entity.RunHibernateEntity;
 
@@ -18,6 +19,24 @@ import com.google.common.collect.Sets;
 public final class HibernateEntityTestUtils {
 
     private HibernateEntityTestUtils() {
+    }
+
+    public static PersonHibernateEntity fullPerson() {
+        return fullPerson(
+                TestConstants.PERSON_ID,
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static PersonHibernateEntity fullPerson(String id, String firstName, String middleName, String lastName) {
+        PersonHibernateEntity person = new PersonHibernateEntity();
+        person.setId(id);
+        person.setFirstName(firstName);
+        person.setMiddleName(middleName);
+        person.setLastName(lastName);
+        return person;
     }
 
     public static EventHibernateEntity fullEvent() {
@@ -55,8 +74,7 @@ public final class HibernateEntityTestUtils {
     public static RegistrationHibernateEntity fullRegistration() {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME,
+                fullPerson(),
                 fullEvent(),
                 fullHandicapGroup(),
                 fullCompetitionGroup(),
@@ -66,8 +84,7 @@ public final class HibernateEntityTestUtils {
 
     public static RegistrationHibernateEntity fullRegistration(
             String id,
-            String firstName,
-            String lastName,
+            PersonHibernateEntity person,
             EventHibernateEntity event,
             HandicapGroupHibernateEntity handicapGroup,
             CompetitionGroupHibernateEntity competitionGroup,
@@ -75,8 +92,7 @@ public final class HibernateEntityTestUtils {
     ) {
         RegistrationHibernateEntity registration = new RegistrationHibernateEntity();
         registration.setId(id);
-        registration.setFirstName(firstName);
-        registration.setLastName(lastName);
+        registration.setPerson(person);
         registration.setEvent(event);
         registration.setHandicapGroup(handicapGroup);
         registration.setCompetitionGroup(competitionGroup);

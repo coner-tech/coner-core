@@ -14,6 +14,7 @@ import org.coner.core.hibernate.entity.CompetitionGroupSetHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupSetHibernateEntity;
+import org.coner.core.hibernate.entity.PersonHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.core.hibernate.entity.RunHibernateEntity;
 import org.coner.core.util.HibernateEntityTestUtils;
@@ -44,6 +45,7 @@ public class RunDaoTest extends AbstractDaoTest {
     @Rule
     public DAOTestRule daoTestRule = getDaoTestRuleBuilder()
             .addEntityClass(RunHibernateEntity.class)
+            .addEntityClass(PersonHibernateEntity.class)
             .addEntityClass(EventHibernateEntity.class)
             .addEntityClass(RegistrationHibernateEntity.class)
             .addEntityClass(HandicapGroupHibernateEntity.class)
@@ -272,6 +274,7 @@ public class RunDaoTest extends AbstractDaoTest {
         prerequisites.event.setId(null);
         prerequisites.registration = HibernateEntityTestUtils.fullRegistration();
         prerequisites.registration.setId(null);
+        prerequisites.registration.getPerson().setId(null);
         prerequisites.registration.setEvent(prerequisites.event);
         prerequisites.registration.setHandicapGroup(prerequisites.handicapGroup);
         prerequisites.registration.setCompetitionGroup(prerequisites.competitionGroup);

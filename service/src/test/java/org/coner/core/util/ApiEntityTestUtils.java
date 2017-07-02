@@ -10,6 +10,7 @@ import org.coner.core.api.entity.CompetitionGroupSetApiEntity;
 import org.coner.core.api.entity.EventApiEntity;
 import org.coner.core.api.entity.HandicapGroupApiEntity;
 import org.coner.core.api.entity.HandicapGroupSetApiEntity;
+import org.coner.core.api.entity.PersonApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.entity.RunApiEntity;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
@@ -19,6 +20,24 @@ import com.google.common.collect.Sets;
 public final class ApiEntityTestUtils {
 
     private ApiEntityTestUtils() {
+    }
+
+    public static PersonApiEntity fullPerson() {
+        return fullPerson(
+                TestConstants.PERSON_ID,
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static PersonApiEntity fullPerson(String id, String firstName, String middleName, String lastName) {
+        PersonApiEntity person = new PersonApiEntity();
+        person.setId(id);
+        person.setFirstName(firstName);
+        person.setMiddleName(middleName);
+        person.setLastName(lastName);
+        return person;
     }
 
     public static EventApiEntity fullEvent() {
@@ -56,8 +75,7 @@ public final class ApiEntityTestUtils {
     public static RegistrationApiEntity fullRegistration() {
         return fullRegistration(
                 TestConstants.REGISTRATION_ID,
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME,
+                fullPerson(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.REGISTRATION_NUMBER
@@ -66,16 +84,14 @@ public final class ApiEntityTestUtils {
 
     public static RegistrationApiEntity fullRegistration(
             String id,
-            String firstName,
-            String lastName,
+            PersonApiEntity person,
             String handicapGroupId,
             String competitionGroupId,
             String number
     ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
-        registration.setFirstName(firstName);
-        registration.setLastName(lastName);
+        registration.setPerson(person);
         registration.setHandicapGroupId(handicapGroupId);
         registration.setCompetitionGroupId(competitionGroupId);
         registration.setNumber(number);

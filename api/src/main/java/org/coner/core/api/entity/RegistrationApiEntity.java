@@ -12,9 +12,7 @@ public class RegistrationApiEntity extends ApiEntity {
     @Null(message = "registration.id may only be assigned by the system")
     private String id;
     @NotNull
-    private String firstName;
-    @NotBlank
-    private String lastName;
+    private PersonApiEntity person;
     @NotBlank
     private String handicapGroupId;
     @NotBlank
@@ -30,20 +28,12 @@ public class RegistrationApiEntity extends ApiEntity {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public PersonApiEntity getPerson() {
+        return person;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPerson(PersonApiEntity person) {
+        this.person = person;
     }
 
     public String getHandicapGroupId() {
@@ -79,4 +69,5 @@ public class RegistrationApiEntity extends ApiEntity {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
 }

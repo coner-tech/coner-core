@@ -1,6 +1,6 @@
 package org.coner.core.hibernate.entity;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,8 +29,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     public static final String PARAMETER_EVENT_ID = "eventId";
 
     private String id;
-    private String firstName;
-    private String lastName;
+    private PersonHibernateEntity person;
     private EventHibernateEntity event;
     private HandicapGroupHibernateEntity handicapGroup;
     private CompetitionGroupHibernateEntity competitionGroup;
@@ -47,22 +46,13 @@ public class RegistrationHibernateEntity extends HibernateEntity {
         this.id = id;
     }
 
-    @Column(name = "first_name")
-    public String getFirstName() {
-        return firstName;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    public PersonHibernateEntity getPerson() {
+        return person;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Column(name = "last_name")
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPerson(PersonHibernateEntity person) {
+        this.person = person;
     }
 
     @ManyToOne

@@ -122,13 +122,12 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void whenCreateInvalidRegistrationItShouldReject() {
+    public void whenCreateRegistrationWithoutPersonItShouldReject() {
         URI eventRegistrationsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/registrations")
                 .build(prerequisites.eventId);
         AddRegistrationRequest addRegistrationRequest = ApiRequestTestUtils.fullAddRegistration();
-        addRegistrationRequest.setFirstName(null);
-        addRegistrationRequest.setLastName(null);
+        addRegistrationRequest.setPerson(null);
 
         Response addRegistrationResponseContainer = client.target(eventRegistrationsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)

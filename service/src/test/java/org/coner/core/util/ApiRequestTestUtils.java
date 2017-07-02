@@ -123,8 +123,7 @@ public final class ApiRequestTestUtils {
 
     public static AddRegistrationRequest fullAddRegistration() {
         return fullAddRegistration(
-                TestConstants.REGISTRATION_FIRSTNAME,
-                TestConstants.REGISTRATION_LASTNAME,
+                fullAddPerson(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
                 TestConstants.REGISTRATION_NUMBER
@@ -132,19 +131,36 @@ public final class ApiRequestTestUtils {
     }
 
     public static AddRegistrationRequest fullAddRegistration(
-            String firstName,
-            String lastName,
-            String handicapGroupId,
+            AddRegistrationRequest.AddPerson person, String handicapGroupId,
             String competitionGroupId,
             String number
     ) {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
-        addRegistrationRequest.setFirstName(firstName);
-        addRegistrationRequest.setLastName(lastName);
+        addRegistrationRequest.setPerson(person);
         addRegistrationRequest.setHandicapGroupId(handicapGroupId);
         addRegistrationRequest.setCompetitionGroupId(competitionGroupId);
         addRegistrationRequest.setNumber(number);
         return addRegistrationRequest;
+    }
+
+    public static AddRegistrationRequest.AddPerson fullAddPerson() {
+        return fullAddPerson(
+                TestConstants.PERSON_FIRST_NAME,
+                TestConstants.PERSON_MIDDLE_NAME,
+                TestConstants.PERSON_LAST_NAME
+        );
+    }
+
+    public static AddRegistrationRequest.AddPerson fullAddPerson(
+            String firstName,
+            String middleName,
+            String lastName
+    ) {
+        AddRegistrationRequest.AddPerson addPerson = new AddRegistrationRequest.AddPerson();
+        addPerson.setFirstName(firstName);
+        addPerson.setMiddleName(middleName);
+        addPerson.setLastName(lastName);
+        return addPerson;
     }
 
     public static AddRunRequest fullAddRun() {

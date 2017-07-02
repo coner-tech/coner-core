@@ -1,7 +1,11 @@
 {
   "id": "registration-test-id",
-  "firstName": "registration-firstname",
-  "lastName": "registration-lastname",
+  "person": {
+    "id": "person-test-id",
+    "firstName": "person-first-name",
+    "middleName": "person-middle-name",
+    "lastName": "person-last-name"
+  },
   "handicapGroupId": "handicap-group-test-id",
   "competitionGroupId": "competition-group-test-id",
   "number": "098"

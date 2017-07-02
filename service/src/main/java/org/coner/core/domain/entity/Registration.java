@@ -6,9 +6,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Registration extends DomainEntity {
 
     private String id;
+    private Person person;
     private Event event;
-    private String firstName;
-    private String lastName;
     private HandicapGroup handicapGroup;
     private CompetitionGroup competitionGroup;
     private String number;
@@ -29,20 +28,12 @@ public class Registration extends DomainEntity {
         this.event = event;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public HandicapGroup getHandicapGroup() {

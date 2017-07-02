@@ -2,11 +2,13 @@ package org.coner.core.mapper;
 
 import java.util.List;
 
+import org.coner.core.api.entity.PersonApiEntity;
 import org.coner.core.api.entity.RegistrationApiEntity;
 import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.domain.entity.CompetitionGroup;
 import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
+import org.coner.core.domain.entity.Person;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.payload.RegistrationAddPayload;
 import org.coner.core.domain.service.CompetitionGroupEntityService;
@@ -16,6 +18,7 @@ import org.coner.core.hibernate.dao.RegistrationDao;
 import org.coner.core.hibernate.entity.CompetitionGroupHibernateEntity;
 import org.coner.core.hibernate.entity.EventHibernateEntity;
 import org.coner.core.hibernate.entity.HandicapGroupHibernateEntity;
+import org.coner.core.hibernate.entity.PersonHibernateEntity;
 import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -77,6 +80,18 @@ public abstract class RegistrationMapper {
     public abstract List<Registration> toDomainEntityList(List<RegistrationHibernateEntity> hibernateEntityList);
 
     // secondary mappings
+
+    public abstract RegistrationAddPayload.PersonAddPayload toDomainAddPayload(
+            AddRegistrationRequest.AddPerson addPerson
+    );
+
+    public abstract PersonApiEntity toApiEntity(Person domainEntity);
+
+    public abstract PersonHibernateEntity toHibernateEntity(RegistrationAddPayload.PersonAddPayload addPayload);
+
+    public abstract PersonHibernateEntity toHibernateEntity(Person domainEntity);
+
+    public abstract Person toDomainEntity(PersonHibernateEntity hibernateEntity);
 
     public HandicapGroup toHandicapGroupDomainEntity(String handicapGroupId) throws EntityNotFoundException {
         return handicapGroupEntityService.getById(handicapGroupId);
