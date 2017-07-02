@@ -16,6 +16,8 @@ public class AddRegistrationRequest {
     private String competitionGroupId;
     @NotBlank
     private String number;
+    @NotNull
+    private boolean checkedIn;
 
     public AddPerson getPerson() {
         return person;
@@ -47,6 +49,14 @@ public class AddRegistrationRequest {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 
     @Override

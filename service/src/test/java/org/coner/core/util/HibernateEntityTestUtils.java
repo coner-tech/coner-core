@@ -78,7 +78,8 @@ public final class HibernateEntityTestUtils {
                 fullEvent(),
                 fullHandicapGroup(),
                 fullCompetitionGroup(),
-                TestConstants.REGISTRATION_NUMBER
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
@@ -88,7 +89,8 @@ public final class HibernateEntityTestUtils {
             EventHibernateEntity event,
             HandicapGroupHibernateEntity handicapGroup,
             CompetitionGroupHibernateEntity competitionGroup,
-            String number
+            String number,
+            boolean checkedIn
     ) {
         RegistrationHibernateEntity registration = new RegistrationHibernateEntity();
         registration.setId(id);
@@ -97,6 +99,7 @@ public final class HibernateEntityTestUtils {
         registration.setHandicapGroup(handicapGroup);
         registration.setCompetitionGroup(competitionGroup);
         registration.setNumber(number);
+        registration.setCheckedIn(checkedIn);
         return registration;
     }
 

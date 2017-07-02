@@ -126,20 +126,22 @@ public final class ApiRequestTestUtils {
                 fullAddPerson(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
-                TestConstants.REGISTRATION_NUMBER
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
     public static AddRegistrationRequest fullAddRegistration(
             AddRegistrationRequest.AddPerson person, String handicapGroupId,
             String competitionGroupId,
-            String number
-    ) {
+            String number,
+            boolean checkedIn) {
         AddRegistrationRequest addRegistrationRequest = new AddRegistrationRequest();
         addRegistrationRequest.setPerson(person);
         addRegistrationRequest.setHandicapGroupId(handicapGroupId);
         addRegistrationRequest.setCompetitionGroupId(competitionGroupId);
         addRegistrationRequest.setNumber(number);
+        addRegistrationRequest.setCheckedIn(checkedIn);
         return addRegistrationRequest;
     }
 

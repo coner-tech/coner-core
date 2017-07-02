@@ -6,5 +6,6 @@
   },
   "handicapGroupId": "handicap-group-test-id",
   "competitionGroupId": "competition-group-test-id",
-  "number": "098"
+  "number": "098",
+  "checkedIn": true
 }

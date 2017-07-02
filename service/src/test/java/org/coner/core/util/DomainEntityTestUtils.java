@@ -78,7 +78,8 @@ public final class DomainEntityTestUtils {
                 fullEvent(),
                 fullHandicapGroup(),
                 fullCompetitionGroup(),
-                TestConstants.REGISTRATION_NUMBER
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
@@ -88,7 +89,8 @@ public final class DomainEntityTestUtils {
             Event event,
             HandicapGroup handicapGroup,
             CompetitionGroup competitionGroup,
-            String number
+            String number,
+            boolean checkedIn
     ) {
         Registration registration = new Registration();
         registration.setId(id);
@@ -97,6 +99,7 @@ public final class DomainEntityTestUtils {
         registration.setHandicapGroup(handicapGroup);
         registration.setCompetitionGroup(competitionGroup);
         registration.setNumber(number);
+        registration.setCheckedIn(checkedIn);
         return registration;
     }
 

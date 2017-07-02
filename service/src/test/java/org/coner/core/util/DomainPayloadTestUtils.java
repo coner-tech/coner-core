@@ -137,7 +137,8 @@ public final class DomainPayloadTestUtils {
                 DomainEntityTestUtils.fullEvent(),
                 DomainEntityTestUtils.fullHandicapGroup(),
                 DomainEntityTestUtils.fullCompetitionGroup(),
-                TestConstants.REGISTRATION_NUMBER
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
@@ -147,7 +148,8 @@ public final class DomainPayloadTestUtils {
             Event event,
             HandicapGroup handicapGroup,
             CompetitionGroup competitionGroup,
-            String number
+            String number,
+            boolean checkedIn
     ) {
         RegistrationAddPayload registrationAddPayload = new RegistrationAddPayload();
         registrationAddPayload.setEventId(eventId);
@@ -156,6 +158,7 @@ public final class DomainPayloadTestUtils {
         registrationAddPayload.setHandicapGroup(handicapGroup);
         registrationAddPayload.setCompetitionGroup(competitionGroup);
         registrationAddPayload.setNumber(number);
+        registrationAddPayload.setCheckedIn(checkedIn);
         return registrationAddPayload;
     }
 

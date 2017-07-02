@@ -34,6 +34,7 @@ public class RegistrationHibernateEntity extends HibernateEntity {
     private HandicapGroupHibernateEntity handicapGroup;
     private CompetitionGroupHibernateEntity competitionGroup;
     private String number;
+    private boolean checkedIn;
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -84,6 +85,14 @@ public class RegistrationHibernateEntity extends HibernateEntity {
 
     public String getNumber() {
         return number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 
     public void setNumber(String number) {

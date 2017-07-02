@@ -78,7 +78,8 @@ public final class ApiEntityTestUtils {
                 fullPerson(),
                 TestConstants.HANDICAP_GROUP_ID,
                 TestConstants.COMPETITION_GROUP_ID,
-                TestConstants.REGISTRATION_NUMBER
+                TestConstants.REGISTRATION_NUMBER,
+                TestConstants.REGISTRATION_CHECKED_IN
         );
     }
 
@@ -87,7 +88,8 @@ public final class ApiEntityTestUtils {
             PersonApiEntity person,
             String handicapGroupId,
             String competitionGroupId,
-            String number
+            String number,
+            boolean checkedIn
     ) {
         RegistrationApiEntity registration = new RegistrationApiEntity();
         registration.setId(id);
@@ -95,6 +97,7 @@ public final class ApiEntityTestUtils {
         registration.setHandicapGroupId(handicapGroupId);
         registration.setCompetitionGroupId(competitionGroupId);
         registration.setNumber(number);
+        registration.setCheckedIn(checkedIn);
         return registration;
     }
 

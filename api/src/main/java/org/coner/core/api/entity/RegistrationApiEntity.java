@@ -19,6 +19,7 @@ public class RegistrationApiEntity extends ApiEntity {
     private String competitionGroupId;
     @NotBlank
     private String number;
+    private boolean checkedIn;
 
     public String getId() {
         return id;
@@ -58,6 +59,14 @@ public class RegistrationApiEntity extends ApiEntity {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 
     @Override

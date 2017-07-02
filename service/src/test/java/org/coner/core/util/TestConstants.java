@@ -28,6 +28,7 @@ public final class TestConstants {
     //Registration
     public static final String REGISTRATION_ID = "registration-test-id";
     public static final String REGISTRATION_NUMBER = "098";
+    public static final boolean REGISTRATION_CHECKED_IN = false;
 
     //HandicapGroup
     public static final String HANDICAP_GROUP_ID = "handicap-group-test-id";

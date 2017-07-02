@@ -13,6 +13,7 @@ public class RegistrationAddPayload extends DomainAddPayload {
     private HandicapGroup handicapGroup;
     private CompetitionGroup competitionGroup;
     private String number;
+    private boolean checkedIn;
 
     public PersonAddPayload getPerson() {
         return person;
@@ -60,6 +61,14 @@ public class RegistrationAddPayload extends DomainAddPayload {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 
     @Override

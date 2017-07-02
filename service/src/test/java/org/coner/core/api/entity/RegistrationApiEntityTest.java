@@ -24,6 +24,7 @@ public class RegistrationApiEntityTest {
         JacksonUtil.configureObjectMapper(objectMapper);
 
         registration = ApiEntityTestUtils.fullRegistration();
+        registration.setCheckedIn(true);
     }
 
     @Test
@@ -42,6 +43,7 @@ public class RegistrationApiEntityTest {
     @Test
     public void hashCodeTest() throws Exception {
         RegistrationApiEntity otherRegistration = ApiEntityTestUtils.fullRegistration();
+        otherRegistration.setCheckedIn(true);
 
         assertThat(registration.hashCode()).isEqualTo(otherRegistration.hashCode());
     }
