@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.PersistenceException;
 
@@ -255,6 +257,35 @@ public class RunDaoTest extends AbstractDaoTest {
             RunHibernateEntity actual = dao.findFirstInSequenceWithoutRawTime(prerequisites.event);
 
             assertThat(actual).isNull();
+        });
+    }
+
+    @Test
+    public void itShouldGetAllWithRegistration() {
+        RunHibernateEntity unwantedRun = buildUnsavedRun();
+        unwantedRun.setSequence(1);
+        RegistrationHibernateEntity wantedRegistration = HibernateEntityTestUtils.fullRegistration();
+        wantedRegistration.setId(null);
+        wantedRegistration.getPerson().setId(null);
+        wantedRegistration.getCar().setId(null);
+        wantedRegistration.setEvent(prerequisites.event);
+        wantedRegistration.setHandicapGroup(prerequisites.handicapGroup);
+        wantedRegistration.setCompetitionGroup(prerequisites.competitionGroup);
+        List<RunHibernateEntity> expected = Arrays.asList(buildUnsavedRun(), buildUnsavedRun());
+
+        daoTestRule.inTransaction(() -> {
+            registrationDao.create(wantedRegistration);
+            dao.create(unwantedRun);
+            int sequence = 2;
+            for (RunHibernateEntity wantedRun : expected) {
+                wantedRun.setRegistration(wantedRegistration);
+                wantedRun.setSequence(sequence++);
+                dao.create(wantedRun);
+            }
+
+            List<RunHibernateEntity> actual = dao.getAllWith(wantedRegistration);
+
+            assertThat(actual).isEqualTo(expected);
         });
     }
 

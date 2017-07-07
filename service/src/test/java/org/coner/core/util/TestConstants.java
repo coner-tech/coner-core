@@ -33,6 +33,7 @@ public final class TestConstants {
     public static final Date EVENT_DATE = Date.from(ZonedDateTime.parse("2014-12-26T19:44:00-05:00").toInstant());
     public static final int EVENT_MAX_RUNS_PER_REGISTRATION = 4;
     public static final boolean EVENT_CURRENT = false;
+    public static final long EVENT_PENALTY_SECONDS_PER_CONE = 2L;
 
     //Registration
     public static final String REGISTRATION_ID = "registration-test-id";

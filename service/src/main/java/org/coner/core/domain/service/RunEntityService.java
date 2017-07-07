@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.domain.payload.RunAddTimePayload;
@@ -76,5 +77,9 @@ public class RunEntityService extends AbstractEntityService<
             runTimeAddedPayload.setOutcome(RunTimeAddedPayload.Outcome.RUN_ADDED_WITH_RAWTIME);
         }
         return runTimeAddedPayload;
+    }
+
+    public List<Run> getAllWithRegistration(Registration registration) {
+        return gateway.getAllWith(registration);
     }
 }
