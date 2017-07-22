@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.entity.ScoredRun;
 import org.coner.core.util.TestConstants;
@@ -24,12 +25,16 @@ public class RawTimeScoringInteractorTest {
     ScoredRun scoredRun;
     @Mock
     Run run;
+    @Mock
+    Event event;
 
     @Before
     public void setup() {
-        interactor = new RawTimeScoringInteractor(TestConstants.EVENT_PENALTY_SECONDS_PER_CONE);
+        interactor = new RawTimeScoringInteractor();
         when(scoredRun.getRun()).thenReturn(run);
         when(run.getRawTime()).thenReturn(TestConstants.RUN_RAW_TIME);
+        when(run.getEvent()).thenReturn(event);
+        when(event.getConePenaltySeconds()).thenReturn(TestConstants.EVENT_CONE_PENALTY_SECONDS);
     }
 
     @Test

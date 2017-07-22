@@ -64,6 +64,7 @@ public class ConerCoreApplication extends Application<ConerCoreConfiguration> {
         jersey.register(components.eventsResource());
         jersey.register(components.eventRegistrationsResource());
         jersey.register(components.eventRunsResource());
+        jersey.register(components.eventResultsResource());
         jersey.register(components.handicapGroupsResource());
         jersey.register(components.handicapGroupSetsResource());
         jersey.register(components.competitionGroupsResource());

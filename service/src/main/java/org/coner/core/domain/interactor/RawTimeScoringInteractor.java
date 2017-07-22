@@ -12,15 +12,15 @@ import org.coner.core.domain.entity.ScoredRun;
  */
 public class RawTimeScoringInteractor {
 
-    private final long secondsPerCone;
-
     @Inject
-    public RawTimeScoringInteractor(long secondsPerCone) {
-        this.secondsPerCone = secondsPerCone;
+    public RawTimeScoringInteractor() {
+        // no-op
     }
 
     public void score(ScoredRun scoredRun) {
-        BigDecimal conePenaltySeconds = BigDecimal.valueOf(secondsPerCone * scoredRun.getRun().getCones());
+        BigDecimal eventConePenaltySeconds = scoredRun.getRun().getEvent().getConePenaltySeconds();
+        BigDecimal runCones = BigDecimal.valueOf(scoredRun.getRun().getCones());
+        BigDecimal conePenaltySeconds = eventConePenaltySeconds.multiply(runCones);
         BigDecimal rawTimeScored = scoredRun.getRun().getRawTime().add(conePenaltySeconds);
         scoredRun.setRawTimeScored(rawTimeScored);
     }

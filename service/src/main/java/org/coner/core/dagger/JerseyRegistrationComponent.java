@@ -6,6 +6,7 @@ import org.coner.core.resource.CompetitionGroupSetsResource;
 import org.coner.core.resource.CompetitionGroupsResource;
 import org.coner.core.resource.DomainServiceExceptionMapper;
 import org.coner.core.resource.EventRegistrationsResource;
+import org.coner.core.resource.EventResultsResource;
 import org.coner.core.resource.EventRunsResource;
 import org.coner.core.resource.EventsResource;
 import org.coner.core.resource.HandicapGroupSetsResource;
@@ -16,12 +17,13 @@ import org.coner.core.task.HsqlDatabaseManagerSwingTask;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ConerModule.class, MapStructModule.class })
+@Component(modules = { ConerModule.class, MapStructModule.class, RunScoringModule.class })
 public interface JerseyRegistrationComponent {
     // Resources
     EventsResource eventsResource();
     EventRegistrationsResource eventRegistrationsResource();
     EventRunsResource eventRunsResource();
+    EventResultsResource eventResultsResource();
     HandicapGroupsResource handicapGroupsResource();
     HandicapGroupSetsResource handicapGroupSetsResource();
     CompetitionGroupsResource competitionGroupsResource();

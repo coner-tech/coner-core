@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 
 import org.coner.core.domain.entity.CompetitionGroup;
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.HandicapGroup;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
@@ -33,13 +34,17 @@ public class FlatConePenaltyHandicapTimeScoringInteractorTest {
     HandicapGroup handicapGroup;
     @Mock
     CompetitionGroup competitionGroup;
+    @Mock
+    Event event;
 
-    private final BigDecimal runRawTime = BigDecimal.valueOf(100000, 3);;
+    private final BigDecimal runRawTime = BigDecimal.valueOf(100000, 3);
 
     @Before
     public void setup() {
-        interactor = new FlatConePenaltyHandicapTimeScoringInteractor(TestConstants.EVENT_PENALTY_SECONDS_PER_CONE);
+        interactor = new FlatConePenaltyHandicapTimeScoringInteractor();
         when(scoredRun.getRun()).thenReturn(run);
+        when(run.getEvent()).thenReturn(event);
+        when(event.getConePenaltySeconds()).thenReturn(TestConstants.EVENT_CONE_PENALTY_SECONDS);
         when(run.getRegistration()).thenReturn(registration);
         when(run.getRawTime()).thenReturn(runRawTime);
         when(registration.getHandicapGroup()).thenReturn(handicapGroup);

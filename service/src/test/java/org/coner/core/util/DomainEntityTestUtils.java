@@ -15,6 +15,7 @@ import org.coner.core.domain.entity.HandicapGroupSet;
 import org.coner.core.domain.entity.Person;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
+import org.coner.core.domain.entity.ScoredRun;
 
 import com.google.common.collect.Sets;
 
@@ -255,6 +256,22 @@ public final class DomainEntityTestUtils {
         run.setRerun(rerun);
         run.setCompetitive(competitive);
         return run;
+    }
+
+    public static ScoredRun fullScoredRun() {
+        return fullScoredRun(
+                fullRun(),
+                TestConstants.SCORED_RUN_RAW_TIME_SCORED,
+                TestConstants.SCORED_RUN_HANDICAP_TIME_SCORED
+        );
+    }
+
+    public static ScoredRun fullScoredRun(Run run, BigDecimal rawTimeScored, BigDecimal handicapTimeScored) {
+        ScoredRun scoredRun = new ScoredRun();
+        scoredRun.setRun(run);
+        scoredRun.setRawTimeScored(rawTimeScored);
+        scoredRun.setHandicapTimeScored(handicapTimeScored);
+        return scoredRun;
     }
 
 }

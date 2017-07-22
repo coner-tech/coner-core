@@ -1,6 +1,7 @@
 package org.coner.core.it;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.coner.core.util.ApiRequestTestUtils.fullAddRun;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
         URI eventRunsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")
                 .build(prerequisites.eventId);
-        AddRunRequest addRequest = ApiRequestTestUtils.fullAddRun();
+        AddRunRequest addRequest = fullAddRun();
         addRequest.setRegistrationId(prerequisites.registrationId);
 
         Response addResponseContainer = client.target(eventRunsUri)
@@ -55,7 +56,9 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void itShouldGetRun() {
-        String runId = standardRequests.addRun(prerequisites.eventId, prerequisites.registrationId);
+        AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
+        addRunRequest.setRegistrationId(prerequisites.registrationId);
+        String runId = standardRequests.addRun(prerequisites.eventId, addRunRequest);
         RunApiEntity expected = ApiEntityTestUtils.fullRun();
         expected.setId(runId);
         expected.setEventId(prerequisites.eventId);
@@ -113,7 +116,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void itShouldAddRawTimeToFirstRunInSequenceLackingOne() {
         // add a run without a time
-        AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
+        AddRunRequest addRunRequest = fullAddRun();
         addRunRequest.setRegistrationId(null);
         addRunRequest.setRawTime(null);
         URI addRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
@@ -147,7 +150,7 @@ public class RunIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void itShouldCreateRunIfAddRawTimeToFirstRunInSequenceFindsNonePriorLackingRawTime() {
         // add a full run
-        AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
+        AddRunRequest addRunRequest = fullAddRun();
         addRunRequest.setRegistrationId(prerequisites.registrationId);
         URI addRunUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path("/events/{eventId}/runs")

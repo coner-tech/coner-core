@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.coner.core.dagger.DaggerEventScoringComponent;
-import org.coner.core.dagger.EventScoringComponent;
-import org.coner.core.dagger.EventScoringModule;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.entity.ScoredRun;
@@ -17,28 +14,26 @@ import org.coner.core.domain.payload.GetRegistrationResultsPayload;
 
 public class ResultsService {
 
-    private final EventRegistrationService eventRegistrationService;
     private final RunEntityService runEntityService;
+    private final RunScoringInteractor runScoringInteractor;
 
     @Inject
-    public ResultsService(EventRegistrationService eventRegistrationService, RunEntityService runEntityService) {
-        this.eventRegistrationService = eventRegistrationService;
+    public ResultsService(
+            RunEntityService runEntityService,
+            RunScoringInteractor runScoringInteractor
+    ) {
         this.runEntityService = runEntityService;
+        this.runScoringInteractor = runScoringInteractor;
     }
 
     public GetRegistrationResultsPayload getResultsFor(Registration registration) {
         GetRegistrationResultsPayload payload = new GetRegistrationResultsPayload();
         payload.setRegistration(registration);
 
-        EventScoringComponent eventScoringComponent = DaggerEventScoringComponent.builder()
-                .eventScoringModule(new EventScoringModule(registration.getEvent()))
-                .build();
-        RunScoringInteractor interactor = eventScoringComponent.runScoringInteractor();
-
         List<Run> runs = runEntityService.getAllWithRegistration(registration);
         List<ScoredRun> scoredRuns = new ArrayList<>(runs.size());
         for (Run run : runs) {
-            ScoredRun scoredRun = interactor.score(run);
+            ScoredRun scoredRun = runScoringInteractor.score(run);
             if (scoredRun != null) {
                 scoredRuns.add(scoredRun);
             }
@@ -46,8 +41,8 @@ public class ResultsService {
         payload.setScoredRuns(scoredRuns);
 
         payload.setScore(scoredRuns.stream()
-                .min(Comparator.comparing(ScoredRun::getRawTimeScored))
-                .orElse(null));
+                                 .min(Comparator.comparing(ScoredRun::getRawTimeScored))
+                                 .orElse(null));
 
         return payload;
     }

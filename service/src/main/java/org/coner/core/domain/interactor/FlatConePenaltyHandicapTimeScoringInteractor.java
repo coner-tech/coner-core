@@ -15,11 +15,8 @@ import org.coner.core.domain.entity.ScoredRun;
  */
 public class FlatConePenaltyHandicapTimeScoringInteractor implements HandicapTimeScoringInteractor {
 
-    private final long secondsPerCone;
-
     @Inject
-    public FlatConePenaltyHandicapTimeScoringInteractor(long secondsPerCone) {
-        this.secondsPerCone = secondsPerCone;
+    public FlatConePenaltyHandicapTimeScoringInteractor() {
     }
 
     @Override
@@ -31,7 +28,8 @@ public class FlatConePenaltyHandicapTimeScoringInteractor implements HandicapTim
         BigDecimal handicapTimeScratch = scratchTime.multiply(handicapGroupFactor)
                 .multiply(competitionGroupFactor)
                 .setScale(3, RoundingMode.HALF_UP);
-        BigDecimal conePenaltySeconds = BigDecimal.valueOf(secondsPerCone * run.getCones());
+        BigDecimal eventConePenaltySeconds = scoredRun.getRun().getEvent().getConePenaltySeconds();
+        BigDecimal conePenaltySeconds = eventConePenaltySeconds.multiply(BigDecimal.valueOf(run.getCones()));
         BigDecimal handicapTimeScored = handicapTimeScratch.add(conePenaltySeconds);
         scoredRun.setHandicapTimeScored(handicapTimeScored);
     }

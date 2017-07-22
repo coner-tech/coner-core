@@ -21,6 +21,7 @@ import org.coner.core.mapper.EventMapper;
 import org.coner.core.mapper.HandicapGroupMapper;
 import org.coner.core.mapper.HandicapGroupSetMapper;
 import org.coner.core.mapper.RegistrationMapper;
+import org.coner.core.mapper.ResultsMapper;
 import org.coner.core.mapper.RunMapper;
 import org.mapstruct.factory.Mappers;
 
@@ -123,6 +124,13 @@ public class MapStructModule {
         mapper.setEventEntityService(eventEntityService);
         mapper.setRegistrationMapper(registrationMapper);
         mapper.setRegistrationEntityService(registrationEntityService);
+        return mapper;
+    }
+
+    @Provides
+    @Singleton
+    public ResultsMapper resultsMapper() {
+        ResultsMapper mapper = Mappers.getMapper(ResultsMapper.class);
         return mapper;
     }
 }
