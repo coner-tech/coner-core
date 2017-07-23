@@ -196,15 +196,16 @@ public final class ApiRequestTestUtils {
     }
 
     public static AddRunRequest fullAddRun() {
-        return fullAddRun(
-                TestConstants.REGISTRATION_ID,
-                TestConstants.RUN_TIMESTAMP,
-                TestConstants.RUN_RAW_TIME,
-                TestConstants.RUN_CONES,
-                TestConstants.RUN_PENALTY,
-                TestConstants.RUN_RERUN,
-                TestConstants.RUN_COMPETITIVE
-        );
+        return AddRunRequest.builder()
+                .registrationId(TestConstants.REGISTRATION_ID)
+                .timestamp(TestConstants.RUN_TIMESTAMP)
+                .rawTime(TestConstants.RUN_RAW_TIME)
+                .cones(TestConstants.RUN_CONES)
+                .didNotFinish(TestConstants.RUN_DID_NOT_FINISH)
+                .disqualified(TestConstants.RUN_DISQUALIFIED)
+                .rerun(TestConstants.RUN_RERUN)
+                .competitive(TestConstants.RUN_COMPETITIVE)
+                .build();
     }
 
     public static AddRunRequest fullAddRun(
@@ -212,7 +213,8 @@ public final class ApiRequestTestUtils {
             Instant timestamp,
             BigDecimal rawTime,
             int cones,
-            String penalty,
+            boolean didNotFinish,
+            boolean disqualified,
             boolean rerun,
             boolean competitive
     ) {
@@ -221,7 +223,8 @@ public final class ApiRequestTestUtils {
         addRunRequest.setTimestamp(timestamp);
         addRunRequest.setRawTime(rawTime);
         addRunRequest.setCones(cones);
-        addRunRequest.setPenalty(penalty);
+        addRunRequest.setDidNotFinish(didNotFinish);
+        addRunRequest.setDisqualified(disqualified);
         addRunRequest.setRerun(rerun);
         addRunRequest.setCompetitive(competitive);
         return addRunRequest;

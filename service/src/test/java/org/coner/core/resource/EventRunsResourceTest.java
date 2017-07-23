@@ -163,10 +163,10 @@ public class EventRunsResourceTest {
         RunAddPayload addPayload = mock(RunAddPayload.class);
         when(runMapper.toDomainAddPayload(apiRequest, EVENT_ID)).thenReturn(addPayload);
         Run domainEntity = DomainEntityTestUtils.fullRun();
-        domainEntity.setPenalty(null);
+        domainEntity.setDidNotFinish(false);
         when(runEntityService.add(addPayload)).thenReturn(domainEntity);
         RunApiEntity apiEntity = ApiEntityTestUtils.fullRun();
-        apiEntity.setPenalty(null);
+        apiEntity.setDidNotFinish(false);
         when(runMapper.toApiEntity(domainEntity)).thenReturn(apiEntity);
 
         Response response = resources.client()

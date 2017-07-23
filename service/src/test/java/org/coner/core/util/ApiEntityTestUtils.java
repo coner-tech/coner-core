@@ -1,7 +1,6 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
 import java.util.Set;
@@ -225,43 +224,18 @@ public final class ApiEntityTestUtils {
     }
 
     public static RunApiEntity fullRun() {
-        return fullRun(
-                TestConstants.RUN_ID,
-                TestConstants.EVENT_ID,
-                TestConstants.REGISTRATION_ID,
-                TestConstants.RUN_SEQUENCE,
-                TestConstants.RUN_TIMESTAMP,
-                TestConstants.RUN_RAW_TIME,
-                TestConstants.RUN_CONES,
-                TestConstants.RUN_PENALTY,
-                TestConstants.RUN_RERUN,
-                TestConstants.RUN_COMPETITIVE
-        );
-    }
-
-    public static RunApiEntity fullRun(
-            String id,
-            String eventId,
-            String registrationId,
-            int sequence,
-            Instant timestamp,
-            BigDecimal rawTime,
-            int cones,
-            String penalty,
-            boolean rerun,
-            boolean competitive
-    ) {
-        RunApiEntity run = new RunApiEntity();
-        run.setId(id);
-        run.setEventId(eventId);
-        run.setRegistrationId(registrationId);
-        run.setSequence(sequence);
-        run.setTimestamp(timestamp);
-        run.setRawTime(rawTime);
-        run.setCones(cones);
-        run.setPenalty(penalty);
-        run.setRerun(rerun);
-        run.setCompetitive(competitive);
-        return run;
+        return RunApiEntity.builder()
+                .id(TestConstants.RUN_ID)
+                .eventId(TestConstants.EVENT_ID)
+                .registrationId(TestConstants.REGISTRATION_ID)
+                .sequence(TestConstants.RUN_SEQUENCE)
+                .timestamp(TestConstants.RUN_TIMESTAMP)
+                .rawTime(TestConstants.RUN_RAW_TIME)
+                .cones(TestConstants.RUN_CONES)
+                .didNotFinish(TestConstants.RUN_DID_NOT_FINISH)
+                .disqualified(TestConstants.RUN_DISQUALIFIED)
+                .rerun(TestConstants.RUN_RERUN)
+                .competitive(TestConstants.RUN_COMPETITIVE)
+                .build();
     }
 }

@@ -37,8 +37,8 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void itShouldScoreForSs() {
-        String[] ssRuns = new String[3];
-        ScoredRunApiEntity[] expectedScoredRuns = new ScoredRunApiEntity[3];
+        String[] ssRuns = new String[4];
+        ScoredRunApiEntity[] expectedScoredRuns = new ScoredRunApiEntity[4];
         String ssRegistrationId = prerequisites.registrationIds[0];
 
         // add ss run 1
@@ -73,6 +73,19 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
         expectedScoredRuns[2].setRunId(ssRuns[2]);
         expectedScoredRuns[2].setRawTimeScored(BigDecimal.valueOf(46123L, 3));
         expectedScoredRuns[2].setHandicapTimeScored(BigDecimal.valueOf(38446L, 3));
+
+        // add ss run 4
+        addRunRequest = ApiRequestTestUtils.fullAddRun();
+        addRunRequest.setRegistrationId(ssRegistrationId);
+        addRunRequest.setRawTime(BigDecimal.valueOf(12345L, 3));
+        addRunRequest.setDidNotFinish(true);
+        ssRuns[3] = standardRequests.addRun(prerequisites.eventId, addRunRequest);
+        expectedScoredRuns[3] = new ScoredRunApiEntity();
+        expectedScoredRuns[3].setRunId(ssRuns[3]);
+        expectedScoredRuns[3].setRawTimeScored(BigDecimal.valueOf(Long.MAX_VALUE, 3));
+        expectedScoredRuns[3].setHandicapTimeScored(BigDecimal.valueOf(Long.MAX_VALUE, 3));
+
+        // define expected response
         GetEventResultsRegistrationResponse expectedResponseBody = new GetEventResultsRegistrationResponse();
         expectedResponseBody.setRegistrationId(prerequisites.registrationIds[0]);
         expectedResponseBody.setScore(expectedScoredRuns[1]);

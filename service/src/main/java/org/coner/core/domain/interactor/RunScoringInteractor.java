@@ -1,5 +1,6 @@
 package org.coner.core.domain.interactor;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -12,6 +13,8 @@ public class RunScoringInteractor {
 
     private final RawTimeScoringInteractor rawTimeScoringInteractor;
     private final Map<HandicapTimeScoringMethod, HandicapTimeScoringInteractor> handicapTimeScoringInteractors;
+
+    public static final BigDecimal TIME_DID_NOT_FINISH = BigDecimal.valueOf(Long.MAX_VALUE, 3);
 
     @Inject
     public RunScoringInteractor(
@@ -29,17 +32,21 @@ public class RunScoringInteractor {
         ScoredRun scoredRun = new ScoredRun();
         scoredRun.setRun(run);
 
-        rawTimeScoringInteractor.score(scoredRun);
-        HandicapTimeScoringInteractor handicapTimeScoringInteractor;
-        HandicapTimeScoringMethod handicapTimeScoringMethod = run.getEvent().getHandicapTimeScoringMethod();
-        if (handicapTimeScoringInteractors.containsKey(handicapTimeScoringMethod)) {
-            handicapTimeScoringInteractor = handicapTimeScoringInteractors.get(handicapTimeScoringMethod);
+        if (!run.isDidNotFinish()) {
+            rawTimeScoringInteractor.score(scoredRun);
+            HandicapTimeScoringMethod handicapTimeScoringMethod = run.getEvent().getHandicapTimeScoringMethod();
+            if (handicapTimeScoringInteractors.containsKey(handicapTimeScoringMethod)) {
+                handicapTimeScoringInteractors.get(handicapTimeScoringMethod)
+                        .score(scoredRun);
+            } else {
+                throw new UnsupportedOperationException(
+                        "Unsupported HandicapTimeScoringMethod: " + handicapTimeScoringMethod
+                );
+            }
         } else {
-            throw new UnsupportedOperationException(
-                    "Unsupported HandicapTimeScoringMethod: " + handicapTimeScoringMethod
-            );
+            scoredRun.setRawTimeScored(TIME_DID_NOT_FINISH);
+            scoredRun.setHandicapTimeScored(TIME_DID_NOT_FINISH);
         }
-        handicapTimeScoringInteractor.score(scoredRun);
 
         return scoredRun;
     }
@@ -49,6 +56,7 @@ public class RunScoringInteractor {
         if (run.getRawTime() == null) return false;
         if (run.isRerun()) return false;
         if (!run.isCompetitive()) return false;
+        if (run.isDisqualified()) return false;
         return true;
     }
 

@@ -90,7 +90,20 @@ public class RunScoringInteractorTest {
     }
 
     @Test
-    public void itShouldScoreRun() {
+    public void itShouldNotScoreRunWithDisqualified() {
+        when(run.getRawTime()).thenReturn(TestConstants.RUN_RAW_TIME);
+        when(run.isRerun()).thenReturn(false);
+        when(run.isCompetitive()).thenReturn(true);
+        when(run.isDisqualified()).thenReturn(true);
+
+        ScoredRun actual = interactor.score(run);
+
+        assertThat(actual).isNull();
+        verifyZeroInteractions(rawTimeScoringInteractor, handicapTimeScoringInteractor);
+    }
+
+    @Test
+    public void itShouldScoreRunWithoutDidNotFinish() {
         run = DomainEntityTestUtils.fullRun();
 
         ScoredRun actual = interactor.score(run);
@@ -98,6 +111,19 @@ public class RunScoringInteractorTest {
         verify(rawTimeScoringInteractor).score(actual);
         verify(handicapTimeScoringInteractor).score(actual);
         assertThat(actual.getRun()).isSameAs(run);
+    }
+
+    @Test
+    public void itShouldScoreRunWithDidNotFinish() {
+        run = DomainEntityTestUtils.fullRun();
+        run.setDidNotFinish(true);
+
+        ScoredRun actual = interactor.score(run);
+
+        verifyZeroInteractions(rawTimeScoringInteractor, handicapTimeScoringInteractor);
+        assertThat(actual)
+                .extracting(ScoredRun::getRawTimeScored, ScoredRun::getHandicapTimeScored)
+                .containsExactly(RunScoringInteractor.TIME_DID_NOT_FINISH, RunScoringInteractor.TIME_DID_NOT_FINISH);
     }
 
 }

@@ -1,7 +1,6 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
 import java.util.Set;
@@ -218,44 +217,19 @@ public final class DomainEntityTestUtils {
     }
 
     public static Run fullRun() {
-        return fullRun(
-                TestConstants.RUN_ID,
-                fullEvent(),
-                fullRegistration(),
-                TestConstants.RUN_SEQUENCE,
-                TestConstants.RUN_TIMESTAMP,
-                TestConstants.RUN_RAW_TIME,
-                TestConstants.RUN_CONES,
-                TestConstants.RUN_PENALTY,
-                TestConstants.RUN_RERUN,
-                TestConstants.RUN_COMPETITIVE
-        );
-    }
-
-    public static Run fullRun(
-            String id,
-            Event event,
-            Registration registration,
-            int sequence,
-            Instant timestamp,
-            BigDecimal rawTime,
-            int cones,
-            String penalty,
-            boolean rerun,
-            boolean competitive
-    ) {
-        Run run = new Run();
-        run.setId(id);
-        run.setEvent(event);
-        run.setRegistration(registration);
-        run.setSequence(sequence);
-        run.setTimestamp(timestamp);
-        run.setRawTime(rawTime);
-        run.setCones(cones);
-        run.setPenalty(penalty);
-        run.setRerun(rerun);
-        run.setCompetitive(competitive);
-        return run;
+        return Run.builder()
+                .id(TestConstants.RUN_ID)
+                .event(fullEvent())
+                .registration(fullRegistration())
+                .sequence(TestConstants.RUN_SEQUENCE)
+                .timestamp(TestConstants.RUN_TIMESTAMP)
+                .rawTime(TestConstants.RUN_RAW_TIME)
+                .cones(TestConstants.RUN_CONES)
+                .didNotFinish(TestConstants.RUN_DID_NOT_FINISH)
+                .disqualified(TestConstants.RUN_DISQUALIFIED)
+                .rerun(TestConstants.RUN_RERUN)
+                .competitive(TestConstants.RUN_COMPETITIVE)
+                .build();
     }
 
     public static ScoredRun fullScoredRun() {

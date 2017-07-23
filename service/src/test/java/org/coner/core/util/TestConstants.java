@@ -67,7 +67,8 @@ public final class TestConstants {
     public static final Instant RUN_TIMESTAMP = Instant.parse("2017-05-29T23:50:00.00Z");
     public static final BigDecimal RUN_RAW_TIME = BigDecimal.valueOf(123.456d);
     public static final int RUN_CONES = 0;
-    public static final String RUN_PENALTY = null;
+    public static final boolean RUN_DID_NOT_FINISH = false;
+    public static final boolean RUN_DISQUALIFIED = false;
     public static final boolean RUN_RERUN = false;
     public static final boolean RUN_COMPETITIVE = true;
 

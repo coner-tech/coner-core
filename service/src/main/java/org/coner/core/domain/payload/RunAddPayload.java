@@ -14,7 +14,8 @@ public class RunAddPayload extends DomainAddPayload {
     private Instant timestamp;
     private BigDecimal rawTime;
     private int cones;
-    private String penalty;
+    private boolean didNotFinish;
+    private boolean disqualified;
     private boolean rerun;
     private boolean competitive;
 
@@ -66,12 +67,20 @@ public class RunAddPayload extends DomainAddPayload {
         this.cones = cones;
     }
 
-    public String getPenalty() {
-        return penalty;
+    public boolean isDidNotFinish() {
+        return didNotFinish;
     }
 
-    public void setPenalty(String penalty) {
-        this.penalty = penalty;
+    public void setDidNotFinish(boolean didNotFinish) {
+        this.didNotFinish = didNotFinish;
+    }
+
+    public boolean isDisqualified() {
+        return disqualified;
+    }
+
+    public void setDisqualified(boolean disqualified) {
+        this.disqualified = disqualified;
     }
 
     public boolean isRerun() {
