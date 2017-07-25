@@ -3,6 +3,7 @@ package org.coner.core.domain.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.coner.core.domain.entity.Event;
 import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.entity.ScoredRun;
@@ -23,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,6 +41,8 @@ public class ResultsServiceTest {
 
     @Mock
     Registration registration;
+    @Mock
+    Event event;
 
     List<Run> allRunsWithRegistration = new ArrayList<>();
 
@@ -45,6 +50,8 @@ public class ResultsServiceTest {
     public void setup() {
         allRunsWithRegistration.clear();
         when(runEntityService.getAllWithRegistration(registration)).thenReturn(allRunsWithRegistration);
+        when(registration.getEvent()).thenReturn(event);
+        when(event.getMaxRunsPerRegistration()).thenReturn(2);
     }
 
     @Test
@@ -75,5 +82,19 @@ public class ResultsServiceTest {
         assertThat(actual.getScore()).isEqualTo(expectedScoredRun);
         assertThat(actual.getScoredRuns()).isEqualTo(expectedScoredRuns);
         assertThat(actual.getRegistration()).isSameAs(registration);
+    }
+
+    @Test
+    public void whenGetResultsForRegistrationItShouldNotScoreRunsBeyondMaxPerRegistration() {
+        when(event.getMaxRunsPerRegistration()).thenReturn(1);
+        allRunsWithRegistration.addAll(Arrays.asList(mock(Run.class), mock(Run.class)));
+        ScoredRun expectedScoredRun = mock(ScoredRun.class);
+        when(runScoringInteractor.score(any())).thenReturn(expectedScoredRun);
+
+        GetRegistrationResultsPayload actual = resultsService.getResultsFor(registration);
+
+        assertThat(actual.getScoredRuns()).hasSize(1);
+        assertThat(actual.getScore()).isSameAs(expectedScoredRun);
+        verify(runScoringInteractor, Mockito.times(1)).score(any(Run.class));
     }
 }

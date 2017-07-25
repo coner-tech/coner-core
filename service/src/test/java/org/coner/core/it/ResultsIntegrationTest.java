@@ -37,11 +37,11 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void itShouldScoreForSs() {
-        String[] ssRuns = new String[4];
+        String[] ssRuns = new String[6];
         ScoredRunApiEntity[] expectedScoredRuns = new ScoredRunApiEntity[4];
         String ssRegistrationId = prerequisites.registrationIds[0];
 
-        // add ss run 1
+        // add ss run 1 - 45.678 clean
         AddRunRequest addRunRequest = ApiRequestTestUtils.fullAddRun();
         addRunRequest.setRegistrationId(ssRegistrationId);
         addRunRequest.setRawTime(BigDecimal.valueOf(45678L, 3));
@@ -52,7 +52,7 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
         expectedScoredRuns[0].setRawTimeScored(BigDecimal.valueOf(45678L, 3));
         expectedScoredRuns[0].setHandicapTimeScored(BigDecimal.valueOf(37730L, 3));
 
-        // add ss run 2
+        // add ss run 2 - 44.321 clean
         addRunRequest = ApiRequestTestUtils.fullAddRun();
         addRunRequest.setRegistrationId(ssRegistrationId);
         addRunRequest.setRawTime(BigDecimal.valueOf(44321L, 3));
@@ -63,7 +63,7 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
         expectedScoredRuns[1].setRawTimeScored(BigDecimal.valueOf(44321L, 3));
         expectedScoredRuns[1].setHandicapTimeScored(BigDecimal.valueOf(36609L, 3));
 
-        // add ss run 3
+        // add ss run 3 - 44.123 + 1 cone
         addRunRequest = ApiRequestTestUtils.fullAddRun();
         addRunRequest.setRegistrationId(ssRegistrationId);
         addRunRequest.setRawTime(BigDecimal.valueOf(44123L, 3));
@@ -74,16 +74,31 @@ public class ResultsIntegrationTest extends AbstractIntegrationTest {
         expectedScoredRuns[2].setRawTimeScored(BigDecimal.valueOf(46123L, 3));
         expectedScoredRuns[2].setHandicapTimeScored(BigDecimal.valueOf(38446L, 3));
 
-        // add ss run 4
+        // add ss run 4 - 56.789 + ReRun
+        addRunRequest = ApiRequestTestUtils.fullAddRun();
+        addRunRequest.setRegistrationId(ssRegistrationId);
+        addRunRequest.setRawTime(BigDecimal.valueOf(56789, 3));
+        addRunRequest.setRerun(true);
+        ssRuns[3] = standardRequests.addRun(prerequisites.eventId, addRunRequest);
+        // expect this fourth run to be dropped because rerun
+
+        // add ss run 5 - 12.345 + Did Not Finish
         addRunRequest = ApiRequestTestUtils.fullAddRun();
         addRunRequest.setRegistrationId(ssRegistrationId);
         addRunRequest.setRawTime(BigDecimal.valueOf(12345L, 3));
         addRunRequest.setDidNotFinish(true);
-        ssRuns[3] = standardRequests.addRun(prerequisites.eventId, addRunRequest);
+        ssRuns[4] = standardRequests.addRun(prerequisites.eventId, addRunRequest);
         expectedScoredRuns[3] = new ScoredRunApiEntity();
-        expectedScoredRuns[3].setRunId(ssRuns[3]);
+        expectedScoredRuns[3].setRunId(ssRuns[4]);
         expectedScoredRuns[3].setRawTimeScored(BigDecimal.valueOf(Long.MAX_VALUE, 3));
         expectedScoredRuns[3].setHandicapTimeScored(BigDecimal.valueOf(Long.MAX_VALUE, 3));
+
+        // add ss run 6 - 43.210 (excessive run than allotted)
+        addRunRequest = ApiRequestTestUtils.fullAddRun();
+        addRunRequest.setRegistrationId(ssRegistrationId);
+        addRunRequest.setRawTime(BigDecimal.valueOf(43210, 3));
+        ssRuns[5] = standardRequests.addRun(prerequisites.eventId, addRunRequest);
+        // expect this fifth run to be dropped because max runs per reg = 4
 
         // define expected response
         GetEventResultsRegistrationResponse expectedResponseBody = new GetEventResultsRegistrationResponse();

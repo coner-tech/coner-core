@@ -31,8 +31,12 @@ public class ResultsService {
         payload.setRegistration(registration);
 
         List<Run> runs = runEntityService.getAllWithRegistration(registration);
+        int maxRunsPerRegistration = registration.getEvent().getMaxRunsPerRegistration();
         List<ScoredRun> scoredRuns = new ArrayList<>(runs.size());
         for (Run run : runs) {
+            if (scoredRuns.size() >= maxRunsPerRegistration) {
+                break;
+            }
             ScoredRun scoredRun = runScoringInteractor.score(run);
             if (scoredRun != null) {
                 scoredRuns.add(scoredRun);
