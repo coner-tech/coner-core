@@ -1,9 +1,11 @@
 package org.coner.core.domain.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.coner.core.domain.value.HandicapTimeScoringMethod;
 
 public class Event extends DomainEntity {
 
@@ -75,6 +77,10 @@ public class Event extends DomainEntity {
         this.current = current;
     }
 
+    public BigDecimal getConePenaltySeconds() {
+        return BigDecimal.valueOf(2);
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
@@ -83,5 +89,9 @@ public class Event extends DomainEntity {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public HandicapTimeScoringMethod getHandicapTimeScoringMethod() {
+        return HandicapTimeScoringMethod.UNSCALED_CONE_PENALTY;
     }
 }

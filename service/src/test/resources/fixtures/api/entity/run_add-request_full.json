@@ -3,7 +3,8 @@
   "timestamp": "2017-05-29T23:50:00.00Z",
   "rawTime": 123.456,
   "cones": 0,
-  "penalty": null,
+  "didNotFinish": false,
+  "disqualified": false,
   "rerun": false,
   "competitive": true
 }

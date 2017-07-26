@@ -33,6 +33,7 @@ public final class TestConstants {
     public static final Date EVENT_DATE = Date.from(ZonedDateTime.parse("2014-12-26T19:44:00-05:00").toInstant());
     public static final int EVENT_MAX_RUNS_PER_REGISTRATION = 4;
     public static final boolean EVENT_CURRENT = false;
+    public static final BigDecimal EVENT_CONE_PENALTY_SECONDS = BigDecimal.valueOf(2L);
 
     //Registration
     public static final String REGISTRATION_ID = "registration-test-id";
@@ -66,7 +67,12 @@ public final class TestConstants {
     public static final Instant RUN_TIMESTAMP = Instant.parse("2017-05-29T23:50:00.00Z");
     public static final BigDecimal RUN_RAW_TIME = BigDecimal.valueOf(123.456d);
     public static final int RUN_CONES = 0;
-    public static final String RUN_PENALTY = null;
+    public static final boolean RUN_DID_NOT_FINISH = false;
+    public static final boolean RUN_DISQUALIFIED = false;
     public static final boolean RUN_RERUN = false;
     public static final boolean RUN_COMPETITIVE = true;
+
+    // Scored Run
+    public static final BigDecimal SCORED_RUN_RAW_TIME_SCORED = BigDecimal.valueOf(123456, 3);
+    public static final BigDecimal SCORED_RUN_HANDICAP_TIME_SCORED = BigDecimal.valueOf(106742, 3);
 }

@@ -101,6 +101,7 @@ public class ConerCoreApplicationTest {
                 components.eventsResource(),
                 components.eventRegistrationsResource(),
                 components.eventRunsResource(),
+                components.eventResultsResource(),
                 components.handicapGroupsResource(),
                 components.handicapGroupSetsResource(),
                 components.competitionGroupsResource(),

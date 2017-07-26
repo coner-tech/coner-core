@@ -19,6 +19,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(
         name = "runs",
@@ -39,13 +43,24 @@ import org.hibernate.validator.constraints.Range;
                         + "WHERE r.event.id = :" + RunHibernateEntity.PARAMETER_EVENT_ID + " "
                         + "AND r.rawTime IS NULL "
                         + "ORDER BY r.sequence ASC "
+        ),
+        @NamedQuery(
+                name = RunHibernateEntity.QUERY_FIND_ALL_WITH_REGISTRATION,
+                query = "FROM RunHibernateEntity r "
+                        + "WHERE r.registration.id = :" + RunHibernateEntity.PARAMETER_REGISTRATION_ID + " "
+                        + "ORDER BY r.sequence ASC"
         )
 })
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RunHibernateEntity extends HibernateEntity {
 
     public static final String QUERY_FIND_ALL_WITH_EVENT = "Run.findAllWithEvent";
     public static final String QUERY_FIND_FIRST_WITHOUT_TIME_AT_EVENT = "Run.findFirstWithoutTimeAtEvent";
+    public static final String QUERY_FIND_ALL_WITH_REGISTRATION = "Run.findAllWithRegistration";
     public static final String PARAMETER_EVENT_ID = "eventId";
+    public static final String PARAMETER_REGISTRATION_ID = "registrationId";
 
     private String id;
     private EventHibernateEntity event;
@@ -54,7 +69,8 @@ public class RunHibernateEntity extends HibernateEntity {
     private Instant timestamp;
     private BigDecimal rawTime;
     private int cones;
-    private String penalty;
+    private boolean didNotFinish;
+    private boolean disqualified;
     private boolean rerun;
     private boolean competitive;
 
@@ -125,12 +141,21 @@ public class RunHibernateEntity extends HibernateEntity {
     }
 
     @Column
-    public String getPenalty() {
-        return penalty;
+    public boolean isDidNotFinish() {
+        return didNotFinish;
     }
 
-    public void setPenalty(String penalty) {
-        this.penalty = penalty;
+    public void setDidNotFinish(boolean didNotFinish) {
+        this.didNotFinish = didNotFinish;
+    }
+
+    @Column
+    public boolean isDisqualified() {
+        return disqualified;
+    }
+
+    public void setDisqualified(boolean disqualified) {
+        this.disqualified = disqualified;
     }
 
     @Column

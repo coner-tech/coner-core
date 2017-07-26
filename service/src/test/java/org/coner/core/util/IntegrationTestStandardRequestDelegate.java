@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Sets;
 import org.coner.core.ConerCoreConfiguration;
 import org.coner.core.api.request.AddCompetitionGroupRequest;
 import org.coner.core.api.request.AddCompetitionGroupSetRequest;
@@ -21,6 +22,7 @@ import org.coner.core.api.request.AddRegistrationRequest;
 import org.coner.core.api.request.AddRunRequest;
 import org.eclipse.jetty.http.HttpStatus;
 
+import com.google.common.collect.Lists;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 
 public final class IntegrationTestStandardRequestDelegate {
@@ -67,6 +69,10 @@ public final class IntegrationTestStandardRequestDelegate {
         return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
     }
 
+    public String addHandicapGroupSet(String... handicapGroupIds) {
+        return addHandicapGroupSet(Sets.newHashSet(Lists.newArrayList(handicapGroupIds)));
+    }
+
     public String addHandicapGroupSet(Set<String> handicapGroupIds) {
         URI uri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
                 .path("/handicapGroups/sets")
@@ -82,16 +88,23 @@ public final class IntegrationTestStandardRequestDelegate {
     }
 
     public String addCompetitionGroup() {
+        return addCompetitionGroup(ApiRequestTestUtils.fullAddCompetitionGroup());
+    }
+
+    public String addCompetitionGroup(AddCompetitionGroupRequest addRequest) {
         URI eventsUri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
                 .path("/competitionGroups")
                 .build();
-        AddCompetitionGroupRequest addRequest = ApiRequestTestUtils.fullAddCompetitionGroup();
         Response addResponseContainer = client.target(eventsUri)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(addRequest));
         assertThat(addResponseContainer.getStatus()).isEqualTo(HttpStatus.CREATED_201);
         return UnitTestUtils.getEntityIdFromResponse(addResponseContainer);
+    }
+
+    public String addCompetitionGroupSet(String... competitionGroupIds) {
+        return addCompetitionGroupSet(Sets.newHashSet(Lists.newArrayList(competitionGroupIds)));
     }
 
     public String addCompetitionGroupSet(Set<String> competitionGroupIds) {
@@ -124,11 +137,15 @@ public final class IntegrationTestStandardRequestDelegate {
     }
 
     public String addRun(String eventId, String registrationId) {
+        AddRunRequest addRunRequest = new AddRunRequest();
+        addRunRequest.setRegistrationId(registrationId);
+        return addRun(eventId, addRunRequest);
+    }
+
+    public String addRun(String eventId, AddRunRequest addRequest) {
         URI eventRunsUri = IntegrationTestUtils.jerseyUriBuilderForApp(rule)
                 .path("/events/{eventId}/runs")
                 .build(eventId);
-        AddRunRequest addRequest = ApiRequestTestUtils.fullAddRun();
-        addRequest.setRegistrationId(registrationId);
         Response addResponseContainer = client.target(eventRunsUri)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)

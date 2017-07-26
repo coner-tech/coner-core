@@ -6,6 +6,13 @@ import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RunApiEntity extends ApiEntity {
 
     private String id;
@@ -15,7 +22,8 @@ public class RunApiEntity extends ApiEntity {
     private Instant timestamp;
     private BigDecimal rawTime;
     private int cones;
-    private String penalty;
+    private boolean didNotFinish;
+    private boolean disqualified;
     private boolean rerun;
     private boolean competitive;
 
@@ -75,12 +83,20 @@ public class RunApiEntity extends ApiEntity {
         this.cones = cones;
     }
 
-    public String getPenalty() {
-        return penalty;
+    public boolean isDidNotFinish() {
+        return didNotFinish;
     }
 
-    public void setPenalty(String penalty) {
-        this.penalty = penalty;
+    public void setDidNotFinish(boolean didNotFinish) {
+        this.didNotFinish = didNotFinish;
+    }
+
+    public boolean isDisqualified() {
+        return disqualified;
+    }
+
+    public void setDisqualified(boolean disqualified) {
+        this.disqualified = disqualified;
     }
 
     public boolean isRerun() {

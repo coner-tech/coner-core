@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.coner.core.hibernate.entity.EventHibernateEntity;
+import org.coner.core.hibernate.entity.RegistrationHibernateEntity;
 import org.coner.core.hibernate.entity.RunHibernateEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -66,6 +67,12 @@ public class RunDao extends BaseHibernateEntityDao<RunHibernateEntity> {
     public List<RunHibernateEntity> getAllWith(EventHibernateEntity event) {
         Query<RunHibernateEntity> query = namedQuery(RunHibernateEntity.QUERY_FIND_ALL_WITH_EVENT);
         query.setParameter(RunHibernateEntity.PARAMETER_EVENT_ID, event.getId());
+        return list(query);
+    }
+
+    public List<RunHibernateEntity> getAllWith(RegistrationHibernateEntity registration) {
+        Query<RunHibernateEntity> query = namedQuery(RunHibernateEntity.QUERY_FIND_ALL_WITH_REGISTRATION);
+        query.setParameter(RunHibernateEntity.PARAMETER_REGISTRATION_ID, registration.getId());
         return list(query);
     }
 }

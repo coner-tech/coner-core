@@ -1,7 +1,6 @@
 package org.coner.core.util;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.Year;
 import java.util.Date;
 import java.util.Set;
@@ -225,44 +224,18 @@ public final class HibernateEntityTestUtils {
     }
 
     public static RunHibernateEntity fullRun() {
-        return fullRun(
-                TestConstants.RUN_ID,
-                fullEvent(),
-                fullRegistration(),
-                TestConstants.RUN_SEQUENCE,
-                TestConstants.RUN_TIMESTAMP,
-                TestConstants.RUN_RAW_TIME,
-                TestConstants.RUN_CONES,
-                TestConstants.RUN_PENALTY,
-                TestConstants.RUN_RERUN,
-                TestConstants.RUN_COMPETITIVE
-        );
+        return RunHibernateEntity.builder()
+                .id(TestConstants.RUN_ID)
+                .event(fullEvent())
+                .registration(fullRegistration())
+                .sequence(TestConstants.RUN_SEQUENCE)
+                .timestamp(TestConstants.RUN_TIMESTAMP)
+                .rawTime(TestConstants.RUN_RAW_TIME)
+                .cones(TestConstants.RUN_CONES)
+                .didNotFinish(TestConstants.RUN_DID_NOT_FINISH)
+                .disqualified(TestConstants.RUN_DISQUALIFIED)
+                .rerun(TestConstants.RUN_RERUN)
+                .competitive(TestConstants.RUN_COMPETITIVE)
+                .build();
     }
-
-    public static RunHibernateEntity fullRun(
-            String id,
-            EventHibernateEntity event,
-            RegistrationHibernateEntity registration,
-            int sequence,
-            Instant timestamp,
-            BigDecimal rawTime,
-            int cones,
-            String penalty,
-            boolean rerun,
-            boolean competitive
-    ) {
-        RunHibernateEntity run = new RunHibernateEntity();
-        run.setId(id);
-        run.setEvent(event);
-        run.setRegistration(registration);
-        run.setSequence(sequence);
-        run.setTimestamp(timestamp);
-        run.setRawTime(rawTime);
-        run.setCones(cones);
-        run.setPenalty(penalty);
-        run.setRerun(rerun);
-        run.setCompetitive(competitive);
-        return run;
-    }
-
 }

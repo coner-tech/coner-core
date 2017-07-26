@@ -5,11 +5,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.coner.core.domain.entity.Event;
+import org.coner.core.domain.entity.Registration;
 import org.coner.core.domain.entity.Run;
 import org.coner.core.domain.payload.RunAddPayload;
 import org.coner.core.hibernate.dao.RunDao;
 import org.coner.core.hibernate.entity.RunHibernateEntity;
 import org.coner.core.mapper.EventMapper;
+import org.coner.core.mapper.RegistrationMapper;
 import org.coner.core.mapper.RunMapper;
 
 import com.google.common.base.Preconditions;
@@ -21,13 +23,14 @@ public class RunGateway extends MapStructAbstractGateway<
         RunDao> {
 
     private EventMapper eventMapper;
+    private RegistrationMapper registrationMapper;
 
     @Inject
     public RunGateway(
             RunMapper runMapper,
             RunDao dao,
-            EventMapper eventMapper
-    ) {
+            EventMapper eventMapper,
+            RegistrationMapper registrationMapper) {
         super(
                 runMapper::toHibernateEntity,
                 runMapper::updateHibernateEntity,
@@ -36,6 +39,7 @@ public class RunGateway extends MapStructAbstractGateway<
                 dao
         );
         this.eventMapper = eventMapper;
+        this.registrationMapper = registrationMapper;
     }
 
     public Run findFirstInSequenceWithoutTime(Event event) {
@@ -59,6 +63,13 @@ public class RunGateway extends MapStructAbstractGateway<
         Preconditions.checkNotNull(event);
         return hibernateEntitiesToDomainEntitiesConverter.convert(
                 dao.getAllWith(eventMapper.toHibernateEntity(event))
+        );
+    }
+
+    public List<Run> getAllWith(Registration registration) {
+        Preconditions.checkNotNull(registration);
+        return hibernateEntitiesToDomainEntitiesConverter.convert(
+                dao.getAllWith(registrationMapper.toHibernateEntity(registration))
         );
     }
 }
