@@ -1,0 +1,400 @@
+{
+	"variables": [],
+	"info": {
+		"name": "caeos",
+		"_postman_id": "eff6ac0b-05c2-515b-fa38-3059335d78c6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Build ALL",
+			"description": "",
+			"item": [
+				{
+					"name": "Add First Handicap Group",
+					"request": {
+						"url": "http://localhost:8080/handicapGroups",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"Handicap Group 1\", \"factor\": 0.90 }"
+						},
+						"description": "Build 1 handicap group"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Second Handicap Group",
+					"request": {
+						"url": "http://localhost:8080/handicapGroups",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\": \"Handicap Group 2\", \"factor\": 0.80 }"
+						},
+						"description": "Build 1 handicap group"
+					},
+					"response": []
+				},
+				{
+					"name": "Add First Competition Group",
+					"request": {
+						"url": "http://localhost:8080/competitionGroups",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"name\": \"Competition Group 1\",  \"factor\": 0,  \"grouping\": true,  \"resultTimeType\": \"HANDICAP\" }"
+						},
+						"description": "Create fake competition group"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Second Competition Group",
+					"request": {
+						"url": "http://localhost:8080/competitionGroups",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"name\": \"Competition Group 2\",  \"factor\": 0,  \"grouping\": true,  \"resultTimeType\": \"RAW\" }"
+						},
+						"description": "Create fake competition group"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Handicap Group List (Save IDs)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"handicapGroupIDList\", JSON.stringify(jsonData.entities));\r",
+									"var ids = [];\r",
+									"for (var i = 0; i < jsonData.entities.length; i++) {\r",
+									"    ids.push(\"\\\"\" + jsonData.entities[i].id + \"\\\"\");\r",
+									"    //console.log(ids);\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"handicapGroupIDList\", ids);\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/handicapGroups",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get Handicap Groups"
+					},
+					"response": []
+				},
+				{
+					"name": "Add all handicap groups to sets (for testing only)",
+					"request": {
+						"url": "http://localhost:8080/handicapGroups/sets",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Handicap Set 1\",\r\n  \"handicapGroupIds\": [\r\n    {{handicapGroupIDList}}\r\n  ]\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Competition Group List (Save IDs)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"competitionGroupIDList\", JSON.stringify(jsonData.entities));\r",
+									"var ids = [];\r",
+									"for (var i = 0; i < jsonData.entities.length; i++) {\r",
+									"    ids.push(\"\\\"\" + jsonData.entities[i].id + \"\\\"\");\r",
+									"    //console.log(ids);\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"competitionGroupIDList\", ids);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/competitionGroups",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add all competition groups to sets (for testing only)",
+					"request": {
+						"url": "http://localhost:8080/competitionGroups/sets",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"competitionGroupIds\": [\r\n    {{competitionGroupIDList}}\r\n  ]\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Handicap Sets List (Save IDs)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"handicapGroupSetIDList\", JSON.stringify(jsonData.entities));\r",
+									"var ids = [];\r",
+									"for (var i = 0; i < jsonData.entities.length; i++) {\r",
+									"    ids.push(\"\\\"\" + jsonData.entities[i].id + \"\\\"\");\r",
+									"    //console.log(ids);\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"handicapGroupSetIDList\", ids);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/handicapGroups/sets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Competition Sets List (Save IDs)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"competitionGroupSetIDList\", JSON.stringify(jsonData.entities));\r",
+									"var ids = [];\r",
+									"for (var i = 0; i < jsonData.entities.length; i++) {\r",
+									"    ids.push(\"\\\"\" + jsonData.entities[i].id + \"\\\"\");\r",
+									"}\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"competitionGroupSetIDList\", ids);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/competitionGroups/sets",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"url": "http://localhost:8080/events",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Event #1\",\r\n  \"date\": \"{{$timestamp}}\",\r\n  \"handicapGroupSetId\": {{handicapGroupSetIDList}},\r\n  \"competitionGroupSetId\": {{competitionGroupSetIDList}},\r\n  \"maxRunsPerRegistration\": 5\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Competition Groups",
+			"request": {
+				"url": "http://localhost:8080/competitionGroups",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Handicap Groups",
+			"request": {
+				"url": "http://localhost:8080/handicapGroups",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Get Handicap Groups"
+			},
+			"response": []
+		}
+	]
+}
