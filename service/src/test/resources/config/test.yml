@@ -22,7 +22,7 @@ swagger:
 # Logging settings.
 logging:
     loggers:
-        org.hibernate.SQL: ALL
+        org.hibernate.SQL: INFO
 
 httpClient:
     timeout: 1s
