@@ -1,71 +1,104 @@
 # Coner Core
 
-Coner Core is a REST API service for autocross event operations.
+Coner Core is a REST API service for core autocross event operations.
 
 ![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/caeos/coner-core/badge.svg?branch=master)](https://coveralls.io/github/caeos/coner-core?branch=master)
 
-## Development Status
+## Features
 
-Coner Core resumed scaffolding in 2017 Q2. The remaining scaffolding work is split into two phases:
+- Create and access:
+  - Events
+  - Registrations
+  - Runs
+  - Handicap/Competition Groups
+- Attach a time to the first run at a given event lacking a time
+- Score runs for a single registration
 
-* [Phase 1](https://github.com/caeos/coner-core/milestone/2) aims to implement the bare minimum level of functionality in the core service such that UI development can begin
-* [Phase 2](https://github.com/caeos/coner-core/milestone/3) aims to fill in the gaps left in phase 1 such that the UI can reach a bare minimum level of functionality
+## Status
 
-## Build, Test, and Run
+Coner Core is in an early alpha stage of development.
 
-These steps assume you've cloned this repo, and have installed Maven and JDK 8 already.
+* ~~[Scaffold Phase 1](https://github.com/caeos/coner-core/milestone/2) aims to implement the bare minimum level of functionality in the core service such that UI development can begin~~
+* [Scaffold Phase 2](https://github.com/caeos/coner-core/milestone/3) aims to fill in the gaps left in phase 1 such that the UI can reach a bare minimum level of functionality
 
-1. `mvn clean install`
-2. `java -jar service/target/service-0.1-SNAPSHOT.jar server service/src/test/resources/config/test.yml`
+## Try it!
 
-The last few lines should resemble the following:
+### Run
+
+#### Released Versions
+
+Refer to this section for released versions of Coner Core.
+
+##### Requirements
+
+To run a release build you'll need
+- Java 8
+- Port 8080 and 8081 available
+
+##### Download
+
+Download a release from this project's [Releases][releases] page and unzip it.
+
+##### Start
+
+1. `cd` into the folder where you extracted the release and do:
+2. `java -jar coner-core-service-${version}.jar server test.yml`
+
+[releases]: https://github.com/caeos/coner-core/releases
+
+#### Build from Source
+
+Refer to this section if you want to compile the code yourself.
+
+##### Requirements
+
+To build from source, you'll need
+- JDK 8
+- Maven
+- Port 8080 and 8081 available
+
+##### Build
+
+1. `mvn clean package`
+2. `java -jar service/target/coner-core-service-${version}.jar server service/src/test/resources/config/test.yml`
+
+### Actions
+
+After you've started the service using any of the above methods, the last few lines should resemble the following:
 
 ```
-INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.AbstractConnector: Started application@683cd50d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
-INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.AbstractConnector: Started admin@280c955c{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
-INFO  [2017-02-02 23:22:00,380] org.eclipse.jetty.server.Server: Started @3880ms
+INFO  [2017-09-05 02:19:14,843] org.eclipse.jetty.server.handler.ContextHandler: Started i.d.j.MutableServletContextHandler@161451a4{/,null,AVAILABLE}
+INFO  [2017-09-05 02:19:14,848] org.eclipse.jetty.server.AbstractConnector: Started application@3a33872d{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+INFO  [2017-09-05 02:19:14,848] org.eclipse.jetty.server.AbstractConnector: Started admin@439be00{HTTP/1.1,[http/1.1]}{0.0.0.0:8081}
+INFO  [2017-09-05 02:19:14,848] org.eclipse.jetty.server.Server: Started @3545ms
 ```
 
-You may request a listing of Event entities like so:
+#### List Events
+
+You may request a listing of events:
 
 ```
 $ curl http://localhost:8080/events
 {"events":[]}
 ```
+Since you've probably just started up the service, there aren't any yet.
+Refer to the API spec for information about more operations.
 
-Check health status:
+#### Service Health
+
+You may check the service's health:
 
 ```
 $ curl http://localhost:8081/healthcheck
 {"deadlocks":{"healthy":true},"hibernate":{"healthy":true}}
 ```
 
-Add an event:
-```
-$ curl -v -H "Content-Type: application/json" -d @service/src/test/resources/fixtures/api/entity/event_add.json http://localhost:8080/events
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 8080 (#0)
-> POST /events HTTP/1.1
-> Host: localhost:8080
-> User-Agent: curl/7.47.0
-> Accept: */*
-> Content-Type: application/json
-> Content-Length: 60
-> 
-* upload completely sent off: 60 out of 60 bytes
-< HTTP/1.1 201 Created
-< Date: Thu, 02 Feb 2017 23:27:25 GMT
-< Location: http://localhost:8080/events/74c28128-0548-43c3-9a4c-a8d909d4effe
-< Content-Length: 0
-< 
-* Connection #0 to host localhost left intact
-```
+### API Spec
 
-## API Spec
-
-Start the service and access the [local Swagger UI](http://localhost:8080/swagger).
+Coner Core uses Swagger to document its API resources. While the service is
+running, visit its [Swagger UI](http://localhost:8080/swagger).
 
 ## Contributing
 
-Interested in contributing to Coner? Please take a look at our [contributing guidlines](https://github.com/carltonwhitehead/coner/blob/master/CONTRIBUTING.md)
+Interested in contributing to Coner Core? Please take a look at our [contributing guidlines](https://github.com/carltonwhitehead/coner/blob/master/CONTRIBUTING.md)

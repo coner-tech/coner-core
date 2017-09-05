@@ -5,14 +5,14 @@ script: mvn test
 after_success:
   - mvn clean test jacoco:report coveralls:report
 before_deploy:
-  - mvn package -DskipTests -Dcheckstyle.check=false
+  - ./travis-before_deploy.sh
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: p4tnXhoGjY4Ge84HKbJN1MgJZELbnY3sYnLWtCAoB3Vz8xi5wSNK0Yxm2q0zC8lBqI1nZ8PjD/PL6m3hC3bL3UBtONtN15ugWv8eBSFMhrCn8LIkI4/UUAVYTLgjBB9CDwYIHp8x32+zgiB/iyApc+vm9t5whE8aRfpiknQgAHM=
   file_glob: true
-  file: service/target/coner-core-service-*.jar
+  file: coner-core-service-*.zip
   on:
     repo: caeos/coner-core
     tags: true
