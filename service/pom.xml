@@ -15,6 +15,7 @@
         <dagger.version>2.10</dagger.version>
         <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
         <lombok.version>1.16.18</lombok.version>
+        <swagger-maven-plugin-version>3.1.5</swagger-maven-plugin-version>
     </properties>
 
     <dependencies>
@@ -215,6 +216,32 @@
                                 <processor>dagger.internal.codegen.ComponentProcessor</processor>
                             </processors>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>${swagger-maven-plugin-version}</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <locations>org.coner.core.resource</locations>
+                            <schemes>http</schemes>
+                            <info>
+                                <title>${project.artifactId}</title>
+                                <version>${project.version}</version>
+                            </info>
+                            <swaggerDirectory>${project.build.outputDirectory}/swagger</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
