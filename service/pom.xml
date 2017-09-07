@@ -252,6 +252,7 @@
                 <version>${swagger-codegen-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>swagger-codegen-client-java</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>generate</goal>
@@ -261,6 +262,9 @@
                             <language>java</language>
                             <modelPackage>org.coner.core.client.model</modelPackage>
                             <apiPackage>org.coner.core.client.api</apiPackage>
+                            <groupId>org.coner</groupId>
+                            <artifactId>coner-core-client-java</artifactId>
+                            <artifactVersion>${project.version}</artifactVersion>
                             <configOptions>
                             </configOptions>
                         </configuration>
