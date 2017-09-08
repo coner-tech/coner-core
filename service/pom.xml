@@ -260,12 +260,23 @@
                         <configuration>
                             <inputSpec>${project.build.outputDirectory}/swagger/swagger.json</inputSpec>
                             <language>java</language>
-                            <modelPackage>org.coner.core.client.model</modelPackage>
-                            <apiPackage>org.coner.core.client.api</apiPackage>
+                            <output>${project.build.directory}/generated-sources/swagger/swagger-codegen-client-java</output>
                             <groupId>org.coner</groupId>
                             <artifactId>coner-core-client-java</artifactId>
                             <artifactVersion>${project.version}</artifactVersion>
+                            <modelPackage>org.coner.core.client.model</modelPackage>
+                            <apiPackage>org.coner.core.client.api</apiPackage>
                             <configOptions>
+                                <artifactUrl>https://caeos.github.io</artifactUrl>
+                                <scmConnection>scm:git:git@github.com:caeos/coner-core-client-java.git</scmConnection>
+                                <scmDeveloperConnection>scm:git:git@github.com:caeos/coner-core-client-java.git</scmDeveloperConnection>
+                                <scmUrl>https://github.com/caeos/coner-core-client-java</scmUrl>
+                                <licenseName>MIT</licenseName>
+                                <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+                                <developerName>Carlton Whitehead</developerName>
+                                <developerEmail></developerEmail>
+                                <developerOrganization>Coner</developerOrganization>
+                                <developerOrganizationUrl>https://caeos.github.io</developerOrganizationUrl>
                             </configOptions>
                         </configuration>
                     </execution>
