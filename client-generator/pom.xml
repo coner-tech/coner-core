@@ -38,7 +38,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
                             <overwrite>true</overwrite>
                             <resources>
                                 <resource>
