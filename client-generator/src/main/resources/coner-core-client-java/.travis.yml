@@ -14,6 +14,3 @@ deploy:
     branch: master
     tags: true
   skip_cleanup: true
-env:
-  global:
-    secure: YuZvV2AcoYCLpMy8XdcQADgal2CegJ9cNtWG/j1wBO+OrfXI7UubPYWW2YDe+dsIZl1ew5lgcOj9zh1YzU8VdD227m2+UrHy+RaEznPqwkli4iFhA6DwmSNSKVgYDaFmaBqTWNLeDENVeaRmD+b7SNcwtlYp0s7XqrzPBRo1O6A=

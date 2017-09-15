@@ -19,3 +19,6 @@ deploy:
     tags: true
 after_deploy:
   - ./travis-after_deploy.sh
+env:
+  global:
+    secure: En4jsSd+GLK2KLFzmuOlUt7ylgiAXJNChVMPLw+Kqh0H1qY58DXYsVeXiO0Vc4uFJVMWg7OzdmahcOOjEU65gDBcgcAq1fQe+WrRWI9Ybzz0M2OhFHXM+G5G/QjeK7545iOzBjuHFfSZ8Fxba6ZIDexIhVUbE9CHkBzDbT9W9w0=
