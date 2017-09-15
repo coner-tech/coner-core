@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 
+cd client-generator/target/generated-sources/swagger-codegen/coner-core-client-java
+
 # Post-process the coner-core-client-java/.bintray.json
-CONER_CORE_CLIENT_JAVA_BINTRAY_JSON="client-generator/target/generated-sources/swagger-codegen/coner-core-client-java/.bintray.json"
-jq_mutate_file ".version.name = \"${TRAVIS_TAG}\"" $CONER_CORE_CLIENT_JAVA_BINTRAY_JSON
-jq_mutate_file ".version.desc = \"${TRAVIS_TAG}\"" $CONER_CORE_CLIENT_JAVA_BINTRAY_JSON
+BINTRAY_JSON=".bintray.json"
+jq_mutate_file ".version.name = \"${TRAVIS_TAG}\"" $BINTRAY_JSON
+jq_mutate_file ".version.desc = \"${TRAVIS_TAG}\"" $BINTRAY_JSON
 TODAY=`date +%Y-%m-%d`
-jq_mutate_file ".version.released = \"${TODAY}\"" $CONER_CORE_CLIENT_JAVA_BINTRAY_JSON
-jq_mutate_file ".version.vcs_tag = \"$TRAVIS_COMMIT\"" $CONER_CORE_CLIENT_JAVA_BINTRAY_JSON
+jq_mutate_file ".version.released = \"${TODAY}\"" $BINTRAY_JSON
+jq_mutate_file ".version.vcs_tag = \"$TRAVIS_COMMIT\"" $BINTRAY_JSON
+
+# Remove any Gradle files from the template (to stop Travis preferring it over Maven)
+rm -rf *gradle*
 
 # Push generated client repos
-cd client-generator/target/generated-sources/swagger-codegen/coner-core-client-java
 git init
 git add .
 git commit -m "Generated coner-core-client-java $TRAVIS_TAG"
