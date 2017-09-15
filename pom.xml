@@ -5,7 +5,7 @@
     <groupId>org.coner</groupId>
     <artifactId>coner-core-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.7-SNAPSHOT</version>
+    <version>0.1.7</version>
     <inceptionYear>2014</inceptionYear>
 
     <modules>
@@ -21,7 +21,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:caeos/coner-core.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>v0.1.7</tag>
   </scm>
 
     <build>
