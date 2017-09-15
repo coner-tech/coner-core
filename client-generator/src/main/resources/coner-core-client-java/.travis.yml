@@ -7,10 +7,13 @@ before_deploy:
 deploy:
   provider: bintray
   file: ".bintray.json"
-  user: "carlton-whitehead"
+  user: carlton-whitehead
   key:
     secure: nlc0SpWh65hvPAK9auZlq1txxIWabh69xQKkUXI2I23X+4svTLSs7IrI3nPb7DDNAfU3W2oFQLwQi8DcQyLUsdIR0ll6cDGvZ7iXYTNITChki7dVPOKMiveafwqAKzyvmYoMwvYPtJ2FbNihst9OIkgB/0dpgzjV5rZdNVVTNH4=
   on:
     branch: master
     tags: true
   skip_cleanup: true
+env:
+  global:
+    secure: YuZvV2AcoYCLpMy8XdcQADgal2CegJ9cNtWG/j1wBO+OrfXI7UubPYWW2YDe+dsIZl1ew5lgcOj9zh1YzU8VdD227m2+UrHy+RaEznPqwkli4iFhA6DwmSNSKVgYDaFmaBqTWNLeDENVeaRmD+b7SNcwtlYp0s7XqrzPBRo1O6A=
