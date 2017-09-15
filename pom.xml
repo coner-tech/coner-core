@@ -12,6 +12,7 @@
         <module>build-tools</module>
         <module>service</module>
         <module>api</module>
+        <module>client-generator</module>
     </modules>
 
     <properties>

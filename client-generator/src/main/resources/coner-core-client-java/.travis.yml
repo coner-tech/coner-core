@@ -1,0 +1,16 @@
+language: java
+jdk:
+- oraclejdk8
+script: mvn test
+before_deploy:
+  - mvn package -DskipTests=true
+deploy:
+  provider: bintray
+  file: ".bintray.json"
+  user: "carlton-whitehead"
+  key:
+    secure: nlc0SpWh65hvPAK9auZlq1txxIWabh69xQKkUXI2I23X+4svTLSs7IrI3nPb7DDNAfU3W2oFQLwQi8DcQyLUsdIR0ll6cDGvZ7iXYTNITChki7dVPOKMiveafwqAKzyvmYoMwvYPtJ2FbNihst9OIkgB/0dpgzjV5rZdNVVTNH4=
+  on:
+    branch: master
+    tags: true
+  skip_cleanup: true
