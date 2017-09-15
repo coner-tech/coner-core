@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # build the jar
 mvn package -DskipTests -Dcheckstyle.check=false
