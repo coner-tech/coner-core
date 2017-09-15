@@ -14,5 +14,6 @@ git init
 git add .
 git commit -m "Generated coner-core-client-java $TRAVIS_TAG"
 git tag "$TRAVIS_TAG"
-git remote add origin "https://${GITHUB_JAVA_CLIENT_API_KEY}@github.com/caeos/coner-core-client-java.git"
+git remote add origin "https://carltonwhitehead:${GITHUB_JAVA_CLIENT_API_KEY}@github.com/caeos/coner-core-client-java
+.git"
 git push --tags --force origin master
