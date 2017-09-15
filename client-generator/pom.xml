@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>coner-core-parent</artifactId>
         <groupId>org.coner</groupId>
-        <version>0.1.2-SNAPSHOT</version>
+        <version>0.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>coner-core-client-generator</artifactId>
@@ -96,7 +94,7 @@
                                 <licenseName>MIT</licenseName>
                                 <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
                                 <developerName>Carlton Whitehead</developerName>
-                                <developerEmail></developerEmail>
+                                <developerEmail />
                                 <developerOrganization>Coner</developerOrganization>
                                 <developerOrganizationUrl>https://caeos.github.io</developerOrganizationUrl>
                             </configOptions>
