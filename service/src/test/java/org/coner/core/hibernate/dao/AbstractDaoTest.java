@@ -9,7 +9,7 @@ abstract class AbstractDaoTest {
         daoTestRuleBuilder = DAOTestRule.newBuilder()
                 .setDriver(org.hsqldb.jdbc.JDBCDriver.class)
                 .setUrl("jdbc:hsqldb:mem:coner-" + getClass().getSimpleName())
-                .setShowSql(true)
+                .setShowSql(false)
                 .useSqlComments(true);
     }
 
