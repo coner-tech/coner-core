@@ -24,7 +24,7 @@
 
   "files": [
     {
-      "includePattern": "target/(coner-core-client-java.*\.jar)",
+      "includePattern": "target/(coner-core-client-java.*\\.jar)",
       "excludePattern": "target/(.*tests.*)",
       "uploadPattern": "/$1"
     }
