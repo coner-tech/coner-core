@@ -1,15 +1,15 @@
 language: java
 jdk:
-- oraclejdk8
+  - oraclejdk8
 script: mvn test
 before_deploy:
   - mvn package -DskipTests=true
 deploy:
   provider: bintray
   file: ".bintray.json"
-  user: carlton-whitehead
+  user: "carlton-whitehead"
   key:
-    secure: nlc0SpWh65hvPAK9auZlq1txxIWabh69xQKkUXI2I23X+4svTLSs7IrI3nPb7DDNAfU3W2oFQLwQi8DcQyLUsdIR0ll6cDGvZ7iXYTNITChki7dVPOKMiveafwqAKzyvmYoMwvYPtJ2FbNihst9OIkgB/0dpgzjV5rZdNVVTNH4=
+    secure: kzBXDn1XHrRaYigOw43V5UEHHr5XC174ZFO+ydf0FWeHpjljQRYXy+bsCS2OmJzuqNFH8gH2ruyLQDfJWYSvreaoFiM56W02/RNb9WGyOiVCsiJJedXys0PKhNNAk1CjRDNBO1BIKQV+I8cj49zEgDREoqMQLvANuW3naI8tZjbeoAz6jFaRI9Zpv+3RxzSYtCpEtWtBydGMJEu1Fis1ny8TbRYmkwn/75UqVQp5Leaar+7XyfjyvN7FlrFoKLgXD+kaG/3mp8R1wvOhOqOMM7kvtuGpKf2GeTTUt0bFDqDzowA8RITw21Y7td/RWzOyiclXstwfFR+WkXUqkp2jiLr3XpYR+lyn3x2AwnyNfmmPkMMTzj4B/VBYs0kJ4ZrMy6swWj0DFN0OpgoFkHKhotmjQL7SrmTik+8LfoYDyS7fzzY6CQXjxNlmvAdS+2QwMiEX8i9IgZgOj/bWII/kRHpwQHCY+hbTM6T/uF3xFaJLxMKHeB6k8wWwgduATfkdwtsjt+KVlkmknLa0AWks+G0BCXkITZwf+oQ0Ba2Ih8KHeIs0waVPApwLX5zZ9MN/zJNmJc8AL8VNmcoN15xRQWvm7Uj5QFHo9hu1cHYp+iAnGlhGmCeV4MnibapBNO1VgN2dXv25iubTqWC3omjvovNdTT3JTAe8EAsZRu3ApaU=
   on:
     branch: master
     tags: true
