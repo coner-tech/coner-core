@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.coner</groupId>
@@ -164,7 +165,7 @@
         <repository>
             <id>bintray-caeos-coner-core</id>
             <name>caeos-coner-core</name>
-            <url>https://api.bintray.com/maven/caeos/coner-core/coner-core-service</url>
+            <url>https://api.bintray.com/maven/caeos/coner-core/coner-core/;publish=1</url>
         </repository>
     </distributionManagement>
 
