@@ -248,12 +248,4 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>bintray-caeos-coner-core</id>
-            <name>caeos-coner-core</name>
-            <url>https://api.bintray.com/maven/caeos/coner-core/coner-core-service</url>
-        </repository>
-    </distributionManagement>
-
 </project>
