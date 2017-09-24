@@ -18,7 +18,7 @@ function add_maven_release_plugin(SimpleXMLElement $pom) {
     $plugin = $pom->build->plugins->addChild("plugin");
     $plugin->addChild("groupId", "org.apache.maven.plugins");
     $plugin->addChild("artifactId", "maven-release-plugin");
-    $plugin->addChild("version", "2.3.5");
+    $plugin->addChild("version", "2.5.3");
     $configuration = $plugin->addChild("configuration");
     $configuration->addChild("autoVersionSubmodules", "true");
     $configuration->addChild("tagNameFormat", "v@{project.version}");
