@@ -2,7 +2,7 @@
 
 cd client-generator/target/generated-sources/swagger-codegen/coner-core-client-java
 
-./../../../../src/main/php/process-bintray-json.php
+./../../../../src/main/php/coner-core-client-java/process-bintray-json.php
 
 # Remove any Gradle files from the template (to stop Travis preferring it over Maven)
 rm -rf *gradle*
