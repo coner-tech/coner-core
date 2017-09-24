@@ -4,10 +4,10 @@
     <parent>
         <groupId>org.coner</groupId>
         <artifactId>coner-core-parent</artifactId>
-        <version>0.1.19-SNAPSHOT</version>
+        <version>0.1.19</version>
     </parent>
     <artifactId>coner-core-build-tools</artifactId>
-    <version>1.0</version>
+    <version>0.1.19</version>
     <packaging>jar</packaging>
     <properties>
         <checkstyle.skip>true</checkstyle.skip>
