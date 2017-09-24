@@ -3,6 +3,7 @@ jdk:
   - oraclejdk8
 script: mvn test
 before_deploy:
+  - git checkout master
   - mvn package -DskipTests=true
 deploy:
   skip_cleanup: true
