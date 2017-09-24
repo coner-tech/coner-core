@@ -3,7 +3,6 @@
 cd client-generator/target/generated-sources/swagger-codegen/coner-core-client-java
 
 PHP_SOURCE_PATH="../../../../src/main/php/coner-core-client-java"
-./$PHP_SOURCE_PATH/process-bintray-json.php
 ./$PHP_SOURCE_PATH/process-pom-xml.php
 
 # Remove any Gradle files from the template (to stop Travis preferring it over Maven)
