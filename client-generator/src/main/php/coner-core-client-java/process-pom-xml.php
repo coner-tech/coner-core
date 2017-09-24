@@ -2,6 +2,7 @@
 <?php
 $pom = simplexml_load_file("pom.xml");
 
+enforce_artifact_version_is_snapshot($pom);
 add_maven_release_plugin($pom);
 add_distribution_repository($pom);
 
@@ -13,6 +14,13 @@ $output = tidy_repair_string($output, array(
     'wrap' => 0
 ));
 file_put_contents("pom.xml", $output);
+
+function enforce_artifact_version_is_snapshot(SimpleXMLElement $pom) {
+    $snapshot = "-SNAPSHOT";
+    if (strpos($pom->version, $snapshot) === false) {
+        $pom->version = $pom->version . $snapshot;
+    }
+}
 
 function add_maven_release_plugin(SimpleXMLElement $pom) {
     $plugin = $pom->build->plugins->addChild("plugin");
