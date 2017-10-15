@@ -5,7 +5,7 @@
     <servers>
         <server>
             <id>bintray-caeos-coner-core-client-java</id>
-            <username>carlton-whitehead</username>
+            <username>${env.BINTRAY_API_USERNAME}</username>
             <password>${env.BINTRAY_API_KEY}</password>
         </server>
     </servers>
