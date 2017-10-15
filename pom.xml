@@ -5,7 +5,7 @@
     <groupId>org.coner</groupId>
     <artifactId>coner-core-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.13-SNAPSHOT</version>
+    <version>0.1.21-SNAPSHOT</version>
     <inceptionYear>2014</inceptionYear>
 
     <modules>
@@ -102,6 +102,7 @@
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <arguments>-DskipTests -Dcheckstyle.skip=true</arguments>
                 </configuration>
             </plugin>
         </plugins>

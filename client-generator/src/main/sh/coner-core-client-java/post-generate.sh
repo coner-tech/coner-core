@@ -2,13 +2,8 @@
 
 cd client-generator/target/generated-sources/swagger-codegen/coner-core-client-java
 
-# Post-process the coner-core-client-java/.bintray.json
-BINTRAY_JSON=".bintray.json"
-jq_mutate_file ".version.name = \"${TRAVIS_TAG}\"" $BINTRAY_JSON
-jq_mutate_file ".version.desc = \"${TRAVIS_TAG}\"" $BINTRAY_JSON
-TODAY=`date +%Y-%m-%d`
-jq_mutate_file ".version.released = \"${TODAY}\"" $BINTRAY_JSON
-jq_mutate_file ".version.vcs_tag = \"$TRAVIS_COMMIT\"" $BINTRAY_JSON
+PHP_SOURCE_PATH="../../../../src/main/php/coner-core-client-java"
+./$PHP_SOURCE_PATH/process-pom-xml.php
 
 # Remove any Gradle files from the template (to stop Travis preferring it over Maven)
 rm -rf *gradle*
