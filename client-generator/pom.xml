@@ -73,7 +73,7 @@
                 <executions>
                     <execution>
                         <id>swagger-codegen-client-java</id>
-                        <phase>compile</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
