@@ -1,6 +1,7 @@
 language: java
 jdk:
   - oraclejdk8
+install: true
 script: mvn -P ci test
 after_success:
   - mvn -P ci clean verify jacoco:report coveralls:report
