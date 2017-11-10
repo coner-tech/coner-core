@@ -1,4 +1,4 @@
-package org.coner.core.it;
+package org.coner.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;

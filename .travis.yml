@@ -1,9 +1,10 @@
 language: java
 jdk:
   - oraclejdk8
-script: mvn test
+install: true
+script: mvn -P ci test
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn -P ci clean verify jacoco:report coveralls:report
 before_deploy:
   - sudo apt-get install -y php5-cli php5-tidy # used for generated client post-processing
   - ./travis-before_deploy.sh
