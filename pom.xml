@@ -13,10 +13,12 @@
         <module>service</module>
         <module>api</module>
         <module>client-generator</module>
+        <module>maven-plugins</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>1.2.41</kotlin.version>
     </properties>
 
     <scm>
