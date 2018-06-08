@@ -4,24 +4,6 @@ jdk:
 script: mvn test
 after_success:
   - mvn clean test jacoco:report coveralls:report
-before_deploy:
-  - sudo apt-get install -y php5-cli php5-tidy # used for generated client post-processing
-  - ./travis-before_deploy.sh
-deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: p4tnXhoGjY4Ge84HKbJN1MgJZELbnY3sYnLWtCAoB3Vz8xi5wSNK0Yxm2q0zC8lBqI1nZ8PjD/PL6m3hC3bL3UBtONtN15ugWv8eBSFMhrCn8LIkI4/UUAVYTLgjBB9CDwYIHp8x32+zgiB/iyApc+vm9t5whE8aRfpiknQgAHM=
-  file_glob: true
-  file: coner-core-service-*.zip
-  on:
-    repo: caeos/coner-core
-    tags: true
-after_deploy:
-  - ./travis-after_deploy.sh
-env:
-  global:
-    secure: En4jsSd+GLK2KLFzmuOlUt7ylgiAXJNChVMPLw+Kqh0H1qY58DXYsVeXiO0Vc4uFJVMWg7OzdmahcOOjEU65gDBcgcAq1fQe+WrRWI9Ybzz0M2OhFHXM+G5G/QjeK7545iOzBjuHFfSZ8Fxba6ZIDexIhVUbE9CHkBzDbT9W9w0=
 cache:
   directories:
   - $HOME/.m2

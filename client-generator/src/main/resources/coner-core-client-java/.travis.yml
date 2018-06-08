@@ -2,18 +2,3 @@ language: java
 jdk:
   - oraclejdk8
 script: mvn test
-before_deploy:
-  - git checkout master
-  - mvn package -DskipTests=true
-  - openssl aes-256-cbc -K $encrypted_7c93ac5960c4_key -iv $encrypted_7c93ac5960c4_iv
-    -in .travis/ssh/github_deploy.enc
-    -out ~/.ssh/github_deploy -d
-  - chmod 600 ~/.ssh/github_deploy
-  - cp .travis/ssh/github_deploy.pub ~/.ssh/
-  - cp .travis/ssh/config ~/.ssh/
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: mvn -s .travis/maven-settings.xml -B release:prepare -Darguments="--settings .travis/maven-settings.xml" && mvn -s .travis/maven-settings.xml release:perform -Darguments="--settings .travis/maven-settings.xml"
-  on:
-    branch: master
