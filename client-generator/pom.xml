@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>coner-core-parent</artifactId>
         <groupId>org.coner</groupId>
@@ -12,6 +13,8 @@
     <properties>
         <checkstyle.skip>true</checkstyle.skip>
         <swagger-codegen-maven-plugin.version>2.2.2</swagger-codegen-maven-plugin.version>
+        <client-java.output>${project.build.directory}/generated-sources/swagger-codegen/coner-core-client-java
+        </client-java.output>
     </properties>
 
     <dependencies>
@@ -20,9 +23,46 @@
             <artifactId>coner-core-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.coner</groupId>
+            <artifactId>coner-core-maven-plugins</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,7 +95,8 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/generated-sources/swagger-codegen/</outputDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources/swagger-codegen/
+                            </outputDirectory>
                             <overwrite>true</overwrite>
                             <resources>
                                 <resource>
@@ -80,7 +121,7 @@
                         <configuration>
                             <inputSpec>client-generator/target/swagger.json</inputSpec>
                             <language>java</language>
-                            <output>${project.build.directory}/generated-sources/swagger-codegen/coner-core-client-java</output>
+                            <output>${client-java.output}</output>
                             <groupId>org.coner</groupId>
                             <artifactId>coner-core-client-java</artifactId>
                             <artifactVersion>${project.version}</artifactVersion>
@@ -89,15 +130,57 @@
                             <configOptions>
                                 <artifactUrl>https://caeos.github.io</artifactUrl>
                                 <scmConnection>scm:git:git@github.com:caeos/coner-core-client-java.git</scmConnection>
-                                <scmDeveloperConnection>scm:git:git@github.com:caeos/coner-core-client-java.git</scmDeveloperConnection>
+                                <scmDeveloperConnection>scm:git:git@github.com:caeos/coner-core-client-java.git
+                                </scmDeveloperConnection>
                                 <scmUrl>https://github.com/caeos/coner-core-client-java</scmUrl>
                                 <licenseName>MIT</licenseName>
                                 <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
                                 <developerName>Carlton Whitehead</developerName>
-                                <developerEmail />
+                                <developerEmail/>
                                 <developerOrganization>Coner</developerOrganization>
                                 <developerOrganizationUrl>https://caeos.github.io</developerOrganizationUrl>
                             </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>client-java-pom-processor</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.coner.core.client_generator.java.PomProcessor</mainClass>
+                            <arguments>
+                                <argument>${client-java.output}</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
