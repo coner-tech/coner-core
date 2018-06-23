@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>coner-core-parent</artifactId>
         <groupId>org.coner</groupId>
@@ -130,7 +131,7 @@
                                 <licenseName>MIT</licenseName>
                                 <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
                                 <developerName>Carlton Whitehead</developerName>
-                                <developerEmail />
+                                <developerEmail/>
                                 <developerOrganization>Coner</developerOrganization>
                                 <developerOrganizationUrl>https://caeos.github.io</developerOrganizationUrl>
                             </configOptions>
@@ -174,22 +175,6 @@
                             <mainClass>org.coner.core.client_generator.java.PomProcessor</mainClass>
                             <arguments>
                                 <argument>${client-java.output}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>client-java-release</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <workingDirectory>${client-java.output}</workingDirectory>
-                            <executable>${mavenw.command}</executable>
-                            <arguments>
-                                <argument>release:prepare</argument>
-                                <argument>-DpreparationGoals="clean verify"</argument>
-                                <argument>-DcompletionGoals=release:perform</argument>
                             </arguments>
                         </configuration>
                     </execution>
