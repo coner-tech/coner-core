@@ -18,6 +18,7 @@ class PomProcessor(cwd: File) {
     fun run() {
         enforceArtifactVersionIsSnapshot()
         addMavenReleasePlugin()
+        addMavenDeployPlugin()
         addDistributionRepository()
         save()
     }
@@ -44,6 +45,17 @@ class PomProcessor(cwd: File) {
             addElement("autoVersionSubmodules").text = "true"
             addElement("tagNameFormat").text = "v@{project.version}"
             addElement("arguments")
+        }
+    }
+
+    private fun addMavenDeployPlugin() {
+        val plugins = document.selectSingleNode("/project/mvn:build/mvn:plugins") as Element
+        val plugin = plugins.addElement("plugin")
+        commentAddedElementRoot(plugin)
+        with(plugin) {
+            addElement("groupId").text = "org.apache.maven.plugins"
+            addElement("artifactId").text = "maven-deploy-plugin"
+            addElement("version").text = "2.8.2"
         }
     }
 
