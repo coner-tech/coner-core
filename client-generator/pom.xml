@@ -24,11 +24,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.coner</groupId>
-            <artifactId>coner-core-maven-plugins</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
@@ -168,7 +163,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>${exec-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>client-java-pom-processor</id>
@@ -183,10 +178,62 @@
                             </arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>client-java-release</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${client-java.output}</workingDirectory>
+                            <executable>${mavenw.command}</executable>
+                            <arguments>
+                                <argument>release:prepare</argument>
+                                <argument>-DpreparationGoals="clean verify"</argument>
+                                <argument>-DcompletionGoals=release:perform</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <mavenw.command>mvnw.cmd</mavenw.command>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <mavenw.command>./mvnw</mavenw.command>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <mavenw.command>./mvnw</mavenw.command>
+            </properties>
+        </profile>
+    </profiles>
 
 
 </project>
