@@ -173,8 +173,8 @@
             <url>https://api.bintray.com/maven/caeos/coner-core/coner-core/;publish=1</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
-            <name>oss-jfrog-artifactory-snapshots</name>
+            <id>jfrog-oss-snapshots</id>
+            <name>JFrog OSS Artifactory Snapshots</name>
             <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
