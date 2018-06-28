@@ -7,8 +7,7 @@
         <version>0.1.25-SNAPSHOT</version>
     </parent>
     <artifactId>coner-core-build-tools</artifactId>
-    <version>1.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <properties>
         <checkstyle.skip>true</checkstyle.skip>
     </properties>
