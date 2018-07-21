@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.coner</groupId>
         <artifactId>coner-core-parent</artifactId>
-        <version>0.1.22-SNAPSHOT</version>
+        <version>0.1.25-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 

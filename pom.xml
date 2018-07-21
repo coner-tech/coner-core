@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.coner</groupId>
     <artifactId>coner-core-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.22-SNAPSHOT</version>
+    <version>0.1.25-SNAPSHOT</version>
     <inceptionYear>2014</inceptionYear>
 
     <modules>
         <module>build-tools</module>
         <module>service</module>
         <module>api</module>
-        <module>client-generator</module>
+        <module>clients/java</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>1.2.41</kotlin.version>
+        <junit.version>4.12</junit.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
     </properties>
 
     <scm>
@@ -98,7 +103,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
@@ -167,6 +172,11 @@
             <name>caeos-coner-core</name>
             <url>https://api.bintray.com/maven/caeos/coner-core/coner-core/;publish=1</url>
         </repository>
+        <snapshotRepository>
+            <id>jfrog-oss-snapshots</id>
+            <name>JFrog OSS Artifactory Snapshots</name>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+        </snapshotRepository>
     </distributionManagement>
 
 </project>

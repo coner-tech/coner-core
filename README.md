@@ -55,12 +55,11 @@ Refer to this section if you want to compile the code yourself.
 
 To build from source, you'll need
 - JDK 8
-- Maven
 - Port 8080 and 8081 available
 
 ##### Build
 
-1. `mvn clean package`
+1. `./mvnw clean package`
 2. `java -jar service/target/coner-core-service-${version}.jar server service/src/test/resources/config/test.yml`
 
 ### Actions
