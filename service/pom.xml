@@ -233,6 +233,7 @@
                                 <version>${project.version}</version>
                             </info>
                             <swaggerDirectory>${project.build.outputDirectory}/swagger</swaggerDirectory>
+                            <modelSubstitute>/swagger/modelSubstitute.txt</modelSubstitute>
                         </apiSource>
                     </apiSources>
                 </configuration>
