@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.coner</groupId>
         <artifactId>coner-core-parent</artifactId>
-        <version>0.1.25-SNAPSHOT</version>
+        <version>0.1.25</version>
     </parent>
     <artifactId>coner-core-build-tools</artifactId>
     <packaging>pom</packaging>
