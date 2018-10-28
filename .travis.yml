@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 script: mvn test
 after_success:
-  - ./mvnw clean test jacoco:report coveralls:report
+  - bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
   - $HOME/.m2
