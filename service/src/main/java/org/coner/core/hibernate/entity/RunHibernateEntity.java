@@ -19,10 +19,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-
 @Entity
 @Table(
         name = "runs",
@@ -51,9 +47,6 @@ import lombok.NoArgsConstructor;
                         + "ORDER BY r.sequence ASC"
         )
 })
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class RunHibernateEntity extends HibernateEntity {
 
     public static final String QUERY_FIND_ALL_WITH_EVENT = "Run.findAllWithEvent";

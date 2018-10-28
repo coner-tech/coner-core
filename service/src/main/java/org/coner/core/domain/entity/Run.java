@@ -6,13 +6,6 @@ import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Run extends DomainEntity {
     private String id;
     private Event event;
