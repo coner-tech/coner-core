@@ -1,7 +1,7 @@
 package org.coner.core.resource;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.coner.core.util.TestConstants.EVENT_ID;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -199,18 +199,18 @@ public class EventsResourceTest {
         EventApiEntity apiEvent = ApiEntityTestUtils.fullEvent();
 
         // sanity check test
-        assertThat(domainEvent.getId()).isSameAs(EVENT_ID);
-        assertThat(apiEvent.getId()).isSameAs(EVENT_ID);
+        assertThat(domainEvent.getId()).isSameAs(TestConstants.EVENT_ID);
+        assertThat(apiEvent.getId()).isSameAs(TestConstants.EVENT_ID);
 
-        when(eventEntityService.getById(EVENT_ID)).thenReturn(domainEvent);
+        when(eventEntityService.getById(TestConstants.EVENT_ID)).thenReturn(domainEvent);
         when(eventMapper.toApiEntity(domainEvent)).thenReturn(apiEvent);
 
         Response getEventResponseContainer = resources.client()
-                .target("/events/" + EVENT_ID)
+                .target("/events/" + TestConstants.EVENT_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(eventEntityService).getById(EVENT_ID);
+        verify(eventEntityService).getById(TestConstants.EVENT_ID);
         verify(eventMapper).toApiEntity(domainEvent);
         verifyNoMoreInteractions(eventEntityService, eventMapper);
 
@@ -225,14 +225,14 @@ public class EventsResourceTest {
 
     @Test
     public void itShouldRespondWithNotFoundErrorWhenEventIdInvalid() throws EntityNotFoundException {
-        when(eventEntityService.getById(EVENT_ID)).thenThrow(EntityNotFoundException.class);
+        when(eventEntityService.getById(TestConstants.EVENT_ID)).thenThrow(EntityNotFoundException.class);
 
         Response response = resources.client()
-                .target("/events/" + EVENT_ID)
+                .target("/events/" + TestConstants.EVENT_ID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get();
 
-        verify(eventEntityService).getById(EVENT_ID);
+        verify(eventEntityService).getById(TestConstants.EVENT_ID);
         verifyNoMoreInteractions(eventEntityService);
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND_404);

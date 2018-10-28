@@ -69,7 +69,7 @@ public class RunScoringInteractorTest {
     @Test
     public void itShouldNotScoreRunWithRerun() {
         when(run.getRawTime()).thenReturn(TestConstants.RUN_RAW_TIME);
-        when(run.isRerun()).thenReturn(true);
+        when(run.getRerun()).thenReturn(true);
 
         ScoredRun actual = interactor.score(run);
 
@@ -80,8 +80,8 @@ public class RunScoringInteractorTest {
     @Test
     public void itShouldNotScoreRunWithoutCompetitive() {
         when(run.getRawTime()).thenReturn(TestConstants.RUN_RAW_TIME);
-        when(run.isRerun()).thenReturn(false);
-        when(run.isCompetitive()).thenReturn(false);
+        when(run.getRerun()).thenReturn(false);
+        when(run.getCompetitive()).thenReturn(false);
 
         ScoredRun actual = interactor.score(run);
 
@@ -92,9 +92,9 @@ public class RunScoringInteractorTest {
     @Test
     public void itShouldNotScoreRunWithDisqualified() {
         when(run.getRawTime()).thenReturn(TestConstants.RUN_RAW_TIME);
-        when(run.isRerun()).thenReturn(false);
-        when(run.isCompetitive()).thenReturn(true);
-        when(run.isDisqualified()).thenReturn(true);
+        when(run.getRerun()).thenReturn(false);
+        when(run.getCompetitive()).thenReturn(true);
+        when(run.getDisqualified()).thenReturn(true);
 
         ScoredRun actual = interactor.score(run);
 

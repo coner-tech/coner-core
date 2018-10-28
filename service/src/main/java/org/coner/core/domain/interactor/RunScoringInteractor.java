@@ -32,7 +32,7 @@ public class RunScoringInteractor {
         ScoredRun scoredRun = new ScoredRun();
         scoredRun.setRun(run);
 
-        if (!run.isDidNotFinish()) {
+        if (!run.getDidNotFinish()) {
             rawTimeScoringInteractor.score(scoredRun);
             HandicapTimeScoringMethod handicapTimeScoringMethod = run.getEvent().getHandicapTimeScoringMethod();
             if (handicapTimeScoringInteractors.containsKey(handicapTimeScoringMethod)) {
@@ -54,9 +54,9 @@ public class RunScoringInteractor {
     boolean shouldScore(Run run) {
         if (run == null) return false;
         if (run.getRawTime() == null) return false;
-        if (run.isRerun()) return false;
-        if (!run.isCompetitive()) return false;
-        if (run.isDisqualified()) return false;
+        if (run.getRerun()) return false;
+        if (!run.getCompetitive()) return false;
+        if (run.getDisqualified()) return false;
         return true;
     }
 

@@ -244,8 +244,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         URI competitionGroupsSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();
-        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils
-                .fullAddCompetitionGroupSet();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
         addCompetitionGroupSetRequest.setName("  "); // whitespace only is not ok
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupsSetsUri)
@@ -261,8 +260,7 @@ public class CompetitionGroupIntegrationTest extends AbstractIntegrationTest {
         URI competitionGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(COMPETITION_GROUP_SETS_PATH)
                 .build();
-        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils
-                .fullAddCompetitionGroupSet();
+        AddCompetitionGroupSetRequest addCompetitionGroupSetRequest = ApiRequestTestUtils.fullAddCompetitionGroupSet();
         addCompetitionGroupSetRequest.setCompetitionGroupIds(null);
 
         Response addCompetitionGroupSetResponseContainer = client.target(competitionGroupSetsUri)
