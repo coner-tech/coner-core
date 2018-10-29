@@ -227,8 +227,7 @@ public class HandicapGroupIntegrationTest extends AbstractIntegrationTest {
         URI handicapGroupSetsUri = IntegrationTestUtils.jerseyUriBuilderForApp(RULE)
                 .path(HANDICAP_GROUP_SETS_PATH)
                 .build();
-        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils
-                .fullAddHandicapGroupSet();
+        AddHandicapGroupSetRequest addHandicapGroupSetRequest = ApiRequestTestUtils.fullAddHandicapGroupSet();
         addHandicapGroupSetRequest.setHandicapGroupIds(null);
 
         Response addHandicapGroupSetResponseContainer = client.target(handicapGroupSetsUri)

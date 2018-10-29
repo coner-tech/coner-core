@@ -3,7 +3,7 @@
 Coner Core is a REST API service for core autocross event operations.
 
 ![Travis CI Build Status](https://travis-ci.org/caeos/coner-core.svg?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/caeos/coner-core/badge.svg?branch=master)](https://coveralls.io/github/caeos/coner-core?branch=master)
+[![codecov](https://codecov.io/gh/caeos/coner-core/branch/master/graph/badge.svg)](https://codecov.io/gh/caeos/coner-core)
 
 ## Features
 
